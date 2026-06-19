@@ -8,8 +8,8 @@ final class Command
 {
     public function __construct(
         public readonly string $host,
-        public readonly array $data,
-        public readonly array $options = []
+        public readonly string $login,
+        public readonly string $password,
     ) {
     }
 }
