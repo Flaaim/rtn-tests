@@ -4,9 +4,28 @@ declare(strict_types=1);
 
 namespace App\Parser\Entity\Parser;
 
-interface ParserRepository
-{
-    public function add(Parser $parser): void;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityRepository;
 
-    public function hasByHost(Host $host): ?Parser;
+final class ParserRepository
+{
+    private EntityRepository $repo;
+    public function __construct(
+        private EntityManagerInterface $em
+    ){
+        $this->repo = $em->getRepository(Parser::class);
+    }
+    public function add(Parser $parser): void
+    {
+        $this->em->persist($parser);
+    }
+
+    public function hasByHost(Host $host): bool
+    {
+        $parser = $this->repo->findOneBy(['host' => $host]);
+        if($parser === null){
+            return false;
+        }
+        return true;
+    }
 }
