@@ -22,11 +22,12 @@ final class ParserTest extends TestCase
         $parser = new Parser(
             $id = ParserId::generate(),
             $host = new Host('http://example.com/'),
-            $cookie = new Cookie(['zero', 'one', 'two', 'three']),
+            $cookie = 'zero one two three',
         );
 
         self::assertEquals($id->getValue(), $parser->getId()->getValue());
         self::assertEquals($host->getValue(), $parser->getHost()->getValue());
+        self::assertEquals($cookie, $parser->getCookie());
 
         $events = $parser->releaseEvents();
 

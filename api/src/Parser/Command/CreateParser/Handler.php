@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace App\Parser\Command\CreateParser;
 
 use App\Infrastructure\Doctrine\Flusher;
-use App\Parser\Entity\Parser\Cookie;
 use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\Parser;
 use App\Parser\Entity\Parser\ParserId;
 use App\Parser\Entity\Parser\ParserRepository;
 use App\Parser\Service\CookieAuthParser;
+use App\Parser\Service\GlueCookie;
 use DomainException;
 
 final class Handler
@@ -19,6 +19,7 @@ final class Handler
         private readonly Flusher $flusher,
         private readonly ParserRepository $parsers,
         private readonly CookieAuthParser $cookieParser,
+        private readonly GlueCookie $glueCookie,
     ) {}
 
     public function handle(Command $command): void
@@ -31,7 +32,7 @@ final class Handler
 
         $cookieFromResponse = $this->cookieParser->fetch($host, $command->login, $command->password);
 
-        $cookie = new Cookie($cookieFromResponse);
+        $cookie = $this->glueCookie->glue($cookieFromResponse);
 
         $parser = new Parser(
             ParserId::generate(),

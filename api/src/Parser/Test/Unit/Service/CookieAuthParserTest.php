@@ -8,10 +8,10 @@ use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\HostMapper;
 use App\Parser\Exception\RemoteException;
 use App\Parser\Service\CookieAuthParser;
-use GuzzleHttp\ClientInterface;
-use GuzzleHttp\Exception\TransferException;
 use PHPUnit\Framework\TestCase;
-use Psr\Http\Message\ResponseInterface;
+use Symfony\Component\HttpClient\Exception\TransportException;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
+use Symfony\Contracts\HttpClient\ResponseInterface;
 
 /**
  * @internal
@@ -19,11 +19,11 @@ use Psr\Http\Message\ResponseInterface;
  */
 final class CookieAuthParserTest extends TestCase
 {
-    private ClientInterface $client;
+    private HttpClientInterface $client;
 
     protected function setUp(): void
     {
-        $this->client = $this->createMock(ClientInterface::class);
+        $this->client = $this->createMock(HttpClientInterface::class);
     }
 
     public function testSuccess(): void
@@ -37,7 +37,7 @@ final class CookieAuthParserTest extends TestCase
             self::equalTo('POST'),
             self::equalTo($host->getValue() . \DIRECTORY_SEPARATOR . HostMapper::AUTH->value),
             self::equalTo([
-                'form_params' => [
+                'body' => [
                     'login' => $login,
                     'password' => $password,
                 ],
@@ -51,7 +51,7 @@ final class CookieAuthParserTest extends TestCase
     {
         $host = new Host('https://example.com');
         $parser = new CookieAuthParser($this->client);
-        $this->client->expects(self::once())->method('request')->willThrowException(new TransferException('Network timeout'));
+        $this->client->expects(self::once())->method('request')->willThrowException(new TransportException('Network timeout'));
 
         $this->expectException(RemoteException::class);
         $this->expectExceptionMessage('Network timeout');

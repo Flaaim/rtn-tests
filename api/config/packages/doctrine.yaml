@@ -15,7 +15,6 @@ doctrine:
 
             parser_id: App\Parser\Entity\Parser\ParserIdType
             parser_host: App\Parser\Entity\Parser\HostType
-            parser_cookie: App\Parser\Entity\Parser\CookieType
 
     orm:
         validate_xml_mapping: true

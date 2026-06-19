@@ -21,8 +21,8 @@ final class Parser implements AggregateRoot
         private ParserId $id,
         #[ORM\Column(type: 'parser_host', unique: true)]
         private Host $host,
-        #[ORM\Column(type: 'parser_cookie', length: 255)]
-        private Cookie $cookie
+        #[ORM\Column(type: 'text')]
+        private string $cookie
     ) {
         $this->recordEvent(new ParserCreated($this->host->getValue()));
     }
@@ -37,7 +37,7 @@ final class Parser implements AggregateRoot
         return $this->host;
     }
 
-    public function getCookie(): Cookie
+    public function getCookie(): string
     {
         return $this->cookie;
     }
