@@ -7,4 +7,5 @@ namespace App\Parser\Entity\Parser;
 interface ParserRepository
 {
     public function add(Parser $parser): void;
+    public function hasByHost(Host $host): ?Parser;
 }
