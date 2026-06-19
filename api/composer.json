@@ -95,7 +95,7 @@
         "lint": "phplint",
         "psalm": "psalm --config=psalm.xml",
         "php-cs-fixer": "php-cs-fixer --config=.php-cs-fixer.dist.php --allow-risky=yes",
-        "test": "phpunit --display-warnings --display-deprecations"
+        "test": "phpunit --display-all-issues"
     },
     "conflict": {
         "symfony/symfony": "*"
