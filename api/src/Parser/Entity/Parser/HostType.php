@@ -7,18 +7,18 @@ namespace App\Parser\Entity\Parser;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
-final class CookieType extends StringType
+final class HostType extends StringType
 {
-    public const string NAME = 'parser_cookie';
+    public const string NAME = 'parser_host';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
-        return $value instanceof Cookie ? $value->getValue() : $value;
+        return $value instanceof Host ? $value->getValue() : $value;
     }
 
-    public function convertToPHPValue($value, AbstractPlatform $platform): ?Cookie
+    public function convertToPHPValue($value, AbstractPlatform $platform): ?Host
     {
-        return !empty($value) ? new Cookie($value) : null;
+        return !empty($value) ? new Host((string)$value) : null;
     }
 
     public function getName(): string
