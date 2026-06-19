@@ -9,7 +9,7 @@ use Webmozart\Assert\Assert;
 final class Cookie
 {
     private string $cookie;
-    public function __construct(string|array $value)
+    public function __construct(array|string $value)
     {
         Assert::notEmpty($value);
         if(is_string($value)) {
@@ -19,7 +19,7 @@ final class Cookie
             $this->cookie = $this->glueCookie($value);
         }
     }
-    public function getCookie(): string
+    public function getValue(): string
     {
         return $this->cookie;
     }

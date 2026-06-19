@@ -18,15 +18,16 @@ final readonly class CookieAuthParser
     ) {
     }
 
-    public function fetch(Host $host, string $login, string $password): ResponseInterface
+    public function fetch(Host $host, string $login, string $password): array
     {
         try{
-            return $this->client->request('POST', $host->getValue() . '/' . ltrim(HostMapper::AUTH->value), [
+            $response = $this->client->request('POST', $host->getValue() . '/' . ltrim(HostMapper::AUTH->value), [
                 'form_params' => [
                     'login' => $login,
                     'password' => $password,
                 ]
             ]);
+            return $response->getHeader('Set-Cookie');
         }catch (GuzzleException $e){
             throw new RemoteException($e->getMessage(), $e->getCode(), $e);
         }
