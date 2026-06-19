@@ -12,12 +12,12 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final class LogOnParserCreatedHandler
 {
     public function __construct(
-      private readonly LoggerInterface $logger,
+        private readonly LoggerInterface $logger,
     ) {}
 
     public function __invoke(ParserCreated $event): void
     {
         $host = $event->host;
-        $this->logger->info('New parser created: '. $host);
+        $this->logger->info('New parser created: ' . $host);
     }
 }

@@ -9,6 +9,10 @@ use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ParserIdTest extends TestCase
 {
     public function testSuccess(): void

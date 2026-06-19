@@ -10,6 +10,5 @@ final class Command
         public readonly string $host,
         public readonly string $login,
         public readonly string $password,
-    ) {
-    }
+    ) {}
 }

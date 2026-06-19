@@ -8,5 +8,5 @@ final class ParserCreated
 {
     public function __construct(
         public string $host,
-    ){}
+    ) {}
 }

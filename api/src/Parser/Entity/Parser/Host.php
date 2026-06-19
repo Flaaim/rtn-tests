@@ -10,9 +10,9 @@ final class Host
 {
     public function __construct(
         private string $value,
-    ){
+    ) {
         Assert::notEmpty($this->value);
-        Assert::true((bool) filter_var($value, FILTER_VALIDATE_URL), 'Неверный формат URL');
+        Assert::true((bool)filter_var($value, FILTER_VALIDATE_URL), 'Неверный формат URL');
         $this->value = trim($this->value, '/');
     }
 
@@ -20,5 +20,4 @@ final class Host
     {
         return $this->value;
     }
-
 }

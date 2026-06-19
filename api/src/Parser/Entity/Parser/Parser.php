@@ -14,6 +14,7 @@ use Doctrine\ORM\Mapping as ORM;
 final class Parser implements AggregateRoot
 {
     use EventTrait;
+
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'parser_id')]
@@ -21,7 +22,7 @@ final class Parser implements AggregateRoot
         #[ORM\Column(type: 'parser_host', unique: true)]
         private Host $host,
         #[ORM\Column(type: 'parser_cookie', length: 255)]
-        private Cookie  $cookie
+        private Cookie $cookie
     ) {
         $this->recordEvent(new ParserCreated($this->host->getValue()));
     }
@@ -40,6 +41,4 @@ final class Parser implements AggregateRoot
     {
         return $this->cookie;
     }
-
-
 }

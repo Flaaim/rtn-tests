@@ -11,6 +11,10 @@ use App\Parser\Entity\Parser\ParserId;
 use App\Parser\Event\ParserCreated;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ParserTest extends TestCase
 {
     public function testCreate(): void

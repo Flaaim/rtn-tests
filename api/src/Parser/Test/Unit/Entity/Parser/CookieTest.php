@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace App\Parser\Test\Unit\Entity\Parser;
 
 use App\Parser\Entity\Parser\Cookie;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class CookieTest extends TestCase
 {
     public function testSuccess(): void
@@ -19,7 +24,7 @@ final class CookieTest extends TestCase
 
     public function testEmpty(): void
     {
-        $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(InvalidArgumentException::class);
         new Cookie('');
     }
 }

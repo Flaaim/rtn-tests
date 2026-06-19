@@ -10,7 +10,7 @@ final class Course
 {
     public function __construct(
         private readonly array $data
-    ){
+    ) {
         Assert::notEmpty($this->data);
     }
 
