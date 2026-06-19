@@ -9,7 +9,7 @@ use Webmozart\Assert\Assert;
 final class Host
 {
     public function __construct(
-        public string $value,
+        private string $value,
     ){
         Assert::notEmpty($this->value);
         Assert::true((bool) filter_var($value, FILTER_VALIDATE_URL), 'Неверный формат URL');
