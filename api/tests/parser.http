@@ -1,0 +1,6 @@
+
+### Авторизация
+POST https://olimpoks.hydroschool.ru/Auth/Admin
+Content-Type: application/x-www-form-urlencoded
+
+login=UGwQiLx3nFLYTdKAhCuX5g==&password=pb2Ov1bKcE3IU7gJuB8cvg==

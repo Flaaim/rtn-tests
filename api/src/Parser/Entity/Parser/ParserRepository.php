@@ -28,4 +28,8 @@ final class ParserRepository
         }
         return true;
     }
+    public function findByHost(Host $host): ?Parser
+    {
+        return $this->repo->findOneBy(['host' => $host]);
+    }
 }
