@@ -6,11 +6,11 @@ namespace Tests\Functional\Parser\Create;
 
 use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\ParserRepository;
+use App\Parser\Service\Encrypt\EncryptInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
-use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tests\Functional\Json;
@@ -20,6 +20,7 @@ final class RequestActionTest extends WebTestCase
     private readonly ParserRepository $parsers;
     private readonly KernelBrowser $client;
     private readonly ContainerInterface $container;
+
     public function setUp(): void
     {
         parent::setUp();
@@ -29,6 +30,8 @@ final class RequestActionTest extends WebTestCase
         /** @var EntityManagerInterface $em */
         $em = $this->container->get(EntityManagerInterface::class);
         $this->parsers = new ParserRepository($em);
+
+
     }
     public function testEmpty(): void
     {
@@ -95,6 +98,12 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals('http://example.com', $parser->getHost()->getValue());
         //$cookies[2] . ' ' . $cookies[3] . ' ' . $cookies[0];
         self::assertEquals('.OLIMPAUTH=pDjbPRpZaz6AO913gO583vOCwin7zOTrWDnuSfQxUItgOslmytwr3UqxatGXBtR1mNl+At4Bq7amoCCrct3qxtO0uZtnU6K10hM+vHgKYBeYN55028I5N7MY07uVX3mT; path=/Admin .OLIMPROLES=; path=/Admin; expires=Mon, 11 Oct 1999 17:00:00 GMT WorkplaceToken=e89a12fb-0227-49ff-884d-918fd9ae6f02; path=/; expires=Wed, 19 Jun 2526 23:24:17 GMT', $parser->getCookie());
+
+        /** @var EncryptInterface $encryptService */
+        $encryptService = $this->container->get(EncryptInterface::class);
+
+        self::assertEquals('login', $encryptService->decrypt($parser->getCredentials()->getLogin()));
+        self::assertEquals('password', $encryptService->decrypt($parser->getCredentials()->getPassword()));
 
     }
 }

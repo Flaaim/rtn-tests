@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Parser\Test\Unit\Service;
 
-use App\Parser\Service\EncryptService;
+use App\Parser\Service\Encrypt\EncryptService;
 use PHPUnit\Framework\TestCase;
 
 final class EncryptServiceTest extends TestCase

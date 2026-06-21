@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Service;
+namespace App\Parser\Service\Encrypt;
 
-final class EncryptService
+final class EncryptService implements EncryptInterface
 {
     private const string METHOD = 'aes-256-ctr';
 

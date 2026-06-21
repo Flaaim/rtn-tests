@@ -11,7 +11,7 @@ use App\Parser\Entity\Parser\Parser;
 use App\Parser\Entity\Parser\ParserId;
 use App\Parser\Entity\Parser\ParserRepository;
 use App\Parser\Service\CookieAuthParser;
-use App\Parser\Service\EncryptService;
+use App\Parser\Service\Encrypt\EncryptInterface;
 use App\Parser\Service\GlueCookie;
 use DomainException;
 
@@ -22,6 +22,7 @@ final class Handler
         private readonly ParserRepository $parsers,
         private readonly CookieAuthParser $cookieParser,
         private readonly GlueCookie $glueCookie,
+        private readonly EncryptInterface $encryptService,
     ) {}
 
     public function handle(Command $command): void
