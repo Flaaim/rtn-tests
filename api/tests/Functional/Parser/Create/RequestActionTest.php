@@ -69,7 +69,7 @@ final class RequestActionTest extends WebTestCase
     public function testSuccess(): void
     {
         $this->client->catchExceptions(false);
-        $mockResponse = new MockResponse('{"url": "/Admin"}', [
+        $mockResponse = new MockResponse('{"url": "/Admin"}', info: [
             'http_code' => 200,
             'response_headers' => [
                 'Set-Cookie: WorkplaceToken=e89a12fb-0227-49ff-884d-918fd9ae6f02; path=/; expires=Wed, 19 Jun 2526 23:24:17 GMT',
@@ -79,8 +79,8 @@ final class RequestActionTest extends WebTestCase
             ],
         ]);
 
-        $mockClient = new MockHttpClient($mockResponse);
-        $this->container->set(HttpClientInterface::class, $mockClient);
+        $mockClient = $this->container->get(HttpClientInterface::class);
+        $mockClient->setResponseFactory([$mockResponse]);
 
         $this->client->jsonRequest('POST', '/v1/parser', [
             'host' => 'http://example.com',
