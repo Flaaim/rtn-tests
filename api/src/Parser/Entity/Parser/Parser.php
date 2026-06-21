@@ -41,4 +41,8 @@ final class Parser implements AggregateRoot
     {
         return $this->cookie;
     }
+    public function getCredentials(): Credentials
+    {
+        return $this->credentials;
+    }
 }
