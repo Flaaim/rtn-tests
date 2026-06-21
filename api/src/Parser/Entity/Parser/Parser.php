@@ -20,10 +20,13 @@ final class Parser implements AggregateRoot
         #[ORM\Column(type: 'parser_id')]
         private ParserId $id,
         #[ORM\Column(type: 'parser_host', unique: true)]
-        private Host $host,
+        private Host     $host,
         #[ORM\Column(type: 'text')]
-        private string $cookie
-    ) {
+        private string   $cookie,
+        #[ORM\Embedded(class: Credentials::class, columnPrefix: false)]
+        private Credentials $credentials,
+    )
+    {
         $this->recordEvent(new ParserCreated($this->host->getValue()));
     }
 
@@ -41,6 +44,12 @@ final class Parser implements AggregateRoot
     {
         return $this->cookie;
     }
+
+    public function refreshAuth(string $cookie): void
+    {
+        $this->cookie = $cookie;
+    }
+
     public function getCredentials(): Credentials
     {
         return $this->credentials;

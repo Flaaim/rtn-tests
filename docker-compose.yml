@@ -76,6 +76,7 @@ services:
       GOOGLE_CLIENT_ID: ""
       GOOGLE_CLIENT_SECRET: ""
       GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
+      ENCRYPT_SECRET_KEY: flaaim-secret
     volumes:
       - ./api:/app
     depends_on:
@@ -119,6 +120,7 @@ services:
       GOOGLE_CLIENT_ID: ""
       GOOGLE_CLIENT_SECRET: ""
       GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
+      ENCRYPT_SECRET_KEY: flaaim-secret
     secrets:
       - jwt_public_key
       - jwt_private_key

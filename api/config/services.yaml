@@ -81,6 +81,10 @@ services:
         arguments:
             $clients: ['@App\Infrastructure\Social\GoogleClient', '@App\Infrastructure\Social\YandexClient']
 
+    App\Parser\Service\EncryptService:
+        arguments:
+            $secretKey: '%env(ENCRYPT_SECRET_KEY)%'
+
 
 when@test:
     services:
