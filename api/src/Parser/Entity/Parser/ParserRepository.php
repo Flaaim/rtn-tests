@@ -32,4 +32,9 @@ final class ParserRepository
     {
         return $this->repo->findOneBy(['host' => $host]);
     }
+
+    public function find(ParserId $parserId): ?Parser
+    {
+        return $this->repo->findOneBy(['id' => $parserId]);
+    }
 }
