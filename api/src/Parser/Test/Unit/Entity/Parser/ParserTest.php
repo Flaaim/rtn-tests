@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Parser\Test\Unit\Entity\Parser;
 
-use App\Parser\Entity\Parser\Cookie;
+use App\Parser\Entity\Parser\Credentials;
 use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\Parser;
 use App\Parser\Entity\Parser\ParserId;
@@ -23,11 +23,14 @@ final class ParserTest extends TestCase
             $id = ParserId::generate(),
             $host = new Host('http://example.com/'),
             $cookie = 'zero one two three',
+            $credentials = new Credentials('login', 'password'),
         );
 
         self::assertEquals($id->getValue(), $parser->getId()->getValue());
         self::assertEquals($host->getValue(), $parser->getHost()->getValue());
         self::assertEquals($cookie, $parser->getCookie());
+        self::assertEquals('login', $credentials->getLogin());
+        self::assertEquals('password', $credentials->getPassword());
 
         $events = $parser->releaseEvents();
 
