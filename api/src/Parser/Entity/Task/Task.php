@@ -18,17 +18,23 @@ use Doctrine\ORM\Mapping\Column;
 final class Task implements AggregateRoot
 {
     use EventTrait;
-
+    #[Column(type: 'task_status')]
     private Status $status;
     public function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type: 'task_id', unique: true)]
         private TaskId $taskId,
+        #[Column(type: 'parser_id')]
         private ParserId $parserId,
         #[Column(type: 'string', length: 255)]
         private string $branchId,
         #[Column(type: 'string', length: 255)]
         private string $ticketId,
+        #[Column(type: 'datetime_immutable')]
         private \DateTimeImmutable $createdAt,
+        #[Column(type: 'text', nullable: true)]
         private ?string $draft = null,
+        #[Column(type: 'string', nullable: true)]
         private ?string $failedReason = null,
     ) {
 
