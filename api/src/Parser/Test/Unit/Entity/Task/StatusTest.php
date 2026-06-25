@@ -29,4 +29,12 @@ final class StatusTest extends TestCase
         self::assertEquals('processing', $status->getValue());
     }
 
+    public function testEquals(): void
+    {
+        $status = Status::failed();
+
+        self::assertTrue($status->isEqual($status));
+        self::assertFalse($status->isEqual(Status::completed()));
+
+    }
 }

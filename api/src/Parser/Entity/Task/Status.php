@@ -34,4 +34,9 @@ final class Status
     {
         return new self('failed');
     }
+
+    public function isEqual(self $status): bool
+    {
+        return $this->value === $status->getValue();
+    }
 }
