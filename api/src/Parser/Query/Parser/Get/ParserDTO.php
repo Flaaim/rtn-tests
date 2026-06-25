@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Query\Get;
+namespace App\Parser\Query\Parser\Get;
 
 final class ParserDTO
 {
