@@ -13,6 +13,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
 
 final class QuestionsParserTest extends TestCase
 {
+    private HttpClientInterface $client;
     protected function setUp(): void
     {
         $this->client = $this->createMock(HttpClientInterface::class);
