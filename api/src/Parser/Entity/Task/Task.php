@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Parser\Entity\Task;
 
-
-
-use App\Parser\Event\TaskCreated;
+use App\Parser\Entity\Parser\ParserId;
+use App\Parser\Event\ParseEnded;
+use App\Parser\Event\ParseFailed;
+use App\Parser\Event\ParseLaunched;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 
@@ -17,26 +18,78 @@ final class Task implements AggregateRoot
     private Status $status;
     public function __construct(
         private TaskId $taskId,
-        private ?string $result = null,
+        private ParserId $parserId,
+        private string $branchId,
+        private string $ticketId,
+        private ?string $draft = null,
+        private ?string $failedReason = null,
     ) {
 
         $this->status = Status::processing();
 
-        $this->recordEvent(new TaskCreated($this->taskId->getValue()));
+        $this->recordEvent(new ParseLaunched(
+            $this->taskId->getValue(),
+            $this->parserId->getValue(),
+            $this->branchId,
+            $this->ticketId,
+        ));
     }
 
     public function getId(): TaskId
     {
         return $this->taskId;
     }
+    public function getParserId(): ParserId
+    {
+        return $this->parserId;
+    }
+    public function getBranchId(): string
+    {
+        return $this->branchId;
+    }
+    public function getTicketId(): string
+    {
+        return $this->ticketId;
+    }
     public function getStatus(): Status
     {
         return $this->status;
     }
-    public function getResult(): ?string
+    public function getDraft(): ?string
     {
-        return $this->result;
+        return $this->draft;
     }
+    public function getFailedReason(): ?string
+    {
+        return $this->failedReason;
+    }
+    public function ended(string $result): void
+    {
+        if($this->status->isEqual(Status::completed())) {
+            throw new \DomainException('Task is already ended.');
+        }
+        $this->status = Status::completed();
+        $this->draft = $result;
+        $this->failedReason = null;
 
+        $this->recordEvent(new ParseEnded(
+            $this->taskId->getValue(),
+            $this->parserId->getValue(),
+        ));
+    }
+    public function failed(string $reason): void
+    {
+        if($this->status->isEqual(Status::failed())) {
+            throw new \DomainException('Task already failed.');
+        }
 
+        $this->status = Status::failed();
+        $this->failedReason = $reason;
+        $this->draft = null;
+
+        $this->recordEvent(new ParseFailed(
+            $this->parserId->getValue(),
+            $this->failedReason
+        ));
+    }
 }
