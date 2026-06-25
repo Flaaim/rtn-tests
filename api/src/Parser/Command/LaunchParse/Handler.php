@@ -24,6 +24,7 @@ final class Handler
             new ParserId($command->parserId),
             $command->branchId,
             $command->ticketId,
+            new \DateTimeImmutable()
         );
 
         $this->tasks->add($task);

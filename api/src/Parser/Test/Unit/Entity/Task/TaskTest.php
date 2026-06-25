@@ -22,12 +22,14 @@ final class TaskTest extends TestCase
             $parserId = ParserId::generate(),
             $branchId = 'branchId',
             $ticketId = 'ticketId',
+            $createdAt = new \DateTimeImmutable(),
         );
 
         self::assertEquals($taskId, $task->getId());
         self::assertEquals($parserId, $task->getParserId());
         self::assertEquals($branchId, $task->getBranchId());
         self::assertEquals($ticketId, $task->getTicketId());
+        self::assertEquals($createdAt, $task->getCreatedAt());
 
         self::assertEquals(Status::PROCESSING, $task->getStatus()->getValue());
         self::assertNull($task->getDraft());
@@ -50,6 +52,7 @@ final class TaskTest extends TestCase
             ParserId::generate(),
             'branchId',
             'ticketId',
+            new \DateTimeImmutable()
         );
 
         $task->failed($reason = 'Ошибка сети.');
@@ -72,6 +75,7 @@ final class TaskTest extends TestCase
             ParserId::generate(),
             'branchId',
             'ticketId',
+            new \DateTimeImmutable()
         );
 
         $task->failed('Ошибка сети.');
@@ -88,6 +92,7 @@ final class TaskTest extends TestCase
             ParserId::generate(),
             'branchId',
             'ticketId',
+            new \DateTimeImmutable()
         );
 
         $task->ended($draft = 'draft');
@@ -113,6 +118,7 @@ final class TaskTest extends TestCase
             ParserId::generate(),
             'branchId',
             'ticketId',
+            new \DateTimeImmutable()
         );
 
         $task->ended($draft = 'draft');

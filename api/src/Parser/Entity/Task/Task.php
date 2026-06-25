@@ -10,7 +10,11 @@ use App\Parser\Event\ParseFailed;
 use App\Parser\Event\ParseLaunched;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'tasks')]
 final class Task implements AggregateRoot
 {
     use EventTrait;
@@ -19,8 +23,11 @@ final class Task implements AggregateRoot
     public function __construct(
         private TaskId $taskId,
         private ParserId $parserId,
+        #[Column(type: 'string', length: 255)]
         private string $branchId,
+        #[Column(type: 'string', length: 255)]
         private string $ticketId,
+        private \DateTimeImmutable $createdAt,
         private ?string $draft = null,
         private ?string $failedReason = null,
     ) {
@@ -50,6 +57,10 @@ final class Task implements AggregateRoot
     public function getTicketId(): string
     {
         return $this->ticketId;
+    }
+    public function getCreatedAt(): \DateTimeImmutable
+    {
+        return $this->createdAt;
     }
     public function getStatus(): Status
     {
