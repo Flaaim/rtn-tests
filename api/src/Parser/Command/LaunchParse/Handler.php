@@ -17,7 +17,7 @@ final class Handler
         private readonly TasksRepository $tasks
     ) {}
 
-    public function handle(Command $command): void
+    public function handle(Command $command): string
     {
         $task = new Task(
             TaskId::generate(),
@@ -30,5 +30,6 @@ final class Handler
 
         $this->flusher->flush();
 
+        return $task->getId()->getValue();
     }
 }
