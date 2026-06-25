@@ -16,7 +16,7 @@ doctrine:
             parser_id: App\Parser\Entity\Parser\ParserIdType
             parser_host: App\Parser\Entity\Parser\HostType
             task_id: App\Parser\Entity\Task\TaskIdType
-            task_status: App\Parser\Entity\Task\TaskStatus
+            task_status: App\Parser\Entity\Task\StatusType
 
     orm:
         validate_xml_mapping: true

@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Parser\Entity\Task;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\StringType;
 
-final class StatusType
+final class StatusType extends StringType
 {
-    public const NAME = 'task_status';
+    public const string NAME = 'task_status';
 
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
