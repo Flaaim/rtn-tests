@@ -25,7 +25,7 @@ final class TaskTest extends TestCase
         );
 
         self::assertEquals($taskId, $task->getId());
-        self::assertEquals($parserId, $task->getParserId()->getValue());
+        self::assertEquals($parserId, $task->getParserId());
         self::assertEquals($branchId, $task->getBranchId());
         self::assertEquals($ticketId, $task->getTicketId());
 
