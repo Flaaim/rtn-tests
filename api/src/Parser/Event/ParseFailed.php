@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace App\Parser\Event;
 
-final class TaskCreated
+final class ParseFailed
 {
     public function __construct(
-        public string $id,
+        public string $parseId,
+        public string $reason
     ) {}
 }
