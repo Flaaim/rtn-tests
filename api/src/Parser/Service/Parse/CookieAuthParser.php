@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Service;
+namespace App\Parser\Service\Parse;
 
 use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\HostMapper;

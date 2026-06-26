@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Service;
+namespace App\Parser\Service\Parse;
 
 use App\Parser\Entity\Parser\HostMapper;
+use App\Parser\Exception\RemoteException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class QuestionsParser
@@ -27,7 +28,7 @@ final class QuestionsParser
             ]);
             return $response->toArray();
         }catch (\Throwable $e){
-            throw $e;
+            throw new RemoteException($e->getMessage(), (int) $e->getCode(), $e);
         }
     }
 }
