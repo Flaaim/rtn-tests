@@ -7,7 +7,7 @@ namespace App\Parser\Test\Unit\Service;
 use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\HostMapper;
 use App\Parser\Exception\RemoteException;
-use App\Parser\Service\CookieAuthParser;
+use App\Parser\Service\Parse\CookieAuthParser;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
