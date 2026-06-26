@@ -24,6 +24,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        $this->client->catchExceptions(false);
         $this->client->request('GET', '/v1/parser/'. RequestFixture::PARSER_ID);
 
         self::assertEquals(200, $this->client->getResponse()->getStatusCode());
