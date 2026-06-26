@@ -29,6 +29,9 @@ framework:
             'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
 
             'App\Parser\Event\ParserCreated': async
+            'App\Parser\Event\ParseLaunched': async
+            'App\Parser\Event\ParseFailed': async
+            'App\Parser\Event\ParseEnded': async
 
 when@test:
     framework:
