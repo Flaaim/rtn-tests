@@ -7,9 +7,9 @@ namespace App\Parser\Command\AuthRefresh;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Parser\Entity\Parser\ParserId;
 use App\Parser\Entity\Parser\ParserRepository;
-use App\Parser\Service\CookieAuthParser;
 use App\Parser\Service\Encrypt\EncryptInterface;
 use App\Parser\Service\GlueCookie;
+use App\Parser\Service\Parse\CookieAuthParser;
 
 final class Handler
 {

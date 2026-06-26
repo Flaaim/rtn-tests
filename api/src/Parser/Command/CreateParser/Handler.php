@@ -10,9 +10,9 @@ use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\Parser;
 use App\Parser\Entity\Parser\ParserId;
 use App\Parser\Entity\Parser\ParserRepository;
-use App\Parser\Service\CookieAuthParser;
 use App\Parser\Service\Encrypt\EncryptInterface;
 use App\Parser\Service\GlueCookie;
+use App\Parser\Service\Parse\CookieAuthParser;
 use DomainException;
 
 final class Handler

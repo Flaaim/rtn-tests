@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Action\V1\Parser\GetParser;
 
 use App\Infrastructure\Http\Validator\Validator;
-use App\Parser\Query\Get\Fetcher;
-use App\Parser\Query\Get\Query;
+use App\Parser\Query\Parser\GetOne\Fetcher;
+use App\Parser\Query\Parser\GetOne\Query;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

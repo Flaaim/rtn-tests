@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Parser\Test\Unit\Service;
 
 use App\Parser\Entity\Parser\HostMapper;
-use App\Parser\Service\QuestionsParser;
+use App\Parser\Service\Parse\QuestionsParser;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
