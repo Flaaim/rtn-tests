@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Query\Task\Get;
+namespace App\Parser\Query\Task\GetOne;
 
 final class TaskDTO
 {

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Query\Parser\Get;
+namespace App\Parser\Query\Parser\GetOne;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

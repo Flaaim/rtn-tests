@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Query\Task\Get;
+namespace App\Parser\Query\Parser\HasOne;
 
 final class Query
 {
     public function __construct(
-        public string $taskId
+        public string $parserId,
     ) {}
 }
