@@ -8,6 +8,12 @@ jest.mock("next/navigation", () => ({
     get: mockGet,
   }),
 }));
+
+jest.mock("@/actions/auth", () => ({
+  __esModule: true,
+  passwordResetConfirm: jest.fn().mockResolvedValue({ ok: true }),
+}));
+
 describe("Confirm new password form", () => {
   beforeEach(() => {
     jest.clearAllMocks();

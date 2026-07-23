@@ -2,6 +2,11 @@ import { render, screen } from "@testing-library/react";
 import { DashboardSidebar } from "./DashboardSidebar";
 import { SidebarProvider } from "../../ui/sidebar";
 
+jest.mock("@/actions/auth", () => ({
+  __esModule: true,
+  Logout: jest.fn().mockResolvedValue(undefined),
+}));
+
 beforeAll(() => {
   Object.defineProperty(window, "matchMedia", {
     writable: true,
