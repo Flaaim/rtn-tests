@@ -24,7 +24,6 @@ const GoogleCallbackContent = () => {
       }
 
       const result = await googleLoginAction(code);
-      console.log(result);
       if (result.ok) {
         router.replace("/user/dashboard");
       } else {

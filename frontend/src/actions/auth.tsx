@@ -254,7 +254,6 @@ export async function requestEmailChange(email: string): Promise<ApiResponse> {
       },
       body: JSON.stringify({ email: email }),
     });
-    console.log(response);
     const parsed = await handleApiResponse(response);
 
     if (!parsed.ok) {
@@ -428,7 +427,7 @@ export async function changePassword(old_password: string, new_password: string)
       },
       body: JSON.stringify({ old_password: old_password, new_password: new_password }),
     });
-    console.log(response);
+
     const parsed = await handleApiResponse(response);
 
     if (!parsed.ok) {

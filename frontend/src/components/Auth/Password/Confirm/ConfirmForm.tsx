@@ -1,6 +1,6 @@
 "use client";
 
-import { JSX, Suspense, useEffect, useState } from "react";
+import { JSX, Suspense, useMemo, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import { z } from "zod";
 import {
@@ -49,28 +49,19 @@ const ResetPasswordFormContent = (): JSX.Element => {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
 
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
   const [isSuccess, setIsSuccess] = useState<boolean>(false);
 
-  useEffect(() => {
-    setLoading(true);
-    setError(null);
-
+  const tokenError = useMemo((): string | null => {
     if (!token) {
-      setError("Токен отсутствует в ссылке.");
-      setLoading(false);
-      return;
+      return "Токен отсутствует в ссылке.";
     }
 
     const parsed = tokenSchema.safeParse(token);
-
-    if (!token || !parsed.success) {
-      setError(parsed.success ? "Токен отсутствует" : parsed.error.issues[0].message);
-      setLoading(false);
-      return;
+    if (!parsed.success) {
+      return parsed.error.issues[0]?.message ?? "Неверный формат токена";
     }
-    setLoading(false);
+
+    return null;
   }, [token]);
 
   const form = useForm({
@@ -91,17 +82,6 @@ const ResetPasswordFormContent = (): JSX.Element => {
       return;
     }
     setIsSuccess(true);
-  }
-
-  if (loading) {
-    return (
-      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
-        <CardContent className="flex flex-col items-center justify-center space-y-4 pt-6">
-          <Loader2 className="h-10 w-10 animate-spin text-blue-600" />
-          <p className="text-sm text-muted-foreground">Проверка безопасного соединения...</p>
-        </CardContent>
-      </Card>
-    );
   }
 
   if (isSuccess) {
@@ -126,7 +106,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
       </div>
     );
   }
-  if (error) {
+  if (tokenError) {
     return (
       <div className="mx-auto max-w-md p-4 md:p-8 pt-12">
         <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
@@ -137,7 +117,7 @@ const ResetPasswordFormContent = (): JSX.Element => {
             <CardTitle className="text-2xl font-semibold tracking-tight">
               <h1>Ошибка доступа</h1>
             </CardTitle>
-            <CardDescription className="text-base text-red-600">{error}</CardDescription>
+            <CardDescription className="text-base text-red-600">{tokenError}</CardDescription>
           </CardHeader>
           <CardFooter className="justify-center">
             <Button variant="outline">

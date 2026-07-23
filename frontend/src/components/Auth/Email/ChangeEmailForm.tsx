@@ -1,7 +1,6 @@
 "use client";
 
 import { z } from "zod";
-import { ProfileDTO } from "@/interfaces/auth.interface";
 import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -25,11 +24,8 @@ const schema = z.object({
 });
 
 type FormData = z.infer<typeof schema>;
-interface RequestChangeEmailProps {
-  profile: ProfileDTO;
-}
 
-export default function RequestChangeEmail({ profile }: RequestChangeEmailProps) {
+export default function RequestChangeEmail() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm({

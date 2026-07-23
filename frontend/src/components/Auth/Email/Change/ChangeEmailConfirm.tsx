@@ -56,7 +56,7 @@ const ConfirmEmailContent = (): JSX.Element => {
       setLoading(false);
     };
 
-    initializeConfirmToken();
+    void initializeConfirmToken();
   }, [token]);
 
   if (loading) {
@@ -100,31 +100,30 @@ const ConfirmEmailContent = (): JSX.Element => {
       </Card>
     );
   }
-  if (error || (result && !result.ok)) {
-    return (
-      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
-        <CardHeader className="space-y-4">
-          <div className="mx-auto w-fit rounded-full bg-red-100 p-4">
-            <XCircle className="h-10 w-10 text-red-600" />
-          </div>
-          <CardTitle className="text-2xl font-semibold tracking-tight">
-            <h1>Что-то пошло не так.</h1>
-          </CardTitle>
-          <CardDescription className="text-base text-red-600">
-            {error || result?.error || "Произошла неизвестная ошибка."}
-          </CardDescription>
-        </CardHeader>
-        <CardFooter className="justify-center">
-          <div>
-            <span>Попробуйте обновить страницу. Если ничего не помогает, напишите сообщение в</span>{" "}
-            <Link className="link" href="https://t.me/flaaim">
-              поддержку.
-            </Link>
-          </div>
-        </CardFooter>
-      </Card>
-    );
-  }
+
+  return (
+    <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
+      <CardHeader className="space-y-4">
+        <div className="mx-auto w-fit rounded-full bg-red-100 p-4">
+          <XCircle className="h-10 w-10 text-red-600" />
+        </div>
+        <CardTitle className="text-2xl font-semibold tracking-tight">
+          <h1>Что-то пошло не так.</h1>
+        </CardTitle>
+        <CardDescription className="text-base text-red-600">
+          {error || result?.error || "Произошла неизвестная ошибка."}
+        </CardDescription>
+      </CardHeader>
+      <CardFooter className="justify-center">
+        <div>
+          <span>Попробуйте обновить страницу. Если ничего не помогает, напишите сообщение в</span>{" "}
+          <Link className="link" href="https://t.me/flaaim">
+            поддержку.
+          </Link>
+        </div>
+      </CardFooter>
+    </Card>
+  );
 };
 
 export default function ConfirmEmailChange() {

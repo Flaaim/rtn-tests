@@ -1,28 +1,18 @@
 import { defineConfig, globalIgnores } from "eslint/config";
 import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
-import tailwind from "eslint-plugin-tailwindcss";
 import eslintConfigPrettier from "eslint-config-prettier";
 
 const eslintConfig = defineConfig([
   ...nextVitals,
   ...nextTs,
-  ...tailwind.configs["flat/recommended"],
-  {
-    settings: {
-      tailwindcss: {
-        config: {},
-        whitelist: ["bg-foreground", "text-background"],
-      },
-    },
-  },
   {
     rules: {
       "@typescript-eslint/no-unused-vars": "error",
       "react/style-prop-object": "error",
       "no-console": ["warn", { allow: ["warn", "error"] }],
       "prefer-const": "error",
-      "tailwindcss/no-custom-classname": "off",
+      "consistent-return": ["error", { treatUndefinedAsUnspecified: true }],
     },
   },
   // Override default ignores of eslint-config-next.
@@ -32,6 +22,7 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    "src/components/ui/**",
   ]),
   eslintConfigPrettier,
 ]);
