@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Parser\Query\Task\GetOne;
 
 use App\Parser\Query\Task\TaskFetcher;
+use DomainException;
 
 final class Fetcher
 {
@@ -16,8 +17,8 @@ final class Fetcher
     {
         $row = $this->fetcher->getOneById($query->taskId);
 
-        if(empty($row)) {
-            throw new \DomainException('Task not found.');
+        if (empty($row)) {
+            throw new DomainException('Task not found.');
         }
 
         return new TaskDTO(

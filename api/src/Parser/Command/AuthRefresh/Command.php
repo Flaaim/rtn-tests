@@ -12,5 +12,5 @@ final class Command
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $parserId
-    ){}
+    ) {}
 }

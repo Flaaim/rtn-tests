@@ -17,8 +17,8 @@ final class RequestAction
     public function __construct(
         private readonly Handler $handler,
         private readonly Validator $validator
-    ) {
-    }
+    ) {}
+
     #[Route('/v1/parser', name: 'parser.create', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {

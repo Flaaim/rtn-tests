@@ -7,6 +7,10 @@ namespace App\Parser\Test\Unit\Entity\Parser;
 use App\Parser\Entity\Parser\Credentials;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class CredentialsTest extends TestCase
 {
     public function testCreate(): void
@@ -18,6 +22,5 @@ final class CredentialsTest extends TestCase
 
         self::assertEquals($login, $credentials->getLogin());
         self::assertEquals($password, $credentials->getPassword());
-
     }
 }

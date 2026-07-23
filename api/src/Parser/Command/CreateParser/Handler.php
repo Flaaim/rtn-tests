@@ -38,8 +38,8 @@ final class Handler
         $cookie = $this->glueCookie->glue($cookieFromResponse);
 
         $credentials = new Credentials(
-          $this->encryptService->encrypt($command->login),
-          $this->encryptService->encrypt($command->password),
+            $this->encryptService->encrypt($command->login),
+            $this->encryptService->encrypt($command->password),
         );
 
         $parser = new Parser(

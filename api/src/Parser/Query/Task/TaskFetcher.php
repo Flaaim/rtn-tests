@@ -11,6 +11,7 @@ final class TaskFetcher implements TaskFetcherInterface
     public function __construct(
         private readonly Connection $connection
     ) {}
+
     public function getOneById(string $id): array
     {
         $qb = $this->connection->createQueryBuilder();
@@ -22,7 +23,9 @@ final class TaskFetcher implements TaskFetcherInterface
 
         $result = $result->fetchAssociative();
 
-        if(!$result) return [];
+        if (!$result) {
+            return [];
+        }
         return $result;
     }
 }

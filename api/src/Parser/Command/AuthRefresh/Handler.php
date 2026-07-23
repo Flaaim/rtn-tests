@@ -10,6 +10,7 @@ use App\Parser\Entity\Parser\ParserRepository;
 use App\Parser\Service\Encrypt\EncryptInterface;
 use App\Parser\Service\GlueCookie;
 use App\Parser\Service\Parse\CookieAuthParser;
+use DomainException;
 
 final class Handler
 {
@@ -20,12 +21,13 @@ final class Handler
         private readonly GlueCookie $glueCookie,
         private readonly EncryptInterface $encryptService,
     ) {}
+
     public function handle(Command $command): void
     {
         $parser = $this->parsers->find(new ParserId($command->parserId));
 
-        if($parser === null) {
-            throw new \DomainException('Parser not found.');
+        if (null === $parser) {
+            throw new DomainException('Parser not found.');
         }
 
         $cookieFromResponse = $this->cookieParser->fetch(

@@ -10,6 +10,7 @@ use Doctrine\DBAL\Types\StringType;
 final class TaskIdType extends StringType
 {
     public const string NAME = 'task_id';
+
     public function convertToDatabaseValue($value, AbstractPlatform $platform): mixed
     {
         return $value instanceof TaskId ? $value->getValue() : $value;
@@ -19,7 +20,6 @@ final class TaskIdType extends StringType
     {
         return !empty($value) ? new TaskId((string)$value) : null;
     }
-
 
     public function getName(): string
     {

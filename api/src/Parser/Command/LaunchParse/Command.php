@@ -16,6 +16,5 @@ final class Command
         public string $branchId,
         #[Assert\NotBlank]
         public string $ticketId
-    )
-    {}
+    ) {}
 }

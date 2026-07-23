@@ -16,8 +16,8 @@ final class RequestAction
     public function __construct(
         private readonly Fetcher $fetcher,
         private readonly Validator $validator
-    )
-    {}
+    ) {}
+
     #[Route('v1/parser/{id}', name: 'parser.get', methods: ['GET'])]
     public function __invoke(string $id): Response
     {

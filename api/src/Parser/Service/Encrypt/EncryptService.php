@@ -10,8 +10,7 @@ final class EncryptService implements EncryptInterface
 
     public function __construct(
         private readonly string $secretKey
-    ) {
-    }
+    ) {}
 
     public function encrypt(string $plainText): string
     {
@@ -25,7 +24,7 @@ final class EncryptService implements EncryptInterface
 
     public function decrypt(string $cipherText): string
     {
-        $decoded = base64_decode($cipherText);
+        $decoded = base64_decode($cipherText, true);
         $ivLength = openssl_cipher_iv_length(self::METHOD);
 
         $iv = substr($decoded, 0, $ivLength);

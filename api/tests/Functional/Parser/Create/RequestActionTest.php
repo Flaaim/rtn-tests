@@ -15,13 +15,17 @@ use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private readonly ParserRepository $parsers;
     private readonly KernelBrowser $client;
     private readonly ContainerInterface $container;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
         $this->client = self::createClient();
@@ -30,9 +34,8 @@ final class RequestActionTest extends WebTestCase
         /** @var EntityManagerInterface $em */
         $em = $this->container->get(EntityManagerInterface::class);
         $this->parsers = new ParserRepository($em);
-
-
     }
+
     public function testEmpty(): void
     {
         $this->client->jsonRequest('POST', '/v1/parser');
@@ -65,7 +68,7 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['errors' => [
-            'host' => 'The url "invalid" is not a valid url'
+            'host' => 'The url "invalid" is not a valid url',
         ]], $data);
     }
 
@@ -96,7 +99,7 @@ final class RequestActionTest extends WebTestCase
         $parser = $this->parsers->findByHost(new Host('http://example.com'));
         self::assertNotNull($parser);
         self::assertEquals('http://example.com', $parser->getHost()->getValue());
-        //$cookies[2] . ' ' . $cookies[3] . ' ' . $cookies[0];
+        // $cookies[2] . ' ' . $cookies[3] . ' ' . $cookies[0];
         self::assertEquals('.OLIMPAUTH=pDjbPRpZaz6AO913gO583vOCwin7zOTrWDnuSfQxUItgOslmytwr3UqxatGXBtR1mNl+At4Bq7amoCCrct3qxtO0uZtnU6K10hM+vHgKYBeYN55028I5N7MY07uVX3mT; path=/Admin .OLIMPROLES=; path=/Admin; expires=Mon, 11 Oct 1999 17:00:00 GMT WorkplaceToken=e89a12fb-0227-49ff-884d-918fd9ae6f02; path=/; expires=Wed, 19 Jun 2526 23:24:17 GMT', $parser->getCookie());
 
         /** @var EncryptInterface $encryptService */
@@ -104,6 +107,5 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals('login', $encryptService->decrypt($parser->getCredentials()->getLogin()));
         self::assertEquals('password', $encryptService->decrypt($parser->getCredentials()->getPassword()));
-
     }
 }

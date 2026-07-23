@@ -4,3 +4,25 @@ POST https://olimpoks.hydroschool.ru/Auth/Admin
 Content-Type: application/x-www-form-urlencoded
 
 login=UGwQiLx3nFLYTdKAhCuX5g==&password=pb2Ov1bKcE3IU7gJuB8cvg==
+
+
+### Создать парсер
+POST http://localhost:8081/v1/parser
+Content-Type: application/json
+
+{
+    "host": "https://olimpoks.hydroschool.ru",
+    "login": "UGwQiLx3nFLYTdKAhCuX5g==",
+    "password": "pb2Ov1bKcE3IU7gJuB8cvg=="
+}
+
+
+### Запустить парсинг (создать таску)
+POST http://localhost:8081/v1/parser/launch
+Content-Type: application/json
+
+{
+    "parserId": "561ad27b-296c-411a-9e25-e786f1682d2f",
+    "branchId": "85059",
+    "ticketId": "825bc314fcee49be9f0d7c388b911e88"
+}

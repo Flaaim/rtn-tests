@@ -11,6 +11,7 @@ use App\Parser\Entity\Parser\ParserId;
 use App\Parser\Entity\Task\Task;
 use App\Parser\Entity\Task\TaskId;
 use App\Parser\Service\Encrypt\EncryptService;
+use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -21,6 +22,7 @@ final class RequestFixture extends AbstractFixture
 
     public const string TASK_ID = '9b7f5ed8-8ab8-441d-bf69-3ef0e22f3d58';
     public const string TASK_NOT_FOUND_ID = 'bbd07332-1167-4562-933a-dc2a643dd62c';
+
     public function load(ObjectManager $manager): void
     {
         $encrypter = $this->getEncrypter();
@@ -28,7 +30,7 @@ final class RequestFixture extends AbstractFixture
         $parser = new Parser(
             $parserId = new ParserId(self::PARSER_ID),
             new Host('https://example.com'),
-            'some sookie',
+            'some cookie',
             new Credentials($encrypter->encrypt('login'), $encrypter->encrypt('password')),
         );
         $manager->persist($parser);
@@ -38,7 +40,7 @@ final class RequestFixture extends AbstractFixture
             $parserId,
             'branchId',
             'ticketId',
-            new \DateTimeImmutable(),
+            new DateTimeImmutable(),
         );
         $manager->persist($task);
 

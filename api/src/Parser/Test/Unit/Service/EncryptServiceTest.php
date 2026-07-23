@@ -7,6 +7,10 @@ namespace App\Parser\Test\Unit\Service;
 use App\Parser\Service\Encrypt\EncryptService;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class EncryptServiceTest extends TestCase
 {
     public function testEncrypt(): void
@@ -16,6 +20,5 @@ final class EncryptServiceTest extends TestCase
         $encryptString = $encrypt->encrypt('password');
 
         self::assertEquals('password', $encrypt->decrypt($encryptString));
-
     }
 }

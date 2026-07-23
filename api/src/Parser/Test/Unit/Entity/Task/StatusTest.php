@@ -8,6 +8,10 @@ use App\Parser\Entity\Task\Status;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class StatusTest extends TestCase
 {
     public function testSuccess(): void
@@ -35,6 +39,5 @@ final class StatusTest extends TestCase
 
         self::assertTrue($status->isEqual($status));
         self::assertFalse($status->isEqual(Status::completed()));
-
     }
 }

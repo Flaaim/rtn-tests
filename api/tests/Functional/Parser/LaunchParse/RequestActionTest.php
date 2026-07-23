@@ -13,14 +13,19 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     private KernelBrowser $client;
     private readonly ContainerInterface $container;
     private readonly TasksRepository $tasks;
-    public function setUp(): void
+
+    protected function setUp(): void
     {
-        $this->client = static::createClient();
+        $this->client = self::createClient();
 
         $this->container = $this->client->getContainer();
         $fixturesLoader = new FixturesLoader($this->container);

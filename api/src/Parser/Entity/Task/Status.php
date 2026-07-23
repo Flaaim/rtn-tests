@@ -17,10 +17,12 @@ final class Status
     ) {
         Assert::oneOf($value, [self::PROCESSING, self::COMPLETED, self::FAILED]);
     }
+
     public function getValue(): string
     {
         return $this->value;
     }
+
     public static function processing(): self
     {
         return new self('processing');
@@ -30,6 +32,7 @@ final class Status
     {
         return new self('completed');
     }
+
     public static function failed(): self
     {
         return new self('failed');

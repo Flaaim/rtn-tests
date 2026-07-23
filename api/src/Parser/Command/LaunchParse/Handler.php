@@ -11,6 +11,8 @@ use App\Parser\Entity\Task\TaskId;
 use App\Parser\Entity\Task\TasksRepository;
 use App\Parser\Query\Parser\HasOne\Fetcher;
 use App\Parser\Query\Parser\HasOne\Query;
+use DateTimeImmutable;
+use DomainException;
 
 final class Handler
 {
@@ -22,8 +24,8 @@ final class Handler
 
     public function handle(Command $command): string
     {
-        if(!$this->fetcher->fetch(new Query($command->parserId))){
-            throw new \DomainException('Parser not found.');
+        if (!$this->fetcher->fetch(new Query($command->parserId))) {
+            throw new DomainException('Parser not found.');
         }
 
         $task = new Task(
@@ -31,7 +33,7 @@ final class Handler
             new ParserId($command->parserId),
             $command->branchId,
             $command->ticketId,
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $this->tasks->add($task);

@@ -6,7 +6,6 @@ namespace App\Parser\Query\Parser\HasOne;
 
 use App\Parser\Query\Parser\ParserFetcherInterface;
 
-
 final class Fetcher
 {
     public function __construct(

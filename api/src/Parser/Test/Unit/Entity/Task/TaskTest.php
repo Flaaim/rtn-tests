@@ -11,8 +11,14 @@ use App\Parser\Entity\Task\TaskId;
 use App\Parser\Event\ParseEnded;
 use App\Parser\Event\ParseFailed;
 use App\Parser\Event\ParseLaunched;
+use DateTimeImmutable;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class TaskTest extends TestCase
 {
     public function testCreate(): void
@@ -22,7 +28,7 @@ final class TaskTest extends TestCase
             $parserId = ParserId::generate(),
             $branchId = 'branchId',
             $ticketId = 'ticketId',
-            $createdAt = new \DateTimeImmutable(),
+            $createdAt = new DateTimeImmutable(),
         );
 
         self::assertEquals($taskId, $task->getId());
@@ -52,7 +58,7 @@ final class TaskTest extends TestCase
             ParserId::generate(),
             'branchId',
             'ticketId',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $task->failed($reason = 'Ошибка сети.');
@@ -75,12 +81,12 @@ final class TaskTest extends TestCase
             ParserId::generate(),
             'branchId',
             'ticketId',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $task->failed('Ошибка сети.');
 
-        self::expectException(\DomainException::class);
+        self::expectException(DomainException::class);
         self::expectExceptionMessage('Task already failed.');
         $task->failed('Ошибка');
     }
@@ -92,7 +98,7 @@ final class TaskTest extends TestCase
             ParserId::generate(),
             'branchId',
             'ticketId',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $task->ended($draft = 'draft');
@@ -118,14 +124,13 @@ final class TaskTest extends TestCase
             ParserId::generate(),
             'branchId',
             'ticketId',
-            new \DateTimeImmutable()
+            new DateTimeImmutable()
         );
 
         $task->ended($draft = 'draft');
 
-        self::expectException(\DomainException::class);
+        self::expectException(DomainException::class);
         self::expectExceptionMessage('Task is already ended.');
         $task->ended('draft');
     }
-
 }

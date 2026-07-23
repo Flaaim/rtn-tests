@@ -16,6 +16,7 @@ final class RequestFixture extends AbstractFixture
 {
     public const string PARSER_ID = '5134bc29-ef64-414f-a0d4-b1cf0166c7e2';
     public const string PARSER_NOT_FOUND_ID = '5a460825-a8da-4bcc-84d0-144180935c7e';
+
     public function load(ObjectManager $manager): void
     {
         $encrypter = $this->getEncrypter();
