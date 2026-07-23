@@ -11,5 +11,10 @@ export interface LoginData {
 export interface ProfileDTO {
   id: string;
   email: string;
-  networks: [];
+  networks: NetworkItem[];
+}
+
+export interface NetworkItem {
+  network: string;
+  identity: string;
 }

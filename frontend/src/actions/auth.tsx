@@ -82,7 +82,7 @@ export async function LoginAction(data: LoginData): Promise<ApiResponse> {
 
     const parsed = await handleApiResponse<TokenResponseData>(response);
 
-    if (!parsed.ok) {
+    if (!parsed.ok || !parsed.data) {
       return { ok: false, error: parsed.error };
     }
 

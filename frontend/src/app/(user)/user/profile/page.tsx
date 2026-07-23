@@ -1,9 +1,10 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { CheckCircle2, KeyRound, Link2, Mail, Shield, UserIcon } from "lucide-react";
-import { Button } from "@base-ui/react";
+import { Button } from "@/components/ui/button";
 import { fetchUser } from "@/actions/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
+import { NetworkItem } from "@/interfaces/auth.interface";
 
 export default async function ProfilePage() {
   let profile;
@@ -40,13 +41,13 @@ export default async function ProfilePage() {
     const options = {
       response_type: "code",
       scope: "email",
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
       redirect_uri: redirectUri as string,
     };
     const qs = new URLSearchParams(options);
     return `${rootUrl}?${qs.toString()}`;
   };
-  const attachedNetworks: string[] = profile.networks || [];
+  const attachedNetworks: NetworkItem[] = profile.networks || [];
   const isYandexAttached = attachedNetworks.some((net) => net.network === "yandex");
   const isGoogleAttached = attachedNetworks.some((net) => net.network === "google");
 
@@ -81,7 +82,7 @@ export default async function ProfilePage() {
               <p className="text-sm font-medium leading-none text-muted-foreground">
                 Имя и Фамилия
               </p>
-              <p className="text-base font-medium">{profile.name || "Не указано"}</p>
+              <p className="text-base font-medium">Не указано</p>
             </div>
             <div className="pt-2">
               <Button variant="outline" size="sm" disabled>

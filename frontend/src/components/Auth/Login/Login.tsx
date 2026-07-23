@@ -43,8 +43,8 @@ export default function Login() {
     const rootUrl = "https://oauth.yandex.ru/authorize";
     const options = {
       response_type: "code",
-      client_id: process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID as string,
-      redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI as string,
+      client_id: process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID || "",
+      redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI || "",
     };
     const qs = new URLSearchParams(options);
     return `${rootUrl}?${qs.toString()}`;
@@ -54,8 +54,8 @@ export default function Login() {
     const options = {
       response_type: "code",
       scope: "email",
-      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
-      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI,
+      client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID || "",
+      redirect_uri: process.env.NEXT_PUBLIC_GOOGLE_REDIRECT_URI || "",
     };
     const qs = new URLSearchParams(options);
     return `${rootUrl}?${qs.toString()}`;
