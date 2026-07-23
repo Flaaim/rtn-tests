@@ -34,7 +34,7 @@ final class RequestTest extends TestCase
         self::assertInstanceOf(PasswordResetRequested::class, $event);
 
         self::assertEquals($user->getEmail()->getValue(), $event->email);
-        self::assertEquals($user->getPasswordResetToken()->getValue(), $event->token);
+        self::assertEquals($token->getValue(), $event->token);
     }
 
     public function testAlready(): void
@@ -69,7 +69,7 @@ final class RequestTest extends TestCase
 
         self::assertInstanceOf(PasswordResetRequested::class, $event);
         self::assertEquals($user->getEmail()->getValue(), $event->email);
-        self::assertEquals($user->getPasswordResetToken()->getValue(), $event->token);
+        self::assertEquals($newToken->getValue(), $event->token);
     }
 
     public function testNotActive(): void

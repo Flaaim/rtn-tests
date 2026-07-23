@@ -24,7 +24,7 @@ final class ParserFetcher implements ParserFetcherInterface
 
         $result = $result->fetchAssociative();
 
-        if (!$result) {
+        if (false === $result) {
             return [];
         }
         return $result;

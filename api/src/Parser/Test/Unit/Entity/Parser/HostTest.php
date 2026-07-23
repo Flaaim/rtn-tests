@@ -31,6 +31,6 @@ final class HostTest extends TestCase
     public function testEmpty(): void
     {
         self::expectException(InvalidArgumentException::class);
-        $host = new Host('');
+        new Host('');
     }
 }

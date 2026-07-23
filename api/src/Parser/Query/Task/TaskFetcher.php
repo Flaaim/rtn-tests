@@ -23,7 +23,7 @@ final class TaskFetcher implements TaskFetcherInterface
 
         $result = $result->fetchAssociative();
 
-        if (!$result) {
+        if (false === $result) {
             return [];
         }
         return $result;

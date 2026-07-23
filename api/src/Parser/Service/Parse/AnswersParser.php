@@ -48,5 +48,7 @@ final class AnswersParser
 
             return json_decode($rowsTable, true) ?? [];
         }
+
+        return [];
     }
 }

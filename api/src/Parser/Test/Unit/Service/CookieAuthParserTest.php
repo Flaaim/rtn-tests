@@ -8,6 +8,7 @@ use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\HostMapper;
 use App\Parser\Exception\RemoteException;
 use App\Parser\Service\Parse\CookieAuthParser;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpClient\Exception\TransportException;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -19,7 +20,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class CookieAuthParserTest extends TestCase
 {
-    private HttpClientInterface $client;
+    private HttpClientInterface&MockObject $client;
 
     protected function setUp(): void
     {

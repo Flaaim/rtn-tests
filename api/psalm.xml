@@ -14,13 +14,47 @@
         </ignoreFiles>
     </projectFiles>
     <issueHandlers>
+        <!-- Wired via Symfony DI / Messenger / Doctrine / Security config -->
         <UnusedClass>
             <errorLevel type="suppress">
                 <directory name="src/Data/Migration" />
                 <directory name="src/Auth/Fixture" />
                 <directory name="src/Http/Action" />
+                <directory name="src/Auth/MessageHandler" />
+                <directory name="src/Auth/Entity" />
+                <directory name="src/Auth/ReadModel" />
+                <directory name="src/OAuth/MessageHandler" />
+                <directory name="src/Parser/MessageHandler" />
+                <directory name="src/Parser/Entity" />
+                <directory name="src/Parser/Query" />
+                <directory name="src/Parser/Service" />
+                <directory name="src/Infrastructure" />
             </errorLevel>
         </UnusedClass>
+
+        <!-- Constructors and lifecycle/API methods used via DI, Doctrine callbacks, builders -->
+        <PossiblyUnusedMethod>
+            <errorLevel type="suppress">
+                <directory name="src/Auth/Command" />
+                <directory name="src/Auth/Query" />
+                <directory name="src/Auth/Entity" />
+                <directory name="src/Auth/Test/Builder" />
+                <directory name="src/Parser/Command" />
+                <directory name="src/Parser/Query" />
+                <directory name="src/Parser/Entity" />
+                <directory name="src/OAuth" />
+                <directory name="src/Infrastructure" />
+            </errorLevel>
+        </PossiblyUnusedMethod>
+
+        <!-- DTO / event properties consumed by serializers and handlers -->
+        <PossiblyUnusedProperty>
+            <errorLevel type="suppress">
+                <directory name="src/Auth/Query" />
+                <directory name="src/Auth/Event" />
+                <directory name="src/Parser/Query" />
+            </errorLevel>
+        </PossiblyUnusedProperty>
 
         <MissingOverrideAttribute>
             <errorLevel type="suppress">

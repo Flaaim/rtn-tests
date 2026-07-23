@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Auth\Test\Unit\Entity\User\Command\AttachNetwork;
 
-use App\Auth\Entity\User\Network;
 use App\Auth\Test\Builder\UserBuilder;
 use PHPUnit\Framework\TestCase;
 
@@ -23,9 +22,8 @@ final class AttachNetworkTest extends TestCase
         $user->attachNetwork($name = 'vk', $identity = '0000001');
 
         self::assertCount(1, $networks = $user->getNetworks());
-        /** @var array<Network> $networks */
-        self::assertEquals($name, $networks[0]->getNetwork() ?? null);
-        self::assertEquals($identity, $networks[0]->getIdentity() ?? null);
+        self::assertEquals($name, $networks[0]->getNetwork());
+        self::assertEquals($identity, $networks[0]->getIdentity());
     }
 
     public function testAlready(): void

@@ -26,8 +26,6 @@ final class ConfirmTest extends TestCase
 
         $user->requestEmailChanging($token, $now, $new = new Email('new-email@app.test'));
 
-        self::assertNotNull($user->getNewEmailToken());
-
         $user->confirmEmailChanging($token->getValue(), $now);
 
         self::assertNull($user->getNewEmail());

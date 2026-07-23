@@ -7,6 +7,7 @@ namespace App\Parser\Test\Unit\Service\Parse;
 use App\Parser\Entity\Parser\HostMapper;
 use App\Parser\Service\Parse\QuestionsParser;
 use Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Symfony\Contracts\HttpClient\ResponseInterface;
@@ -17,7 +18,7 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class QuestionsParserTest extends TestCase
 {
-    private HttpClientInterface $client;
+    private HttpClientInterface&MockObject $client;
 
     protected function setUp(): void
     {
