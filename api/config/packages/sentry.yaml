@@ -7,15 +7,20 @@ when@prod:
             capture_soft_fails: true
 
         options:
+            enable_logs: true
             environment: '%kernel.environment%'
-            traces_sample_rate: 1.0
+            send_default_pii: true
+            traces_sample_rate: 0.2
+            logger: 'logger'
             # Add request headers, cookies, IP address and the authenticated user
             # see https://docs.sentry.io/platforms/php/data-management/data-collected/ for more info
             # send_default_pii: true
             ignore_exceptions:
-                - 'Symfony\Component\ErrorHandler\Error\FatalError'
-                - 'Symfony\Component\Debug\Exception\FatalErrorException'
                 - 'Sentry\Integration\IgnoreErrorsIntegration'
+                - 'Symfony\Component\HttpKernel\Exception\NotFoundHttpException'
+                - 'Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException'
+                - 'Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException'
+                - 'Symfony\Component\HttpKernel\Exception\BadRequestHttpException'
 #
 #        # If you are using Monolog, you also need this additional configuration to log the errors correctly:
 #        # https://docs.sentry.io/platforms/php/guides/symfony/integrations/monolog/
@@ -36,12 +41,12 @@ when@prod:
 #                id: Sentry\SentryBundle\Monolog\LogsHandler
 #
 #    # Enable one of the two services below, depending on your choice above
-#    services:
-#        Sentry\Monolog\Handler:
-#            arguments:
-#                $hub: '@Sentry\State\HubInterface'
-#                $level: !php/const Monolog\Logger::ERROR
-#                $fillExtraContext: true # Enables sending monolog context to Sentry
+services:
+    Sentry\Monolog\Handler:
+        arguments:
+            $hub: '@Sentry\State\HubInterface'
+            $level: !php/const Monolog\Logger::ERROR
+            $fillExtraContext: true # Enables sending monolog context to Sentry
 #        Sentry\SentryBundle\Monolog\LogsHandler:
 #            arguments:
 #                - !php/const Monolog\Logger::INFO
