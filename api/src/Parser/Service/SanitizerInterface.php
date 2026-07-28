@@ -7,4 +7,6 @@ namespace App\Parser\Service;
 interface SanitizerInterface
 {
     public function cleanTextContent(string $content): string;
+
+    public function extractImagesFromContent(string $content, string $host): string;
 }

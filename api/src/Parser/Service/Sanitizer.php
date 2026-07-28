@@ -21,4 +21,20 @@ final class Sanitizer implements SanitizerInterface
 
         return trim($cleaned);
     }
+
+
+    public function extractImagesFromContent(string $content, string $host): string
+    {
+        $images = [];
+
+        if (preg_match_all('/<img[^>]+src="\/([^"]+)"[^>]*>/', $content, $matches)) {
+            foreach ($matches[0] as $index => $imgTag) {
+                $imagePath = $matches[1][$index];
+                $absoluteUrl = $host . DIRECTORY_SEPARATOR . $imagePath;
+                $images[] = $absoluteUrl;
+            }
+        }
+
+        return implode(' ', $images);
+    }
 }
