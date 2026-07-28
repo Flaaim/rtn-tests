@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace App\Parser\Test\Unit\Service\Parse;
 
-use App\Parser\Entity\Parser\HostMapper;
+use App\Parser\Entity\Parser\DTO\QuestionDTO;
+use App\Parser\Exception\RemoteException;
 use App\Parser\Service\Parse\QuestionsParser;
-use Exception;
-use PHPUnit\Framework\MockObject\MockObject;
+use App\Parser\Service\Sanitizer;
+use DomainException;
 use PHPUnit\Framework\TestCase;
-use Symfony\Contracts\HttpClient\HttpClientInterface;
-use Symfony\Contracts\HttpClient\ResponseInterface;
+use Symfony\Component\HttpClient\MockHttpClient;
+use Symfony\Component\HttpClient\Response\MockResponse;
 
 /**
  * @internal
@@ -18,13 +19,6 @@ use Symfony\Contracts\HttpClient\ResponseInterface;
  */
 final class QuestionsParserTest extends TestCase
 {
-    private HttpClientInterface&MockObject $client;
-
-    protected function setUp(): void
-    {
-        $this->client = $this->createMock(HttpClientInterface::class);
-    }
-
     public function testSuccess(): void
     {
         $host = 'http://example.com';
@@ -32,23 +26,22 @@ final class QuestionsParserTest extends TestCase
         $branchId = 'branchId';
         $ticketId = 'ticketId';
 
-        $parser = new QuestionsParser($this->client);
+        $mockClient = new MockHttpClient();
 
-        $this->client->expects(self::once())->method('request')->with(
-            self::equalTo('POST'),
-            self::equalTo($host . '/' . HostMapper::PATH_QUESTIONS->value),
-            self::equalTo([
-                'headers' => [
-                    'Cookie' => $cookie,
-                ],
-                'body' => [
-                    'branchId' => $branchId,
-                    'ticketId' => $ticketId,
-                ],
-            ])
-        )->willReturn(self::createStub(ResponseInterface::class));
+        $parser = new QuestionsParser($mockClient, new Sanitizer());
+        $mockResponse = new MockResponse($this->getBody());
+        $mockClient->setResponseFactory([$mockResponse]);
 
-        $parser->fetch($host, $cookie, $branchId, $ticketId);
+        $result = $parser->fetch($host, $cookie, $branchId, $ticketId);
+
+        self::assertEquals([
+            new QuestionDTO(
+                '24d4d2ddec784e5298973804f294b056',
+                1,
+                'Что необходимо сделать в случае превышения установленной нормы заполнения тары хлором?',
+                'http://example.com/QuestionImages/c91538/59a3f5a8-4a53-408e-bf9d-2844d8ab7977/10/1.jpg'
+            ),
+        ], $result);
     }
 
     public function testFailed(): void
@@ -57,11 +50,34 @@ final class QuestionsParserTest extends TestCase
         $cookie = 'some_cookie';
         $branchId = 'branchId';
         $ticketId = 'ticketId';
-        $parser = new QuestionsParser($this->client);
 
-        $this->client->expects(self::once())->method('request')->willThrowException(new Exception());
+        $mockClient = new MockHttpClient();
 
-        self::expectException(Exception::class);
+        $parser = new QuestionsParser($mockClient, new Sanitizer());
+        $mockResponse = new MockResponse('{}');
+        $mockClient->setResponseFactory([$mockResponse]);
+
+        self::expectException(RemoteException::class);
+        self::expectExceptionMessage('Can not extract rows from response');
         $parser->fetch($host, $cookie, $branchId, $ticketId);
+    }
+
+    private function getBody(): string
+    {
+        $result = json_encode([
+            'rowsCount' => 20,
+            'rows' => [
+                [
+                    'Id' => '24d4d2ddec784e5298973804f294b056',
+                    'Number' => 1,
+                    'Text' => '<div><div>Что необходимо сделать в случае превышения установленной нормы заполнения тары хлором?</div></div>',
+                    'QuestionMainImg' => '<div><div><img style="width: 300px;" src="/QuestionImages/c91538/59a3f5a8-4a53-408e-bf9d-2844d8ab7977/10/1.jpg" xmlns:xd="http://schemas.microsoft.com/office/infopath/2003" xd:content-type="png" /></div></div>',
+                ],
+            ],
+        ]);
+        if (false === $result) {
+            throw new DomainException('Can not encode response');
+        }
+        return $result;
     }
 }

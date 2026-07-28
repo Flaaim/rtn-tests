@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Parser\Entity\Parser\DTO;
 
+/** @psalm-suppress PossiblyUnusedProperty */
 final class QuestionDTO
 {
     public function __construct(
@@ -11,6 +12,7 @@ final class QuestionDTO
         public int $number,
         public string $text,
         public string $questionImg,
+        /** @var AnswerDTO[] $answers */
         public array $answers = [],
     ) {}
 

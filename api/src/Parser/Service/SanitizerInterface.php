@@ -8,5 +8,7 @@ interface SanitizerInterface
 {
     public function cleanTextContent(string $content): string;
 
-    public function extractImagesFromContent(string $content, string $host): string;
+    public function extractImgFromAnswerText(string $content, string $host): string;
+
+    public function extractImgFromQuestionMainImg(string $content, string $host): string;
 }

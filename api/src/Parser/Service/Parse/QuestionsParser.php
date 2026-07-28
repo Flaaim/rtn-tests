@@ -30,17 +30,18 @@ final class QuestionsParser
                     'ticketId' => $ticketId,
                 ],
             ]);
-            return $this->extractRows($response->toArray());
+            return $this->extractData($response->toArray(), $host);
         } catch (Throwable $e) {
             throw new RemoteException($e->getMessage(), (int)$e->getCode(), $e);
         }
     }
 
-    private function extractRows(array $response): array
+    private function extractData(array $response, string $host): array
     {
         if (isset($response['rows'])) {
-            return array_map(function (array $row) {
+            return array_map(function (array $row) use ($host) {
                 $row['Text'] = $this->sanitizer->cleanTextContent($row['Text']);
+                $row['QuestionMainImg'] = $this->sanitizer->extractImgFromQuestionMainImg($row['QuestionMainImg'], $host);
                 return QuestionDTO::fromArray($row);
             }, $response['rows']);
         }

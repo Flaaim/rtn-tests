@@ -41,11 +41,27 @@ final class ParseLauncherHandlerTest extends KernelTestCase
 
     public function testSuccess(): void
     {
-        $mockResponse = new MockResponse($result = '{"url":"Test"}', [
+        $mockQuestionsResponse = new MockResponse($this->getQuestionBody(), [
             'http_code' => 200,
+            'response_headers' => [
+                'Set-Cookie: WorkplaceToken=e89a12fb-0227-49ff-884d-918fd9ae6f02; path=/; expires=Wed, 19 Jun 2526 23:24:17 GMT',
+                'Set-Cookie: .OLIMPAUTH=; path=/Admin; expires=Mon, 11 Oct 1999 17:00:00 GMT',
+                'Set-Cookie: .OLIMPAUTH=pDjbPRpZaz6AO913gO583vOCwin7zOTrWDnuSfQxUItgOslmytwr3UqxatGXBtR1mNl+At4Bq7amoCCrct3qxtO0uZtnU6K10hM+vHgKYBeYN55028I5N7MY07uVX3mT; path=/Admin',
+                'Set-Cookie: .OLIMPROLES=; path=/Admin; expires=Mon, 11 Oct 1999 17:00:00 GMT',
+            ],
+        ]);
+
+        $mockAnswersResponse = new MockResponse($this->getAnswerBody(), [
+            'http_code' => 200,
+            'response_headers' => [
+                'Set-Cookie: WorkplaceToken=e89a12fb-0227-49ff-884d-918fd9ae6f02; path=/; expires=Wed, 19 Jun 2526 23:24:17 GMT',
+                'Set-Cookie: .OLIMPAUTH=; path=/Admin; expires=Mon, 11 Oct 1999 17:00:00 GMT',
+                'Set-Cookie: .OLIMPAUTH=pDjbPRpZaz6AO913gO583vOCwin7zOTrWDnuSfQxUItgOslmytwr3UqxatGXBtR1mNl+At4Bq7amoCCrct3qxtO0uZtnU6K10hM+vHgKYBeYN55028I5N7MY07uVX3mT; path=/Admin',
+                'Set-Cookie: .OLIMPROLES=; path=/Admin; expires=Mon, 11 Oct 1999 17:00:00 GMT',
+            ],
         ]);
         $mockClient = $this->container->get(HttpClientInterface::class);
-        $mockClient->setResponseFactory([$mockResponse]);
+        $mockClient->setResponseFactory([$mockQuestionsResponse, $mockAnswersResponse]);
 
         $event = new ParseLaunched(
             RequestFixture::TASK_ID,
@@ -59,8 +75,9 @@ final class ParseLauncherHandlerTest extends KernelTestCase
 
         $task = $this->tasks->get(new TaskId(RequestFixture::TASK_ID));
         self::assertNotNull($task);
-        self::assertEquals($result, $task->getDraft());
         self::assertNull($task->getFailedReason());
+
+        self::assertSame(2, $mockClient->getRequestsCount());
     }
 
     public function testSuccessWithRetry(): void
@@ -151,5 +168,33 @@ final class ParseLauncherHandlerTest extends KernelTestCase
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Task not found.');
         $handler($event);
+    }
+
+    private function getQuestionBody(): string
+    {
+        $result = json_encode([
+            'rowsCount' => 20,
+            'rows' => [
+                [
+                    'Id' => '24d4d2ddec784e5298973804f294b056',
+                    'Number' => 1,
+                    'Text' => '<div><div>Что необходимо сделать в случае превышения установленной нормы заполнения тары хлором?</div></div>',
+                    'QuestionMainImg' => '<div><div><img style="width: 300px;" src="/QuestionImages/c91538/59a3f5a8-4a53-408e-bf9d-2844d8ab7977/10/1.jpg" xmlns:xd="http://schemas.microsoft.com/office/infopath/2003" xd:content-type="png" /></div></div>',
+                ],
+            ],
+        ]);
+        if (false === $result) {
+            throw new DomainException('Can not encode question body');
+        }
+        return $result;
+    }
+
+    private function getAnswerBody(): string
+    {
+        return '<h1><div><div>Что необходимо сделать после восстановления самостоятельного дыхания у пострадавшего с отсутствующим сознанием?</div></div></h1>
+<div style="width: 30%;"></div>
+
+<div class="block">
+    <div class="table" data-bind="template: &#39;tableTemplate&#39;" id="tabled77097e0706f4f9fb70761db9a809fb7"></div><script type="text/javascript">$(function() { var table=$(\'#tabled77097e0706f4f9fb70761db9a809fb7\'), viewModel=new Table([{\'name\':\'Text\',\'caption\':\'Ответ\',\'enableSorting\':\'true\'},{\'name\':\'Correct\',\'caption\':\'Результат\',\'enableSorting\':\'true\',\'templateId\':\'answer-result\'}], {tableData:{"rowsCount":4,"rows":[{"Text":"<div><div>Потормошить пострадавшего за плечи</div></div>","Correct":false},{"Text":"<div><div>Продолжить выполнять сердечно-легочную реанимацию до появления сознания у пострадавшего</div></div>","Correct":false},{"Text":"<div><div>Дать пострадавшему понюхать нашатырный спирт</div></div>","Correct":false},{"Text":"<div><div>Придать пострадавшему устойчивое боковое положение</div></div>","Correct":true}]},sorting:false,paging:false,useCachedTableData:false,useSearchLoadSync:false,useSeed:false,alternativeView:false,sortingFields:[],menuShuffling:false,resetResults:false});table.data(\'viewModel\', viewModel);ko.applyBindings(viewModel, table[0]);})</script></div>';
     }
 }

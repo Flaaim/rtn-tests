@@ -14,12 +14,13 @@ use Throwable;
 
 final class AnswersParser
 {
+    /** @psalm-suppress PossiblyUnusedMethod  */
     public function __construct(
         private readonly HttpClientInterface $client,
         private readonly SanitizerInterface $sanitizer,
     ) {}
 
-    public function parse(
+    public function fetch(
         array $questions,
         string $cookie,
         string $materialId,
@@ -37,7 +38,7 @@ final class AnswersParser
                         'questionId' => $question->id,
                     ],
                 ]);
-                $question->answers = $this->matchString($response->getContent(), $host);
+                $question->answers = $this->extractData($response->getContent(), $host);
             }
             return $questions;
         } catch (Throwable $e) {
@@ -45,20 +46,23 @@ final class AnswersParser
         }
     }
 
-    private function matchString(string $content, string $host): array
+    private function extractData(string $content, string $host): array
     {
         if (preg_match('#"rows"\s*:\s*(.+)\s*}\,#', $content, $matches)) {
             $rowsTable = $matches[1];
 
-            $rows = json_decode($rowsTable, true) ?? [];
+            $rows = json_decode($rowsTable, true) ?? null;
+            if (null === $rows) {
+                throw new RemoteException('Cannot decode rows data: ' . $rowsTable);
+            }
 
             return array_map(function (array $row) use ($host) {
-                $row['answerImg'] = $this->sanitizer->extractImagesFromContent($row['Text'], $host);
+                $row['answerImg'] = $this->sanitizer->extractImgFromAnswerText($row['Text'], $host);
                 $row['Text'] = $this->sanitizer->cleanTextContent($row['Text']);
                 return AnswerDTO::fromArray($row);
             }, $rows);
         }
 
-        return [];
+        throw new RemoteException('Can not parse answers: ' . $content);
     }
 }

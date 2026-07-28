@@ -44,7 +44,7 @@ final class ParseLaunchedHandler
                 $command->ticketId
             );
 
-            $questionWithAnswers = $this->answersParser->parse(
+            $result = $this->answersParser->fetch(
                 $questions,
                 $parser->cookie,
                 $command->branchId,
@@ -64,7 +64,7 @@ final class ParseLaunchedHandler
             return;
         }
 
-        $draft = json_encode($questionWithAnswers, JSON_THROW_ON_ERROR);
+        $draft = json_encode($result, JSON_THROW_ON_ERROR);
 
         $task->ended($draft);
 

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Parser\Entity\Parser\DTO;
 
-use Ramsey\Uuid\Uuid;
-
+/** @psalm-suppress PossiblyUnusedProperty */
 final class AnswerDTO
 {
     public function __construct(
@@ -13,13 +12,12 @@ final class AnswerDTO
         public string $text,
         public bool $isCorrect,
         public string $answerImg
-    ){}
-
+    ) {}
 
     public static function fromArray(array $data): self
     {
         return new self(
-            id: Uuid::uuid4()->toString(),
+            id: md5($data['Text']),
             text: $data['Text'],
             isCorrect: $data['Correct'],
             answerImg: $data['answerImg'],
