@@ -50,7 +50,7 @@ services:
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
       MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:8000
-      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+      MESSENGER_TRANSPORT_DSN: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672/%2f/messages
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       SENTRY_DSN: ${SENTRY_DSN}
@@ -64,6 +64,11 @@ services:
       GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
       GOOGLE_REDIRECT_URL: ${http://localhost:3000/join/callback/google}
       ENCRYPT_SECRET_KEY: flaaim-secret
+    depends_on:
+      api-postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     secrets:
       - jwt_public_key
       - jwt_private_key
@@ -86,7 +91,75 @@ services:
       MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
       MAILER_FROM_NAME: ${API_MAILER_FROM_NAME}
       FRONTEND_URL: ${FRONTEND_URL}
-      MESSENGER_TRANSPORT_DSN: doctrine://default?auto_setup=0
+      MESSENGER_TRANSPORT_DSN: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672/%2f/messages
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
+      SENTRY_DSN: ${SENTRY_DSN}
+      JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
+      JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
+      JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_REDIRECT_URI: ${YANDEX_REDIRECT_URI}
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      GOOGLE_REDIRECT_URL: ${GOOGLE_REDIRECT_URL}
+      ENCRYPT_SECRET_KEY: flaaim-secret
+    depends_on:
+      api-postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+    secrets:
+      - jwt_public_key
+      - jwt_private_key
+
+  api-postgres:
+    image: postgres:12.2-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: app
+    volumes:
+      - api-postgres:/var/lib/postgresql/data
+
+  rabbitmq:
+    image: rabbitmq:3.13-management-alpine
+    ports:
+      - "127.0.0.1:15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: ${RABBITMQ_USER}
+      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_PASSWORD}
+    volumes:
+      - rabbitmq_data:/var/lib/rabbitmq
+    restart: always
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+
+  api-php-worker:
+    image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
+    environment:
+      APP_DEBUG: 0
+      SITE_URL: ${SITE_URL}
+      SITE_NAME: ${SITE_NAME}
+      DB_HOST: api-postgres
+      DB_USER: app
+      DB_PASSWORD: ${API_DB_PASSWORD}
+      DB_NAME: app
+      MAILER_HOST: ${API_MAILER_HOST}
+      MAILER_PORT: ${API_MAILER_PORT}
+      MAILER_USER: ${API_MAILER_USER}
+      MAILER_PASSWORD: ${API_MAILER_PASSWORD}
+      MAILER_ENCRYPTION: tls
+      MAILER_FROM_EMAIL: ${API_MAILER_FROM_EMAIL}
+      MAILER_FROM_NAME: ${API_MAILER_FROM_NAME}
+      FRONTEND_URL: ${FRONTEND_URL}
+      MESSENGER_TRANSPORT_DSN: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672/%2f/messages
       TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
       TELEGRAM_CHAT_ID: ${TELEGRAM_CHAT_ID}
       SENTRY_DSN: ${SENTRY_DSN}
@@ -103,19 +176,18 @@ services:
     secrets:
       - jwt_public_key
       - jwt_private_key
-
-  api-postgres:
-    image: postgres:12.2-alpine
+    command: php bin/console messenger:consume async --limit=1000 --memory-limit=128M --no-debug -vv
+    stop_grace_period: 30s
     restart: always
-    environment:
-      POSTGRES_USER: app
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
-      POSTGRES_DB: app
-    volumes:
-      - api-postgres:/var/lib/postgresql/data
+    depends_on:
+      api-postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
 
 volumes:
   api-postgres:
+  rabbitmq_data:
 
 secrets:
   jwt_public_key:
