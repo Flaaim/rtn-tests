@@ -15,7 +15,7 @@ final class Fetcher
     public function fetch(Query $query): ?Profile
     {
         $qb = $this->connection->createQueryBuilder();
-        $qb->select('u.id, u.email', 'un.network', 'un.identity')
+        $qb->select('u.id, u.email', 'un.network', 'un.identity', 'u.role')
             ->from('users', 'u')
             ->leftJoin('u', 'user_networks', 'un', 'u.id = un.user_id')
             ->where('u.id = :id')
@@ -30,6 +30,7 @@ final class Fetcher
         $profile = new Profile(
             $result[0]['id'],
             $result[0]['email'],
+            $result[0]['role'],
         );
 
         foreach ($result as $row) {

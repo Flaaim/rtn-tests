@@ -30,7 +30,6 @@ final class UserFixture extends AbstractFixture
         );
 
         $user->confirmJoin($value, $date);
-        $user->changeRole(Role::admin());
         $manager->persist($user);
 
         $passwordHasher = new PasswordHasher();
@@ -44,6 +43,8 @@ final class UserFixture extends AbstractFixture
         );
 
         $myUser->confirmJoin($value, $date);
+        $myUser->changeRole(Role::admin());
+
         $manager->persist($myUser);
 
         $manager->flush();

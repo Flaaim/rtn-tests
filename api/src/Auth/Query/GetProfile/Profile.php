@@ -9,6 +9,7 @@ final class Profile
     public function __construct(
         public string $id,
         public string $email,
+        public string $role,
         public array $networks = []
     ) {}
 }

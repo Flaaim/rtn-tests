@@ -31,10 +31,12 @@ final class Role
     {
         return new self(self::TEACHER);
     }
+
     public static function admin(): self
     {
         return new self(self::ADMIN);
     }
+
     public function getName(): string
     {
         return $this->name;

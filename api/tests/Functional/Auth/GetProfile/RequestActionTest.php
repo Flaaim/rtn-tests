@@ -66,6 +66,7 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals([
             'id' => RequestFixture::ID,
             'email' => RequestFixture::EMAIL,
+            'role' => 'user',
             'networks' => [],
         ], $data);
     }
