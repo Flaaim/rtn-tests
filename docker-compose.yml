@@ -81,6 +81,7 @@ services:
       - ./api:/app
     depends_on:
       - api-postgres
+      - rabbitmq
     secrets:
       - jwt_public_key
       - jwt_private_key
@@ -121,6 +122,11 @@ services:
       GOOGLE_CLIENT_SECRET: ""
       GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
       ENCRYPT_SECRET_KEY: flaaim-secret
+    depends_on:
+      api-postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
     secrets:
       - jwt_public_key
       - jwt_private_key

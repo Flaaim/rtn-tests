@@ -7,6 +7,7 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-openssl": "*",
         "doctrine/dbal": "^4.4",
         "doctrine/doctrine-bundle": "^3.2",
         "doctrine/doctrine-migrations-bundle": "^3.0",
@@ -16,6 +17,7 @@
         "league/oauth2-server-bundle": "^1.1",
         "ramsey/uuid": "^4.9.2",
         "sentry/sentry-symfony": "^5.10",
+        "symfony/amqp-messenger": "8.0.*",
         "symfony/console": "8.0.*",
         "symfony/doctrine-messenger": "8.0.*",
         "symfony/dotenv": "8.0.*",
@@ -30,8 +32,7 @@
         "symfony/twig-bundle": "8.0.*",
         "symfony/validator": "8.0.*",
         "symfony/yaml": "8.0.*",
-        "webmozart/assert": "^2.3",
-        "ext-openssl": "*"
+        "webmozart/assert": "^2.3"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.6",

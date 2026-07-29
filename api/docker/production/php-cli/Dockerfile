@@ -11,7 +11,7 @@ WORKDIR /app
 COPY ./composer.json ./composer.lock ./
 
 RUN composer install --no-dev --prefer-dist --no-progress --no-suggest --optimize-autoloader --ignore-platform-req=ext-intl \
-     && rm -rf /root/.composer/cache \
+     && rm -rf /root/.composer/cache
 
 COPY ./ ./
 
@@ -25,7 +25,7 @@ FROM php:8.1-cli-alpine
 COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
 
 RUN apk add --no-cache bash coreutils git unzip postgresql-client
-RUN install-php-extensions intl pdo_pgsql opcache zip apcu
+RUN install-php-extensions intl pdo_pgsql opcache zip apcu amqp
 
 RUN mv $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
 
