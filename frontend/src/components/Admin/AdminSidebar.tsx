@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, LogOut, Shield, Users } from "lucide-react";
+import { LayoutDashboard, LogOut, Shield, Target, Users } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -20,6 +20,7 @@ import { usePathname } from "next/navigation";
 const items = [
   { title: "Дашборд", url: "/admin", icon: LayoutDashboard },
   { title: "Пользователи", url: "/admin/users", icon: Users },
+  { title: "Парсеры", url: "/admin/parsers", icon: Target },
 ];
 
 interface AdminSidebarProps {
