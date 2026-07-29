@@ -11,6 +11,7 @@ export interface LoginData {
 export interface ProfileDTO {
   id: string;
   email: string;
+  role: string;
   networks: NetworkItem[];
 }
 

@@ -6,8 +6,9 @@ export async function middleware(request: NextRequest) {
   const refreshToken = request.cookies.get("refresh_token")?.value;
 
   const { pathname } = request.nextUrl;
+  const isProtected = pathname.startsWith("/user") || pathname.startsWith("/admin");
 
-  if (pathname.startsWith("/user") && !accessToken && !refreshToken) {
+  if (isProtected && !accessToken && !refreshToken) {
     return NextResponse.redirect(new URL("/join/login", request.url));
   }
 
@@ -18,7 +19,7 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  if (pathname.startsWith("/user") && !accessToken && refreshToken) {
+  if (isProtected && !accessToken && refreshToken) {
     try {
       const newTokens = await RefreshSessionAction(refreshToken as string);
 
@@ -66,5 +67,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/user/:path*", "/join/login"],
+  matcher: ["/user/:path*", "/admin/:path*", "/join/login"],
 };
