@@ -6,6 +6,7 @@ namespace App\Auth\Fixture;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\User;
 use App\Auth\Service\PasswordHasher;
@@ -29,7 +30,7 @@ final class UserFixture extends AbstractFixture
         );
 
         $user->confirmJoin($value, $date);
-
+        $user->changeRole(Role::admin());
         $manager->persist($user);
 
         $passwordHasher = new PasswordHasher();
