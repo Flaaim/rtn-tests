@@ -9,4 +9,6 @@ interface ParserFetcherInterface
     public function getOneById(string $id): array;
 
     public function hasOneById(string $id): bool;
+
+    public function findAll(): array;
 }

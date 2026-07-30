@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Parser\GetParser;
+namespace Tests\Functional\Parser\GetParsers;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
+use Tests\Functional\Parser\GetParser\RequestFixture;
 
 /**
  * @internal
@@ -29,7 +30,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $this->client->request('GET', '/v1/parser/' . RequestFixture::PARSER_ID);
+        $this->client->request('GET', '/v1/parsers');
 
         self::assertEquals(200, $this->client->getResponse()->getStatusCode());
 
@@ -37,19 +38,11 @@ final class RequestActionTest extends WebTestCase
 
         $data = Json::decode($body);
 
-        self::assertEquals('https://example.com', $data['host']);
-        self::assertEquals('some sookie', $data['cookie']);
-    }
-
-    public function testNotFound(): void
-    {
-        $this->client->jsonRequest('GET', '/v1/parser/' . RequestFixture::PARSER_NOT_FOUND_ID);
-        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
-
-        self::assertJson($body = $this->client->getResponse()->getContent());
-
-        $data = Json::decode($body);
-
-        self::assertEquals(['message' => 'Parser not found.'], $data);
+        self::assertEquals([
+            [
+                'id' => '5134bc29-ef64-414f-a0d4-b1cf0166c7e2',
+                'host' => 'https://example.com',
+            ],
+        ], $data);
     }
 }

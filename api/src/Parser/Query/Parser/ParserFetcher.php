@@ -44,4 +44,15 @@ final class ParserFetcher implements ParserFetcherInterface
 
         return false !== $result;
     }
+
+    public function findAll(): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select('p.id, p.host')
+            ->from('parsers', 'p')
+            ->executeQuery();
+
+        return $result->fetchAllAssociative();
+    }
 }
