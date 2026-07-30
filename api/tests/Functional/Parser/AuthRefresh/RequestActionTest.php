@@ -54,7 +54,7 @@ final class RequestActionTest extends WebTestCase
         $mockClient = $this->container->get(HttpClientInterface::class);
         $mockClient->setResponseFactory([$mockResponse]);
 
-        $this->client->jsonRequest('PUT', '/v1/parser/refresh', ['parserId' => RequestFixture::PARSER_ID]);
+        $this->client->jsonRequest('POST', '/v1/parsers/' . RequestFixture::PARSER_ID . '/refresh');
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
 
@@ -67,14 +67,14 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/parser/refresh', ['parserId' => RequestFixture::PARSER_NOT_FOUND_ID]);
+        $this->client->jsonRequest('POST', '/v1/parsers/' . RequestFixture::PARSER_NOT_FOUND_ID . '/refresh');
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
     }
 
     public function testInvalid(): void
     {
-        $this->client->jsonRequest('PUT', '/v1/parser/refresh', ['parserId' => 'invalid string']);
+        $this->client->jsonRequest('POST', '/v1/parsers/not-uuid-string/refresh');
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 
@@ -84,21 +84,6 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['errors' => [
             'parserId' => 'This is not a valid UUID.',
-        ]], $data);
-    }
-
-    public function testEmpty(): void
-    {
-        $this->client->jsonRequest('PUT', '/v1/parser/refresh', ['parserId' => '']);
-
-        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
-
-        self::assertJson($body = $this->client->getResponse()->getContent());
-
-        $data = Json::decode($body);
-
-        self::assertEquals(['errors' => [
-            'parserId' => 'This value should not be blank.',
         ]], $data);
     }
 }

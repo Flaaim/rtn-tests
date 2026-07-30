@@ -38,9 +38,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $this->client->catchExceptions(false);
-        $this->client->jsonRequest('POST', '/v1/parser/launch', [
-            'parserId' => RequestFixture::PARSER_ID,
+        $this->client->jsonRequest('POST', '/v1/parsers/' . RequestFixture::PARSER_ID . '/launch', [
             'branchId' => 'some_string',
             'ticketId' => 'some_string',
         ]);
@@ -54,8 +52,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $this->client->jsonRequest('POST', '/v1/parser/launch', [
-            'parserId' => RequestFixture::PARSER_NOT_FOUND_ID,
+        $this->client->jsonRequest('POST', '/v1/parsers/' . RequestFixture::PARSER_NOT_FOUND_ID . '/launch', [
             'branchId' => 'some_string',
             'ticketId' => 'some_string',
         ]);
@@ -71,7 +68,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmpty(): void
     {
-        $this->client->jsonRequest('POST', '/v1/parser/launch');
+        $this->client->jsonRequest('POST', '/v1/parsers/' . RequestFixture::PARSER_ID . '/launch');
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 
@@ -80,7 +77,6 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['errors' => [
-            'parserId' => 'This value should not be blank.',
             'branchId' => 'This value should not be blank.',
             'ticketId' => 'This value should not be blank.',
         ]], $data);
@@ -88,8 +84,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testInvalid(): void
     {
-        $this->client->jsonRequest('POST', '/v1/parser/launch', [
-            'parserId' => 'invalid',
+        $this->client->jsonRequest('POST', '/v1/parsers/invalid/launch', [
             'branchId' => 'some_string',
             'ticketId' => 'some_string',
         ]);

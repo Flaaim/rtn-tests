@@ -22,9 +22,9 @@ export const API = {
     profile: () => BASE_URL + `/v1/user/profile`,
   },
   parser: {
-    add: () => BASE_URL + `/v1/parser`,
+    add: () => BASE_URL + `/v1/parsers`,
     list: () => BASE_URL + `/v1/parsers`,
-    get: (id: string) => BASE_URL + `/v1/parser/${id}`,
-    launch: () => BASE_URL + `/v1/parser/launch`,
+    get: (id: string) => BASE_URL + `/v1/parsers/${id}`,
+    launch: (id: string) => BASE_URL + `/v1/parsers/${id}/launch`,
   },
 };

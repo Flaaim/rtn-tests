@@ -19,12 +19,11 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/parser/launch', name: 'parser.launch', methods: ['POST'])]
-    public function __invoke(Request $request): Response
+    #[Route('/v1/parsers/{parserId}/launch', name: 'parser.launch', methods: ['POST'])]
+    public function __invoke(Request $request, string $parserId): Response
     {
         $body = $request->toArray();
 
-        $parserId = (string)($body['parserId'] ?? '');
         $branchId = (string)($body['branchId'] ?? '');
         $ticketId = (string)($body['ticketId'] ?? '');
 

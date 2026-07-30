@@ -18,7 +18,7 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('v1/parser/{id}', name: 'parser.get', methods: ['GET'])]
+    #[Route('v1/parsers/{id}', name: 'parser.get', methods: ['GET'])]
     public function __invoke(string $id): Response
     {
         $query = new Query($id);

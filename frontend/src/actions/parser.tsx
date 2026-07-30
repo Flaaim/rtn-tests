@@ -64,14 +64,13 @@ export async function fetchParserAction(parserId: string): Promise<ApiResponse<P
 
 export async function launchParserAction(payload: LaunchParserPayload): Promise<ApiResponse<void>> {
   try {
-    const response = await apiFetch(API.parser.launch(), {
+    const response = await apiFetch(API.parser.launch(payload.parserId), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json",
       },
       body: JSON.stringify({
-        parserId: payload.parserId,
         branchId: payload.branchId,
         ticketId: payload.ticketId,
       }),

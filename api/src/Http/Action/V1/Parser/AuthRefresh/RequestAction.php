@@ -8,7 +8,6 @@ use App\Infrastructure\Http\Validator\Validator;
 use App\Parser\Command\AuthRefresh\Command;
 use App\Parser\Command\AuthRefresh\Handler;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
@@ -19,13 +18,9 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/parser/refresh', name: 'parser.refresh', methods: ['PUT'])]
-    public function __invoke(Request $request): Response
+    #[Route('/v1/parsers/{parserId}/refresh', name: 'parser.refresh', methods: ['POST'])]
+    public function __invoke(string $parserId): Response
     {
-        $body = $request->toArray();
-
-        $parserId = (string)($body['parserId'] ?? '');
-
         $command = new Command($parserId);
 
         $this->validator->validate($command);

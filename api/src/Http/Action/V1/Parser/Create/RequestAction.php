@@ -19,7 +19,7 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/parser', name: 'parser.create', methods: ['POST'])]
+    #[Route('/v1/parsers', name: 'parser.create', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
         $body = $request->toArray();

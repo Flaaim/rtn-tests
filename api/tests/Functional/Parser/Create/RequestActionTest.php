@@ -38,7 +38,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testEmpty(): void
     {
-        $this->client->jsonRequest('POST', '/v1/parser');
+        $this->client->jsonRequest('POST', '/v1/parsers');
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 
@@ -55,7 +55,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testInvalidHost(): void
     {
-        $this->client->jsonRequest('POST', '/v1/parser', [
+        $this->client->jsonRequest('POST', '/v1/parsers', [
             'host' => 'invalid',
             'login' => 'login',
             'password' => 'password',
@@ -88,7 +88,7 @@ final class RequestActionTest extends WebTestCase
         $mockClient = $this->container->get(HttpClientInterface::class);
         $mockClient->setResponseFactory([$mockResponse]);
 
-        $this->client->jsonRequest('POST', '/v1/parser', [
+        $this->client->jsonRequest('POST', '/v1/parsers', [
             'host' => 'http://example.com',
             'login' => 'login',
             'password' => 'password',

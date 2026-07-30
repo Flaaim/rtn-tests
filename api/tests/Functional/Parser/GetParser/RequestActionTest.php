@@ -29,7 +29,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $this->client->request('GET', '/v1/parser/' . RequestFixture::PARSER_ID);
+        $this->client->request('GET', '/v1/parsers/' . RequestFixture::PARSER_ID);
 
         self::assertEquals(200, $this->client->getResponse()->getStatusCode());
 
@@ -43,7 +43,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testNotFound(): void
     {
-        $this->client->jsonRequest('GET', '/v1/parser/' . RequestFixture::PARSER_NOT_FOUND_ID);
+        $this->client->jsonRequest('GET', '/v1/parsers/' . RequestFixture::PARSER_NOT_FOUND_ID);
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
 
         self::assertJson($body = $this->client->getResponse()->getContent());
