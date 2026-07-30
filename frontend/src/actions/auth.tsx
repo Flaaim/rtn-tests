@@ -7,6 +7,7 @@ import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
 import { revalidatePath } from "next/cache";
+import {handleApiResponse} from "@/lib/handleApiResponse";
 
 interface TokenResponseData {
   access_token: string;
@@ -14,29 +15,7 @@ interface TokenResponseData {
   expires_in: number;
   token_type: string;
 }
-export async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
-  const text = await response.text();
-  let data;
 
-  try {
-    data = text ? JSON.parse(text) : {};
-  } catch (parseError) {
-    console.error("Ошибка парсинга ответа API:", parseError);
-    return { ok: false, data: null, error: "Сервер вернул некорректный ответ." };
-  }
-
-  if (!response.ok) {
-    let errorMessage =
-      data.error_description || data.message || "Произошла ошибка при выполнении запроса.";
-    if (response.status === 409) {
-      errorMessage = data.message;
-    } else if (response.status === 401 && !data.error_description) {
-      errorMessage = "Ошибка авторизации";
-    }
-    return { ok: false, data, error: errorMessage };
-  }
-  return { ok: true, data: data as T };
-}
 export async function JoinAction(data: JoinData): Promise<ApiResponse> {
   try {
     const response = await fetch(API.auth.joinByEmail(), {
