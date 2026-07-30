@@ -1,6 +1,15 @@
 "use client";
 
-import { LayoutDashboard, LogOut, Shield, Target, Users } from "lucide-react";
+import {
+  Brackets,
+  ChevronRight,
+  FileText,
+  LayoutDashboard,
+  LogOut,
+  Shield,
+  Target,
+  Users,
+} from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -12,15 +21,28 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
+  SidebarMenuSub,
+  SidebarMenuSubButton,
+  SidebarMenuSubItem,
 } from "@/components/ui/sidebar";
 import { Logout } from "@/actions/auth";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 
 const items = [
   { title: "Дашборд", url: "/admin", icon: LayoutDashboard },
   { title: "Пользователи", url: "/admin/users", icon: Users },
-  { title: "Парсеры", url: "/admin/parsers", icon: Target },
+  {
+    title: "Парсинг",
+    url: "/admin/parsers",
+    icon: Brackets,
+    isActive: true,
+    subItems: [
+      { title: "Парсеры", url: "/admin/parsers", icon: Target },
+      { title: "Черновики", url: "/admin/parsers/drafts", icon: FileText },
+    ],
+  },
 ];
 
 interface AdminSidebarProps {
@@ -51,7 +73,33 @@ export function AdminSidebar({ email }: AdminSidebarProps) {
                 const isActive =
                   item.url === "/admin" ? pathname === "/admin" : pathname.startsWith(item.url);
 
-                return (
+                return item.subItems ? (
+                  <Collapsible
+                    key={item.title}
+                    defaultOpen={item.isActive}
+                    className="group/collapsible"
+                  >
+                    <SidebarMenuItem>
+                      <CollapsibleTrigger render={<SidebarMenuButton tooltip={item.title} />}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                        <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" />
+                      </CollapsibleTrigger>
+                      <CollapsibleContent>
+                        <SidebarMenuSub>
+                          {item.subItems.map((subItem) => (
+                            <SidebarMenuSubItem key={subItem.title}>
+                              <SidebarMenuSubButton render={<Link href={subItem.url} />}>
+                                <subItem.icon className="mr-2 size-4" />
+                                <span>{subItem.title}</span>
+                              </SidebarMenuSubButton>
+                            </SidebarMenuSubItem>
+                          ))}
+                        </SidebarMenuSub>
+                      </CollapsibleContent>
+                    </SidebarMenuItem>
+                  </Collapsible>
+                ) : (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       isActive={isActive}
