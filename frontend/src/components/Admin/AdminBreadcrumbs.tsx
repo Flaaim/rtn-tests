@@ -20,7 +20,7 @@ export default function AdminBreadcrumbs({ items }: { items: AdminBreadcrumbItem
     <Breadcrumb className="mb-4">
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/dashboard">Админка</BreadcrumbLink>
+          <BreadcrumbLink href="/admin">Админка</BreadcrumbLink>
         </BreadcrumbItem>
         {items.map((item, index) => {
           const isLast = index === items.length - 1;

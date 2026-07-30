@@ -7,7 +7,7 @@ import { ApiResponse } from "@/interfaces/response.interface";
 import { API } from "@/app/api";
 import { apiFetch } from "@/lib/apiClient";
 import { revalidatePath } from "next/cache";
-import {handleApiResponse} from "@/lib/handleApiResponse";
+import { handleApiResponse } from "@/lib/handleApiResponse";
 
 interface TokenResponseData {
   access_token: string;

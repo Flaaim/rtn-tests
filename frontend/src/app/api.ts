@@ -23,5 +23,8 @@ export const API = {
   },
   parser: {
     add: () => BASE_URL + `/v1/parser`,
+    list: () => BASE_URL + `/v1/parsers`,
+    get: (id: string) => BASE_URL + `/v1/parser/${id}`,
+    launch: () => BASE_URL + `/v1/parser/launch`,
   },
 };
