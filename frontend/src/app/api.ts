@@ -21,4 +21,7 @@ export const API = {
   user: {
     profile: () => BASE_URL + `/v1/user/profile`,
   },
+  parser: {
+    add: () => BASE_URL + `/v1/parser`,
+  },
 };

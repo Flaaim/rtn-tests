@@ -14,7 +14,7 @@ interface TokenResponseData {
   expires_in: number;
   token_type: string;
 }
-async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
+export async function handleApiResponse<T>(response: Response): Promise<ApiResponse<T>> {
   const text = await response.text();
   let data;
 
