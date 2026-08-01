@@ -29,5 +29,6 @@ export const API = {
   },
   task: {
     list: () => BASE_URL + `/v1/admin/tasks`,
+    get: (id: string) => BASE_URL + `/v1/admin/tasks/${id}`,
   },
 };

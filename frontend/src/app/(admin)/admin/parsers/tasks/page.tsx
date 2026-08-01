@@ -10,6 +10,7 @@ import {
 import { AlertCircle } from "lucide-react";
 import { fetchTasksAction } from "@/actions/task";
 import { TaskShort } from "@/interfaces/task.interface";
+import Link from "next/link";
 
 export default async function AdminTasksPage() {
   const result = await fetchTasksAction();
@@ -55,7 +56,11 @@ export default async function AdminTasksPage() {
           <TableBody>
             {result.data.map((task: TaskShort) => (
               <TableRow key={task.id}>
-                <TableCell className="font-medium">{task.id}</TableCell>
+                <TableCell className="font-medium">
+                  <Link href={`/admin/parsers/tasks/${task.id}`} className="hover:underline">
+                    {task.id}
+                  </Link>
+                </TableCell>
                 <TableCell className="font-medium">{task.parserId}</TableCell>
                 <TableCell className="font-medium">
                   {new Date(task.created).toLocaleDateString("ru-RU")}

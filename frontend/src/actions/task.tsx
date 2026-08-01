@@ -20,3 +20,20 @@ export async function fetchTasksAction(): Promise<ApiResponse<TaskShort[]>> {
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function fetchTaskAction(taskId: string): Promise<ApiResponse<TaskShort>> {
+  try {
+    const response = await apiFetch(API.task.get(taskId), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    return await handleApiResponse<TaskShort>(response);
+  } catch (error) {
+    console.error("fetchTaskAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
