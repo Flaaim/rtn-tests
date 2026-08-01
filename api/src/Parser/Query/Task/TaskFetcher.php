@@ -15,9 +15,9 @@ final class TaskFetcher implements TaskFetcherInterface
     public function getOneById(string $id): array
     {
         $qb = $this->connection->createQueryBuilder();
-        $result = $qb->select('t.*')
+        $result = $qb->select('t.task_id, t.status, t.created_at, t.draft, t.failed_reason')
             ->from('tasks', 't')
-            ->where($qb->expr()->eq('t.id', ':id'))
+            ->where($qb->expr()->eq('t.task_id', ':id'))
             ->setParameter('id', $id)
             ->executeQuery();
 

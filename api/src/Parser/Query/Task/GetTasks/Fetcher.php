@@ -7,13 +7,13 @@ namespace App\Parser\Query\Task\GetTasks;
 use App\Parser\Query\Task\TaskFetcherInterface;
 use DomainException;
 
-final class Handler
+final class Fetcher
 {
     public function __construct(
         private readonly TaskFetcherInterface $tasks,
     ) {}
 
-    public function handle(): array
+    public function fetch(): array
     {
         $rows = $this->tasks->findAll();
 

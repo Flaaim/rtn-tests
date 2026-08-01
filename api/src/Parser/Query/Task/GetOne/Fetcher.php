@@ -21,12 +21,6 @@ final class Fetcher
             throw new DomainException('Task not found.');
         }
 
-        return new TaskDTO(
-            $row['id'],
-            $row['parser_id'],
-            $row['status'],
-            $row['branch_id'],
-            $row['ticket_id']
-        );
+        return TaskDTO::fromArray($row);
     }
 }
