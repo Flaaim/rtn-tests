@@ -10,11 +10,12 @@ final class UserAdapter implements UserInterface
 {
     public function __construct(
         private readonly string $identifier,
+        private readonly array $roles = ['ROLE_USER']
     ) {}
 
     public function getRoles(): array
     {
-        return ['ROLE_USER', 'ROLE_ADMIN'];
+        return $this->roles;
     }
 
     public function getUserIdentifier(): string

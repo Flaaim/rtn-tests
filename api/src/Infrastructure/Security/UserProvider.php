@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Security;
 
 use App\Auth\Entity\User\Id;
+use App\Auth\Entity\User\Role;
 use App\Auth\Entity\User\UserRepository as DomainUserRepository;
 use App\OAuth\Entity\UserAdapter;
 use Exception;
@@ -38,6 +39,17 @@ final class UserProvider implements UserProviderInterface
         } catch (Exception $e) {
             throw new UserNotFoundException('User not found.');
         }
-        return new UserAdapter($user->getId()->getValue());
+        return new UserAdapter(
+            $user->getId()->getValue(),
+            $this->mapRoles($user->getRole()),
+        );
+    }
+
+    private function mapRoles(Role $role): array
+    {
+        return match (true) {
+            $role->isAdmin() => ['ROLE_USER', 'ROLE_ADMIN'],
+            default => ['ROLE_USER'],
+        };
     }
 }

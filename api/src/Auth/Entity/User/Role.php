@@ -46,4 +46,9 @@ final class Role
     {
         return $this->name === $other->name;
     }
+
+    public function isAdmin(): bool
+    {
+        return self::ADMIN === $this->name;
+    }
 }

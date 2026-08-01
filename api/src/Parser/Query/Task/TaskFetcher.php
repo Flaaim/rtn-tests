@@ -28,4 +28,15 @@ final class TaskFetcher implements TaskFetcherInterface
         }
         return $result;
     }
+
+    public function findAll(): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select('t.task_id, t.status, t.parser_id, t.created_at, t.failed_reason')
+            ->from('tasks', 't')
+            ->executeQuery();
+
+        return $result->fetchAllAssociative();
+    }
 }
