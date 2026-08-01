@@ -40,7 +40,7 @@ const items = [
     isActive: true,
     subItems: [
       { title: "Парсеры", url: "/admin/parsers", icon: Target },
-      { title: "Черновики", url: "/admin/parsers/drafts", icon: FileText },
+      { title: "Результаты", url: "/admin/parsers/tasks", icon: FileText },
     ],
   },
 ];
