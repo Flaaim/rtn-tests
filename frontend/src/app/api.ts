@@ -30,5 +30,10 @@ export const API = {
   task: {
     list: () => BASE_URL + `/v1/admin/tasks`,
     get: (id: string) => BASE_URL + `/v1/admin/tasks/${id}`,
+    delete: (ids: string[]) => {
+      const url = new URL(BASE_URL + `/v1/admin/tasks/`);
+      ids.forEach((id) => url.searchParams.append("ids[]", id));
+      return url.toString();
+    },
   },
 };

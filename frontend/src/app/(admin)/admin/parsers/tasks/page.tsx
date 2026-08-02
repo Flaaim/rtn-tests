@@ -1,16 +1,7 @@
 import AdminBreadcrumbs from "@/components/Admin/AdminBreadcrumbs";
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from "@/components/ui/table";
 import { AlertCircle } from "lucide-react";
 import { fetchTasksAction } from "@/actions/task";
-import { TaskShort } from "@/interfaces/task.interface";
-import Link from "next/link";
+import { TasksTable } from "@/components/Admin/Task/TasksTable";
 
 export default async function AdminTasksPage() {
   const result = await fetchTasksAction();
@@ -42,36 +33,7 @@ export default async function AdminTasksPage() {
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Результаты парсинга</h1>
       </div>
-      <div className="rounded-md border bg-white">
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Номер задачи</TableHead>
-              <TableHead>Номер парсера</TableHead>
-              <TableHead>Создан</TableHead>
-              <TableHead>Статус</TableHead>
-              <TableHead>Ошибки</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {result.data.map((task: TaskShort) => (
-              <TableRow key={task.id}>
-                <TableCell className="font-medium">
-                  <Link href={`/admin/parsers/tasks/${task.id}`} className="hover:underline">
-                    {task.id}
-                  </Link>
-                </TableCell>
-                <TableCell className="font-medium">{task.parserId}</TableCell>
-                <TableCell className="font-medium">
-                  {new Date(task.created).toLocaleDateString("ru-RU")}
-                </TableCell>
-                <TableCell className="font-medium">{task.status}</TableCell>
-                <TableCell className="font-medium">{task.failedReason}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
-      </div>
+      <TasksTable tasks={result.data} />
     </div>
   );
 }
