@@ -80,7 +80,7 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals([
-            'taskId' => RequestFixture::TASK_ID,
+            'id' => RequestFixture::TASK_ID,
             'status' => 'completed',
             'draft' => '{test}',
             'created' => new DateTimeImmutable()->format('Y-m-d'),

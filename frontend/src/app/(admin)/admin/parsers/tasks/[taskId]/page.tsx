@@ -1,5 +1,6 @@
 import { fetchTaskAction } from "@/actions/task";
 import AdminBreadcrumbs from "@/components/Admin/AdminBreadcrumbs";
+import TaskForm from "@/components/Admin/Task/TaskForm";
 
 interface TaskOverviewPageProps {
   params: Promise<{ taskId: string }>;
@@ -8,7 +9,7 @@ interface TaskOverviewPageProps {
 export default async function TaskOverviewPage({ params }: TaskOverviewPageProps) {
   const { taskId } = await params;
 
-  const result = fetchTaskAction(taskId);
+  const result = await fetchTaskAction(taskId);
 
   if (!result.ok || !result.data) {
     return null;
@@ -23,6 +24,7 @@ export default async function TaskOverviewPage({ params }: TaskOverviewPageProps
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Задача: {task.id}</h1>
       </div>
+      <TaskForm task={task} />
     </div>
   );
 }

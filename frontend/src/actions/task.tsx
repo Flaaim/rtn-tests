@@ -1,7 +1,7 @@
 import { ApiResponse } from "@/interfaces/response.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
-import { TaskShort } from "@/interfaces/task.interface";
+import { TaskFull, TaskShort } from "@/interfaces/task.interface";
 import { handleApiResponse } from "@/lib/handleApiResponse";
 
 export async function fetchTasksAction(): Promise<ApiResponse<TaskShort[]>> {
@@ -21,7 +21,7 @@ export async function fetchTasksAction(): Promise<ApiResponse<TaskShort[]>> {
   }
 }
 
-export async function fetchTaskAction(taskId: string): Promise<ApiResponse<TaskShort>> {
+export async function fetchTaskAction(taskId: string): Promise<ApiResponse<TaskFull>> {
   try {
     const response = await apiFetch(API.task.get(taskId), {
       method: "GET",
@@ -31,7 +31,7 @@ export async function fetchTaskAction(taskId: string): Promise<ApiResponse<TaskS
       },
     });
 
-    return await handleApiResponse<TaskShort>(response);
+    return await handleApiResponse<TaskFull>(response);
   } catch (error) {
     console.error("fetchTaskAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
