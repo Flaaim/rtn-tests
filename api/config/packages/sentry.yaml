@@ -33,7 +33,7 @@ when@prod:
 #            # certain log levels as errors.
 #            sentry:
 #                type: service
-#                id: Sentry\Monolog\Handler
+#                id: Sentry\Monolog\Fetcher
 #
 #            # Use this for structured log integration
 #            sentry_logs:

@@ -12,6 +12,6 @@
     --agree-tos
     --email {{ certbot_email }}
     -d {{ item.item }}
-  loop: "{{ certs.results }}"
+  loop: "{{ certs.tasks }}"
   when:
     - not item.stat.exists
