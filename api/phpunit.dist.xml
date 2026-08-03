@@ -57,6 +57,7 @@
             <directory>src/OAuth/Test</directory>
             <directory>src/Parser/Test</directory>
             <directory>src/Testing/Test</directory>
+            <directory>src/SharedDomain/Test</directory>
         </testsuite>
         <testsuite name="Functional">
             <directory>tests/Functional</directory>
