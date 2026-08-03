@@ -31,4 +31,15 @@ final class TasksRepository
         }
         return $task;
     }
+
+    public function remove(array $ids): void
+    {
+        $qb = $this->repo->createQueryBuilder('t');
+
+        $qb->delete()
+            ->where('t.taskId IN (:ids)')
+            ->setParameter('ids', $ids)
+
+            ->getQuery()->execute();
+    }
 }

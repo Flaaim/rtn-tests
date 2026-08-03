@@ -8,6 +8,7 @@ use App\Infrastructure\Http\Validator\Validator;
 use App\Parser\Query\Task\GetOne\Fetcher;
 use App\Parser\Query\Task\GetOne\Query;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
@@ -20,7 +21,7 @@ final class RequestAction
 
     #[Route('/v1/admin/tasks/{id}', name: 'admin.task.get', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function __invoke(string $id): JsonResponse
+    public function __invoke(string $id): Response
     {
         $query = new Query($id);
 
