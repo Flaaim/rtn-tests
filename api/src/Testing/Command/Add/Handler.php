@@ -8,7 +8,6 @@ use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\Course;
 use App\Testing\Entity\CourseId;
 use App\Testing\Entity\CourseRepository;
-use App\Testing\Entity\CourseStatus;
 use App\Testing\Service\QuestionExtractor;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -31,8 +30,7 @@ final class Handler
             $courseId,
             $command->name,
             new ArrayCollection($extracted),
-            new DateTimeImmutable(),
-            CourseStatus::processing()
+            new DateTimeImmutable()
         );
 
         $this->courses->add($course);

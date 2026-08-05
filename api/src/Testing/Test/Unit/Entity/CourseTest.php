@@ -6,7 +6,7 @@ namespace App\Testing\Test\Unit\Entity;
 
 use App\Testing\Entity\Course;
 use App\Testing\Entity\CourseId;
-use App\Testing\Entity\CourseStatus;
+use App\Testing\Entity\Status;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
@@ -24,13 +24,14 @@ final class CourseTest extends TestCase
             $name = 'Course name',
             $questions = new ArrayCollection([]),
             $createdAt = new DateTimeImmutable(),
-            $status = CourseStatus::inactive(),
         );
 
         self::assertEquals($courseId, $course->getCourseId());
         self::assertEquals($name, $course->getName());
         self::assertEquals($questions->toArray(), $course->getQuestions());
         self::assertEquals($createdAt, $course->getCreatedAt());
-        self::assertEquals($status, $course->getStatus());
+        self::assertEquals(Status::created(), $course->getStatus());
     }
+
+    public function testAddQuestions(): void {}
 }

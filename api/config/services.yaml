@@ -87,6 +87,11 @@ services:
         arguments:
             $secretKey: '%env(ENCRYPT_SECRET_KEY)%'
 
+    App\SharedDomain\Filesystem\FileSystemPathInterface: '@App\SharedDomain\Filesystem\FileSystemPath'
+    App\SharedDomain\Filesystem\FileSystemPath:
+        arguments:
+            $path: '../public/QuestionImages'
+
 
 when@test:
     services:

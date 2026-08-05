@@ -7,7 +7,8 @@ namespace App\Testing\MessageHandler;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\CourseId;
 use App\Testing\Entity\CourseRepository;
-use App\Testing\Entity\CourseStatus;
+use App\Testing\Entity\Question;
+use App\Testing\Entity\Status;
 use App\Testing\Event\CourseCreated;
 use App\Testing\Service\CourseMediaDownloader;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -30,9 +31,12 @@ final class CourseCreatedHandler
 
         $this->courseMediaDownloader->downloadMedia($course->getQuestions(), $courseId);
 
-        $course->updateQuestions();
+        /** @var Question $question */
+        foreach ($course->getQuestions() as $question) {
+            $question->markAnswersAsUpdated();
+        }
 
-        $course->updateStatus(CourseStatus::created());
+        $course->updateStatus(Status::created());
 
         $this->flusher->flush();
     }

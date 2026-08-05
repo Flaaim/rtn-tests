@@ -8,6 +8,10 @@ use App\Testing\Event\CourseCreated;
 use App\Testing\MessageHandler\CourseCreatedHandler;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class CourseCreatedHandlerTest extends KernelTestCase
 {
     public function testSuccess(): void
@@ -19,7 +23,5 @@ final class CourseCreatedHandlerTest extends KernelTestCase
         $message = new CourseCreated('63879491-6883-4e88-8be2-295d3d260346');
 
         $handler($message);
-
-
     }
 }
