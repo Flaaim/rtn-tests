@@ -5,8 +5,13 @@ declare(strict_types=1);
 namespace App\Testing\Test\Unit\Service\Downloader;
 
 use App\Testing\Service\Downloader\FilenameGenerator;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class FilenameGeneratorTest extends TestCase
 {
     public function testSuccess(): void
@@ -22,7 +27,7 @@ final class FilenameGeneratorTest extends TestCase
     public function testEmpty(): void
     {
         $filenameGenerator = new FilenameGenerator();
-        self::expectException(\InvalidArgumentException::class);
+        self::expectException(InvalidArgumentException::class);
         $filenameGenerator->generateFilename('');
     }
 }

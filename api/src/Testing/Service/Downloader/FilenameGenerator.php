@@ -14,8 +14,10 @@ final class FilenameGenerator implements FilenameGeneratorInterface
         if ('' === $url) {
             throw new InvalidArgumentException('Url cannot be empty');
         }
-
         $extension = pathinfo($url, PATHINFO_EXTENSION);
+
+        $extension = $extension ?: 'jpg';
+
         return Uuid::uuid4()->toString() . '.' . $extension;
     }
 }
