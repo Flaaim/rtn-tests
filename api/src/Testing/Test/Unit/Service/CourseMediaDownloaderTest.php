@@ -22,13 +22,13 @@ use PHPUnit\Framework\TestCase;
 final class CourseMediaDownloaderTest extends TestCase
 {
     /** @var FileDownloaderInterface&MockObject */
-    private readonly FileDownloaderInterface $fileDownloader;
+    private FileDownloaderInterface $fileDownloader;
     /** @var FilenameGeneratorInterface&MockObject */
-    private readonly FilenameGeneratorInterface $filenameGenerator;
+    private FilenameGeneratorInterface $filenameGenerator;
 
-    private readonly FileSystemPathInterface $fileSystemPath;
+    private FileSystemPathInterface $fileSystemPath;
     /** @var DirectoryCreatorInterface&MockObject */
-    private readonly DirectoryCreatorInterface $directoryCreator;
+    private DirectoryCreatorInterface $directoryCreator;
 
     protected function setUp(): void
     {
@@ -81,11 +81,11 @@ final class CourseMediaDownloaderTest extends TestCase
 
         $this->fileDownloader->expects(self::atLeast(3))->method('download');
 
-        $questions = $mediaDownloader->downloadMedia($sourceQuestions, $relativePath);
+        $mediaDownloader->downloadMedia($sourceQuestions, $relativePath);
         /** @var Question[] $questions */
-        self::assertEquals('12345/file1.jpg', $questions[0]->getQuestionImg());
-        self::assertEquals('12345/file2.jpg', $questions[1]->getQuestionImg());
-        self::assertEquals('12345/234a678461729b0a6d96375a55c349bf/answerfile1.jpg', $questions[0]->getAnswers()[0]->getAnswerImg());
+        self::assertEquals('12345/file1.jpg', $sourceQuestions[0]->getQuestionImg());
+        self::assertEquals('12345/file2.jpg', $sourceQuestions[1]->getQuestionImg());
+        self::assertEquals('12345/234a678461729b0a6d96375a55c349bf/answerfile1.jpg', $sourceQuestions[0]->getAnswers()[0]->getAnswerImg());
     }
 
     private function getQuestions(): array

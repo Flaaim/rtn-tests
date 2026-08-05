@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Testing\Service;
 
 use App\SharedDomain\Filesystem\FileSystemPathInterface;
-use App\Testing\Entity\Answer;
 use App\Testing\Entity\Question;
 use App\Testing\Service\Downloader\DirectoryCreatorInterface;
 use App\Testing\Service\Downloader\FileDownloaderInterface;
@@ -20,12 +19,12 @@ final class CourseMediaDownloader
         private readonly DirectoryCreatorInterface $directoryCreator,
     ) {}
 
-    public function downloadMedia(array $questions, string $relativePathDir): array
+    public function downloadMedia(array $questions, string $relativePathDir): void
     {
         $questionsDir = $this->fileSystemPath->getValue() . \DIRECTORY_SEPARATOR . $relativePathDir;
         $this->directoryCreator->createDirectory($questionsDir);
-
-        return array_map(function (Question $question) use ($relativePathDir, $questionsDir): Question {
+        /** @var Question[] $questions */
+        foreach ($questions as $question) {
             if ('' !== $question->getQuestionImg()) {
                 $filename = $this->filenameGenerator->generateFilename($question->getQuestionImg());
                 $filePath = $questionsDir . \DIRECTORY_SEPARATOR . $filename;
@@ -34,8 +33,7 @@ final class CourseMediaDownloader
                 $this->fileDownloader->download($question->getQuestionImg(), $filePath);
                 $question->replaceQuestionImg($absoluteFilePath);
             }
-
-            $answers = array_map(function (Answer $answer) use ($relativePathDir): Answer {
+            foreach ($question->getAnswers() as $answer) {
                 if ('' !== $answer->getAnswerImg()) {
                     $answersDir = $this->fileSystemPath->getValue() .
                         \DIRECTORY_SEPARATOR . $relativePathDir .
@@ -52,10 +50,7 @@ final class CourseMediaDownloader
                     $this->fileDownloader->download($answer->getAnswerImg(), $filePath);
                     $answer->replaceAnswerImg($absoluteFilePath);
                 }
-                return $answer;
-            }, $question->getAnswers());
-            $question->replaceAnswers($answers);
-            return $question;
-        }, $questions);
+            }
+        }
     }
 }

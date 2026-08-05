@@ -11,12 +11,13 @@ final class CourseStatus
     public const string ACTIVE = 'active';
     public const string INACTIVE = 'inactive';
     public const string PROCESSING = 'processing';
+    public const string CREATED = 'created';
 
     private string $value;
 
     public function __construct(string $value)
     {
-        Assert::oneOf($value, [self::ACTIVE, self::INACTIVE, self::PROCESSING]);
+        Assert::oneOf($value, [self::ACTIVE, self::INACTIVE, self::PROCESSING, self::CREATED]);
         $this->value = $value;
     }
 
@@ -35,9 +36,14 @@ final class CourseStatus
         return new self(self::INACTIVE);
     }
 
-    public function processing(): self
+    public static function processing(): self
     {
         return new self(self::PROCESSING);
+    }
+
+    public static function created(): self
+    {
+        return new self(self::CREATED);
     }
 
     public function isActive(): bool
@@ -53,5 +59,10 @@ final class CourseStatus
     public function isProcessing(): bool
     {
         return self::PROCESSING === $this->value;
+    }
+
+    public function isCreated(): bool
+    {
+        return self::CREATED === $this->value;
     }
 }

@@ -48,4 +48,9 @@ final class Course implements AggregateRoot
     {
         return $this->status;
     }
+
+    public function updateStatus(CourseStatus $status): void
+    {
+        $this->status = $status;
+    }
 }

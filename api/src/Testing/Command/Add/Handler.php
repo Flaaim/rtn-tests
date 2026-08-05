@@ -9,7 +9,6 @@ use App\Testing\Entity\Course;
 use App\Testing\Entity\CourseId;
 use App\Testing\Entity\CourseRepository;
 use App\Testing\Entity\CourseStatus;
-use App\Testing\Service\CourseMediaDownloader;
 use App\Testing\Service\QuestionExtractor;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -19,7 +18,6 @@ final class Handler
     public function __construct(
         private readonly QuestionExtractor $questionExtractor,
         private readonly CourseRepository $courses,
-        private readonly CourseMediaDownloader $courseMediaDownloader,
         private readonly Flusher $flusher
     ) {}
 
@@ -29,14 +27,12 @@ final class Handler
 
         $extracted = $this->questionExtractor->extract($command->draft);
 
-        $questions = $this->courseMediaDownloader->downloadMedia($extracted, $courseId->getValue());
-
         $course = new Course(
             $courseId,
             $command->name,
-            new ArrayCollection($questions),
+            new ArrayCollection($extracted),
             new DateTimeImmutable(),
-            CourseStatus::inactive()
+            CourseStatus::processing()
         );
 
         $this->courses->add($course);
