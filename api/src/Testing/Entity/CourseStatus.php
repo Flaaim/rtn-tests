@@ -10,12 +10,13 @@ final class CourseStatus
 {
     public const string ACTIVE = 'active';
     public const string INACTIVE = 'inactive';
+    public const string PROCESSING = 'processing';
 
     private string $value;
 
     public function __construct(string $value)
     {
-        Assert::oneOf($value, [self::ACTIVE, self::INACTIVE]);
+        Assert::oneOf($value, [self::ACTIVE, self::INACTIVE, self::PROCESSING]);
         $this->value = $value;
     }
 
@@ -34,6 +35,11 @@ final class CourseStatus
         return new self(self::INACTIVE);
     }
 
+    public function processing(): self
+    {
+        return new self(self::PROCESSING);
+    }
+
     public function isActive(): bool
     {
         return self::ACTIVE === $this->value;
@@ -42,5 +48,10 @@ final class CourseStatus
     public function isInactive(): bool
     {
         return self::INACTIVE === $this->value;
+    }
+
+    public function isProcessing(): bool
+    {
+        return self::PROCESSING === $this->value;
     }
 }
