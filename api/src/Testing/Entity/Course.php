@@ -53,4 +53,9 @@ final class Course implements AggregateRoot
     {
         $this->status = $status;
     }
+
+    public function updateQuestions(): void
+    {
+        $this->questions = clone $this->questions;
+    }
 }

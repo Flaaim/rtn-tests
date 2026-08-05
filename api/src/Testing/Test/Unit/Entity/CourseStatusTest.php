@@ -51,4 +51,11 @@ final class CourseStatusTest extends TestCase
         self::assertFalse($status->isInactive());
         self::assertFalse($status->isActive());
     }
+
+    public function testCreated(): void
+    {
+        $status = new CourseStatus(CourseStatus::CREATED);
+        self::assertTrue($status->isCreated());
+        self::assertFalse($status->isInactive());
+    }
 }

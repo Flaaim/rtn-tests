@@ -30,6 +30,8 @@ final class CourseCreatedHandler
 
         $this->courseMediaDownloader->downloadMedia($course->getQuestions(), $courseId);
 
+        $course->updateQuestions();
+
         $course->updateStatus(CourseStatus::created());
 
         $this->flusher->flush();

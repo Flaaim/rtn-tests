@@ -54,9 +54,4 @@ final class Question
     {
         $this->questionImg = $imgPath;
     }
-
-    public function replaceAnswers(array $answers): void
-    {
-        $this->answers = $answers;
-    }
 }
