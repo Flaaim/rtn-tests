@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Entity;
 
-use App\Testing\Entity\CourseStatus;
+use App\Testing\Entity\Status;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
@@ -12,24 +12,24 @@ use PHPUnit\Framework\TestCase;
  * @internal
  * @coversNothing
  */
-final class CourseStatusTest extends TestCase
+final class StatusTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $status = new CourseStatus(CourseStatus::ACTIVE);
+        $status = new Status(Status::ACTIVE);
 
-        self::assertEquals(CourseStatus::ACTIVE, $status->getValue());
+        self::assertEquals(Status::ACTIVE, $status->getValue());
     }
 
     public function testInvalid(): void
     {
         self::expectException(InvalidArgumentException::class);
-        new CourseStatus('invalid');
+        new Status('invalid');
     }
 
     public function testInactive(): void
     {
-        $status = new CourseStatus(CourseStatus::INACTIVE);
+        $status = new Status(Status::INACTIVE);
 
         self::assertTrue($status->isInactive());
         self::assertFalse($status->isActive());
@@ -37,7 +37,7 @@ final class CourseStatusTest extends TestCase
 
     public function testActive(): void
     {
-        $status = new CourseStatus(CourseStatus::ACTIVE);
+        $status = new Status(Status::ACTIVE);
 
         self::assertTrue($status->isActive());
         self::assertFalse($status->isInactive());
@@ -45,7 +45,7 @@ final class CourseStatusTest extends TestCase
 
     public function testProcessing(): void
     {
-        $status = new CourseStatus(CourseStatus::PROCESSING);
+        $status = new Status(Status::PROCESSING);
 
         self::assertTrue($status->isProcessing());
         self::assertFalse($status->isInactive());
@@ -54,7 +54,7 @@ final class CourseStatusTest extends TestCase
 
     public function testCreated(): void
     {
-        $status = new CourseStatus(CourseStatus::CREATED);
+        $status = new Status(Status::CREATED);
         self::assertTrue($status->isCreated());
         self::assertFalse($status->isInactive());
     }

@@ -6,7 +6,7 @@ namespace App\Testing\Entity;
 
 use Webmozart\Assert\Assert;
 
-final class CourseStatus
+final class Status
 {
     public const string ACTIVE = 'active';
     public const string INACTIVE = 'inactive';
