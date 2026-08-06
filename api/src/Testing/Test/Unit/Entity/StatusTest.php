@@ -14,11 +14,14 @@ use PHPUnit\Framework\TestCase;
  */
 final class StatusTest extends TestCase
 {
-    public function testSuccess(): void
+    public function testProcessing(): void
     {
-        $status = new Status(Status::ACTIVE);
+        $status = new Status(Status::PROCESSING);
 
-        self::assertEquals(Status::ACTIVE, $status->getValue());
+        self::assertEquals(Status::PROCESSING, $status->getValue());
+
+        self::assertTrue($status->isProcessing());
+        self::assertFalse($status->isCreated());
     }
 
     public function testInvalid(): void
@@ -27,35 +30,12 @@ final class StatusTest extends TestCase
         new Status('invalid');
     }
 
-    public function testInactive(): void
-    {
-        $status = new Status(Status::INACTIVE);
-
-        self::assertTrue($status->isInactive());
-        self::assertFalse($status->isActive());
-    }
-
-    public function testActive(): void
-    {
-        $status = new Status(Status::ACTIVE);
-
-        self::assertTrue($status->isActive());
-        self::assertFalse($status->isInactive());
-    }
-
-    public function testProcessing(): void
-    {
-        $status = new Status(Status::PROCESSING);
-
-        self::assertTrue($status->isProcessing());
-        self::assertFalse($status->isInactive());
-        self::assertFalse($status->isActive());
-    }
-
     public function testCreated(): void
     {
         $status = new Status(Status::CREATED);
+        self::assertEquals(Status::CREATED, $status->getValue());
+
         self::assertTrue($status->isCreated());
-        self::assertFalse($status->isInactive());
+        self::assertFalse($status->isProcessing());
     }
 }

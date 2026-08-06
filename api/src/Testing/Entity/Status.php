@@ -8,8 +8,6 @@ use Webmozart\Assert\Assert;
 
 final class Status
 {
-    public const string ACTIVE = 'active';
-    public const string INACTIVE = 'inactive';
     public const string PROCESSING = 'processing';
     public const string CREATED = 'created';
 
@@ -17,23 +15,13 @@ final class Status
 
     public function __construct(string $value)
     {
-        Assert::oneOf($value, [self::ACTIVE, self::INACTIVE, self::PROCESSING, self::CREATED]);
+        Assert::oneOf($value, [self::PROCESSING, self::CREATED]);
         $this->value = $value;
     }
 
     public function getValue(): string
     {
         return $this->value;
-    }
-
-    public static function active(): self
-    {
-        return new self(self::ACTIVE);
-    }
-
-    public static function inactive(): self
-    {
-        return new self(self::INACTIVE);
     }
 
     public static function processing(): self
@@ -44,16 +32,6 @@ final class Status
     public static function created(): self
     {
         return new self(self::CREATED);
-    }
-
-    public function isActive(): bool
-    {
-        return self::ACTIVE === $this->value;
-    }
-
-    public function isInactive(): bool
-    {
-        return self::INACTIVE === $this->value;
     }
 
     public function isProcessing(): bool
