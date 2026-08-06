@@ -34,7 +34,7 @@ final class Course implements AggregateRoot
         foreach ($questions as $question) {
             $question->appendCourse($this);
         }
-        $this->status = Status::created();
+        $this->status = Status::processing();
         $this->recordEvent(new CourseCreated($this->courseId->getValue()));
     }
 

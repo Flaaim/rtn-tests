@@ -30,7 +30,7 @@ final class CourseTest extends TestCase
         self::assertEquals($name, $course->getName());
         self::assertEquals($questions->toArray(), $course->getQuestions());
         self::assertEquals($createdAt, $course->getCreatedAt());
-        self::assertEquals(Status::created(), $course->getStatus());
+        self::assertEquals(Status::processing(), $course->getStatus());
     }
 
     public function testAddQuestions(): void {}

@@ -101,6 +101,10 @@ when@test:
 
         App\Infrastructure\Social\Registry\ClientRegistry: '@App\Infrastructure\Social\Registry\FakeRegistry'
 
+        App\SharedDomain\Filesystem\FileSystemPathInterface: '@App\SharedDomain\Filesystem\InMemoryFileSystemPath'
+        App\SharedDomain\Filesystem\InMemoryFileSystemPath:
+            factory: ['App\SharedDomain\Filesystem\InMemoryFileSystemPath', 'createReal']
+
         Symfony\Contracts\HttpClient\HttpClientInterface:
             class: Symfony\Component\HttpClient\MockHttpClient
             public: true

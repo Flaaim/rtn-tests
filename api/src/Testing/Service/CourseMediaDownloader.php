@@ -25,7 +25,8 @@ final class CourseMediaDownloader
         $this->directoryCreator->createDirectory($questionsDir);
         /** @var Question[] $questions */
         foreach ($questions as $question) {
-            if ('' !== $question->getQuestionImg()) {
+            $imgUrl = $question->getQuestionImg();
+            if ('' !== $imgUrl && str_starts_with($imgUrl, 'http')) {
                 $filename = $this->filenameGenerator->generateFilename($question->getQuestionImg());
                 $filePath = $questionsDir . \DIRECTORY_SEPARATOR . $filename;
                 $absoluteFilePath = $relativePathDir . \DIRECTORY_SEPARATOR . $filename;
@@ -34,7 +35,8 @@ final class CourseMediaDownloader
                 $question->replaceQuestionImg($absoluteFilePath);
             }
             foreach ($question->getAnswers() as $answer) {
-                if ('' !== $answer->getAnswerImg()) {
+                $answerImg = $answer->getAnswerImg();
+                if ('' !== $answerImg && str_starts_with($answerImg, 'http')) {
                     $answersDir = $this->fileSystemPath->getValue() .
                         \DIRECTORY_SEPARATOR . $relativePathDir .
                         \DIRECTORY_SEPARATOR . $answer->getId();
