@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Command\Add;
+namespace App\Testing\Command\Course\Add;
 
 use App\Infrastructure\Doctrine\Flusher;
-use App\Testing\Entity\Course;
-use App\Testing\Entity\CourseId;
-use App\Testing\Entity\CourseRepository;
+use App\Testing\Entity\Course\Course;
+use App\Testing\Entity\Course\CourseId;
+use App\Testing\Entity\Course\CourseRepository;
 use App\Testing\Service\QuestionExtractor;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;

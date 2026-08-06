@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Testing\Add\Handler;
+namespace Tests\Functional\Admin\Testing\Course\Add\Handler;
 
 use App\Parser\Exception\RemoteException;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
-use App\Testing\Entity\CourseId;
-use App\Testing\Entity\CourseRepository;
-use App\Testing\Entity\Status;
+use App\Testing\Entity\Course\CourseId;
+use App\Testing\Entity\Course\CourseRepository;
+use App\Testing\Entity\Course\Status;
 use App\Testing\Event\CourseCreated;
 use App\Testing\MessageHandler\CourseCreatedHandler;
 use Doctrine\ORM\EntityManagerInterface;

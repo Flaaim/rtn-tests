@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Testing\Service;
 
 use App\SharedDomain\Filesystem\FileSystemPathInterface;
-use App\Testing\Entity\Question;
+use App\Testing\Entity\Course\Question;
 use App\Testing\Service\Downloader\DirectoryCreatorInterface;
 use App\Testing\Service\Downloader\FileDownloaderInterface;
 use App\Testing\Service\Downloader\FilenameGeneratorInterface;

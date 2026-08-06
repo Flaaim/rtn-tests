@@ -18,8 +18,8 @@ doctrine:
             task_id: App\Parser\Entity\Task\TaskIdType
             task_status: App\Parser\Entity\Task\StatusType
 
-            course_id: App\Testing\Entity\CourseIdType
-            course_status: App\Testing\Entity\StatusType
+            course_id: App\Testing\Entity\Course\CourseIdType
+            course_status: App\Testing\Entity\Course\StatusType
 
     orm:
         validate_xml_mapping: true

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Service;
 
-use App\Testing\Entity\Answer;
-use App\Testing\Entity\Question;
+use App\Testing\Entity\Course\Answer;
+use App\Testing\Entity\Course\Question;
 use App\Testing\Service\QuestionExtractor;
 use PHPUnit\Framework\TestCase;
 

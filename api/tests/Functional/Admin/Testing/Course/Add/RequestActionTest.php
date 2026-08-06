@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Testing\Add;
+namespace Tests\Functional\Admin\Testing\Course\Add;
 
-use App\Testing\Entity\Answer;
-use App\Testing\Entity\CourseId;
-use App\Testing\Entity\CourseRepository;
-use App\Testing\Entity\Question;
+use App\Testing\Entity\Course\Answer;
+use App\Testing\Entity\Course\CourseId;
+use App\Testing\Entity\Course\CourseRepository;
+use App\Testing\Entity\Course\Question;
 use App\Testing\Event\CourseCreated;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;

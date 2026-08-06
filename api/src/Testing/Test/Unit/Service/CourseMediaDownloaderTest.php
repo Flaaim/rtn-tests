@@ -6,8 +6,8 @@ namespace App\Testing\Test\Unit\Service;
 
 use App\SharedDomain\Filesystem\FileSystemPathInterface;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
-use App\Testing\Entity\Answer;
-use App\Testing\Entity\Question;
+use App\Testing\Entity\Course\Answer;
+use App\Testing\Entity\Course\Question;
 use App\Testing\Service\CourseMediaDownloader;
 use App\Testing\Service\Downloader\DirectoryCreatorInterface;
 use App\Testing\Service\Downloader\FileDownloaderInterface;

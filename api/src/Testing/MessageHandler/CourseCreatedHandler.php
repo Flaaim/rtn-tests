@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Testing\MessageHandler;
 
 use App\Infrastructure\Doctrine\Flusher;
-use App\Testing\Entity\CourseId;
-use App\Testing\Entity\CourseRepository;
-use App\Testing\Entity\Question;
-use App\Testing\Entity\Status;
+use App\Testing\Entity\Course\CourseId;
+use App\Testing\Entity\Course\CourseRepository;
+use App\Testing\Entity\Course\Question;
+use App\Testing\Entity\Course\Status;
 use App\Testing\Event\CourseCreated;
 use App\Testing\Service\CourseMediaDownloader;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;

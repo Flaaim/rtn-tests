@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Action\V1\Admin\Testing\Course\Add;
 
 use App\Infrastructure\Http\Validator\Validator;
-use App\Testing\Command\Add\Command;
-use App\Testing\Command\Add\Handler;
+use App\Testing\Command\Course\Add\Command;
+use App\Testing\Command\Course\Add\Handler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

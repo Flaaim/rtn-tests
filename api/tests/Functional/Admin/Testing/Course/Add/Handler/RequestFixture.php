@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Testing\Add\Handler;
+namespace Tests\Functional\Admin\Testing\Course\Add\Handler;
 
-use App\Testing\Entity\Answer;
-use App\Testing\Entity\Course;
-use App\Testing\Entity\CourseId;
-use App\Testing\Entity\Question;
+use App\Testing\Entity\Course\Answer;
+use App\Testing\Entity\Course\Course;
+use App\Testing\Entity\Course\CourseId;
+use App\Testing\Entity\Course\Question;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;

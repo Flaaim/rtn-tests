@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Entity;
 
-use App\Testing\Entity\Course;
-use App\Testing\Entity\CourseId;
-use App\Testing\Entity\Status;
+use App\Testing\Entity\Course\Course;
+use App\Testing\Entity\Course\CourseId;
+use App\Testing\Entity\Course\Status;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;

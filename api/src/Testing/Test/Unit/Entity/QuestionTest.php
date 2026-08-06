@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Entity;
 
-use App\Testing\Entity\Question;
+use App\Testing\Entity\Course\Question;
 use PHPUnit\Framework\TestCase;
 
 /**
