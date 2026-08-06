@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Testing\Add\Handler;
+namespace Tests\Functional\Admin\Testing\Add\Handler;
 
 use App\Testing\Entity\Answer;
 use App\Testing\Entity\Course;

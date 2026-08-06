@@ -41,6 +41,8 @@ framework:
             'App\Parser\Event\ParseFailed': async
             'App\Parser\Event\ParseEnded': async
 
+            'App\Testing\Event\CourseCreated': async
+
 when@test:
     framework:
         messenger:

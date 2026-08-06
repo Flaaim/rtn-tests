@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Testing\Add\Handler;
+namespace Tests\Functional\Admin\Testing\Add\Handler;
 
 use App\Parser\Exception\RemoteException;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
