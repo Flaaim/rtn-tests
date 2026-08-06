@@ -14,6 +14,7 @@ final class Question
     /**
      * @param Answer[] $answers
      */
+    /** @psalm-suppress PropertyNotSetInConstructor */
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'questions')]
     #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'course_id', nullable: false, onDelete: 'RESTRICT')]
     private Course $course;
@@ -73,6 +74,11 @@ final class Question
     public function replaceQuestionImg(string $imgPath): void
     {
         $this->questionImg = $imgPath;
+    }
+
+    public function getCourse(): Course
+    {
+        return $this->course;
     }
 
     public function appendCourse(Course $course): void

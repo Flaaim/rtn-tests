@@ -44,6 +44,7 @@
                 <directory name="src/Parser/Entity" />
                 <directory name="src/OAuth" />
                 <directory name="src/Infrastructure" />
+                <directory name="src/Testing/Entity" />
             </errorLevel>
         </PossiblyUnusedMethod>
 

@@ -13,7 +13,7 @@ use RecursiveIteratorIterator;
 final class InMemoryFileSystemPath implements FileSystemPathInterface
 {
     private string $value;
-    /** @psalm-suppress UnusedProperty */
+    /** @psalm-suppress PropertyNotSetInConstructor */
     private vfsStreamDirectory $root;
     private bool $isVfs;
 
@@ -30,6 +30,12 @@ final class InMemoryFileSystemPath implements FileSystemPathInterface
                 mkdir($this->value, 0o777, true);
             }
         }
+    }
+
+    /** @psalm-suppress PossiblyUnusedMethod */
+    public function getRoot(): vfsStreamDirectory
+    {
+        return $this->root;
     }
 
     public static function create(): self

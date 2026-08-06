@@ -7,6 +7,7 @@ namespace App\Testing\Entity;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
+/** @psalm-suppress  UnusedClass */
 final class StatusType extends StringType
 {
     public const string NAME = 'course_status';

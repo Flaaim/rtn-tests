@@ -14,6 +14,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 final class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly QuestionExtractor $questionExtractor,
         private readonly CourseRepository $courses,
