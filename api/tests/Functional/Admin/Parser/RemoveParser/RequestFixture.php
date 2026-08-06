@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Parser\LaunchParse;
+namespace Tests\Functional\Admin\Parser\RemoveParser;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Role;
@@ -18,8 +18,7 @@ use Doctrine\Persistence\ObjectManager;
 final class RequestFixture extends AbstractFixture
 {
     public const string PARSER_ID = '5134bc29-ef64-414f-a0d4-b1cf0166c7e2';
-    public const string PARSER_NOT_FOUND_ID = 'a91c2d90-06e0-47d8-a8f7-8ec2ffbf160e';
-
+    public const string PARSER_NOT_FOUND = '739e3ac5-ea57-45f8-970a-15957c63ed6c';
     public const string ADMIN_EMAIL = 'admin@mail.ru';
     public const string ADMIN_PASSWORD = 'admin';
 
