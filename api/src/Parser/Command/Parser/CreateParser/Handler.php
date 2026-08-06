@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Command\CreateParser;
+namespace App\Parser\Command\Parser\CreateParser;
 
 use App\Infrastructure\Doctrine\Flusher;
 use App\Parser\Entity\Parser\Credentials;

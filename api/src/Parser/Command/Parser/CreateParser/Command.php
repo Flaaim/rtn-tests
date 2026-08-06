@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Command\CreateParser;
+namespace App\Parser\Command\Parser\CreateParser;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

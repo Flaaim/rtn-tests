@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Action\V1\Admin\Parser\AuthRefresh;
 
 use App\Infrastructure\Http\Validator\Validator;
-use App\Parser\Command\AuthRefresh\Command;
-use App\Parser\Command\AuthRefresh\Handler;
+use App\Parser\Command\Parser\AuthRefresh\Command;
+use App\Parser\Command\Parser\AuthRefresh\Handler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

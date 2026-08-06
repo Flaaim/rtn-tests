@@ -11,10 +11,7 @@ use App\Parser\Entity\Parser\Credentials;
 use App\Parser\Entity\Parser\Host;
 use App\Parser\Entity\Parser\Parser;
 use App\Parser\Entity\Parser\ParserId;
-use App\Parser\Entity\Task\Task;
-use App\Parser\Entity\Task\TaskId;
 use App\Parser\Service\Encrypt\EncryptService;
-use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 

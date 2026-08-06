@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Action\V1\Admin\Parser\Create;
 
 use App\Infrastructure\Http\Validator\Validator;
-use App\Parser\Command\CreateParser\Command;
-use App\Parser\Command\CreateParser\Handler;
+use App\Parser\Command\Parser\CreateParser\Command;
+use App\Parser\Command\Parser\CreateParser\Handler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

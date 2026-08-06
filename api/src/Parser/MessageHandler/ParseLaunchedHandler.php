@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Parser\MessageHandler;
 
 use App\Infrastructure\Doctrine\Flusher;
-use App\Parser\Command\AuthRefresh\Command as AuthRefreshCommand;
-use App\Parser\Command\AuthRefresh\Handler as AuthRefreshHandler;
+use App\Parser\Command\Parser\AuthRefresh\Command as AuthRefreshCommand;
+use App\Parser\Command\Parser\AuthRefresh\Handler as AuthRefreshHandler;
 use App\Parser\Entity\Parser\DTO\QuestionDTO;
 use App\Parser\Entity\Task\TaskId;
 use App\Parser\Entity\Task\TasksRepository;

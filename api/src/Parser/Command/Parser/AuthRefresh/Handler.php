@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Command\AuthRefresh;
+namespace App\Parser\Command\Parser\AuthRefresh;
 
 use App\Infrastructure\Doctrine\Flusher;
 use App\Parser\Entity\Parser\ParserId;

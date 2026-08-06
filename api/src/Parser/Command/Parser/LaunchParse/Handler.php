@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Parser\Command\LaunchParse;
+namespace App\Parser\Command\Parser\LaunchParse;
 
 use App\Infrastructure\Doctrine\Flusher;
 use App\Parser\Entity\Parser\ParserId;
