@@ -6,6 +6,7 @@ namespace Tests\Functional\Admin\Parser\LaunchParse;
 
 use App\Parser\Entity\Task\TaskId;
 use App\Parser\Entity\Task\TasksRepository;
+use App\Parser\Event\ParseLaunched;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -31,6 +32,7 @@ final class RequestActionTest extends WebTestCase
     protected function setUp(): void
     {
         $this->client = self::createClient();
+        $this->client->disableReboot();
 
         $this->container = $this->client->getContainer();
         $fixturesLoader = new FixturesLoader($this->container);
@@ -80,6 +82,9 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        $transport = $this->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
         $this->client->jsonRequest(
             'POST',
             '/v1/admin/parsers/' . RequestFixture::PARSER_ID . '/launch',
@@ -92,8 +97,13 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
 
-        $task = $this->tasks->get(new TaskId(RequestFixture::TASK_ID));
-        self::assertEquals(RequestFixture::TASK_ID, $task->getId()->getValue());
+        self::assertCount(1, $transport->getSent());
+
+        $message = $transport->getSent()[0]->getMessage();
+        self::assertInstanceOf(ParseLaunched::class, $message);
+
+        $task = $this->tasks->get(new TaskId($message->taskId));
+        self::assertEquals($message->taskId, $task->getId()->getValue());
         self::assertEquals(RequestFixture::PARSER_ID, $task->getParserId()->getValue());
     }
 
