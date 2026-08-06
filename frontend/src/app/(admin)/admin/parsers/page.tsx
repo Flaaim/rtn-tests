@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/table";
 import { ParserShort } from "@/interfaces/parser.interface";
 import Link from "next/link";
+import RemoveParserDialog from "@/components/Admin/Parser/RemoveParserDialog";
 
 export default async function AdminParsersPage() {
   const result = await fetchParsersAction();
@@ -64,6 +65,9 @@ export default async function AdminParsersPage() {
                   </Link>
                 </TableCell>
                 <TableCell>{parser.host}</TableCell>
+                <TableCell>
+                  <RemoveParserDialog id={parser.id} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

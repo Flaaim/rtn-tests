@@ -76,9 +76,25 @@ export async function launchParserAction(payload: LaunchParserPayload): Promise<
       }),
     });
 
-    return await handleApiResponse(response);
+    return await handleApiResponse<void>(response);
   } catch (error) {
     console.error("launchParserAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function removeParserAction(id: string): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.parser.remove(id), {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return await handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("removeParserAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

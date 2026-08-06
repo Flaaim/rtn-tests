@@ -26,6 +26,7 @@ export const API = {
     list: () => BASE_URL + `/v1/admin/parsers`,
     get: (id: string) => BASE_URL + `/v1/admin/parsers/${id}`,
     launch: (id: string) => BASE_URL + `/v1/admin/parsers/${id}/launch`,
+    remove: (id: string) => BASE_URL + `/v1/admin/parsers/${id}`,
   },
   task: {
     list: () => BASE_URL + `/v1/admin/tasks`,
