@@ -40,4 +40,9 @@ final class ParserRepository
     {
         return $this->repo->findOneBy(['id' => $parserId]);
     }
+
+    public function remove(Parser $parser): void
+    {
+        $this->em->remove($parser);
+    }
 }
