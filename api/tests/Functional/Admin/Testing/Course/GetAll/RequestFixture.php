@@ -19,6 +19,7 @@ use Doctrine\Persistence\ObjectManager;
 final class RequestFixture extends AbstractFixture
 {
     public const string COURSE_ID = '63879491-6883-4e88-8be2-295d3d260346';
+    public const string COURSE_CIPHER = 'ОТ 201.18';
     public const string COURSE_NAME = 'Первая помощь';
     public const string ADMIN_EMAIL = 'admin@mail.ru';
     public const string ADMIN_PASSWORD = 'admin';
@@ -32,7 +33,8 @@ final class RequestFixture extends AbstractFixture
             new CourseId(self::COURSE_ID),
             self::COURSE_NAME,
             new ArrayCollection($this->getQuestions()),
-            new DateTimeImmutable()
+            new DateTimeImmutable(),
+            self::COURSE_CIPHER,
         );
 
         $course->releaseEvents();

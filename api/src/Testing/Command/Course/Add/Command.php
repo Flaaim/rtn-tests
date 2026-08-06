@@ -12,6 +12,8 @@ final class Command
         #[Assert\NotBlank]
         public string $name,
         #[Assert\NotBlank]
-        public string $draft
+        public string $draft,
+        #[Assert\NotBlank]
+        public string $cipher
     ) {}
 }

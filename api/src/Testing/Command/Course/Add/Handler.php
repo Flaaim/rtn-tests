@@ -31,7 +31,8 @@ final class Handler
             $courseId,
             $command->name,
             new ArrayCollection($extracted),
-            new DateTimeImmutable()
+            new DateTimeImmutable(),
+            $command->cipher
         );
 
         $this->courses->add($course);

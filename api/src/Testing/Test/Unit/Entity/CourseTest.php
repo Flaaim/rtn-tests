@@ -24,6 +24,7 @@ final class CourseTest extends TestCase
             $name = 'Course name',
             $questions = new ArrayCollection([]),
             $createdAt = new DateTimeImmutable(),
+            $cipher = 'ОТ 201.18'
         );
 
         self::assertEquals($courseId, $course->getCourseId());
@@ -31,6 +32,7 @@ final class CourseTest extends TestCase
         self::assertEquals($questions->toArray(), $course->getQuestions());
         self::assertEquals($createdAt, $course->getCreatedAt());
         self::assertEquals(Status::processing(), $course->getStatus());
+        self::assertEquals($cipher, $course->getCipher());
     }
 
     public function testAddQuestions(): void {}

@@ -17,7 +17,7 @@ final class CourseFetcher implements CourseFetcherInterface
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $result = $qb->select('c.course_id, c.status, c.name, c.created_at')
+        $result = $qb->select('c.course_id, c.status, c.name, c.created_at, c.cipher')
             ->from('courses', 'c')
             ->orderBy('c.course_id', 'ASC')
             ->executeQuery();

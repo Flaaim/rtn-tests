@@ -29,7 +29,9 @@ final class Course implements AggregateRoot
         /** @var Question[] */
         private Collection $questions,
         #[ORM\Column(type: 'datetime_immutable')]
-        private DateTimeImmutable $createdAt
+        private DateTimeImmutable $createdAt,
+        #[ORM\Column(type: 'string', length: 255)]
+        private string $cipher,
     ) {
         foreach ($questions as $question) {
             $question->appendCourse($this);
@@ -56,6 +58,11 @@ final class Course implements AggregateRoot
     public function getQuestions(): array
     {
         return $this->questions->toArray();
+    }
+
+    public function getCipher(): string
+    {
+        return $this->cipher;
     }
 
     public function getStatus(): Status

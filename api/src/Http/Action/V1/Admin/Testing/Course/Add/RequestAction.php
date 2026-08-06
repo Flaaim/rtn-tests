@@ -27,8 +27,9 @@ final class RequestAction
         $body = $request->toArray();
         $name = $body['name'] ?? '';
         $draft = $body['draft'] ?? '';
+        $cipher = $body['cipher'] ?? '';
 
-        $command = new Command($name, $draft);
+        $command = new Command($name, $draft, $cipher);
 
         $this->validator->validate($command);
 

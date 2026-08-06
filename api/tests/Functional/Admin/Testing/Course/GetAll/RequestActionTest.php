@@ -76,6 +76,7 @@ final class RequestActionTest extends WebTestCase
             'name' => RequestFixture::COURSE_NAME,
             'status' => 'processing',
             'createdAt' => new DateTimeImmutable()->format('Y-m-d'),
+            'cipher' => RequestFixture::COURSE_CIPHER,
         ], $data[0]);
     }
 }
