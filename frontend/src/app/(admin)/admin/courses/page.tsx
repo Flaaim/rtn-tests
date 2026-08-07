@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/table";
 import { CourseItem } from "@/interfaces/course.interface";
 import { Badge } from "@/components/ui/badge";
+import Pagination from "@/components/Pagination/Pagination";
 
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   created: {
@@ -104,6 +105,11 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
             )}
           </TableBody>
         </Table>
+        <Pagination
+          currentPage={currentPage}
+          totalPages={result.data.totalCount}
+          baseUrl="/admin/courses"
+        />
       </div>
     </div>
   );
