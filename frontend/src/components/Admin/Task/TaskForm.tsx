@@ -9,6 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, XCircle, Copy, Check } from "lucide-react";
 import { generateExportableYml } from "@/lib/yml-generator";
+import AddCourseDialog from "@/components/Admin/Task/AddCourseDialog";
 
 interface TaskFormProps {
   task: TaskFull;
@@ -93,6 +94,7 @@ export default function TaskForm({ task }: TaskFormProps) {
               <p className="text-muted-foreground font-medium">Создана</p>
               <p>{formattedDate}</p>
             </div>
+            <div>{rawJsonString !== "" ? <AddCourseDialog draft={rawJsonString} /> : ""}</div>
           </div>
 
           {task.failed_reason && (

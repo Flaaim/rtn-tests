@@ -79,6 +79,7 @@ services:
       ENCRYPT_SECRET_KEY: flaaim-secret
     volumes:
       - ./api:/app
+    user: "1000:1000"
     depends_on:
       - api-postgres
       - rabbitmq
@@ -92,6 +93,7 @@ services:
       dockerfile: development/php-cli/Dockerfile
     volumes:
       - ./api:/app
+    user: "1000:1000"
     environment:
       APP_DEBUG: 1
       SITE_URL: localhost
@@ -166,6 +168,7 @@ services:
       dockerfile: development/php-cli/Dockerfile
     volumes:
       - ./api:/app
+    user: "1000:1000"
     environment:
       APP_DEBUG: 1
       SITE_URL: localhost

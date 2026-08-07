@@ -37,4 +37,7 @@ export const API = {
       return url.toString();
     },
   },
+  course: {
+    add: () => BASE_URL + `/v1/admin/testing/courses`,
+  },
 };
