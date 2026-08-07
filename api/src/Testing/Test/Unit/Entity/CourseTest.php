@@ -6,6 +6,7 @@ namespace App\Testing\Test\Unit\Entity;
 
 use App\Testing\Entity\Course\Course;
 use App\Testing\Entity\Course\CourseId;
+use App\Testing\Entity\Course\Question;
 use App\Testing\Entity\Course\Status;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -76,10 +77,37 @@ final class CourseTest extends TestCase
             'Course name',
             new ArrayCollection([]),
             new DateTimeImmutable(),
-            $cipher = 'ОТ 201.18'
+            'ОТ 201.18'
         );
         $course->rename($name = 'New Course Name');
 
         self::assertEquals($name, $course->getName());
+    }
+
+    public function testUpdateQuestions(): void
+    {
+        $questions = [
+            new Question('1872768c-65ee-4b03-8d01-0fe8f91da2c9', 'Question text', '', []),
+        ];
+
+        $course = new Course(
+            CourseId::generate(),
+            'Course name',
+            new ArrayCollection($questions),
+            new DateTimeImmutable(),
+            'ОТ 201.18'
+        );
+
+        $newQuestions = [
+            new Question('dddbdff1-4228-402b-93c1-73e23f686f7c', 'New Question', '', []),
+        ];
+
+        $course->addQuestions(new ArrayCollection($newQuestions));
+
+        self::assertEquals($newQuestions, $course->getQuestions());
+
+        /** @var Question $question */
+        $question = $course->getQuestions()[0];
+        self::assertEquals($question->getCourse(), $course);
     }
 }
