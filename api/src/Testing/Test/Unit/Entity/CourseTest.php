@@ -35,5 +35,51 @@ final class CourseTest extends TestCase
         self::assertEquals($cipher, $course->getCipher());
     }
 
-    public function testAddQuestions(): void {}
+    public function testRename(): void
+    {
+        $course = new Course(
+            CourseId::generate(),
+            'Course name',
+            new ArrayCollection([]),
+            new DateTimeImmutable(),
+            'ОТ 201.18'
+        );
+
+        $course->rename($name = 'New Course Name', $cipher = 'ОТ 203.18');
+        self::assertEquals($name, $course->getName());
+        self::assertEquals($cipher, $course->getCipher());
+    }
+
+    public function testRenameNoChanges(): void
+    {
+        $course = new Course(
+            CourseId::generate(),
+            $name = 'Course name',
+            new ArrayCollection([]),
+            new DateTimeImmutable(),
+            $cipher = 'ОТ 201.18'
+        );
+        $course->rename('Course name', 'ОТ 201.18');
+
+        self::assertEquals($name, $course->getName());
+        self::assertEquals($cipher, $course->getCipher());
+
+        $course->rename();
+        self::assertEquals($name, $course->getName());
+        self::assertEquals($cipher, $course->getCipher());
+    }
+
+    public function testRenameName(): void
+    {
+        $course = new Course(
+            CourseId::generate(),
+            'Course name',
+            new ArrayCollection([]),
+            new DateTimeImmutable(),
+            $cipher = 'ОТ 201.18'
+        );
+        $course->rename($name = 'New Course Name');
+
+        self::assertEquals($name, $course->getName());
+    }
 }

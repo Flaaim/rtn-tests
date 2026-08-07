@@ -83,4 +83,15 @@ final class Course implements AggregateRoot
             $this->questions->add($question);
         }
     }
+
+    public function rename(?string $newName = null, ?string $newCipher = null): void
+    {
+        if (null !== $newName) {
+            $this->name = $newName;
+        }
+
+        if (null !== $newCipher) {
+            $this->cipher = $newCipher;
+        }
+    }
 }
