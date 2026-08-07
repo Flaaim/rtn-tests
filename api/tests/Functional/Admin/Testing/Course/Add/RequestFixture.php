@@ -13,6 +13,7 @@ use Doctrine\Persistence\ObjectManager;
 final class RequestFixture extends AbstractFixture
 {
     public const string COURSE_NAME = 'Первая помощь';
+    public const string COURSE_CIPHER = 'ОТ 201.18';
     public const string ADMIN_EMAIL = 'admin@mail.ru';
     public const string ADMIN_PASSWORD = 'admin';
 

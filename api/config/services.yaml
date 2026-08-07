@@ -90,7 +90,7 @@ services:
     App\SharedDomain\Filesystem\FileSystemPathInterface: '@App\SharedDomain\Filesystem\FileSystemPath'
     App\SharedDomain\Filesystem\FileSystemPath:
         arguments:
-            $path: '../public/QuestionImages'
+            $path: '%kernel.project_dir%/public/QuestionImages'
 
 
 when@test:

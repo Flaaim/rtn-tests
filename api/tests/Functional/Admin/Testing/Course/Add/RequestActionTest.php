@@ -95,6 +95,7 @@ final class RequestActionTest extends WebTestCase
             [
                 'name' => RequestFixture::COURSE_NAME,
                 'draft' => $this->getDraft(),
+                'cipher' => RequestFixture::COURSE_CIPHER,
             ],
             $this->authHeaders($this->adminToken),
         );
@@ -124,6 +125,7 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals(['errors' => [
             'name' => 'This value should not be blank.',
             'draft' => 'This value should not be blank.',
+            'cipher' => 'This value should not be blank.',
         ]], $data);
     }
 
