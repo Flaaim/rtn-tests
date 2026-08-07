@@ -32,7 +32,7 @@ final class Fetcher
         $totalPages = $totalCount > 0 ? (int)ceil($totalCount / $safeLimit) : 0;
 
         return new ListCourseDTO(
-            courses: $items,
+            items: $items,
             totalCount: $totalCount,
             totalPages: $totalPages,
         );

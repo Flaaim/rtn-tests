@@ -7,8 +7,8 @@ namespace App\Testing\Query\Course\GetPaginated;
 final class ListCourseDTO
 {
     public function __construct(
-        /** @var CourseDTO[] $courses */
-        public array $courses,
+        /** @var CourseDTO[] $items */
+        public array $items,
         public int $totalCount,
         public int $totalPages,
     ) {}

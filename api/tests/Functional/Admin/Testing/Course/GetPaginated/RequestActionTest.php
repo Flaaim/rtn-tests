@@ -75,10 +75,10 @@ final class RequestActionTest extends WebTestCase
         self::assertJson($body = $this->client->getResponse()->getContent());
         $data = Json::decode($body);
 
-        self::assertCount(1, $data['courses']);
+        self::assertCount(1, $data['items']);
 
         self::assertEquals([
-            'courses' => [
+            'items' => [
                 [
                     'courseId' => RequestFixture::COURSE_ID,
                     'name' => RequestFixture::COURSE_NAME,

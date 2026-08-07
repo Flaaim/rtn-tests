@@ -3,7 +3,8 @@
 import {
   Brackets,
   ChevronRight,
-  FileText, GraduationCap,
+  FileText,
+  GraduationCap,
   LayoutDashboard,
   LogOut,
   Shield,
@@ -43,7 +44,7 @@ const items = [
       { title: "Результаты", url: "/admin/parsers/tasks", icon: FileText },
     ],
   },
-  { title: "Курсы", url: "/admin/courses", icon: GraduationCap }
+  { title: "Курсы", url: "/admin/courses", icon: GraduationCap },
 ];
 
 interface AdminSidebarProps {

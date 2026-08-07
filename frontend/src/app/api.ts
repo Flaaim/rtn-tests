@@ -39,5 +39,13 @@ export const API = {
   },
   course: {
     add: () => BASE_URL + `/v1/admin/testing/courses`,
+    getPaginated: (page: number, perPage: number, search?: string) => {
+      const params = new URLSearchParams({
+        page: String(page),
+        perPage: String(perPage),
+      });
+      if (search) params.set("search", search);
+      return BASE_URL + `/v1/admin/testing/courses?${params.toString()}`;
+    },
   },
 };
