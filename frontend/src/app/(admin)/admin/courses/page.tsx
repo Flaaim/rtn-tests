@@ -12,6 +12,7 @@ import {
 import { CourseItem } from "@/interfaces/course.interface";
 import { Badge } from "@/components/ui/badge";
 import Pagination from "@/components/Pagination/Pagination";
+import CourseSearch from "@/components/Admin/Course/CourseSearch";
 
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   created: {
@@ -24,14 +25,15 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   },
 };
 interface AdminCoursesPageProps {
-  searchParams: Promise<{ page?: string; perPage?: string; search?: string }>;
+  searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
 }
 
 export default async function AdminCoursesPage({ searchParams }: AdminCoursesPageProps) {
   const currentPage = Number((await searchParams).page) || 1;
   const perPage = Number((await searchParams).perPage) || 15;
+  const search = String((await searchParams).q || "");
 
-  const result = await fetchCoursesPaginatedAction(currentPage, perPage);
+  const result = await fetchCoursesPaginatedAction(currentPage, perPage, search);
 
   if (!result.ok || !result.data) {
     return (
@@ -61,6 +63,7 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Курсы</h1>
       </div>
+      <CourseSearch />
       <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
