@@ -4,7 +4,7 @@ import { ApiResponse } from "@/interfaces/response.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
 import { handleApiResponse } from "@/lib/handleApiResponse";
-import {AddCoursePayload} from "@/interfaces/course.interface";
+import { AddCoursePayload } from "@/interfaces/course.interface";
 
 export async function addCourseAction(payload: AddCoursePayload): Promise<ApiResponse<void>> {
   try {
