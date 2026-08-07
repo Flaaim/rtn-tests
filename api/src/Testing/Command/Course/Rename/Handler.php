@@ -10,6 +10,7 @@ use App\Testing\Entity\Course\CourseRepository;
 
 final class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly CourseRepository $courses,
         private readonly Flusher $flusher
