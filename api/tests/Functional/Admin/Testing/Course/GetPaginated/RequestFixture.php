@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Testing\Course\GetAll;
+namespace Tests\Functional\Admin\Testing\Course\GetPaginated;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Role;

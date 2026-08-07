@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Query\Course\FindAll;
+namespace App\Testing\Query\Course\GetPaginated;
 
 use DateTimeImmutable;
 

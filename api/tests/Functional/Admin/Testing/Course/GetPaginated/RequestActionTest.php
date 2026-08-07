@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Testing\Course\GetAll;
+namespace Tests\Functional\Admin\Testing\Course\GetPaginated;
 
 use DateTimeImmutable;
 use Psr\Container\ContainerInterface;
@@ -62,21 +62,33 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $this->client->jsonRequest('GET', '/v1/admin/testing/courses', [], $this->authHeaders($this->adminToken));
+        $this->client->catchExceptions(false);
+        $this->client->jsonRequest(
+            'GET',
+            '/v1/admin/testing/courses?page=1&limit=15',
+            [],
+            $this->authHeaders($this->adminToken)
+        );
 
         self::assertEquals(200, $this->client->getResponse()->getStatusCode());
 
         self::assertJson($body = $this->client->getResponse()->getContent());
         $data = Json::decode($body);
 
-        self::assertCount(1, $data);
+        self::assertCount(1, $data['courses']);
 
         self::assertEquals([
-            'courseId' => RequestFixture::COURSE_ID,
-            'name' => RequestFixture::COURSE_NAME,
-            'status' => 'processing',
-            'createdAt' => new DateTimeImmutable()->format('Y-m-d'),
-            'cipher' => RequestFixture::COURSE_CIPHER,
-        ], $data[0]);
+            'courses' => [
+                [
+                    'courseId' => RequestFixture::COURSE_ID,
+                    'name' => RequestFixture::COURSE_NAME,
+                    'status' => 'processing',
+                    'createdAt' => new DateTimeImmutable()->format('Y-m-d'),
+                    'cipher' => RequestFixture::COURSE_CIPHER,
+                ],
+            ],
+            'totalCount' => 1,
+            'totalPages' => 1,
+        ], $data);
     }
 }
