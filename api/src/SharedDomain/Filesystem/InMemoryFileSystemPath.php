@@ -4,48 +4,25 @@ declare(strict_types=1);
 
 namespace App\SharedDomain\Filesystem;
 
-use FilesystemIterator;
-use org\bovigo\vfs\vfsStream;
-use org\bovigo\vfs\vfsStreamDirectory;
-use RecursiveDirectoryIterator;
-use RecursiveIteratorIterator;
+use Symfony\Component\Filesystem\Filesystem;
 
 final class InMemoryFileSystemPath implements FileSystemPathInterface
 {
     private string $value;
-    /** @psalm-suppress PropertyNotSetInConstructor */
-    private vfsStreamDirectory $root;
-    private bool $isVfs;
+    private Filesystem $filesystem;
 
-    private function __construct(bool $useVfs = true)
+    private function __construct()
     {
-        $this->isVfs = $useVfs;
-
-        if ($useVfs) {
-            $this->root = vfsStream::setup('storage');
-            $this->value = vfsStream::url('storage');
-        } else {
-            $this->value = sys_get_temp_dir() . '/phpunit_real_storage';
-            if (!is_dir($this->value)) {
-                mkdir($this->value, 0o777, true);
-            }
+        $this->filesystem = new Filesystem();
+        $this->value = sys_get_temp_dir() . '/phpunit_real_storage';
+        if (!$this->filesystem->exists($this->value)) {
+            $this->filesystem->mkdir($this->value);
         }
-    }
-
-    /** @psalm-suppress PossiblyUnusedMethod */
-    public function getRoot(): vfsStreamDirectory
-    {
-        return $this->root;
-    }
-
-    public static function create(): self
-    {
-        return new self();
     }
 
     public static function createReal(): self
     {
-        return new self(false);
+        return new self();
     }
 
     public function getValue(): string
@@ -55,20 +32,8 @@ final class InMemoryFileSystemPath implements FileSystemPathInterface
 
     public function clear(): void
     {
-        if ($this->isVfs) {
-            vfsStream::setup('storage');
-        } else {
-            if (is_dir($this->value)) {
-                $files = new RecursiveIteratorIterator(
-                    new RecursiveDirectoryIterator($this->value, FilesystemIterator::SKIP_DOTS),
-                    RecursiveIteratorIterator::CHILD_FIRST
-                );
-
-                foreach ($files as $fileinfo) {
-                    $todo = ($fileinfo->isDir() ? 'rmdir' : 'unlink');
-                    $todo($fileinfo->getRealPath());
-                }
-            }
+        if ($this->filesystem->exists($this->value)) {
+            $this->filesystem->remove($this->value);
         }
     }
 }

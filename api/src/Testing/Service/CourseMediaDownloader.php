@@ -6,6 +6,7 @@ namespace App\Testing\Service;
 
 use App\SharedDomain\Filesystem\FileSystemPathInterface;
 use App\Testing\Entity\Course\Question;
+use App\Testing\Service\Downloader\DirectoryCleanerInterface;
 use App\Testing\Service\Downloader\DirectoryCreatorInterface;
 use App\Testing\Service\Downloader\FileDownloaderInterface;
 use App\Testing\Service\Downloader\FilenameGeneratorInterface;
@@ -17,12 +18,16 @@ final class CourseMediaDownloader
         private readonly FilenameGeneratorInterface $filenameGenerator,
         private readonly FileSystemPathInterface $fileSystemPath,
         private readonly DirectoryCreatorInterface $directoryCreator,
+        private readonly DirectoryCleanerInterface $directoryCleaner,
     ) {}
 
     public function downloadMedia(array $questions, string $relativePathDir): void
     {
         $questionsDir = $this->fileSystemPath->getValue() . \DIRECTORY_SEPARATOR . $relativePathDir;
+
+        $this->directoryCleaner->cleanDirectory($questionsDir);
         $this->directoryCreator->createDirectory($questionsDir);
+
         /** @var Question[] $questions */
         foreach ($questions as $question) {
             $imgUrl = $question->getQuestionImg();

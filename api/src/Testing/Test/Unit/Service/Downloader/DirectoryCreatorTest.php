@@ -7,6 +7,7 @@ namespace App\Testing\Test\Unit\Service\Downloader;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use App\Testing\Service\Downloader\DirectoryCreator;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Filesystem\Filesystem;
 
 /**
  * @internal
@@ -18,7 +19,7 @@ final class DirectoryCreatorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->fileSystem = InMemoryFileSystemPath::create();
+        $this->fileSystem = InMemoryFileSystemPath::createReal();
     }
 
     protected function tearDown(): void
@@ -28,7 +29,7 @@ final class DirectoryCreatorTest extends TestCase
 
     public function testSuccess(): void
     {
-        $creator = new DirectoryCreator();
+        $creator = new DirectoryCreator(new Filesystem());
         $creator->createDirectory($dir = $this->fileSystem->getValue() . '/one');
 
         self::assertDirectoryExists($dir);

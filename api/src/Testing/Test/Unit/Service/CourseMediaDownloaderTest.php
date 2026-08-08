@@ -9,6 +9,7 @@ use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use App\Testing\Entity\Course\Answer;
 use App\Testing\Entity\Course\Question;
 use App\Testing\Service\CourseMediaDownloader;
+use App\Testing\Service\Downloader\DirectoryCleanerInterface;
 use App\Testing\Service\Downloader\DirectoryCreatorInterface;
 use App\Testing\Service\Downloader\FileDownloaderInterface;
 use App\Testing\Service\Downloader\FilenameGeneratorInterface;
@@ -29,6 +30,8 @@ final class CourseMediaDownloaderTest extends TestCase
     private FileSystemPathInterface $fileSystemPath;
     /** @var DirectoryCreatorInterface&MockObject */
     private DirectoryCreatorInterface $directoryCreator;
+    /** @var DirectoryCleanerInterface&MockObject */
+    private DirectoryCleanerInterface $directoryCleaner;
 
     protected function setUp(): void
     {
@@ -37,18 +40,23 @@ final class CourseMediaDownloaderTest extends TestCase
         $this->fileSystemPath = InMemoryFileSystemPath::createReal();
         $this->fileDownloader = $this->createMock(FileDownloaderInterface::class);
         $this->directoryCreator = $this->createMock(DirectoryCreatorInterface::class);
+        $this->directoryCleaner = $this->createMock(DirectoryCleanerInterface::class);
     }
 
-    public function testSuccess(): void
+    public function testAddNew(): void
     {
         $mediaDownloader = new CourseMediaDownloader(
             $this->fileDownloader,
             $this->filenameGenerator,
             $this->fileSystemPath,
             $this->directoryCreator,
+            $this->directoryCleaner
         );
+
         $relativePath = '12345';
         $callCount = 1;
+        $this->directoryCleaner->expects(self::once())->method('cleanDirectory');
+
         $this->directoryCreator->expects(self::atLeast(2))
             ->method('createDirectory')
             ->willReturnCallback(function (string $param) use (&$callCount, $relativePath): bool {

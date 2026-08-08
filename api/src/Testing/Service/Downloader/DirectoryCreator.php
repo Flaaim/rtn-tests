@@ -5,17 +5,23 @@ declare(strict_types=1);
 namespace App\Testing\Service\Downloader;
 
 use DomainException;
+use Symfony\Component\Filesystem\Filesystem;
+use Throwable;
 
 final class DirectoryCreator implements DirectoryCreatorInterface
 {
+    public function __construct(
+        private readonly Filesystem $filesystem,
+    ) {}
+
     public function createDirectory(string $path): void
     {
-        if (is_dir($path)) {
-            return;
-        }
-        $status = mkdir($path, 0o777, true);
-        if (false === $status) {
-            throw new DomainException('Unable to create directory ' . $path);
+        try {
+            if (!$this->filesystem->exists($path)) {
+                $this->filesystem->mkdir($path);
+            }
+        } catch (Throwable $exception) {
+            throw new DomainException("Unable to create directory {$path} " . $exception->getMessage());
         }
     }
 }
