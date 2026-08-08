@@ -9,7 +9,6 @@ use App\Testing\Entity\Course\Course;
 use App\Testing\Entity\Course\CourseId;
 use App\Testing\Entity\Course\Question;
 use DateTimeImmutable;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -24,7 +23,7 @@ final class RequestFixture extends AbstractFixture
         $course = new Course(
             new CourseId(self::COURSE_ID),
             self::COURSE_NAME,
-            new ArrayCollection($this->getQuestions()),
+            $this->getQuestions(),
             new DateTimeImmutable(),
             self::COURSE_CIPHER
         );

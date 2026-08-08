@@ -9,7 +9,6 @@ use App\Testing\Entity\Course\CourseId;
 use App\Testing\Entity\Course\Question;
 use App\Testing\Entity\Course\Status;
 use DateTimeImmutable;
-use Doctrine\Common\Collections\ArrayCollection;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,14 +22,14 @@ final class CourseTest extends TestCase
         $course = new Course(
             $courseId = CourseId::generate(),
             $name = 'Course name',
-            $questions = new ArrayCollection([]),
+            $questions = [],
             $createdAt = new DateTimeImmutable(),
             $cipher = 'ОТ 201.18'
         );
 
         self::assertEquals($courseId, $course->getCourseId());
         self::assertEquals($name, $course->getName());
-        self::assertEquals($questions->toArray(), $course->getQuestions());
+        self::assertEquals($questions, $course->getQuestions());
         self::assertEquals($createdAt, $course->getCreatedAt());
         self::assertEquals(Status::processing(), $course->getStatus());
         self::assertEquals($cipher, $course->getCipher());
@@ -41,7 +40,7 @@ final class CourseTest extends TestCase
         $course = new Course(
             CourseId::generate(),
             'Course name',
-            new ArrayCollection([]),
+            [],
             new DateTimeImmutable(),
             'ОТ 201.18'
         );
@@ -56,7 +55,7 @@ final class CourseTest extends TestCase
         $course = new Course(
             CourseId::generate(),
             $name = 'Course name',
-            new ArrayCollection([]),
+            [],
             new DateTimeImmutable(),
             $cipher = 'ОТ 201.18'
         );
@@ -75,7 +74,7 @@ final class CourseTest extends TestCase
         $course = new Course(
             CourseId::generate(),
             'Course name',
-            new ArrayCollection([]),
+            [],
             new DateTimeImmutable(),
             'ОТ 201.18'
         );
@@ -93,7 +92,7 @@ final class CourseTest extends TestCase
         $course = new Course(
             CourseId::generate(),
             'Course name',
-            new ArrayCollection($questions),
+            $questions,
             new DateTimeImmutable(),
             'ОТ 201.18'
         );
@@ -102,8 +101,9 @@ final class CourseTest extends TestCase
             new Question('dddbdff1-4228-402b-93c1-73e23f686f7c', 'New Question', '', []),
         ];
 
-        $course->addQuestions(new ArrayCollection($newQuestions));
+        $course->addQuestions($newQuestions);
 
+        self::assertCount(1, $course->getQuestions());
         self::assertEquals($newQuestions, $course->getQuestions());
 
         /** @var Question $question */

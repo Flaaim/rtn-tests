@@ -42,6 +42,7 @@ framework:
             'App\Parser\Event\ParseEnded': async
 
             'App\Testing\Event\CourseCreated': async
+            'App\Testing\Event\CourseUpdated': async
 
 when@test:
     framework:

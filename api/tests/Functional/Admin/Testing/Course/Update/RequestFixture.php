@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Testing\Course\GetPaginated;
+namespace Tests\Functional\Admin\Testing\Course\Update;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Role;
@@ -17,7 +17,8 @@ use Doctrine\Persistence\ObjectManager;
 
 final class RequestFixture extends AbstractFixture
 {
-    public const string COURSE_ID = '63879491-6883-4e88-8be2-295d3d260346';
+    public const string COURSE_ID = 'dddbdff1-4228-402b-93c1-73e23f686f7c';
+    public const string COURSE_NOT_FOUND_ID = '1872768c-65ee-4b03-8d01-0fe8f91da2c9';
     public const string COURSE_CIPHER = 'ОТ 201.18';
     public const string COURSE_NAME = 'Первая помощь';
     public const string ADMIN_EMAIL = 'admin@mail.ru';
@@ -35,7 +36,6 @@ final class RequestFixture extends AbstractFixture
             new DateTimeImmutable(),
             self::COURSE_CIPHER,
         );
-
         $course->releaseEvents();
 
         $manager->persist($course);
@@ -54,6 +54,7 @@ final class RequestFixture extends AbstractFixture
             ->active()
             ->build();
         $manager->persist($user);
+
         $manager->flush();
     }
 
@@ -61,7 +62,7 @@ final class RequestFixture extends AbstractFixture
     {
         return [
             new Question(
-                '90be077454a14f3d965c4b07645e3769',
+                'e2ac20f6-c990-48b5-934b-2a9a7720edf8',
                 'Что необходимо сделать после восстановления самостоятельного дыхания у пострадавшего с отсутствующим сознанием?',
                 'https://olimpoks.hydroschool.ru/QuestionImages/c92099/9fef1bcf-9c6c-4010-a670-3dc105abc574/10/1.jpg',
                 [
@@ -92,7 +93,7 @@ final class RequestFixture extends AbstractFixture
                 ]
             ),
             new Question(
-                '6724ac7652bc47d6913ab8ca11b2ea36',
+                '384890bd-933d-454b-9b53-3c22211eb030',
                 'На какое время допускается снять кровоостанавливающий жгут, если максимальное время его наложения истекло, а пострадавшего не транспортировали в медицинскую организацию?',
                 '',
                 [

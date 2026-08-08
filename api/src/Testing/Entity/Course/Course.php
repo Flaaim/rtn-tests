@@ -7,7 +7,9 @@ namespace App\Testing\Entity\Course;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use App\Testing\Event\CourseCreated;
+use App\Testing\Event\CourseUpdated;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,6 +20,8 @@ final class Course implements AggregateRoot
     use EventTrait;
     #[ORM\Column(type: 'course_status')]
     private Status $status;
+    #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'course', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $questions;
 
     public function __construct(
         #[ORM\Id]
@@ -25,14 +29,13 @@ final class Course implements AggregateRoot
         private CourseId $courseId,
         #[ORM\Column(type: 'string', length: 255)]
         private string $name,
-        #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'course', cascade: ['persist', 'remove'], orphanRemoval: true)]
-        /** @var Question[] */
-        private Collection $questions,
+        array $questions,
         #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $createdAt,
         #[ORM\Column(type: 'string', length: 255)]
         private string $cipher,
     ) {
+        $this->questions = new ArrayCollection($questions);
         foreach ($questions as $question) {
             $question->appendCourse($this);
         }
@@ -75,13 +78,19 @@ final class Course implements AggregateRoot
         $this->status = $status;
     }
 
-    public function addQuestions(Collection $newQuestions): void
+    public function addQuestions(array $newQuestions): void
     {
+        $this->status = Status::processing();
+
+        foreach ($this->questions as $existingQuestion) {
+            $this->questions->removeElement($existingQuestion);
+        }
         $this->questions->clear();
         foreach ($newQuestions as $question) {
             $question->appendCourse($this);
             $this->questions->add($question);
         }
+        $this->recordEvent(new CourseUpdated($this->courseId->getValue()));
     }
 
     public function rename(?string $newName = null, ?string $newCipher = null): void

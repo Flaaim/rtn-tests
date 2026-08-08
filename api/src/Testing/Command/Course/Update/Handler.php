@@ -2,18 +2,16 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Command\Course\Add;
+namespace App\Testing\Command\Course\Update;
 
 use App\Infrastructure\Doctrine\Flusher;
-use App\Testing\Entity\Course\Course;
 use App\Testing\Entity\Course\CourseId;
 use App\Testing\Entity\Course\CourseRepository;
 use App\Testing\Service\QuestionExtractor;
-use DateTimeImmutable;
 
 final class Handler
 {
-    /** @psalm-suppress PossiblyUnusedMethod */
+    /** @psalm-suppress PossiblyUnusedMethod  */
     public function __construct(
         private readonly QuestionExtractor $questionExtractor,
         private readonly CourseRepository $courses,
@@ -22,19 +20,11 @@ final class Handler
 
     public function handle(Command $command): void
     {
-        $courseId = CourseId::generate();
+        $course = $this->courses->get(new CourseId($command->id));
 
         $extracted = $this->questionExtractor->extract($command->draft);
 
-        $course = new Course(
-            $courseId,
-            $command->name,
-            $extracted,
-            new DateTimeImmutable(),
-            $command->cipher
-        );
-
-        $this->courses->add($course);
+        $course->addQuestions($extracted);
 
         $this->flusher->flush();
     }
