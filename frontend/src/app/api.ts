@@ -47,5 +47,6 @@ export const API = {
       if (search) params.set("search", search);
       return BASE_URL + `/v1/admin/testing/courses?${params.toString()}`;
     },
+    get: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}`,
   },
 };
