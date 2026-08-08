@@ -36,7 +36,10 @@ final class DirectoryCleanerTest extends WebTestCase
 
         self::assertDirectoryExists($this->filesystem->getValue() . '/one');
 
-        self::assertCount(1, glob($this->filesystem->getValue() . '/one/*.*'));
+        $files = glob($this->filesystem->getValue() . '/one/*.*');
+
+        self::assertNotFalse($files);
+        self::assertCount(1, $files);
         $creator = new DirectoryCleaner(new Filesystem());
 
         $creator->cleanDirectory($this->filesystem->getValue() . '/one');
