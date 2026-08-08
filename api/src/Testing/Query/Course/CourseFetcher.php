@@ -56,4 +56,22 @@ final class CourseFetcher implements CourseFetcherInterface
             'totalCount' => $totalCount,
         ];
     }
+
+    public function getOneById(string $id): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select('c.course_id, c.status, c.name, c.created_at, c.cipher')
+            ->from('courses', 'c')
+            ->where($qb->expr()->eq('c.course_id', ':id'))
+            ->setParameter('id', $id)
+            ->executeQuery();
+
+        $result = $result->fetchAssociative();
+
+        if (false === $result) {
+            return [];
+        }
+        return $result;
+    }
 }
