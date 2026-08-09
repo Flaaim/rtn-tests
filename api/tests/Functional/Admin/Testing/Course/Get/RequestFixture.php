@@ -11,6 +11,7 @@ use App\Testing\Entity\Course\Answer;
 use App\Testing\Entity\Course\Course;
 use App\Testing\Entity\Course\CourseId;
 use App\Testing\Entity\Course\Question;
+use App\Testing\Entity\Course\QuestionForm;
 use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
@@ -90,7 +91,8 @@ final class RequestFixture extends AbstractFixture
                         'isCorrect' => true,
                         'answerImg' => '',
                     ]),
-                ]
+                ],
+                QuestionForm::singleChoice()
             ),
             new Question(
                 '6724ac7652bc47d6913ab8ca11b2ea36',
@@ -121,7 +123,8 @@ final class RequestFixture extends AbstractFixture
                         'isCorrect' => true,
                         'answerImg' => '',
                     ]),
-                ]
+                ],
+                QuestionForm::singleChoice()
             ),
         ];
     }

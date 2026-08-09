@@ -61,7 +61,7 @@ final class CourseFetcher implements CourseFetcherInterface
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $result = $qb->select('c.course_id, c.status, c.name, c.created_at, c.cipher, q.id as question_id, q.text, q.question_img, q.answers')
+        $result = $qb->select('c.course_id, c.status, c.name, c.created_at, c.cipher, q.id as question_id, q.text, q.question_img, q.answers, q.form')
             ->from('courses', 'c')
             ->leftJoin('c', 'questions', 'q', 'c.course_id = q.course_id')
             ->where($qb->expr()->eq('c.course_id', ':id'))
@@ -90,6 +90,7 @@ final class CourseFetcher implements CourseFetcherInterface
                     'text'        => $row['text'],
                     'question_img' => $row['question_img'],
                     'answers'     => json_decode($row['answers'], true, 512, JSON_THROW_ON_ERROR),
+                    'form'        => $row['form'],
                 ];
             }
         }

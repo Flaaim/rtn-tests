@@ -6,6 +6,7 @@ namespace App\Testing\Test\Unit\Service;
 
 use App\Testing\Entity\Course\Answer;
 use App\Testing\Entity\Course\Question;
+use App\Testing\Entity\Course\QuestionForm;
 use App\Testing\Service\QuestionExtractor;
 use PHPUnit\Framework\TestCase;
 
@@ -125,7 +126,8 @@ final class QuestionExtractorTest extends TestCase
                         'isCorrect' => true,
                         'answerImg' => '',
                     ]),
-                ]
+                ],
+                QuestionForm::singleChoice()
             ),
             new Question(
                 '6724ac7652bc47d6913ab8ca11b2ea36',
@@ -156,7 +158,8 @@ final class QuestionExtractorTest extends TestCase
                         'isCorrect' => true,
                         'answerImg' => '',
                     ]),
-                ]
+                ],
+                QuestionForm::singleChoice()
             ),
         ];
     }

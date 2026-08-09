@@ -8,6 +8,7 @@ use App\Testing\Entity\Course\Answer;
 use App\Testing\Entity\Course\CourseId;
 use App\Testing\Entity\Course\CourseRepository;
 use App\Testing\Entity\Course\Question;
+use App\Testing\Entity\Course\QuestionForm;
 use App\Testing\Event\CourseCreated;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -231,7 +232,8 @@ final class RequestActionTest extends WebTestCase
                         'isCorrect' => true,
                         'answerImg' => '',
                     ]),
-                ]
+                ],
+                QuestionForm::singleChoice()
             ),
             new Question(
                 '6724ac7652bc47d6913ab8ca11b2ea36',
@@ -262,7 +264,8 @@ final class RequestActionTest extends WebTestCase
                         'isCorrect' => true,
                         'answerImg' => '',
                     ]),
-                ]
+                ],
+                QuestionForm::singleChoice()
             ),
         ];
     }

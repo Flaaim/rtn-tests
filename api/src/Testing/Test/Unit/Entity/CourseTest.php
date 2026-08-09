@@ -7,6 +7,7 @@ namespace App\Testing\Test\Unit\Entity;
 use App\Testing\Entity\Course\Course;
 use App\Testing\Entity\Course\CourseId;
 use App\Testing\Entity\Course\Question;
+use App\Testing\Entity\Course\QuestionForm;
 use App\Testing\Entity\Course\Status;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -86,7 +87,13 @@ final class CourseTest extends TestCase
     public function testUpdateQuestions(): void
     {
         $questions = [
-            new Question('1872768c-65ee-4b03-8d01-0fe8f91da2c9', 'Question text', '', []),
+            new Question(
+                '1872768c-65ee-4b03-8d01-0fe8f91da2c9',
+                'Question text',
+                '',
+                [],
+                QuestionForm::singleChoice()
+            ),
         ];
 
         $course = new Course(
@@ -98,7 +105,13 @@ final class CourseTest extends TestCase
         );
 
         $newQuestions = [
-            new Question('dddbdff1-4228-402b-93c1-73e23f686f7c', 'New Question', '', []),
+            new Question(
+                'dddbdff1-4228-402b-93c1-73e23f686f7c',
+                'New Question',
+                '',
+                [],
+                QuestionForm::singleChoice()
+            ),
         ];
 
         $course->addQuestions($newQuestions);

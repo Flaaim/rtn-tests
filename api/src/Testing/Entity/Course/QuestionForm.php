@@ -6,7 +6,7 @@ namespace App\Testing\Entity\Course;
 
 use Webmozart\Assert\Assert;
 
-final class Type
+final class QuestionForm
 {
     public const string SINGLE_CHOICE = 'single_choice';
     public const string MULTIPLE_CHOICE = 'multiple_choice';

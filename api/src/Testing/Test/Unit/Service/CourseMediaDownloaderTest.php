@@ -8,6 +8,7 @@ use App\SharedDomain\Filesystem\FileSystemPathInterface;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use App\Testing\Entity\Course\Answer;
 use App\Testing\Entity\Course\Question;
+use App\Testing\Entity\Course\QuestionForm;
 use App\Testing\Service\CourseMediaDownloader;
 use App\Testing\Service\Downloader\DirectoryCleanerInterface;
 use App\Testing\Service\Downloader\DirectoryCreatorInterface;
@@ -112,13 +113,15 @@ final class CourseMediaDownloaderTest extends TestCase
                             'answerImg' => 'https://olimpoks.hydroschool.ru/QuestionImages/92cdb7c1-efee-4790-bed7-f194f02da614/9/3.jpg',
                         ]
                     ),
-                ]
+                ],
+                QuestionForm::singleChoice()
             ),
             new Question(
                 'e6616f72-0af2-4510-96bb-9ce92265a712',
                 'Вопрос 2',
                 'https://olimpoks.hydroschool.ru/QuestionImages/c92192/145d3d30-5398-478d-bbb9-82c820f8ac1f/9/1.jpg',
-                []
+                [],
+                QuestionForm::singleChoice()
             ),
         ];
     }

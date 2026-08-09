@@ -11,7 +11,8 @@ final readonly class QuestionDTO
         public string $id,
         public string $text,
         public string $questionImg,
-        public array $answers
+        public array $answers,
+        public string $form,
     ) {}
 
     public static function fromArray(array $data): self
@@ -25,7 +26,8 @@ final readonly class QuestionDTO
             id: $data['id'],
             text: $data['text'],
             questionImg: $data['question_img'] ?? '',
-            answers: $answers
+            answers: $answers,
+            form: $data['form'],
         );
     }
 }

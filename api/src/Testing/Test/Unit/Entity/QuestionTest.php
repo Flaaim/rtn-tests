@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Testing\Test\Unit\Entity;
 
 use App\Testing\Entity\Course\Question;
+use App\Testing\Entity\Course\QuestionForm;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,7 +20,8 @@ final class QuestionTest extends TestCase
             $id = '0090e2f3-8f3c-4c4c-8441-d22f778f85ad',
             $text = 'Вопрос 1',
             $questionImg = 'https://image.com',
-            []
+            [],
+            QuestionForm::singleChoice()
         );
 
         self::assertEquals($id, $question->getId());

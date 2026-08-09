@@ -29,16 +29,22 @@ final class Question
         private string $questionImg,
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $answers,
+        #[ORM\Column(type: 'question_form')]
+        private QuestionForm $form
     ) {}
 
     public static function fromDraft(array $data): self
     {
         $answers = array_map(static fn (array $answerData) => Answer::fromArray($answerData), $data['answers']);
+
+        $form = self::detectForm($data['text'], $answers);
+
         return new self(
             id: $data['id'],
             text: $data['text'],
             questionImg: $data['questionImg'],
-            answers: $answers
+            answers: $answers,
+            form: $form
         );
     }
 
@@ -71,6 +77,16 @@ final class Question
         return $this->answers;
     }
 
+    public function getForm(): QuestionForm
+    {
+        return $this->form;
+    }
+
+    public function resolveForm(QuestionForm $form): void
+    {
+        $this->form = $form;
+    }
+
     public function replaceQuestionImg(string $imgPath): void
     {
         $this->questionImg = $imgPath;
@@ -89,5 +105,43 @@ final class Question
     public function markAnswersAsUpdated(): void
     {
         $this->answers = array_values($this->answers);
+    }
+
+    private static function detectForm(string $text, array $answers): QuestionForm
+    {
+        $totalAnswers = \count($answers);
+        $correctedAnswers = 0;
+
+        foreach ($answers as $answer) {
+            if (true === $answer->isCorrect()) {
+                ++$correctedAnswers;
+            }
+        }
+
+        $lowerText = mb_strtolower($text);
+
+        if ($correctedAnswers === $totalAnswers && $totalAnswers > 0) {
+            if (
+                str_contains($lowerText, 'установите последовательность') ||
+                str_contains($lowerText, 'установите правильную последовательность') ||
+                str_contains($lowerText, 'порядок действий')
+            ) {
+                return QuestionForm::sequence();
+            }
+
+            if (str_contains($lowerText, 'установите соответствие')) {
+                return QuestionForm::matching();
+            }
+        }
+
+        if (1 === $correctedAnswers) {
+            return QuestionForm::singleChoice();
+        }
+
+        if ($correctedAnswers > 1) {
+            return QuestionForm::multipleChoice();
+        }
+
+        return QuestionForm::singleChoice();
     }
 }
