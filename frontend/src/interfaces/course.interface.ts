@@ -1,5 +1,3 @@
-import {Question} from "@/interfaces/task.interface";
-
 export interface AddCoursePayload {
   name: string;
   cipher: string;
@@ -26,5 +24,21 @@ export interface CourseFull {
   name: string;
   cipher: string;
   createdAt: string;
-  questions: Question[]
+  questions: Question[];
+}
+
+export interface Question {
+  id: string;
+  number: number;
+  text: string;
+  questionImg: string;
+  answers: Answer[];
+  form: string;
+}
+
+interface Answer {
+  id: string;
+  text: string;
+  isCorrect: boolean;
+  answerImg: string;
 }
