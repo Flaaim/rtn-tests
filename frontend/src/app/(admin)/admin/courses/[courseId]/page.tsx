@@ -4,6 +4,7 @@ import AdminBreadcrumbs from "@/components/Admin/AdminBreadcrumbs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CourseStatusBadge from "@/components/Admin/Course/Status/CourseStatusBadge";
 import { CheckCircle2, XCircle } from "lucide-react";
+import { PUBLIC_ASSETS_URL } from "@/app/api";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
@@ -78,7 +79,7 @@ export default async function CourseOverviewPage({ params }: CourseOverviewPageP
                   <div className="relative rounded-md overflow-hidden border inline-block">
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
-                      src={question.questionImg}
+                      src={`${PUBLIC_ASSETS_URL}${process.env.NEXT_PUBLIC_QUESTION_IMAGES}${question.questionImg}`}
                       alt={`К вопросу ${question.number}`}
                       className="max-h-64 object-contain"
                     />
@@ -113,7 +114,7 @@ export default async function CourseOverviewPage({ params }: CourseOverviewPageP
                         <div className="mt-auto">
                           {/* eslint-disable-next-line @next/next/no-img-element */}
                           <img
-                            src={answer.answerImg}
+                            src={`${PUBLIC_ASSETS_URL}${process.env.NEXT_PUBLIC_QUESTION_IMAGES}${answer.answerImg}`}
                             alt="К ответу"
                             className="max-h-32 rounded border object-contain"
                           />

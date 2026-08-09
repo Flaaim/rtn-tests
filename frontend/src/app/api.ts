@@ -1,5 +1,6 @@
 const isServer = typeof window === "undefined";
-const BASE_URL = isServer
+export const PUBLIC_ASSETS_URL = process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8081";
+export const BASE_URL = isServer
   ? process.env.INTERNAL_BACKEND_URL || process.env.NEXT_PUBLIC_BACKEND_URL || "http://api"
   : process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8081";
 
