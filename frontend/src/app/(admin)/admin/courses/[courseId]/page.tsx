@@ -1,4 +1,4 @@
-import {fetchCourseAction} from "@/actions/course";
+import { fetchCourseAction } from "@/actions/course";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
@@ -8,4 +8,6 @@ export default async function CourseOverviewPage({ params }: CourseOverviewPageP
   const { courseId } = await params;
 
   const result = await fetchCourseAction(courseId);
+
+  console.log(result);
 }

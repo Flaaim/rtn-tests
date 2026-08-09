@@ -4,7 +4,7 @@ import { ApiResponse } from "@/interfaces/response.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
 import { handleApiResponse } from "@/lib/handleApiResponse";
-import { AddCoursePayload, CourseItem, PaginatedCourses } from "@/interfaces/course.interface";
+import {AddCoursePayload, CourseFull, CourseItem, PaginatedCourses} from "@/interfaces/course.interface";
 
 export async function addCourseAction(payload: AddCoursePayload): Promise<ApiResponse<void>> {
   try {
@@ -49,7 +49,7 @@ export async function fetchCoursesPaginatedAction(
   }
 }
 
-export async function fetchCourseAction(courseId: string): Promise<ApiResponse<CourseItem>> {
+export async function fetchCourseAction(courseId: string): Promise<ApiResponse<CourseFull>> {
   try {
     const response = await apiFetch(API.course.get(courseId), {
       method: "GET",
@@ -59,7 +59,7 @@ export async function fetchCourseAction(courseId: string): Promise<ApiResponse<C
       },
     });
 
-    return handleApiResponse<CourseItem>(response);
+    return handleApiResponse<CourseFull>(response);
   } catch (error) {
     console.error("fetchCourseAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };

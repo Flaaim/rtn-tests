@@ -13,6 +13,7 @@ import { CourseItem } from "@/interfaces/course.interface";
 import { Badge } from "@/components/ui/badge";
 import Pagination from "@/components/Pagination/Pagination";
 import CourseSearch from "@/components/Admin/Course/CourseSearch";
+import Link from "next/link";
 
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   created: {
@@ -84,7 +85,11 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
             ) : (
               result.data.items.map((course: CourseItem) => (
                 <TableRow key={course.courseId}>
-                  <TableCell className="font-medium">{course.name}</TableCell>
+                  <TableCell className="font-medium">
+                    <Link href={`/admin/courses/${course.courseId}`} className="hover:underline">
+                      {course.name}
+                    </Link>
+                  </TableCell>
                   <TableCell className="font-medium">{course.cipher}</TableCell>
                   <TableCell className="font-medium">
                     {new Date(course.createdAt).toLocaleDateString("ru-RU")}
