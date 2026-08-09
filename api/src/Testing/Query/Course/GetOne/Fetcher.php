@@ -14,7 +14,7 @@ final class Fetcher
         private readonly CourseFetcherInterface $fetcher,
     ) {}
 
-    public function handle(Query $query): CourseDTO
+    public function handle(Query $query): CourseFullDTO
     {
         $row = $this->fetcher->getOneById($query->id);
 
@@ -22,6 +22,6 @@ final class Fetcher
             throw new DomainException('Course not found.');
         }
 
-        return CourseDTO::fromArray($row);
+        return CourseFullDTO::fromArray($row);
     }
 }

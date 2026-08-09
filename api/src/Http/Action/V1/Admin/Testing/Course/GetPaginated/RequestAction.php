@@ -20,7 +20,7 @@ final class RequestAction
         private readonly Validator $validator,
     ) {}
 
-    #[Route('/v1/admin/testing/courses', name: 'admin.testing.courses.get', methods: ['GET'])]
+    #[Route('/v1/admin/testing/courses', name: 'admin.testing.courses.get.paginated', methods: ['GET'])]
     #[IsGranted('ROLE_ADMIN')]
     public function __invoke(Request $request): Response
     {
