@@ -14,17 +14,8 @@ import { Badge } from "@/components/ui/badge";
 import Pagination from "@/components/Pagination/Pagination";
 import CourseSearch from "@/components/Admin/Course/CourseSearch";
 import Link from "next/link";
+import CourseStatusBadge from "@/components/Admin/Course/Status/CourseStatusBadge";
 
-const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
-  created: {
-    label: "Создан",
-    className: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50",
-  },
-  processing: {
-    label: "В обработке",
-    className: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-50",
-  },
-};
 interface AdminCoursesPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
 }
@@ -95,18 +86,7 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
                     {new Date(course.createdAt).toLocaleDateString("ru-RU")}
                   </TableCell>
                   <TableCell className="font-medium">
-                    {(() => {
-                      const config = STATUS_CONFIG[course.status];
-                      if (config) {
-                        return (
-                          <Badge variant="outline" className={config.className}>
-                            {config.label}
-                          </Badge>
-                        );
-                      }
-
-                      return <Badge variant="outline">{course.status}</Badge>;
-                    })()}
+                    <CourseStatusBadge status={course.status} />
                   </TableCell>
                 </TableRow>
               ))
