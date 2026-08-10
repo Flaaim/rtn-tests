@@ -5,11 +5,17 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CourseStatusBadge from "@/components/Admin/Course/Status/CourseStatusBadge";
 import { CheckCircle2, XCircle } from "lucide-react";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
+import { Badge } from "@/components/ui/badge";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
 }
-
+const QUESTION_FORM: Record<string, string> = {
+  single_choice: "Одиночный выбор",
+  multiple_choice: "Множественный выбор",
+  matching: "Сопаставить выбор",
+  sequence: "Установить последовательность",
+};
 export default async function CourseOverviewPage({ params }: CourseOverviewPageProps) {
   const { courseId } = await params;
 
@@ -67,13 +73,15 @@ export default async function CourseOverviewPage({ params }: CourseOverviewPageP
         <h2 className="text-2xl font-bold tracking-tight">Вопросы курса</h2>
         {course.questions.map((question: Question, idx: number) => (
           <Card key={question.id} className="overflow-hidden">
-            <CardHeader className="bg-muted/50 pb-4">
+            <CardHeader>
               <CardTitle className="text-lg">Вопрос: {idx + 1}</CardTitle>
             </CardHeader>
 
             <CardContent className="pt-4 space-y-6">
               <div className="space-y-4">
-                <p className="text-muted-foreground font-medium">Тип: {question.form}</p>
+                <p className="text-muted-foreground font-medium">
+                  Тип: <Badge variant="outline">{QUESTION_FORM[question.form]}</Badge>
+                </p>
                 <p className="text-base font-medium leading-relaxed">{question.text}</p>
                 {question.questionImg && (
                   <div className="relative rounded-md overflow-hidden border inline-block">
