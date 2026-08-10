@@ -7,6 +7,7 @@ import { CheckCircle2, XCircle } from "lucide-react";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
 import { Badge } from "@/components/ui/badge";
 import RenameCourseDialog from "@/components/Admin/Course/RenameCourseDialog";
+import UpdateQuestionsCourseDialog from "@/components/Admin/Course/UpdateQuestionsCourseDialog";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
@@ -80,6 +81,7 @@ export default async function CourseOverviewPage({ params }: CourseOverviewPageP
         </Card>
       </div>
       <div className="space-y-4">
+        <UpdateQuestionsCourseDialog id={course.courseId} />
         <h2 className="text-2xl font-bold tracking-tight">Вопросы курса</h2>
         {course.questions.map((question: Question, idx: number) => (
           <Card key={question.id} className="overflow-hidden">

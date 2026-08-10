@@ -9,6 +9,7 @@ import {
   CourseFull,
   PaginatedCourses,
   RenameCoursePayload,
+  UpdateQuestionCoursePayload,
 } from "@/interfaces/course.interface";
 
 export async function addCourseAction(payload: AddCoursePayload): Promise<ApiResponse<void>> {
@@ -84,9 +85,31 @@ export async function renameCourseAction(payload: RenameCoursePayload): Promise<
       }),
     });
 
-    return handleApiResponse(response);
+    return handleApiResponse<void>(response);
   } catch (error) {
     console.error("renameCourseAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function updateQuestionsCourseAction(
+  payload: UpdateQuestionCoursePayload
+): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.course.update(payload.id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        draft: payload.rawJson,
+      }),
+    });
+
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("updateQuestionsCourseAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

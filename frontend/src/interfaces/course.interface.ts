@@ -9,7 +9,10 @@ export interface RenameCoursePayload {
   name: string;
   cipher: string;
 }
-
+export interface UpdateQuestionCoursePayload {
+  id: string;
+  rawJson: string;
+}
 export interface PaginatedCourses {
   items: CourseItem[];
   totalCount: number;
