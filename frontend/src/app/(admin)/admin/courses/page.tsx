@@ -14,6 +14,7 @@ import Pagination from "@/components/Pagination/Pagination";
 import CourseSearch from "@/components/Admin/Course/CourseSearch";
 import Link from "next/link";
 import CourseStatusBadge from "@/components/Admin/Course/Status/CourseStatusBadge";
+import RemoveCourseDialog from "@/components/Admin/Course/RemoveCourseDialog";
 
 interface AdminCoursesPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -63,6 +64,7 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
               <TableHead>Шифр</TableHead>
               <TableHead>Создан</TableHead>
               <TableHead>Статус</TableHead>
+              <TableHead>Удалить</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -86,6 +88,9 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
                   </TableCell>
                   <TableCell className="font-medium">
                     <CourseStatusBadge status={course.status} />
+                  </TableCell>
+                  <TableCell>
+                    <RemoveCourseDialog id={course.courseId} />
                   </TableCell>
                 </TableRow>
               ))

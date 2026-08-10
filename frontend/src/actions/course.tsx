@@ -113,3 +113,20 @@ export async function updateQuestionsCourseAction(
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function removeCourseAction(id: string): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.course.remove(id), {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("removeCourseAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}

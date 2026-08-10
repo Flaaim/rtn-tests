@@ -51,5 +51,6 @@ export const API = {
     get: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}`,
     rename: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/rename`,
     update: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/update`,
+    remove: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}`,
   },
 };
