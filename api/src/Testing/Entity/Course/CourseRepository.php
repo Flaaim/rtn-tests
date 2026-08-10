@@ -32,4 +32,9 @@ final class CourseRepository
         /** @var Course $course */
         return $course;
     }
+
+    public function remove(Course $course): void
+    {
+        $this->em->remove($course);
+    }
 }
