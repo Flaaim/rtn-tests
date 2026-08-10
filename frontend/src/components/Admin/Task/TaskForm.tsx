@@ -16,6 +16,7 @@ interface TaskFormProps {
 }
 
 export default function TaskForm({ task }: TaskFormProps) {
+  const [isJsonCopied, setIsJsonCopied] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isYamlCopied, setIsYamlCopied] = useState(false);
 
@@ -68,6 +69,18 @@ export default function TaskForm({ task }: TaskFormProps) {
       setTimeout(() => setIsYamlCopied(false), 2000);
     } catch (err) {
       console.error("Failed to copy YAML: ", err);
+    }
+  };
+
+  const handleCopyJson = async () => {
+    if (!rawJsonString) return;
+
+    try {
+      await navigator.clipboard.writeText(rawJsonString);
+      setIsJsonCopied(true);
+      setTimeout(() => setIsJsonCopied(false), 2000);
+    } catch (err) {
+      console.error("Failed to copy JSON: ", err);
     }
   };
 
@@ -126,13 +139,38 @@ export default function TaskForm({ task }: TaskFormProps) {
             </TabsList>
 
             <TabsContent value="json">
-              <Card>
-                <CardContent className="pt-6">
-                  <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm font-mono text-foreground whitespace-pre-wrap">
-                    {rawJsonString}
-                  </pre>
-                </CardContent>
-              </Card>
+              {parsedDraft && parsedDraft.length > 0 ? (
+                <>
+                  <div className="flex justify-end mb-4">
+                    <Button onClick={handleCopyJson} variant="outline" className="gap-2">
+                      {isJsonCopied ? (
+                        <>
+                          <Check className="w-4 h-4 text-green-600" />
+                          <span className="text-green-600">Скопировано</span>
+                        </>
+                      ) : (
+                        <>
+                          <Copy className="w-4 h-4" />
+                          <span>Скопировать JSON</span>
+                        </>
+                      )}
+                    </Button>
+                  </div>
+                  <Card>
+                    <CardContent className="pt-6">
+                      <pre className="bg-muted p-4 rounded-md overflow-x-auto text-sm font-mono text-foreground whitespace-pre-wrap">
+                        {rawJsonString}
+                      </pre>
+                    </CardContent>
+                  </Card>
+                </>
+              ) : (
+                <Card>
+                  <CardContent className="pt-6 text-muted-foreground">
+                    Нет данных для отображения или формат не поддерживается.
+                  </CardContent>
+                </Card>
+              )}
             </TabsContent>
 
             <TabsContent value="html" className="space-y-4">
