@@ -7,8 +7,8 @@ import { handleApiResponse } from "@/lib/handleApiResponse";
 import {
   AddCoursePayload,
   CourseFull,
-  CourseItem,
   PaginatedCourses,
+  RenameCoursePayload,
 } from "@/interfaces/course.interface";
 
 export async function addCourseAction(payload: AddCoursePayload): Promise<ApiResponse<void>> {
@@ -67,6 +67,26 @@ export async function fetchCourseAction(courseId: string): Promise<ApiResponse<C
     return handleApiResponse<CourseFull>(response);
   } catch (error) {
     console.error("fetchCourseAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+export async function renameCourseAction(payload: RenameCoursePayload): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.course.rename(payload.id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: payload.name,
+        cipher: payload.cipher,
+      }),
+    });
+
+    return handleApiResponse(response);
+  } catch (error) {
+    console.error("renameCourseAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

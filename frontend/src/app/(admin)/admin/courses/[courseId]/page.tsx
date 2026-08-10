@@ -6,6 +6,7 @@ import CourseStatusBadge from "@/components/Admin/Course/Status/CourseStatusBadg
 import { CheckCircle2, XCircle } from "lucide-react";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
 import { Badge } from "@/components/ui/badge";
+import RenameCourseDialog from "@/components/Admin/Course/RenameCourseDialog";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
@@ -43,7 +44,16 @@ export default async function CourseOverviewPage({ params }: CourseOverviewPageP
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <CardTitle>Курс: {course.name}</CardTitle>
+            <div className="grid grid-cols-2 gap-4 items-center">
+              <CardTitle>Курс: {course.name}</CardTitle>
+              <div className="justify-self-end">
+                <RenameCourseDialog
+                  id={course.courseId}
+                  name={course.name}
+                  cipher={course.cipher}
+                />
+              </div>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">

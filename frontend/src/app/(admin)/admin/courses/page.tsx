@@ -10,7 +10,6 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { CourseItem } from "@/interfaces/course.interface";
-import { Badge } from "@/components/ui/badge";
 import Pagination from "@/components/Pagination/Pagination";
 import CourseSearch from "@/components/Admin/Course/CourseSearch";
 import Link from "next/link";

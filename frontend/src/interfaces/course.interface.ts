@@ -4,6 +4,12 @@ export interface AddCoursePayload {
   draft: string;
 }
 
+export interface RenameCoursePayload {
+  id: string;
+  name: string;
+  cipher: string;
+}
+
 export interface PaginatedCourses {
   items: CourseItem[];
   totalCount: number;

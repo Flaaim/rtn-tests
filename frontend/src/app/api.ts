@@ -49,5 +49,6 @@ export const API = {
       return BASE_URL + `/v1/admin/testing/courses?${params.toString()}`;
     },
     get: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}`,
+    rename: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/rename`,
   },
 };
