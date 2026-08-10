@@ -12,8 +12,8 @@ use App\Parser\Entity\Task\TaskId;
 use App\Parser\Entity\Task\TasksRepository;
 use App\Parser\Event\ParseLaunched;
 use App\Parser\Exception\RemoteException;
-use App\Parser\Query\Parser\GetOne\Fetcher as ParserFetcher;
 use App\Parser\Query\Parser\GetOne\Query as ParserGetQuery;
+use App\Parser\Query\Parser\GetOne\QueryHandler as ParserFetcher;
 use App\Parser\Service\Parse\AnswersParser;
 use App\Parser\Service\Parse\QuestionsParser;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -32,7 +32,7 @@ final class ParseLaunchedHandler
 
     public function __invoke(ParseLaunched $command, bool $isRetry = false): void
     {
-        $parser = $this->parserFetcher->fetch(new ParserGetQuery($command->parserId));
+        $parser = $this->parserFetcher->handle(new ParserGetQuery($command->parserId));
         $task = $this->tasks->get(new TaskId($command->taskId));
 
         try {

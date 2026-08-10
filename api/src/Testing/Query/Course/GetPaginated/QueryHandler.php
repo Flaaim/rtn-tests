@@ -6,7 +6,7 @@ namespace App\Testing\Query\Course\GetPaginated;
 
 use App\Testing\Query\Course\CourseFetcherInterface;
 
-final class Fetcher
+final class QueryHandler
 {
     public function __construct(
         private readonly CourseFetcherInterface $courses,

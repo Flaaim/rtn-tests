@@ -6,13 +6,13 @@ namespace App\Parser\Query\Parser\HasOne;
 
 use App\Parser\Query\Parser\ParserFetcherInterface;
 
-final class Fetcher
+final class QueryHandler
 {
     public function __construct(
         private readonly ParserFetcherInterface $fetcher,
     ) {}
 
-    public function fetch(Query $query): bool
+    public function handle(Query $query): bool
     {
         return $this->fetcher->hasOneById($query->parserId);
     }

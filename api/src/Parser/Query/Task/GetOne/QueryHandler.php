@@ -7,13 +7,13 @@ namespace App\Parser\Query\Task\GetOne;
 use App\Parser\Query\Task\TaskFetcher;
 use DomainException;
 
-final class Fetcher
+final class QueryHandler
 {
     public function __construct(
         private readonly TaskFetcher $fetcher,
     ) {}
 
-    public function fetch(Query $query): TaskDTO
+    public function handle(Query $query): TaskDTO
     {
         $row = $this->fetcher->getOneById($query->taskId);
 

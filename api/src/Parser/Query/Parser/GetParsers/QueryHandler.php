@@ -7,7 +7,7 @@ namespace App\Parser\Query\Parser\GetParsers;
 use App\Parser\Query\Parser\ParserFetcherInterface;
 use DomainException;
 
-final class Handler
+final class QueryHandler
 {
     public function __construct(
         private readonly ParserFetcherInterface $parsers,

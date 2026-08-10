@@ -8,7 +8,7 @@ use App\Testing\Query\Course\CourseFetcherInterface;
 use DomainException;
 
 /** @psalm-suppress UnusedClass */
-final class Fetcher
+final class QueryHandler
 {
     public function __construct(
         private readonly CourseFetcherInterface $fetcher,

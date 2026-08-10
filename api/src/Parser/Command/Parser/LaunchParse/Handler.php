@@ -9,8 +9,8 @@ use App\Parser\Entity\Parser\ParserId;
 use App\Parser\Entity\Task\Task;
 use App\Parser\Entity\Task\TaskId;
 use App\Parser\Entity\Task\TasksRepository;
-use App\Parser\Query\Parser\HasOne\Fetcher;
 use App\Parser\Query\Parser\HasOne\Query;
+use App\Parser\Query\Parser\HasOne\QueryHandler;
 use DateTimeImmutable;
 use DomainException;
 
@@ -19,12 +19,12 @@ final class Handler
     public function __construct(
         private readonly Flusher $flusher,
         private readonly TasksRepository $tasks,
-        private readonly Fetcher $fetcher
+        private readonly QueryHandler $handler
     ) {}
 
     public function handle(Command $command): string
     {
-        if (!$this->fetcher->fetch(new Query($command->parserId))) {
+        if (!$this->handler->handle(new Query($command->parserId))) {
             throw new DomainException('Parser not found.');
         }
 

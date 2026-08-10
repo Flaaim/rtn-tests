@@ -7,13 +7,13 @@ namespace App\Parser\Query\Parser\GetOne;
 use App\Parser\Query\Parser\ParserFetcherInterface;
 use DomainException;
 
-final class Fetcher
+final class QueryHandler
 {
     public function __construct(
         private readonly ParserFetcherInterface $fetcher
     ) {}
 
-    public function fetch(Query $query): ParserShortDTO
+    public function handle(Query $query): ParserShortDTO
     {
         $row = $this->fetcher->getOneById($query->parserId);
 

@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Action\V1\Admin\Testing\Course\GetPaginated;
 
 use App\Infrastructure\Http\Validator\Validator;
-use App\Testing\Query\Course\GetPaginated\Fetcher;
 use App\Testing\Query\Course\GetPaginated\Query;
+use App\Testing\Query\Course\GetPaginated\QueryHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,7 +16,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class RequestAction
 {
     public function __construct(
-        private readonly Fetcher $fetcher,
+        private readonly QueryHandler $handler,
         private readonly Validator $validator,
     ) {}
 
@@ -33,7 +33,7 @@ final class RequestAction
 
         $this->validator->validate($query);
 
-        $courses = $this->fetcher->handle($query);
+        $courses = $this->handler->handle($query);
 
         return new JsonResponse($courses, Response::HTTP_OK);
     }
