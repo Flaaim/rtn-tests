@@ -29,6 +29,7 @@
                 <directory name="src/Parser/Query" />
                 <directory name="src/Parser/Service" />
                 <directory name="src/Infrastructure" />
+                <directory name="src/Course/Command" />
             </errorLevel>
         </UnusedClass>
 
@@ -41,10 +42,11 @@
                 <directory name="src/Auth/Test/Builder" />
                 <directory name="src/Parser/Command" />
                 <directory name="src/Parser/Query" />
+                <directory name="src/Course/Query" />
                 <directory name="src/Parser/Entity" />
                 <directory name="src/OAuth" />
                 <directory name="src/Infrastructure" />
-                <directory name="src/Testing/Entity" />
+                <directory name="src/Course/Entity" />
             </errorLevel>
         </PossiblyUnusedMethod>
 
@@ -54,6 +56,7 @@
                 <directory name="src/Auth/Query" />
                 <directory name="src/Auth/Event" />
                 <directory name="src/Parser/Query" />
+                <directory name="src/Course/Query" />
             </errorLevel>
         </PossiblyUnusedProperty>
 

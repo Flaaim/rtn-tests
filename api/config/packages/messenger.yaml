@@ -41,8 +41,8 @@ framework:
             'App\Parser\Event\ParseFailed': async
             'App\Parser\Event\ParseEnded': async
 
-            'App\Testing\Event\CourseCreated': async
-            'App\Testing\Event\CourseUpdated': async
+            'App\Course\Event\CourseCreated': async
+            'App\Course\Event\CourseUpdated': async
 
 when@test:
     framework:

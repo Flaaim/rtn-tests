@@ -18,10 +18,10 @@ doctrine:
             task_id: App\Parser\Entity\Task\TaskIdType
             task_status: App\Parser\Entity\Task\StatusType
 
-            course_id: App\Testing\Entity\Course\CourseIdType
-            course_status: App\Testing\Entity\Course\StatusType
+            course_id: App\Course\Entity\Course\CourseIdType
+            course_status: App\Course\Entity\Course\StatusType
 
-            question_form: App\Testing\Entity\Course\QuestionFormType
+            question_form: App\Course\Entity\Course\QuestionFormType
 
     orm:
         validate_xml_mapping: true
@@ -57,8 +57,8 @@ doctrine:
             Course:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Testing/Entity'
-                prefix: 'App\Testing\Entity'
+                dir: '%kernel.project_dir%/src/Course/Entity'
+                prefix: 'App\Course\Entity'
                 alias: TestingCourse
 
 when@test:
