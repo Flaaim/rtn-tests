@@ -118,18 +118,12 @@ final class Question
             }
         }
 
-        $lowerText = mb_strtolower($text);
-
         if ($correctedAnswers === $totalAnswers && $totalAnswers > 0) {
-            if (
-                str_contains($lowerText, 'установите последовательность') ||
-                str_contains($lowerText, 'установите правильную последовательность') ||
-                str_contains($lowerText, 'порядок действий')
-            ) {
+            if (TrapPhrases::isSequence($text)) {
                 return QuestionForm::sequence();
             }
 
-            if (str_contains($lowerText, 'установите соответствие')) {
+            if (TrapPhrases::isMatching($text)) {
                 return QuestionForm::matching();
             }
         }
