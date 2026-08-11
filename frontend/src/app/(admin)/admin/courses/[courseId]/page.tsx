@@ -8,18 +8,24 @@ import { PUBLIC_ASSETS_URL } from "@/app/api";
 import { Badge } from "@/components/ui/badge";
 import RenameCourseDialog from "@/components/Admin/Course/RenameCourseDialog";
 import UpdateQuestionsCourseDialog from "@/components/Admin/Course/UpdateQuestionsCourseDialog";
+import QuestionSearchForm from "@/components/Admin/Course/QuestionSearchForm";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
+  searchParams: Promise<{ q?: string }>;
 }
 const QUESTION_FORM: Record<string, string> = {
   single_choice: "Одиночный выбор",
   multiple_choice: "Множественный выбор",
-  matching: "Сопаставить выбор",
+  matching: "Сопоставить выбор",
   sequence: "Установить последовательность",
 };
-export default async function CourseOverviewPage({ params }: CourseOverviewPageProps) {
+export default async function CourseOverviewPage({
+  params,
+  searchParams,
+}: CourseOverviewPageProps) {
   const { courseId } = await params;
+  const { q } = await searchParams;
 
   const result = await fetchCourseAction(courseId);
 
@@ -35,6 +41,10 @@ export default async function CourseOverviewPage({ params }: CourseOverviewPageP
     month: "2-digit",
     year: "numeric",
   });
+
+  const filteredQuestions = q
+    ? course.questions.filter((question) => question.text.toLowerCase().includes(q.toLowerCase()))
+    : course.questions;
 
   return (
     <div className="space-y-6">
@@ -82,71 +92,86 @@ export default async function CourseOverviewPage({ params }: CourseOverviewPageP
       </div>
       <div className="space-y-4">
         <UpdateQuestionsCourseDialog id={course.courseId} />
-        <h2 className="text-2xl font-bold tracking-tight">Вопросы курса</h2>
-        {course.questions.map((question: Question, idx: number) => (
-          <Card key={question.id} className="overflow-hidden">
-            <CardHeader>
-              <CardTitle className="text-lg">Вопрос: {idx + 1}</CardTitle>
-            </CardHeader>
 
-            <CardContent className="pt-4 space-y-6">
-              <div className="space-y-4">
-                <p className="text-muted-foreground font-medium">
-                  Тип: <Badge variant="outline">{QUESTION_FORM[question.form]}</Badge>
-                </p>
-                <p className="text-base font-medium leading-relaxed">{question.text}</p>
-                {question.questionImg && (
-                  <div className="relative rounded-md overflow-hidden border inline-block">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={`${PUBLIC_ASSETS_URL}${process.env.NEXT_PUBLIC_QUESTION_IMAGES}${question.questionImg}`}
-                      alt={`К вопросу ${question.number}`}
-                      className="max-h-64 object-contain"
-                    />
-                  </div>
-                )}
-              </div>
+        <QuestionSearchForm />
 
-              <div className="space-y-3">
-                <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
-                  Варианты ответов:
-                </h4>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                  {question.answers.map((answer) => (
-                    <div
-                      key={answer.id}
-                      className={`flex flex-col gap-3 p-4 rounded-lg border transition-colors ${
-                        answer.isCorrect
-                          ? "border-green-500 bg-green-50 dark:bg-green-950/20"
-                          : "border-border bg-card"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between gap-2">
-                        <span className="text-sm font-medium">{answer.text}</span>
-                        {answer.isCorrect ? (
-                          <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
-                        ) : (
-                          <XCircle className="w-5 h-5 text-muted-foreground/30 shrink-0" />
-                        )}
-                      </div>
+        <div className="flex items-center gap-3">
+          <h2 className="text-2xl font-bold tracking-tight">Вопросы курса</h2>
+          {q && <Badge variant="secondary">Найдено: {filteredQuestions.length}</Badge>}
+        </div>
 
-                      {answer.answerImg && (
-                        <div className="mt-auto">
-                          {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img
-                            src={`${PUBLIC_ASSETS_URL}${process.env.NEXT_PUBLIC_QUESTION_IMAGES}${answer.answerImg}`}
-                            alt="К ответу"
-                            className="max-h-32 rounded border object-contain"
-                          />
-                        </div>
-                      )}
-                    </div>
-                  ))}
-                </div>
-              </div>
+        {filteredQuestions.length === 0 ? (
+          <Card>
+            <CardContent className="p-8 text-center text-muted-foreground">
+              По запросу &quot;{q}&quot; вопросов не найдено.
             </CardContent>
           </Card>
-        ))}
+        ) : (
+          filteredQuestions.map((question: Question, idx: number) => (
+            <Card key={question.id} className="overflow-hidden">
+              <CardHeader>
+                <CardTitle className="text-lg">Вопрос: {idx + 1}</CardTitle>
+              </CardHeader>
+
+              <CardContent className="pt-4 space-y-6">
+                <div className="space-y-4">
+                  <p className="text-muted-foreground font-medium">
+                    Тип: <Badge variant="outline">{QUESTION_FORM[question.form]}</Badge>
+                  </p>
+                  <p className="text-base font-medium leading-relaxed">{question.text}</p>
+                  {question.questionImg && (
+                    <div className="relative rounded-md overflow-hidden border inline-block">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={`${PUBLIC_ASSETS_URL}${process.env.NEXT_PUBLIC_QUESTION_IMAGES}${question.questionImg}`}
+                        alt="Изображение вопроса"
+                        className="max-h-64 object-contain"
+                      />
+                    </div>
+                  )}
+                </div>
+
+                <div className="space-y-3">
+                  <h4 className="text-sm font-semibold text-muted-foreground uppercase tracking-wider">
+                    Варианты ответов:
+                  </h4>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    {question.answers.map((answer) => (
+                      <div
+                        key={answer.id}
+                        className={`flex flex-col gap-3 p-4 rounded-lg border transition-colors ${
+                          answer.isCorrect
+                            ? "border-green-500 bg-green-50 dark:bg-green-950/20"
+                            : "border-border bg-card"
+                        }`}
+                      >
+                        <div className="flex items-start justify-between gap-2">
+                          <span className="text-sm font-medium">{answer.text}</span>
+                          {answer.isCorrect ? (
+                            <CheckCircle2 className="w-5 h-5 text-green-600 shrink-0" />
+                          ) : (
+                            <XCircle className="w-5 h-5 text-muted-foreground/30 shrink-0" />
+                          )}
+                        </div>
+
+                        {answer.answerImg && (
+                          <div className="mt-auto">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img
+                              src={`${PUBLIC_ASSETS_URL}${process.env.NEXT_PUBLIC_QUESTION_IMAGES}${answer.answerImg}`}
+                              alt="К ответу"
+                              className="max-h-32 rounded border object-contain"
+                            />
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))
+        )}
       </div>
     </div>
   );

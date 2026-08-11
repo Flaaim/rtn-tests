@@ -38,7 +38,6 @@ export interface CourseFull {
 
 export interface Question {
   id: string;
-  number: number;
   text: string;
   questionImg: string;
   answers: Answer[];

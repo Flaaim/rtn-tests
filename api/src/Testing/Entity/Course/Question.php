@@ -16,7 +16,7 @@ final class Question
      */
     /** @psalm-suppress PropertyNotSetInConstructor */
     #[ORM\ManyToOne(targetEntity: Course::class, inversedBy: 'questions')]
-    #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'course_id', nullable: false, onDelete: 'RESTRICT')]
+    #[ORM\JoinColumn(name: 'course_id', referencedColumnName: 'course_id', nullable: false, onDelete: 'CASCADE')]
     private Course $course;
 
     public function __construct(
