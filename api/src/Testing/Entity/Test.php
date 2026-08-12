@@ -15,6 +15,7 @@ final class Test implements AggregateRoot
 {
     use EventTrait;
 
+    /** @param TicketDTO[] $tickets */
     public function __construct(
         private TestId $id,
         private string $name,
