@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Testing\Entity;
 
+use App\SharedDomain\AggregateRoot;
+use App\SharedDomain\Event\EventTrait;
 use App\Testing\Entity\DTO\TicketDTO;
+use App\Testing\Event\TestCreated;
 use DateTimeImmutable;
 use InvalidArgumentException;
 
-final class Test
+final class Test implements AggregateRoot
 {
+    use EventTrait;
+
     public function __construct(
         private TestId $id,
         private string $name,
@@ -27,6 +32,8 @@ final class Test
                 throw new InvalidArgumentException('Ticket should be an instance of ' . TicketDTO::class);
             }
         }
+
+        $this->recordEvent(new TestCreated($id->getValue()));
     }
 
     public function getId(): TestId
