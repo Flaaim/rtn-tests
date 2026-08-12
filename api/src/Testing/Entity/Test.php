@@ -15,4 +15,9 @@ final class Test
         private array $tickets,
         private array $questions,
     ) {}
+
+    public function getId(): TestId
+    {
+        return $this->id;
+    }
 }
