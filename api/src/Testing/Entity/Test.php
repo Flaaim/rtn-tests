@@ -16,11 +16,16 @@ final class Test
         private array $tickets,
         private array $questions,
         private Status $status,
-        private Slug $slug,
+        private string $slug,
     ) {}
 
     public function getId(): TestId
     {
         return $this->id;
+    }
+
+    public function getStatus(): Status
+    {
+        return $this->status;
     }
 }
