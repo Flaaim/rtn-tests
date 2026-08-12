@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace App\Testing\Entity;
 
+use App\Testing\Entity\DTO\TicketDTO;
+use DateTimeImmutable;
+
 final class Test
 {
     public function __construct(
@@ -14,9 +17,9 @@ final class Test
         private int $allowedMistakes,
         private string $courseId,
         private array $tickets,
-        private array $questions,
         private Status $status,
         private string $slug,
+        private DateTimeImmutable $createdAt,
     ) {}
 
     public function getId(): TestId
@@ -59,13 +62,24 @@ final class Test
         return $this->tickets;
     }
 
-    public function getQuestions(): array
+    public function getCreatedAt(): DateTimeImmutable
     {
-        return $this->questions;
+        return $this->createdAt;
     }
 
     public function getCipher(): string
     {
         return $this->cipher;
+    }
+
+    public function getSequentialQuestions(): array
+    {
+        $allQuestions = [];
+        /** @var TicketDTO $ticket */
+        foreach ($this->tickets as $ticket) {
+            $allQuestions = array_merge($allQuestions, $ticket->questionIds);
+        }
+
+        return array_values(array_unique($allQuestions));
     }
 }

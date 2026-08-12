@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Testing\Test\Unit\Service;
 
 use App\Testing\Service\SlugGeneratorByCipher;
-use InvalidArgumentException;
+use DomainException;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
@@ -43,7 +43,8 @@ final class SlugGeneratorTest extends TestCase
     {
         $generator = new SlugGeneratorByCipher();
 
-        self::expectException(InvalidArgumentException::class);
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Cannot generate slug from the given cipher.');
         $generator->generate('');
     }
 }

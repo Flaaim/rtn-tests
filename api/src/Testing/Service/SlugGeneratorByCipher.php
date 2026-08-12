@@ -25,7 +25,7 @@ final class SlugGeneratorByCipher implements SlugGeneratorInterface
 
         $value = preg_replace('/\..*/', '', $value);
 
-        $value = preg_replace('/[^a-zA-Z0-9]+/', '-', $value);
+        $value = preg_replace('/[^a-zA-Z0-9]+/', '', $value);
 
         if (null === $value) {
             throw new RuntimeException('Transliteration value is null.');
@@ -33,7 +33,7 @@ final class SlugGeneratorByCipher implements SlugGeneratorInterface
         $value = trim($value, '-');
 
         if ('' === $value) {
-            throw new DomainException('Cannot generate slug from the given title.');
+            throw new DomainException('Cannot generate slug from the given cipher.');
         }
 
         return $value;

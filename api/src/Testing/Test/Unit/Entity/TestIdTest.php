@@ -47,6 +47,6 @@ final class TestIdTest extends TestCase
     public function testEmpty(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new CourseId('');
+        new TestId('');
     }
 }
