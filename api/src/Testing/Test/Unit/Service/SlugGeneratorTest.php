@@ -1,0 +1,49 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Testing\Test\Unit\Service;
+
+use App\Testing\Service\SlugGeneratorByCipher;
+use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\TestCase;
+
+/**
+ * @internal
+ * @coversNothing
+ */
+final class SlugGeneratorTest extends TestCase
+{
+    public function testSlugGenerator(): void
+    {
+        $generator = new SlugGeneratorByCipher();
+        $slug = $generator->generate('ОТ 201.18');
+
+        self::assertEquals('ot201', $slug);
+    }
+
+    #[DataProvider('provideDifferentSlugsCases')]
+    public function testDifferentSlugs($slug, $expected): void
+    {
+        $generator = new SlugGeneratorByCipher();
+        self::assertEquals($expected, $generator->generate($slug));
+    }
+
+    public static function provideDifferentSlugsCases(): iterable
+    {
+        return [
+            ['ОТ 201.18', 'ot201'],
+            ['ОТ 201..18', 'ot201'],
+            ['ОТ-201.18-', 'ot201'],
+        ];
+    }
+
+    public function testEmpty(): void
+    {
+        $generator = new SlugGeneratorByCipher();
+
+        self::expectException(InvalidArgumentException::class);
+        $generator->generate('');
+    }
+}
