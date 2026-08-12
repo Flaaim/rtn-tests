@@ -97,4 +97,21 @@ final class CourseFetcher implements CourseFetcherInterface
 
         return $data;
     }
+
+    public function getQuestionIdsByCourseId(string $courseId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select('q.id')
+            ->from('questions', 'q')
+            ->where($qb->expr()->eq('q.course_id', ':courseId'))
+            ->setParameter('courseId', $courseId)
+            ->executeQuery();
+
+        $data = [];
+        while ($rows = $result->fetchAssociative()) {
+            $data[] = $rows['id'];
+        }
+        return $data;
+    }
 }
