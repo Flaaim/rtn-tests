@@ -6,6 +6,7 @@ namespace App\Testing\Entity;
 
 use App\Testing\Entity\DTO\TicketDTO;
 use DateTimeImmutable;
+use InvalidArgumentException;
 
 final class Test
 {
@@ -20,7 +21,13 @@ final class Test
         private Status $status,
         private string $slug,
         private DateTimeImmutable $createdAt,
-    ) {}
+    ) {
+        foreach ($this->tickets as $ticket) {
+            if (!$ticket instanceof TicketDTO) {
+                throw new InvalidArgumentException('Ticket should be an instance of ' . TicketDTO::class);
+            }
+        }
+    }
 
     public function getId(): TestId
     {

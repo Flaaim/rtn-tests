@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Entity;
 
+use App\Testing\Entity\DTO\TicketDTO;
 use App\Testing\Entity\Status;
 use App\Testing\Entity\Test;
 use App\Testing\Entity\TestId;
+use App\Testing\Test\Builder\TestBuilder;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -40,5 +42,37 @@ final class TestTest extends TestCase
         self::assertEquals($status, $test->getStatus());
         self::assertEquals($slug, $test->getSlug());
         self::assertEquals($createdAt, $test->getCreatedAt());
+    }
+
+    public function testGetSequenceQuestions(): void
+    {
+        $test = new TestBuilder()
+            ->withTickets([
+                new TicketDTO(
+                    1,
+                    [
+                        '0121b081-c461-42f0-b8ec-a4632a64faea',
+                        '735eb05d-626b-4650-8146-ef1c7a77b5a9',
+                        'b22c2959-2bb2-4e48-8d95-5ebd8de5b84d',
+                    ]
+                ),
+                new TicketDTO(
+                    2,
+                    [
+                        '0121b081-c461-42f0-b8ec-a4632a64faea',
+                        '00c4fdb7-ce4f-41dd-935c-1e8d1475c25f',
+                        '4d44d8d9-bcaf-4fea-9f03-7cf23e9e55df',
+                    ]
+                ),
+            ])
+            ->build();
+
+        self::assertEquals([
+            '0121b081-c461-42f0-b8ec-a4632a64faea',
+            '735eb05d-626b-4650-8146-ef1c7a77b5a9',
+            'b22c2959-2bb2-4e48-8d95-5ebd8de5b84d',
+            '00c4fdb7-ce4f-41dd-935c-1e8d1475c25f',
+            '4d44d8d9-bcaf-4fea-9f03-7cf23e9e55df',
+        ], $test->getSequentialQuestions());
     }
 }
