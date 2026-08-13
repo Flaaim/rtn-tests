@@ -26,7 +26,7 @@ final class TestTest extends TestCase
             $cipher = 'ОТ 201.18',
             $description = 'Test Description',
             $allowedMistakes = 3,
-            'ba34f99c-6233-4be3-aa27-287d3726e54d',
+            ['ba34f99c-6233-4be3-aa27-287d3726e54d'],
             $tickets = [],
             $status = Status::inactive(),
             $slug = 'ot201',

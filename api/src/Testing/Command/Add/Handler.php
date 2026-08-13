@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Command\Create;
+namespace App\Testing\Command\Add;
 
 use App\Course\Api\CourseApi;
 use App\Infrastructure\Doctrine\Flusher;
@@ -25,8 +25,14 @@ final class Handler
 
     public function handle(Command $command): void
     {
-        $allQuestionIds = $this->courseApi->getQuestionIds($command->courseId);
+        $allQuestionIds = [];
 
+        foreach ($command->courseIds as $courseId) {
+            $courseQuestions = $this->courseApi->getQuestionIds($courseId);
+            $allQuestionIds = array_merge($allQuestionIds, $courseQuestions);
+        }
+
+        $allQuestionIds = array_unique($allQuestionIds);
         shuffle($allQuestionIds);
 
         /** @var TicketDTO[] $tickets */
@@ -49,7 +55,7 @@ final class Handler
             $command->cipher,
             $command->description,
             $command->allowedMistakes,
-            $command->courseId,
+            $command->courseIds,
             $tickets,
             Status::inactive(),
             $this->slugGenerator->generate($command->cipher),

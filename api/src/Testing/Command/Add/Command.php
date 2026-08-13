@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Command\Create;
+namespace App\Testing\Command\Add;
 
 final class Command
 {
@@ -13,6 +13,6 @@ final class Command
         public readonly int $numberOfTickets,
         public readonly int $numberQuestionsInTicket,
         public readonly int $allowedMistakes,
-        public readonly string $courseId
+        public readonly array $courseIds
     ) {}
 }

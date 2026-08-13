@@ -22,7 +22,7 @@ final class Test implements AggregateRoot
         private string $cipher,
         private string $description,
         private int $allowedMistakes,
-        private string $courseId,
+        private array $courseIds,
         private array $tickets,
         private Status $status,
         private string $slug,
@@ -52,9 +52,9 @@ final class Test implements AggregateRoot
         return $this->slug;
     }
 
-    public function getCourseId(): string
+    public function getCourseId(): array
     {
-        return $this->courseId;
+        return $this->courseIds;
     }
 
     public function getAllowedMistakes(): int

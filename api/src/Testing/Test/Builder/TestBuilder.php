@@ -17,7 +17,7 @@ final class TestBuilder
     private string $description;
     private string $cipher;
     private int $allowedMistakes;
-    private string $courseId;
+    private array $courseIds;
     private array $tickets;
     private Status $status;
     private string $slug;
@@ -30,7 +30,7 @@ final class TestBuilder
         $this->cipher = 'ОТ 201.18';
         $this->description = 'Test description';
         $this->allowedMistakes = 2;
-        $this->courseId = '0121b081-c461-42f0-b8ec-a4632a64faea';
+        $this->courseIds = ['0121b081-c461-42f0-b8ec-a4632a64faea'];
         $this->tickets = [];
         $this->status = Status::inactive();
         $this->slug = 'ot201';
@@ -65,10 +65,10 @@ final class TestBuilder
         return $clone;
     }
 
-    public function withCourseId(string $courseId): self
+    public function withCourseIds(array $courseIds): self
     {
         $clone = clone $this;
-        $clone->courseId = $courseId;
+        $clone->courseIds = $courseIds;
         return $clone;
     }
 
@@ -102,7 +102,7 @@ final class TestBuilder
             $this->description,
             $this->cipher,
             $this->allowedMistakes,
-            $this->courseId,
+            $this->courseIds,
             $this->tickets,
             $this->status,
             $this->slug,
