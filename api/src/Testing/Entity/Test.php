@@ -9,14 +9,19 @@ use App\SharedDomain\Event\EventTrait;
 use App\Testing\Entity\DTO\TicketDTO;
 use App\Testing\Event\TestCreated;
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'tests')]
 final class Test implements AggregateRoot
 {
     use EventTrait;
 
     /** @param TicketDTO[] $tickets */
     public function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type: 'test_id', unique: true)]
         private TestId $id,
         private string $name,
         private string $cipher,
