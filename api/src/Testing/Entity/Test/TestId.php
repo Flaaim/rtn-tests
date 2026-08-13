@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Entity;
+namespace App\Testing\Entity\Test;
 
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;

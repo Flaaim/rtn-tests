@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Entity;
 
-use App\Testing\Entity\TestId;
+use App\Testing\Entity\Test\TestId;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;

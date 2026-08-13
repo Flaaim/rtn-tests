@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Entity;
 
-use App\Testing\Entity\Status;
+use App\Testing\Entity\Test\Status;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

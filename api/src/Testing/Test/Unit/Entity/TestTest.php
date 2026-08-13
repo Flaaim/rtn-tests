@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Entity;
 
-use App\Testing\Entity\DTO\TicketDTO;
-use App\Testing\Entity\Status;
-use App\Testing\Entity\Test;
-use App\Testing\Entity\TestId;
+use App\Testing\Entity\Test\DTO\TicketDTO;
+use App\Testing\Entity\Test\Test;
+use App\Testing\Entity\Test\TestId;
 use App\Testing\Test\Builder\TestBuilder;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;

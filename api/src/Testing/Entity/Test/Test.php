@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Entity;
+namespace App\Testing\Entity\Test;
 
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
-use App\Testing\Entity\DTO\TicketDTO;
+use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Event\TestCreated;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;

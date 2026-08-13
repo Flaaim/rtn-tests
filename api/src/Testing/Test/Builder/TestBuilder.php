@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Builder;
 
-use App\Testing\Entity\DTO\TicketDTO;
-use App\Testing\Entity\Test;
-use App\Testing\Entity\TestId;
+use App\Testing\Entity\Test\DTO\TicketDTO;
+use App\Testing\Entity\Test\Test;
+use App\Testing\Entity\Test\TestId;
 use DateTimeImmutable;
 
 final class TestBuilder
