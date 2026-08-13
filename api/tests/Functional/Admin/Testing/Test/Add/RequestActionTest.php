@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Admin\Testing\Test\Add;
 
+use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
+use App\Testing\Event\TestCreated;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
@@ -21,6 +25,8 @@ final class RequestActionTest extends WebTestCase
     use OAuthTokenTrait;
 
     private readonly KernelBrowser $client;
+
+    private readonly ContainerInterface $container;
     private readonly TestRepository $tests;
     private string $adminToken;
     private string $userToken;
@@ -28,13 +34,14 @@ final class RequestActionTest extends WebTestCase
     protected function setUp(): void
     {
         $this->client = self::createClient();
+        $this->client->disableReboot();
 
-        $container = $this->client->getContainer();
+        $this->container = $this->client->getContainer();
         /** @var EntityManagerInterface $em */
-        $em = $container->get(EntityManagerInterface::class);
+        $em = $this->container->get(EntityManagerInterface::class);
         $this->tests = new TestRepository($em);
 
-        $fixturesLoader = new FixturesLoader($container);
+        $fixturesLoader = new FixturesLoader($this->container);
         $fixturesLoader->loadFixtures([RequestFixture::class]);
 
         $this->adminToken = $this->getAccessToken(
@@ -71,6 +78,10 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
         $this->client->jsonRequest(
             'POST',
             '/v1/admin/testing/tests',
@@ -87,6 +98,16 @@ final class RequestActionTest extends WebTestCase
         );
 
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
+
+        self::assertCount(1, $transport->getSent());
+        $message = $transport->getSent()[0]->getMessage();
+
+        self::assertInstanceOf(TestCreated::class, $message);
+
+        $test = $this->tests->get(new TestId($message->id));
+
+        self::assertEquals(RequestFixture::TEST_NAME, $test->getName());
+        self::assertEquals(RequestFixture::TEST_CIPHER, $test->getCipher());
     }
 
     public function testAlready(): void
