@@ -11,6 +11,7 @@ use App\Testing\Event\TestCreated;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 use InvalidArgumentException;
 
 #[ORM\Entity]
@@ -18,6 +19,8 @@ use InvalidArgumentException;
 final class Test implements AggregateRoot
 {
     use EventTrait;
+    #[ORM\Column(type: 'test_status')]
+    private Status $status;
 
     /** @param TicketDTO[] $tickets */
     public function __construct(
@@ -36,7 +39,6 @@ final class Test implements AggregateRoot
         private array $courseIds,
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $tickets,
-        private Status $status,
         #[ORM\Column(type: 'string', length: 255)]
         private string $slug,
         #[ORM\Column(type: 'datetime_immutable')]
@@ -47,7 +49,7 @@ final class Test implements AggregateRoot
                 throw new InvalidArgumentException('Ticket should be an instance of ' . TicketDTO::class);
             }
         }
-
+        $this->status = Status::inactive();
         $this->recordEvent(new TestCreated($id->getValue()));
     }
 
@@ -104,11 +106,22 @@ final class Test implements AggregateRoot
     public function getSequentialQuestions(): array
     {
         $allQuestions = [];
-        /** @var TicketDTO $ticket */
         foreach ($this->tickets as $ticket) {
             $allQuestions = array_merge($allQuestions, $ticket->questionIds);
         }
 
         return array_values(array_unique($allQuestions));
+    }
+
+    public function activate(): void
+    {
+        if ($this->isActive()) {
+            throw new DomainException('Test is already active.');
+        }
+        $this->status = Status::active();
+    }
+    public function isActive(): bool
+    {
+        return $this->status->isActive();
     }
 }

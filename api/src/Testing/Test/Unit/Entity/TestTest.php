@@ -28,7 +28,6 @@ final class TestTest extends TestCase
             $allowedMistakes = 3,
             ['ba34f99c-6233-4be3-aa27-287d3726e54d'],
             $tickets = [],
-            $status = Status::inactive(),
             $slug = 'ot201',
             $createdAt = new DateTimeImmutable()
         );
@@ -39,7 +38,7 @@ final class TestTest extends TestCase
         self::assertEquals($description, $test->getDescription());
         self::assertEquals($allowedMistakes, $test->getAllowedMistakes());
         self::assertEquals($tickets, $test->getTickets());
-        self::assertEquals($status, $test->getStatus());
+        self::assertFalse($test->isActive());
         self::assertEquals($slug, $test->getSlug());
         self::assertEquals($createdAt, $test->getCreatedAt());
     }

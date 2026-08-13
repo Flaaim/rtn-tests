@@ -24,6 +24,7 @@ doctrine:
             question_form: App\Course\Entity\Course\QuestionFormType
 
             test_id: App\Testing\Entity\Test\TestIdType
+            test_status: App\Testing\Entity\Test\StatusType
 
     orm:
         validate_xml_mapping: true

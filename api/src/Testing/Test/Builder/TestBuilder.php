@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Testing\Test\Builder;
 
 use App\Testing\Entity\DTO\TicketDTO;
-use App\Testing\Entity\Status;
 use App\Testing\Entity\Test;
 use App\Testing\Entity\TestId;
 use DateTimeImmutable;
@@ -19,9 +18,9 @@ final class TestBuilder
     private int $allowedMistakes;
     private array $courseIds;
     private array $tickets;
-    private Status $status;
     private string $slug;
     private DateTimeImmutable $createdAt;
+    private bool $active = false;
 
     public function __construct(
     ) {
@@ -32,7 +31,6 @@ final class TestBuilder
         $this->allowedMistakes = 2;
         $this->courseIds = ['0121b081-c461-42f0-b8ec-a4632a64faea'];
         $this->tickets = [];
-        $this->status = Status::inactive();
         $this->slug = 'ot201';
         $this->createdAt = new DateTimeImmutable();
     }
@@ -87,13 +85,6 @@ final class TestBuilder
         return $clone;
     }
 
-    public function withStatus(Status $status): self
-    {
-        $clone = clone $this;
-        $clone->status = $status;
-        return $clone;
-    }
-
     public function withSlug(string $slug): self
     {
         $clone = clone $this;
@@ -101,9 +92,16 @@ final class TestBuilder
         return $clone;
     }
 
+    public function active(): self
+    {
+        $clone = clone $this;
+        $clone->active = true;
+        return $clone;
+    }
+
     public function build(): Test
     {
-        return new Test(
+        $test = new Test(
             $this->id,
             $this->name,
             $this->description,
@@ -111,9 +109,14 @@ final class TestBuilder
             $this->allowedMistakes,
             $this->courseIds,
             $this->tickets,
-            $this->status,
             $this->slug,
             $this->createdAt
         );
+
+        if ($this->active) {
+            $test->activate();
+        }
+
+        return $test;
     }
 }

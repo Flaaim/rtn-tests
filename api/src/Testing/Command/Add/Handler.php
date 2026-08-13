@@ -7,7 +7,6 @@ namespace App\Testing\Command\Add;
 use App\Course\Api\CourseApi;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\DTO\TicketDTO;
-use App\Testing\Entity\Status;
 use App\Testing\Entity\Test;
 use App\Testing\Entity\TestId;
 use App\Testing\Entity\TestRepository;
@@ -57,7 +56,6 @@ final class Handler
             $command->allowedMistakes,
             $command->courseIds,
             $tickets,
-            Status::inactive(),
             $this->slugGenerator->generate($command->cipher),
             new DateTimeImmutable()
         );
