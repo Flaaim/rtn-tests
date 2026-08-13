@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Command\Add;
+namespace App\Testing\Command\Test\Add;
 
 use App\Course\Api\CourseApi;
 use App\Infrastructure\Doctrine\Flusher;
