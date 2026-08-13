@@ -6,7 +6,9 @@ namespace App\Testing\MessageHandler;
 
 use App\Testing\Event\TestCreated;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler]
 final class LogOnTestCreatedHandler
 {
     public function __construct(

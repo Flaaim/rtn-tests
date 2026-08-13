@@ -44,6 +44,8 @@ framework:
             'App\Course\Event\CourseCreated': async
             'App\Course\Event\CourseUpdated': async
 
+            'App\Testing\Event\TestCreated': async
+
 when@test:
     framework:
         messenger:
