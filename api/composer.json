@@ -7,6 +7,7 @@
         "php": ">=8.4",
         "ext-ctype": "*",
         "ext-iconv": "*",
+        "ext-intl": "*",
         "ext-openssl": "*",
         "doctrine/dbal": "^4.4",
         "doctrine/doctrine-bundle": "^3.2",
@@ -29,11 +30,11 @@
         "symfony/messenger": "8.0.*",
         "symfony/monolog-bundle": "^4.0",
         "symfony/runtime": "8.0.*",
+        "symfony/string": "8.0.*",
         "symfony/twig-bundle": "8.0.*",
         "symfony/validator": "8.0.*",
         "symfony/yaml": "8.0.*",
-        "webmozart/assert": "^2.3",
-        "ext-intl": "*"
+        "webmozart/assert": "^2.3"
     },
     "require-dev": {
         "dama/doctrine-test-bundle": "^8.6",
