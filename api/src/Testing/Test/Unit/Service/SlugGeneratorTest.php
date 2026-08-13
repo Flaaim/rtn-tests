@@ -20,11 +20,11 @@ final class SlugGeneratorTest extends TestCase
         $generator = new SlugGeneratorByCipher();
         $slug = $generator->generate('ОТ 201.18');
 
-        self::assertEquals('ot201', $slug);
+        self::assertEquals('ot-201', $slug);
     }
 
     #[DataProvider('provideDifferentSlugsCases')]
-    public function testDifferentSlugs($slug, $expected): void
+    public function testDifferentSlugs(string $slug, string $expected): void
     {
         $generator = new SlugGeneratorByCipher();
         self::assertEquals($expected, $generator->generate($slug));
@@ -33,9 +33,9 @@ final class SlugGeneratorTest extends TestCase
     public static function provideDifferentSlugsCases(): iterable
     {
         return [
-            ['ОТ 201.18', 'ot201'],
-            ['ОТ 201..18', 'ot201'],
-            ['ОТ-201.18-', 'ot201'],
+            ['ОТ 201.18', 'ot-201'],
+            ['ОТ 201..18', 'ot-201'],
+            ['ОТ-201.18-', 'ot-201'],
         ];
     }
 
