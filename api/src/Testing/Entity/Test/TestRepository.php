@@ -11,6 +11,7 @@ final class TestRepository
 {
     private readonly EntityRepository $repo;
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly EntityManagerInterface $em
     ) {

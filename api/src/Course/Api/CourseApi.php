@@ -9,6 +9,7 @@ use App\Course\Query\Course\GetQuestionsIds\QueryHandler;
 
 final class CourseApi
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly QueryHandler $queryHandler,
     ) {}

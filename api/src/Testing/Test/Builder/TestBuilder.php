@@ -35,6 +35,7 @@ final class TestBuilder
         $this->createdAt = new DateTimeImmutable();
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withId(TestId $id): self
     {
         $clone = clone $this;
@@ -42,6 +43,7 @@ final class TestBuilder
         return $clone;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withName(string $name): self
     {
         $clone = clone $this;
@@ -49,6 +51,7 @@ final class TestBuilder
         return $clone;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withCipher(string $cipher): self
     {
         $clone = clone $this;
@@ -56,6 +59,7 @@ final class TestBuilder
         return $clone;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withDescription(string $description): self
     {
         $clone = clone $this;
@@ -63,6 +67,7 @@ final class TestBuilder
         return $clone;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withAllowedMistakes(int $allowedMistakes): self
     {
         $clone = clone $this;
@@ -70,6 +75,7 @@ final class TestBuilder
         return $clone;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withCourseIds(array $courseIds): self
     {
         $clone = clone $this;
@@ -85,6 +91,7 @@ final class TestBuilder
         return $clone;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function withSlug(string $slug): self
     {
         $clone = clone $this;
@@ -92,6 +99,7 @@ final class TestBuilder
         return $clone;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function active(): self
     {
         $clone = clone $this;

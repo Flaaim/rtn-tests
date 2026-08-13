@@ -152,7 +152,7 @@ final class RequestActionTest extends WebTestCase
             'numberOfTickets' => 'This value should be greater than 0.',
             'numberQuestionsInTicket' => 'This value should be greater than 0.',
             'allowedMistakes' => 'This value should be greater than 0.',
-            'courseIds' => 'This value should not be blank.',
+            'courseIds' => 'This collection should contain 1 element or more.',
         ]], $data);
     }
 }

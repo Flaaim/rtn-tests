@@ -21,7 +21,7 @@ final class Command
         public readonly int $numberQuestionsInTicket,
         #[Assert\GreaterThan(0)]
         public readonly int $allowedMistakes,
-        #[Assert\NotBlank]
+        #[Assert\Count(min: 1)]
         #[Assert\All(
             new Assert\Uuid()
         )]

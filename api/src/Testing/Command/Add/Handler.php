@@ -16,6 +16,7 @@ use DomainException;
 
 final class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly CourseApi $courseApi,
         private readonly SlugGeneratorByCipher $slugGenerator,

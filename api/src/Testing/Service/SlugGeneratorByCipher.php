@@ -15,6 +15,10 @@ final class SlugGeneratorByCipher implements SlugGeneratorInterface
 
         $value = preg_replace('/\..*/', '', $value);
 
+        if (null === $value) {
+            throw new DomainException('Value slug cannot be null');
+        }
+
         $slug = $slugger->slug($value)->lower()->toString();
 
         if ('' === $slug) {

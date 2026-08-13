@@ -12,7 +12,6 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
-use InvalidArgumentException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'tests')]
@@ -22,7 +21,6 @@ final class Test implements AggregateRoot
     #[ORM\Column(type: 'test_status')]
     private Status $status;
 
-    /** @param TicketDTO[] $tickets */
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'test_id', unique: true)]
@@ -37,6 +35,7 @@ final class Test implements AggregateRoot
         private int $allowedMistakes,
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $courseIds,
+        /** @param array<int, array|TicketDTO> $tickets */
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $tickets,
         #[ORM\Column(type: 'string', length: 255, unique: true)]
@@ -44,12 +43,6 @@ final class Test implements AggregateRoot
         #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $createdAt,
     ) {
-        /** @var TicketDTO[] $ticket */
-        foreach ($this->tickets as $ticket) {
-            if (!$ticket instanceof TicketDTO) {
-                throw new InvalidArgumentException('Ticket should be an instance of ' . TicketDTO::class);
-            }
-        }
         $this->status = Status::inactive();
         $this->recordEvent(new TestCreated($id->getValue()));
     }
@@ -59,6 +52,7 @@ final class Test implements AggregateRoot
         return $this->id;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getStatus(): Status
     {
         return $this->status;
@@ -69,6 +63,7 @@ final class Test implements AggregateRoot
         return $this->slug;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getCourseId(): array
     {
         return $this->courseIds;
@@ -89,8 +84,17 @@ final class Test implements AggregateRoot
         return $this->name;
     }
 
+    /**
+     * @return TicketDTO[]
+     */
     public function getTickets(): array
     {
+        if (isset($this->tickets[0]) && \is_array($this->tickets[0])) {
+            $this->tickets = array_map(
+                static fn (array $ticketData) => TicketDTO::fromArray($ticketData),
+                $this->tickets
+            );
+        }
         return $this->tickets;
     }
 

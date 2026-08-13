@@ -73,4 +73,14 @@ final class TestTest extends TestCase
             '4d44d8d9-bcaf-4fea-9f03-7cf23e9e55df',
         ], $test->getSequentialQuestions());
     }
+
+    public function testActivate(): void
+    {
+        $test = new TestBuilder()
+            ->build();
+
+        $test->activate();
+
+        self::assertTrue($test->isActive());
+    }
 }
