@@ -9,6 +9,7 @@ use App\SharedDomain\Event\EventTrait;
 use App\Testing\Entity\DTO\TicketDTO;
 use App\Testing\Event\TestCreated;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 
@@ -23,14 +24,22 @@ final class Test implements AggregateRoot
         #[ORM\Id]
         #[ORM\Column(type: 'test_id', unique: true)]
         private TestId $id,
+        #[ORM\Column(type: 'string', length: 255)]
         private string $name,
+        #[ORM\Column(type: 'string', length: 255)]
         private string $cipher,
+        #[ORM\Column(type: 'string', length: 512)]
         private string $description,
+        #[ORM\Column(type: 'integer')]
         private int $allowedMistakes,
+        #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $courseIds,
+        #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $tickets,
         private Status $status,
+        #[ORM\Column(type: 'string', length: 255)]
         private string $slug,
+        #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $createdAt,
     ) {
         foreach ($this->tickets as $ticket) {
