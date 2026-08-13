@@ -51,6 +51,13 @@ final class TestBuilder
         return $clone;
     }
 
+    public function withCipher(string $cipher): self
+    {
+        $clone = clone $this;
+        $clone->cipher = $cipher;
+        return $clone;
+    }
+
     public function withDescription(string $description): self
     {
         $clone = clone $this;
