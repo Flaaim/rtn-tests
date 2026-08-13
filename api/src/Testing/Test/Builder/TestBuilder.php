@@ -30,7 +30,7 @@ final class TestBuilder
         $this->description = 'Test description';
         $this->allowedMistakes = 2;
         $this->courseIds = ['0121b081-c461-42f0-b8ec-a4632a64faea'];
-        $this->tickets = [];
+        $this->tickets = [new TicketDTO(1, ['7645fc15-26aa-4c3c-a5a4-9724c9f5f455', '48b75db2-113c-4ae7-becb-7bc830016c61'])];
         $this->slug = 'ot201';
         $this->createdAt = new DateTimeImmutable();
     }

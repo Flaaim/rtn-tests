@@ -39,11 +39,12 @@ final class Test implements AggregateRoot
         private array $courseIds,
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $tickets,
-        #[ORM\Column(type: 'string', length: 255)]
+        #[ORM\Column(type: 'string', length: 255, unique: true)]
         private string $slug,
         #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $createdAt,
     ) {
+        /** @var TicketDTO[] $ticket */
         foreach ($this->tickets as $ticket) {
             if (!$ticket instanceof TicketDTO) {
                 throw new InvalidArgumentException('Ticket should be an instance of ' . TicketDTO::class);
@@ -120,6 +121,7 @@ final class Test implements AggregateRoot
         }
         $this->status = Status::active();
     }
+
     public function isActive(): bool
     {
         return $this->status->isActive();

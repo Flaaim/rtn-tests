@@ -21,4 +21,13 @@ final class TestRepository
     {
         $this->em->persist($test);
     }
+
+    public function hasBySlug(string $slug): bool
+    {
+        return $this->repo->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->andWhere('t.slug = :slug')
+            ->setParameter(':slug', $slug)
+            ->getQuery()->getSingleScalarResult() > 0;
+    }
 }

@@ -6,12 +6,13 @@ namespace App\Testing\Command\Add;
 
 use App\Course\Api\CourseApi;
 use App\Infrastructure\Doctrine\Flusher;
-use App\Testing\Entity\DTO\TicketDTO;
-use App\Testing\Entity\Test;
-use App\Testing\Entity\TestId;
-use App\Testing\Entity\TestRepository;
+use App\Testing\Entity\Test\DTO\TicketDTO;
+use App\Testing\Entity\Test\Test;
+use App\Testing\Entity\Test\TestId;
+use App\Testing\Entity\Test\TestRepository;
 use App\Testing\Service\SlugGeneratorByCipher;
 use DateTimeImmutable;
+use DomainException;
 
 final class Handler
 {
@@ -24,6 +25,12 @@ final class Handler
 
     public function handle(Command $command): void
     {
+        $slug = $this->slugGenerator->generate($command->cipher);
+
+        if ($this->tests->hasBySlug($slug)) {
+            throw new DomainException('Test with slug already exists.');
+        }
+
         $allQuestionIds = [];
 
         foreach ($command->courseIds as $courseId) {
@@ -56,7 +63,7 @@ final class Handler
             $command->allowedMistakes,
             $command->courseIds,
             $tickets,
-            $this->slugGenerator->generate($command->cipher),
+            $slug,
             new DateTimeImmutable()
         );
 

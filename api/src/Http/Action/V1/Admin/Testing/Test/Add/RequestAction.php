@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Action\V1\Admin\Testing\Test;
+namespace App\Http\Action\V1\Admin\Testing\Test\Add;
 
 use App\Infrastructure\Http\Validator\Validator;
 use App\Testing\Command\Add\Command;
