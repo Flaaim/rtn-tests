@@ -45,6 +45,7 @@ framework:
             'App\Course\Event\CourseUpdated': async
 
             'App\Testing\Event\TestCreated': async
+            'App\Testing\Event\TestActivated': async
 
 when@test:
     framework:
