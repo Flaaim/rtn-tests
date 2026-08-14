@@ -7,6 +7,7 @@ namespace App\Testing\Entity\Test;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use App\Testing\Entity\Test\DTO\TicketDTO;
+use App\Testing\Event\TestActivated;
 use App\Testing\Event\TestCreated;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
@@ -124,6 +125,8 @@ final class Test implements AggregateRoot
             throw new DomainException('Test is already active.');
         }
         $this->status = Status::active();
+
+        $this->recordEvent(new TestActivated($this->id->getValue()));
     }
 
     public function isActive(): bool

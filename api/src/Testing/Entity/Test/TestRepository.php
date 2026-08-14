@@ -6,6 +6,7 @@ namespace App\Testing\Entity\Test;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use DomainException;
 
 final class TestRepository
 {
@@ -30,5 +31,15 @@ final class TestRepository
             ->andWhere('t.slug = :slug')
             ->setParameter(':slug', $slug)
             ->getQuery()->getSingleScalarResult() > 0;
+    }
+
+    public function get(TestId $id): Test
+    {
+        $test = $this->repo->find($id);
+        if (null === $test) {
+            throw new DomainException('Test not found.');
+        }
+        /** @var Test $test */
+        return $test;
     }
 }
