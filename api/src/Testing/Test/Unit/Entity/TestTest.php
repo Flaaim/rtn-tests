@@ -83,4 +83,15 @@ final class TestTest extends TestCase
 
         self::assertTrue($test->isActive());
     }
+
+    public function testDeactivate(): void
+    {
+        $test = new TestBuilder()
+            ->active()
+            ->build();
+
+        $test->deactivate();
+
+        self::assertFalse($test->isActive());
+    }
 }

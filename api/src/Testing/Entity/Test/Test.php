@@ -133,4 +133,17 @@ final class Test implements AggregateRoot
     {
         return $this->status->isActive();
     }
+
+    public function deactivate(): void
+    {
+        if ($this->isInactive()) {
+            throw new DomainException('Test is already inactive.');
+        }
+        $this->status = Status::inactive();
+    }
+
+    public function isInactive(): bool
+    {
+        return $this->status->isInactive();
+    }
 }
