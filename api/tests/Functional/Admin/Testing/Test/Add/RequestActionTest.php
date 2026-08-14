@@ -90,7 +90,7 @@ final class RequestActionTest extends WebTestCase
                 'cipher' => RequestFixture::TEST_CIPHER,
                 'description' => 'Description',
                 'numberOfTickets' => 1,
-                'numberQuestionsInTicket' => 1,
+                'numberQuestionsInTicket' => 10,
                 'allowedMistakes' => 2,
                 'courseIds' => ['17f7f504-d951-4a11-a89b-e78a372c64a3'],
             ],
@@ -120,7 +120,7 @@ final class RequestActionTest extends WebTestCase
                 'cipher' => RequestFixture::TEST_CIPHER,
                 'description' => 'Description',
                 'numberOfTickets' => 1,
-                'numberQuestionsInTicket' => 1,
+                'numberQuestionsInTicket' => 10,
                 'allowedMistakes' => 2,
                 'courseIds' => ['17f7f504-d951-4a11-a89b-e78a372c64a3'],
             ],
@@ -137,7 +137,7 @@ final class RequestActionTest extends WebTestCase
                 'cipher' => RequestFixture::TEST_CIPHER,
                 'description' => 'Description',
                 'numberOfTickets' => 1,
-                'numberQuestionsInTicket' => 1,
+                'numberQuestionsInTicket' => 10,
                 'allowedMistakes' => 2,
                 'courseIds' => ['17f7f504-d951-4a11-a89b-e78a372c64a3'],
             ],
@@ -175,5 +175,35 @@ final class RequestActionTest extends WebTestCase
             'allowedMistakes' => 'This value should be greater than 0.',
             'courseIds' => 'This collection should contain 1 element or more.',
         ]], $data);
+    }
+
+    public function testAllowedMistakesGreaterThenNumberQuestionsInTicket(): void
+    {
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/admin/testing/tests',
+            [
+                'name' => RequestFixture::TEST_NAME,
+                'cipher' => RequestFixture::TEST_CIPHER,
+                'description' => 'Description',
+                'numberOfTickets' => 1,
+                'numberQuestionsInTicket' => 10,
+                'allowedMistakes' => 11,
+                'courseIds' => ['17f7f504-d951-4a11-a89b-e78a372c64a3'],
+            ],
+            $this->authHeaders($this->adminToken)
+        );
+
+        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertEquals([
+            'errors' => [
+                'allowedMistakes' => 'Количество разрешенных ошибок не может превышать количество вопросов в билете.',
+            ]
+        ], $data);
     }
 }

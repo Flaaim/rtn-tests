@@ -20,6 +20,10 @@ final class Command
         #[Assert\GreaterThan(0)]
         public readonly int $numberQuestionsInTicket,
         #[Assert\GreaterThan(0)]
+        #[Assert\Expression(
+            expression: 'this.allowedMistakes <= this.numberQuestionsInTicket',
+            message: 'Количество разрешенных ошибок не может превышать количество вопросов в билете.'
+        )]
         public readonly int $allowedMistakes,
         #[Assert\Count(min: 1)]
         #[Assert\All(
