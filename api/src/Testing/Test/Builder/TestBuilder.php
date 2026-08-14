@@ -112,8 +112,8 @@ final class TestBuilder
         $test = new Test(
             $this->id,
             $this->name,
-            $this->description,
             $this->cipher,
+            $this->description,
             $this->allowedMistakes,
             $this->courseIds,
             $this->tickets,

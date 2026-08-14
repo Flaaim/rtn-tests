@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Course\Course\GetPaginated;
+namespace Tests\Functional\Admin\Testing\Test\GetPaginated;
 
 use DateTimeImmutable;
 use Psr\Container\ContainerInterface;
@@ -48,14 +48,14 @@ final class RequestActionTest extends WebTestCase
 
     public function testUnauthenticatedReturns401(): void
     {
-        $this->client->jsonRequest('GET', '/v1/admin/testing/courses', []);
+        $this->client->jsonRequest('GET', '/v1/admin/testing/tests');
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
     }
 
     public function testForbiddenForRegularUser(): void
     {
-        $this->client->jsonRequest('GET', '/v1/admin/testing/courses', [], $this->authHeaders($this->userToken));
+        $this->client->jsonRequest('GET', '/v1/admin/testing/tests', [], $this->authHeaders($this->userToken));
 
         self::assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
@@ -64,7 +64,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'GET',
-            '/v1/admin/testing/courses?page=1&limit=15',
+            '/v1/admin/testing/tests?page=1&limit=15',
             [],
             $this->authHeaders($this->adminToken)
         );
@@ -79,11 +79,11 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals([
             'items' => [
                 [
-                    'courseId' => RequestFixture::COURSE_ID,
-                    'name' => RequestFixture::COURSE_NAME,
-                    'status' => 'processing',
+                    'testId' => RequestFixture::TEST_ID,
+                    'name' => RequestFixture::TEST_NAME,
+                    'cipher' => RequestFixture::TEST_CIPHER,
+                    'status' => 'inactive',
                     'createdAt' => new DateTimeImmutable()->format('Y-m-d'),
-                    'cipher' => RequestFixture::COURSE_CIPHER,
                 ],
             ],
             'totalCount' => 1,

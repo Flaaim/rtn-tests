@@ -19,7 +19,7 @@ final class TestDTO
     public static function fromArray(array $data): self
     {
         return new self(
-            testId: $data['testId'],
+            testId: $data['id'],
             name: $data['name'],
             cipher: $data['cipher'],
             status: $data['status'],

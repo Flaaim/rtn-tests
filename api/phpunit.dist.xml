@@ -58,6 +58,7 @@
             <directory>src/Parser/Test</directory>
             <directory>src/Course/Test</directory>
             <directory>src/SharedDomain/Test</directory>
+            <directory>src/Testing/Test</directory>
         </testsuite>
         <testsuite name="Functional">
             <directory>tests/Functional</directory>

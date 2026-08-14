@@ -7,6 +7,7 @@ namespace App\Testing\Query\Test;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
+/** @psalm-suppress UnusedClass */
 final class TestFetcher implements TestFetcherInterface
 {
     public function __construct(
