@@ -10,10 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import CourseStatusBadge from "@/components/Admin/Course/Status/CourseStatusBadge";
 import RemoveCourseDialog from "@/components/Admin/Course/RemoveCourseDialog";
 import Pagination from "@/components/Pagination/Pagination";
 import { TestItem } from "@/interfaces/test.interface";
+import TestStatusBadge from "@/components/Admin/Test/Status/TestStatusBadge";
 
 interface AdminTestsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -85,7 +85,7 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
                     {new Date(test.createdAt).toLocaleDateString("ru-RU")}
                   </TableCell>
                   <TableCell className="font-medium">
-                    <CourseStatusBadge status={test.status} />
+                    <TestStatusBadge status={test.status} />
                   </TableCell>
                   <TableCell>
                     <RemoveCourseDialog id={test.testId} />
