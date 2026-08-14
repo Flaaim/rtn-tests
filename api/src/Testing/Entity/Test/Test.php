@@ -9,6 +9,7 @@ use App\SharedDomain\Event\EventTrait;
 use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Event\TestActivated;
 use App\Testing\Event\TestCreated;
+use App\Testing\Event\TestDeactivated;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -139,7 +140,10 @@ final class Test implements AggregateRoot
         if ($this->isInactive()) {
             throw new DomainException('Test is already inactive.');
         }
+
         $this->status = Status::inactive();
+
+        $this->recordEvent(new TestDeactivated($this->id->getValue()));
     }
 
     public function isInactive(): bool
