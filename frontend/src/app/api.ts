@@ -53,4 +53,14 @@ export const API = {
     update: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/update`,
     remove: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}`,
   },
+  test: {
+    getPaginated: (page: number, perPage: number, search?: string) => {
+      const params = new URLSearchParams({
+        page: String(page),
+        perPage: String(perPage),
+      });
+      if (search) params.set("search", search);
+      return BASE_URL + `/v1/admin/testing/tests?${params.toString()}`;
+    },
+  },
 };

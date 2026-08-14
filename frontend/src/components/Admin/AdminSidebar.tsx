@@ -7,6 +7,7 @@ import {
   GraduationCap,
   LayoutDashboard,
   LogOut,
+  NotepadText,
   Shield,
   Target,
   Users,
@@ -45,6 +46,7 @@ const items = [
     ],
   },
   { title: "Курсы", url: "/admin/courses", icon: GraduationCap },
+  { title: "Тесты", url: "/admin/tests", icon: NotepadText },
 ];
 
 interface AdminSidebarProps {
