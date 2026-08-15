@@ -1,11 +1,11 @@
 import { Badge } from "@/components/ui/badge";
 
 const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
-  created: {
+  active: {
     label: "Активный",
     className: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50",
   },
-  processing: {
+  inactive: {
     label: "Неактивный",
     className: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-50",
   },
