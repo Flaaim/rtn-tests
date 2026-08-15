@@ -50,3 +50,8 @@ interface Answer {
   isCorrect: boolean;
   answerImg: string;
 }
+
+export interface CourseSelectOption {
+  id: string;
+  name: string;
+}

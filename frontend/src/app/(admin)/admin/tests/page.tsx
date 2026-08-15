@@ -14,6 +14,7 @@ import RemoveCourseDialog from "@/components/Admin/Course/RemoveCourseDialog";
 import Pagination from "@/components/Pagination/Pagination";
 import { TestItem } from "@/interfaces/test.interface";
 import TestStatusBadge from "@/components/Admin/Test/Status/TestStatusBadge";
+import AddTestDialog from "@/components/Admin/Test/AddTestDialog";
 
 interface AdminTestsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -53,6 +54,7 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
       <AdminBreadcrumbs items={[{ title: "Тесты" }]} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Тесты</h1>
+        <AddTestDialog />
       </div>
       <div className="rounded-md border bg-white">
         <Table>

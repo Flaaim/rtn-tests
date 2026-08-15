@@ -7,6 +7,7 @@ import { handleApiResponse } from "@/lib/handleApiResponse";
 import {
   AddCoursePayload,
   CourseFull,
+  CourseSelectOption,
   PaginatedCourses,
   RenameCoursePayload,
   UpdateQuestionCoursePayload,
@@ -127,6 +128,23 @@ export async function removeCourseAction(id: string): Promise<ApiResponse<void>>
     return handleApiResponse<void>(response);
   } catch (error) {
     console.error("removeCourseAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchCoursesToSelectAction(): Promise<ApiResponse<CourseSelectOption[]>> {
+  try {
+    const response = await apiFetch(API.course.lookup(), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    return handleApiResponse<CourseSelectOption[]>(response);
+  } catch (error) {
+    console.error("fetchCoursesToSelectAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

@@ -71,7 +71,7 @@ export default function AddCourseDialog({ draft }: AddCourseDialogProps) {
       disabled={form.formState.isSubmitting}
       className="w-full cursor-pointer py-2"
     >
-      {form.formState.isSubmitting ? "Загрузка..." : "Добавить парсер"}
+      {form.formState.isSubmitting ? "Загрузка..." : "Добавить курс"}
     </Button>
   );
 

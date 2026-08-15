@@ -52,8 +52,10 @@ export const API = {
     rename: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/rename`,
     update: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/update`,
     remove: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}`,
+    lookup: () => BASE_URL + `/v1/admin/testing/courses/lookup`,
   },
   test: {
+    add: () => BASE_URL + `/v1/admin/testing/tests`,
     getPaginated: (page: number, perPage: number, search?: string) => {
       const params = new URLSearchParams({
         page: String(page),
