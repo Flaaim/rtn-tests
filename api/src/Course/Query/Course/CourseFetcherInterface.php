@@ -11,4 +11,6 @@ interface CourseFetcherInterface
     public function getOneById(string $id): array;
 
     public function getQuestionIdsByCourseId(string $courseId): array;
+
+    public function getLookupList(): array;
 }

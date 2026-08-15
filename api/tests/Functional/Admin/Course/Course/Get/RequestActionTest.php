@@ -109,24 +109,4 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(['message' => 'Course not found.'], $data);
     }
-
-    public function testInvalid(): void
-    {
-        $this->client->jsonRequest(
-            'GET',
-            '/v1/admin/testing/courses/invalid',
-            [],
-            $this->authHeaders($this->adminToken)
-        );
-
-        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
-
-        self::assertJson($body = $this->client->getResponse()->getContent());
-
-        $data = Json::decode($body);
-
-        self::assertEquals(['errors' => [
-            'id' => 'This is not a valid UUID.',
-        ]], $data);
-    }
 }

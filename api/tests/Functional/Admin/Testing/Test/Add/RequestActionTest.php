@@ -203,7 +203,7 @@ final class RequestActionTest extends WebTestCase
         self::assertEquals([
             'errors' => [
                 'allowedMistakes' => 'Количество разрешенных ошибок не может превышать количество вопросов в билете.',
-            ]
+            ],
         ], $data);
     }
 }

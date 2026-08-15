@@ -114,4 +114,17 @@ final class CourseFetcher implements CourseFetcherInterface
         }
         return $data;
     }
+
+    public function getLookupList(): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select('c.course_id, c.name')
+            ->from('courses', 'c')
+            ->where($qb->expr()->eq('c.status', ':status'))
+            ->setParameter('status', 'created')
+            ->executeQuery();
+
+        return $result->fetchAllAssociative();
+    }
 }

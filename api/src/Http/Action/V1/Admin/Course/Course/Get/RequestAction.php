@@ -10,6 +10,7 @@ use App\Infrastructure\Http\Validator\Validator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class RequestAction
@@ -19,7 +20,12 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/admin/testing/courses/{id}', name: 'admin.testing.courses.get.one', methods: ['GET'])]
+    #[Route(
+        '/v1/admin/testing/courses/{id}',
+        name: 'admin.testing.courses.get.one',
+        requirements: ['id' => Requirement::UUID],
+        methods: ['GET']
+    )]
     #[IsGranted('ROLE_ADMIN')]
     public function __invoke(string $id): Response
     {
