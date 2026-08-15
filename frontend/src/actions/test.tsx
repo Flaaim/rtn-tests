@@ -52,3 +52,24 @@ export async function addTestAction(payload: AddTestPayload): Promise<ApiRespons
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function updateStatusAction(
+  id: string,
+  nextChecked: boolean
+): Promise<ApiResponse<void>> {
+  try {
+    const url = nextChecked ? API.test.activate(id) : API.test.deactivate(id);
+
+    const response = await apiFetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("updateStatusAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}

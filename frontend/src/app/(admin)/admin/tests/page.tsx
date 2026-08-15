@@ -10,11 +10,10 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import Link from "next/link";
-import RemoveCourseDialog from "@/components/Admin/Course/RemoveCourseDialog";
 import Pagination from "@/components/Pagination/Pagination";
 import { TestItem } from "@/interfaces/test.interface";
-import TestStatusBadge from "@/components/Admin/Test/Status/TestStatusBadge";
 import AddTestDialog from "@/components/Admin/Test/AddTestDialog";
+import TestStatusControl from "@/components/Admin/Test/Status/TestStatusControl";
 
 interface AdminTestsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -64,7 +63,7 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
               <TableHead>Шифр</TableHead>
               <TableHead>Создан</TableHead>
               <TableHead>Статус</TableHead>
-              <TableHead>Действия</TableHead>
+              <TableHead>Активировать</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -86,12 +85,7 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
                   <TableCell className="font-medium">
                     {new Date(test.createdAt).toLocaleDateString("ru-RU")}
                   </TableCell>
-                  <TableCell className="font-medium">
-                    <TestStatusBadge status={test.status} />
-                  </TableCell>
-                  <TableCell>
-                    <RemoveCourseDialog id={test.testId} />
-                  </TableCell>
+                  <TestStatusControl id={test.testId} initialStatus={test.status} />
                 </TableRow>
               ))
             )}
