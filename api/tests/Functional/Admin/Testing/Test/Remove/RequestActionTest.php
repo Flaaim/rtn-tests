@@ -6,11 +6,13 @@ namespace Tests\Functional\Admin\Testing\Test\Remove;
 
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
+use App\Testing\Event\TestRemoved;
 use Doctrine\ORM\EntityManagerInterface;
 use DomainException;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
@@ -76,6 +78,10 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
         $this->client->jsonRequest(
             'DELETE',
             '/v1/admin/testing/tests/' . RequestFixture::TEST_ID . '/remove',
@@ -84,6 +90,14 @@ final class RequestActionTest extends WebTestCase
         );
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
+
+        self::assertCount(1, $transport->getSent());
+
+        $message = $transport->getSent()[0]->getMessage();
+
+        self::assertInstanceOf(TestRemoved::class, $message);
+
+        self::assertEquals(RequestFixture::TEST_ID, $message->id);
 
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Test not found.');

@@ -7,8 +7,10 @@ namespace App\Testing\Test\Unit\Entity;
 use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
+use App\Testing\Event\TestRemoved;
 use App\Testing\Test\Builder\TestBuilder;
 use DateTimeImmutable;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -93,5 +95,28 @@ final class TestTest extends TestCase
         $test->deactivate();
 
         self::assertFalse($test->isActive());
+    }
+
+    public function testRemove(): void
+    {
+        $test = new TestBuilder()
+            ->build();
+
+        $test->remove();
+
+        $events = $test->releaseEvents();
+        self::assertCount(1, $events);
+        self::assertInstanceOf(TestRemoved::class, $events[0]);
+    }
+
+    public function testRemoveFailed(): void
+    {
+        $test = new TestBuilder()
+            ->active()
+            ->build();
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Can not remove active test.');
+        $test->remove();
     }
 }

@@ -7,7 +7,6 @@ namespace App\Testing\Command\Test\Remove;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
-use DomainException;
 
 final class Handler
 {
@@ -21,9 +20,8 @@ final class Handler
     {
         $test = $this->tests->get(new TestId($command->id));
 
-        if ($test->isActive()) {
-            throw new DomainException('Can not remove active test.');
-        }
+        $test->remove();
+
         $this->tests->remove($test);
 
         $this->flusher->flush();

@@ -125,6 +125,8 @@ final class TestBuilder
             $test->activate();
         }
 
+        $test->releaseEvents();
+
         return $test;
     }
 }

@@ -10,6 +10,7 @@ use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Event\TestActivated;
 use App\Testing\Event\TestCreated;
 use App\Testing\Event\TestDeactivated;
+use App\Testing\Event\TestRemoved;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -149,5 +150,14 @@ final class Test implements AggregateRoot
     public function isInactive(): bool
     {
         return $this->status->isInactive();
+    }
+
+    public function remove(): void
+    {
+        if ($this->isActive()) {
+            throw new DomainException('Can not remove active test.');
+        }
+
+        $this->recordEvent(new TestRemoved($this->id->getValue()));
     }
 }
