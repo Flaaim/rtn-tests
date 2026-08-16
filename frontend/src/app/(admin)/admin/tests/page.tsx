@@ -14,6 +14,7 @@ import Pagination from "@/components/Pagination/Pagination";
 import { TestItem } from "@/interfaces/test.interface";
 import AddTestDialog from "@/components/Admin/Test/AddTestDialog";
 import TestStatusControl from "@/components/Admin/Test/Status/TestStatusControl";
+import RemoveTestDialog from "@/components/Admin/Test/RemoveTestDialog";
 
 interface AdminTestsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -64,6 +65,7 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
               <TableHead>Создан</TableHead>
               <TableHead>Статус</TableHead>
               <TableHead>Активировать</TableHead>
+              <TableHead>Удалить</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -86,6 +88,9 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
                     {new Date(test.createdAt).toLocaleDateString("ru-RU")}
                   </TableCell>
                   <TestStatusControl id={test.testId} initialStatus={test.status} />
+                  <TableCell>
+                    <RemoveTestDialog id={test.testId} />
+                  </TableCell>
                 </TableRow>
               ))
             )}
