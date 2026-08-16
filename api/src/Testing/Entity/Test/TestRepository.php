@@ -42,4 +42,9 @@ final class TestRepository
         /** @var Test $test */
         return $test;
     }
+
+    public function remove(Test $test): void
+    {
+        $this->em->remove($test);
+    }
 }
