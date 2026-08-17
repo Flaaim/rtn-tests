@@ -1,7 +1,7 @@
 "use server";
 
 import { ApiResponse } from "@/interfaces/response.interface";
-import { AddTestPayload, PaginatedTests } from "@/interfaces/test.interface";
+import { AddTestPayload, PaginatedTests, TestFull } from "@/interfaces/test.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
 import { handleApiResponse } from "@/lib/handleApiResponse";
@@ -87,6 +87,23 @@ export async function removeTestAction(id: string): Promise<ApiResponse<void>> {
     return handleApiResponse<void>(response);
   } catch (error) {
     console.error("removeTestAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchTestAction(id: string): Promise<ApiResponse<TestFull>> {
+  try {
+    const response = await apiFetch(API.test.get(id), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    return handleApiResponse<TestFull>(response);
+  } catch (error) {
+    console.error("fetchTestAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

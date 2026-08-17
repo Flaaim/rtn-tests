@@ -1,3 +1,5 @@
+import { CourseSelectOption, Question } from "@/interfaces/course.interface";
+
 export interface PaginatedTests {
   items: TestItem[];
   totalCount: number;
@@ -20,4 +22,22 @@ export interface AddTestPayload {
   numberQuestionsInTicket: number;
   allowedMistakes: number;
   courseIds: string[];
+}
+
+export interface TestFull {
+  id: string;
+  name: string;
+  cipher: string;
+  description: string;
+  allowedMistakes: number;
+  courses: CourseSelectOption[];
+  tickets: Ticket[];
+  slug: string;
+  createdAt: string;
+  status: string;
+}
+
+export interface Ticket {
+  number: number;
+  questions: Question[];
 }

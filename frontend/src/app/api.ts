@@ -64,6 +64,7 @@ export const API = {
       if (search) params.set("search", search);
       return BASE_URL + `/v1/admin/testing/tests?${params.toString()}`;
     },
+    get: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}`,
     activate: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/activate`,
     deactivate: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/deactivate`,
     remove: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/remove`,
