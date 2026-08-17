@@ -13,9 +13,14 @@ final class TicketDTO
 
     public static function fromArray(array $data): self
     {
+        $questions = array_map(
+            static fn (array $questionData) => QuestionDTO::fromArray($questionData),
+            $data['questions'] ?? []
+        );
+
         return new self(
             number: $data['number'],
-            questions: $data['questions']
+            questions: $questions
         );
     }
 }

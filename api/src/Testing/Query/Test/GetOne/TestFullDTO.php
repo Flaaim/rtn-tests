@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Testing\Query\Test\GetOne;
 
+use DateTimeImmutable;
+
 final class TestFullDTO
 {
     /**
@@ -19,6 +21,7 @@ final class TestFullDTO
         public array $tickets,
         public string $slug,
         public string $createdAt,
+        public string $status
     ) {}
 
     public static function fromArray(array $data): self
@@ -42,7 +45,8 @@ final class TestFullDTO
             courses: $courses,
             tickets: $tickets,
             slug: $data['slug'],
-            createdAt: $data['created_at'],
+            createdAt: new DateTimeImmutable($data['created_at'])->format('Y-m-d'),
+            status: $data['status']
         );
     }
 }

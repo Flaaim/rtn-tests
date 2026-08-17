@@ -27,6 +27,10 @@ final class RequestFixture extends AbstractFixture
 
     public const string USER_EMAIL = 'user@mail.ru';
     public const string USER_PASSWORD = 'user';
+    public const array QUESTION_IDS = [
+        '90be077454a14f3d965c4b07645e3769',
+        '6724ac7652bc47d6913ab8ca11b2ea36',
+    ];
 
     public function load(ObjectManager $manager): void
     {
@@ -63,7 +67,7 @@ final class RequestFixture extends AbstractFixture
     {
         return [
             new Question(
-                '90be077454a14f3d965c4b07645e3769',
+                self::QUESTION_IDS[0],
                 'Что необходимо сделать после восстановления самостоятельного дыхания у пострадавшего с отсутствующим сознанием?',
                 '',
                 [
@@ -95,7 +99,7 @@ final class RequestFixture extends AbstractFixture
                 QuestionForm::singleChoice()
             ),
             new Question(
-                '6724ac7652bc47d6913ab8ca11b2ea36',
+                self::QUESTION_IDS[1],
                 'На какое время допускается снять кровоостанавливающий жгут, если максимальное время его наложения истекло, а пострадавшего не транспортировали в медицинскую организацию?',
                 '',
                 [
