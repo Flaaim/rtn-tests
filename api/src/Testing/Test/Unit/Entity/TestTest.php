@@ -119,4 +119,30 @@ final class TestTest extends TestCase
         self::expectExceptionMessage('Can not remove active test.');
         $test->remove();
     }
+
+    public function testRename(): void
+    {
+        $test = new TestBuilder()
+            ->withName('Name')
+            ->withCipher('cipher')
+            ->build();
+
+        $test->rename('Name1', 'cipher1');
+
+        self::assertEquals('Name1', $test->getName());
+        self::assertEquals('cipher1', $test->getCipher());
+    }
+
+    public function testRenameActive(): void
+    {
+        $test = new TestBuilder()
+            ->withName('Name')
+            ->withCipher('cipher')
+            ->active()
+            ->build();
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Can not rename active test.');
+        $test->rename('Name2', 'cipher2');
+    }
 }

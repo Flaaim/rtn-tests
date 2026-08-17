@@ -160,4 +160,21 @@ final class Test implements AggregateRoot
 
         $this->recordEvent(new TestRemoved($this->id->getValue()));
     }
+
+    public function rename(?string $name = null, ?string $cipher = null, ?string $description = null): void
+    {
+        if ($this->isActive()) {
+            throw new DomainException('Can not rename active test.');
+        }
+
+        if (null !== $name) {
+            $this->name = $name;
+        }
+        if (null !== $cipher) {
+            $this->cipher = $cipher;
+        }
+        if (null !== $description) {
+            $this->description = $description;
+        }
+    }
 }
