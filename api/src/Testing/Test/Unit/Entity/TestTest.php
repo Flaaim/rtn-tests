@@ -8,6 +8,7 @@ use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Event\TestRemoved;
+use App\Testing\Service\SlugGeneratorByCipher;
 use App\Testing\Test\Builder\TestBuilder;
 use DateTimeImmutable;
 use DomainException;
@@ -124,25 +125,54 @@ final class TestTest extends TestCase
     {
         $test = new TestBuilder()
             ->withName('Name')
-            ->withCipher('cipher')
+            ->withDescription('Description')
             ->build();
 
-        $test->rename('Name1', 'cipher1');
+        $test->rename('Name1', 'Description1');
 
         self::assertEquals('Name1', $test->getName());
-        self::assertEquals('cipher1', $test->getCipher());
+        self::assertEquals('Description1', $test->getDescription());
     }
 
     public function testRenameActive(): void
     {
         $test = new TestBuilder()
             ->withName('Name')
-            ->withCipher('cipher')
+            ->withDescription('Description')
             ->active()
             ->build();
 
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Can not rename active test.');
-        $test->rename('Name2', 'cipher2');
+        $test->rename('Name2', 'Description');
+    }
+
+    public function testChangeCipher(): void
+    {
+        $test = new TestBuilder()
+            ->withCipher('ОТ 201.18')
+            ->build();
+        $slugGenerator = new SlugGeneratorByCipher();
+        $newCipher = 'ПБ 115.26';
+        $newSlug = $slugGenerator->generate($newCipher);
+        $test->changeCipher($newCipher, $newSlug);
+
+        self::assertEquals($newCipher, $test->getCipher());
+        self::assertEquals($newSlug, $test->getSlug());
+    }
+
+    public function testChangeCipherActive(): void
+    {
+        $test = new TestBuilder()
+            ->withCipher('ОТ 201.18')
+            ->active()
+            ->build();
+        $slugGenerator = new SlugGeneratorByCipher();
+        $newCipher = 'ПБ 115.26';
+        $newSlug = $slugGenerator->generate($newCipher);
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Can not change cipher of active test.');
+        $test->changeCipher($newCipher, $newSlug);
     }
 }
