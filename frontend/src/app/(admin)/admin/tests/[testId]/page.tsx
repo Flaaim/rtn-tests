@@ -4,6 +4,7 @@ import { fetchTestAction } from "@/actions/test";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TestStatusBadge from "@/components/Admin/Test/Status/TestStatusBadge";
 import { ChangeCipherTestDialog } from "@/components/Admin/Test/ChangeCipherTestDialog";
+import RenameTestDialog from "@/components/Admin/Test/RenameTestDialog";
 
 interface TestOverviewPageProps {
   params: Promise<{ testId: string }>;
@@ -39,7 +40,9 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
           <CardHeader>
             <div className="grid grid-cols-2 gap-4 items-center">
               <CardTitle>Курс: {test.name}</CardTitle>
-              <div className="justify-self-end"></div>
+              <div className="justify-self-end">
+                <RenameTestDialog id={test.id} name={test.name} description={test.description} />
+              </div>
             </div>
           </CardHeader>
           <CardContent className="space-y-4 text-sm">

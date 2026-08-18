@@ -29,6 +29,12 @@ export interface ChangeCipherTestPayload {
   cipher: string;
 }
 
+export interface RenameTestPayload {
+  id: string;
+  name: string;
+  description: string;
+}
+
 export interface TestFull {
   id: string;
   name: string;

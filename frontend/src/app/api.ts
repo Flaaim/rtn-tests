@@ -69,5 +69,6 @@ export const API = {
     deactivate: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/deactivate`,
     remove: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/remove`,
     changeCipher: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/change-cipher`,
+    rename: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/rename`,
   },
 };

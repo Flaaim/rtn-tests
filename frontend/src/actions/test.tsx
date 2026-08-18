@@ -5,6 +5,7 @@ import {
   AddTestPayload,
   ChangeCipherTestPayload,
   PaginatedTests,
+  RenameTestPayload,
   TestFull,
 } from "@/interfaces/test.interface";
 import { apiFetch } from "@/lib/apiClient";
@@ -131,6 +132,27 @@ export async function changeCipherTestAction(
     return handleApiResponse(response);
   } catch (error) {
     console.error("changeCipherTestAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function renameTestAction(payload: RenameTestPayload): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.test.rename(payload.id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        name: payload.name,
+        description: payload.description,
+      }),
+    });
+
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("renameTestAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
