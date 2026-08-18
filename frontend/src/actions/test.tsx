@@ -1,7 +1,12 @@
 "use server";
 
 import { ApiResponse } from "@/interfaces/response.interface";
-import { AddTestPayload, PaginatedTests, TestFull } from "@/interfaces/test.interface";
+import {
+  AddTestPayload,
+  ChangeCipherTestPayload,
+  PaginatedTests,
+  TestFull,
+} from "@/interfaces/test.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
 import { handleApiResponse } from "@/lib/handleApiResponse";
@@ -104,6 +109,28 @@ export async function fetchTestAction(id: string): Promise<ApiResponse<TestFull>
     return handleApiResponse<TestFull>(response);
   } catch (error) {
     console.error("fetchTestAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function changeCipherTestAction(
+  payload: ChangeCipherTestPayload
+): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.test.changeCipher(payload.id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        cipher: payload.cipher,
+      }),
+    });
+
+    return handleApiResponse(response);
+  } catch (error) {
+    console.error("changeCipherTestAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

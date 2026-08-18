@@ -24,6 +24,11 @@ export interface AddTestPayload {
   courseIds: string[];
 }
 
+export interface ChangeCipherTestPayload {
+  id: string;
+  cipher: string;
+}
+
 export interface TestFull {
   id: string;
   name: string;

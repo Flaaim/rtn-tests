@@ -3,6 +3,7 @@ import { TestFull } from "@/interfaces/test.interface";
 import { fetchTestAction } from "@/actions/test";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TestStatusBadge from "@/components/Admin/Test/Status/TestStatusBadge";
+import { ChangeCipherTestDialog } from "@/components/Admin/Test/ChangeCipherTestDialog";
 
 interface TestOverviewPageProps {
   params: Promise<{ testId: string }>;
@@ -49,7 +50,9 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
               </div>
               <div>
                 <p className="text-muted-foreground font-medium">Шифр</p>
-                <p className="font-mono">{test.cipher}</p>
+                <p className="font-mono">
+                  {test.cipher} <ChangeCipherTestDialog id={test.id} cipher={test.cipher} />
+                </p>
               </div>
               <div>
                 <p className="text-muted-foreground font-medium">Дата создания</p>
