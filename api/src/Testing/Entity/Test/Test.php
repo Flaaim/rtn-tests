@@ -23,6 +23,8 @@ final class Test implements AggregateRoot
     use EventTrait;
     #[ORM\Column(type: 'test_status')]
     private Status $status;
+    #[ORM\Embedded(class: Settings::class, columnPrefix: false)]
+    private Settings $settings;
 
     public function __construct(
         #[ORM\Id]
@@ -34,8 +36,6 @@ final class Test implements AggregateRoot
         private string $cipher,
         #[ORM\Column(type: 'string', length: 512)]
         private string $description,
-        #[ORM\Column(type: 'integer')]
-        private int $allowedMistakes,
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $courseIds,
         /** @param array<int, array|TicketDTO> $tickets */
@@ -121,6 +121,19 @@ final class Test implements AggregateRoot
         return array_values(array_unique($allQuestions));
     }
 
+    public function getSettings(): Settings
+    {
+        return $this->settings;
+    }
+
+    public function changeSettings(Settings $settings): void
+    {
+        if ($this->isActive()) {
+            throw new DomainException('Cannot change settings of an active test.');
+        }
+        $this->settings = $settings;
+    }
+
     public function activate(): void
     {
         if ($this->isActive()) {
@@ -184,5 +197,16 @@ final class Test implements AggregateRoot
         }
         $this->cipher = $cipher;
         $this->slug = $slug;
+    }
+
+    public function updateTickets(array $newTickets): void
+    {
+        if ($this->isActive()) {
+            throw new DomainException('Can not update tickets of active test.');
+        }
+        $this->tickets = [];
+        foreach ($newTickets as $ticket) {
+            $this->tickets[] = $ticket;
+        }
     }
 }

@@ -175,4 +175,46 @@ final class TestTest extends TestCase
         self::expectExceptionMessage('Can not change cipher of active test.');
         $test->changeCipher($newCipher, $newSlug);
     }
+
+    public function testUpdateTickets(): void
+    {
+        $test = new TestBuilder()
+            ->withTickets([
+                new TicketDTO(
+                    1,
+                    [
+                        '0121b081-c461-42f0-b8ec-a4632a64faea',
+                        'b22c2959-2bb2-4e48-8d95-5ebd8de5b84d',
+                    ]
+                ),
+                new TicketDTO(
+                    2,
+                    [
+                        '0121b081-c461-42f0-b8ec-a4632a64faea',
+                        '4d44d8d9-bcaf-4fea-9f03-7cf23e9e55df',
+                    ]
+                ),
+            ])
+            ->build();
+
+        $test->updateTickets([
+            new TicketDTO(1, ['735eb05d-626b-4650-8146-ef1c7a77b5a9']),
+        ]);
+
+        self::assertCount(1, $test->getTickets());
+        self::assertFalse($test->isActive());
+        self::assertEquals(['735eb05d-626b-4650-8146-ef1c7a77b5a9'], $test->getTickets()[0]->questionIds);
+    }
+
+    public function testUpdateTicketsActive(): void
+    {
+        $test = new TestBuilder()
+            ->withTickets([new TicketDTO(1, ['735eb05d-626b-4650-8146-ef1c7a77b5a9'])])
+            ->active()
+            ->build();
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Can not update tickets of active test.');
+        $test->updateTickets([new TicketDTO(1, ['735eb05d-626b-4650-8146-ef1c7a77b5a9'])]);
+    }
 }
