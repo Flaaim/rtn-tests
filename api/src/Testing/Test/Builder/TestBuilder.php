@@ -5,9 +5,11 @@ declare(strict_types=1);
 namespace App\Testing\Test\Builder;
 
 use App\Testing\Entity\Test\DTO\TicketDTO;
+use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
 use DateTimeImmutable;
+use DomainException;
 
 final class TestBuilder
 {
@@ -15,11 +17,11 @@ final class TestBuilder
     private string $name;
     private string $description;
     private string $cipher;
-    private int $allowedMistakes;
     private array $courseIds;
     private array $tickets;
-    private string $slug;
+    private ?string $slug = null;
     private DateTimeImmutable $createdAt;
+    private Settings $settings;
     private bool $active = false;
 
     public function __construct(
@@ -28,11 +30,11 @@ final class TestBuilder
         $this->name = 'Первая помощь';
         $this->cipher = 'ОТ 201.18';
         $this->description = 'Test description';
-        $this->allowedMistakes = 2;
         $this->courseIds = ['0121b081-c461-42f0-b8ec-a4632a64faea'];
         $this->tickets = [new TicketDTO(1, ['7645fc15-26aa-4c3c-a5a4-9724c9f5f455', '48b75db2-113c-4ae7-becb-7bc830016c61'])];
         $this->slug = 'ot201';
         $this->createdAt = new DateTimeImmutable();
+        $this->settings = new Settings(10, 10, 2);
     }
 
     /** @psalm-suppress PossiblyUnusedMethod */
@@ -56,6 +58,7 @@ final class TestBuilder
     {
         $clone = clone $this;
         $clone->cipher = $cipher;
+        $clone->slug = null;
         return $clone;
     }
 
@@ -68,10 +71,10 @@ final class TestBuilder
     }
 
     /** @psalm-suppress PossiblyUnusedMethod */
-    public function withAllowedMistakes(int $allowedMistakes): self
+    public function withSettings(Settings $settings): self
     {
         $clone = clone $this;
-        $clone->allowedMistakes = $allowedMistakes;
+        $clone->settings = $settings;
         return $clone;
     }
 
@@ -109,16 +112,18 @@ final class TestBuilder
 
     public function build(): Test
     {
+        $currentSlug = $this->slug ?? $this->generateSlug($this->cipher);
+
         $test = new Test(
             $this->id,
             $this->name,
             $this->cipher,
             $this->description,
-            $this->allowedMistakes,
             $this->courseIds,
             $this->tickets,
-            $this->slug,
-            $this->createdAt
+            $currentSlug,
+            $this->createdAt,
+            $this->settings,
         );
 
         if ($this->active) {
@@ -128,5 +133,22 @@ final class TestBuilder
         $test->releaseEvents();
 
         return $test;
+    }
+
+    private function generateSlug(string $cipher): string
+    {
+        $value = mb_strtolower($cipher);
+        $value = preg_replace('/\..*/', '', $value);
+
+        if (null === $value) {
+            throw new DomainException('Slug in builder cannot be empty');
+        }
+
+        $result = preg_replace('/[^a-z0-9]+/', '', $value);
+        if (null === $result) {
+            throw new DomainException('Slug in builder cannot be empty');
+        }
+
+        return $result;
     }
 }

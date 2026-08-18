@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Course\Query\Course\GetQuestionsIds;
 
 use App\Course\Query\Course\CourseFetcherInterface;
+use DomainException;
 
 final class QueryHandler
 {
@@ -14,6 +15,10 @@ final class QueryHandler
 
     public function handle(Query $query): array
     {
-        return $this->courses->getQuestionIdsByCourseId($query->id);
+        $questionIds = $this->courses->getQuestionIdsByCourseId($query->id);
+        if (empty($questionIds)) {
+            throw new DomainException('QuestionIds not found.');
+        }
+        return $questionIds;
     }
 }

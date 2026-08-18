@@ -12,6 +12,7 @@ use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
+use Tests\Functional\Admin\Course\Course\Get\RequestFixture as CourseGetRequestFixture;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
@@ -92,7 +93,7 @@ final class RequestActionTest extends WebTestCase
                 'numberOfTickets' => 1,
                 'numberQuestionsInTicket' => 10,
                 'allowedMistakes' => 2,
-                'courseIds' => ['17f7f504-d951-4a11-a89b-e78a372c64a3'],
+                'courseIds' => [CourseGetRequestFixture::COURSE_ID],
             ],
             $this->authHeaders($this->adminToken)
         );
@@ -116,30 +117,13 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/admin/testing/tests',
             [
-                'name' => RequestFixture::TEST_NAME,
-                'cipher' => RequestFixture::TEST_CIPHER,
+                'name' => RequestFixture::TEST_ACTIVE_NAME,
+                'cipher' => RequestFixture::TEST_CIPHER_ACTIVE,
                 'description' => 'Description',
                 'numberOfTickets' => 1,
                 'numberQuestionsInTicket' => 10,
                 'allowedMistakes' => 2,
-                'courseIds' => ['17f7f504-d951-4a11-a89b-e78a372c64a3'],
-            ],
-            $this->authHeaders($this->adminToken)
-        );
-
-        self::assertEquals(201, $this->client->getResponse()->getStatusCode());
-
-        $this->client->jsonRequest(
-            'POST',
-            '/v1/admin/testing/tests',
-            [
-                'name' => RequestFixture::TEST_NAME,
-                'cipher' => RequestFixture::TEST_CIPHER,
-                'description' => 'Description',
-                'numberOfTickets' => 1,
-                'numberQuestionsInTicket' => 10,
-                'allowedMistakes' => 2,
-                'courseIds' => ['17f7f504-d951-4a11-a89b-e78a372c64a3'],
+                'courseIds' => [CourseGetRequestFixture::COURSE_ID],
             ],
             $this->authHeaders($this->adminToken)
         );
@@ -150,6 +134,31 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['message' => 'Test with slug already exists.'], $data);
+    }
+
+    public function testCourseQuestionsEmpty(): void
+    {
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/admin/testing/tests',
+            [
+                'name' => RequestFixture::TEST_NAME,
+                'cipher' => RequestFixture::TEST_CIPHER,
+                'description' => 'Description',
+                'numberOfTickets' => 1,
+                'numberQuestionsInTicket' => 10,
+                'allowedMistakes' => 2,
+                'courseIds' => ['4f766a24-ea22-4237-924f-5c47b4e6ea5f'], //not found
+            ],
+            $this->authHeaders($this->adminToken)
+        );
+        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertEquals(['message' => 'QuestionIds not found.'], $data);
     }
 
     public function testEmpty(): void
