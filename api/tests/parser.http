@@ -22,7 +22,7 @@ POST http://localhost:8081/v1/parser/launch
 Content-Type: application/json
 
 {
-    "parserId": "561ad27b-296c-411a-9e25-e786f1682d2f",
-    "branchId": "85059",
-    "ticketId": "825bc314fcee49be9f0d7c388b911e88"
+    "parserId": "f8a43411-9ac8-463b-a5a3-eae6438d603b",
+    "branchId": "91600",
+    "ticketId": "480a59713e02411f88ff4a80ec1a6b17"
 }

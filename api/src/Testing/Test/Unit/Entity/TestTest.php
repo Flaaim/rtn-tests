@@ -206,8 +206,45 @@ final class TestTest extends TestCase
     public function testChangeSettings(): void
     {
         $test = new TestBuilder()
+            ->withSettings(
+                new Settings(10, 10, 2)
+            )
+            ->build();
+
+        $test->changeSettings(
+            new Settings(5, 2, 1),
+            [
+                'ad1388a2-ae3d-4d6d-bd39-0fc74c927acd',
+                '7be866a0-038c-4eda-acaa-9b6754e50185',
+                'bfd4c940-b935-47f4-824a-010801c7e9ab',
+                'bce8ced4-a8ed-4228-9c1b-47fa319d46d9',
+                'b382bb1e-628c-4c21-bfdb-e9e61309ff4d',
+                '519091a8-4533-4ce1-b78f-4acac46199ad',
+                'f1ef994e-0885-4097-b761-83907adb4c2e',
+                '334d1323-24c2-4a9b-b78d-861bc7d6c67a',
+                '489475db-a624-4091-ac84-2064cafbc2aa',
+                '6bddfeae-df64-4b10-bba7-c9b5d445198a',
+            ]
+        );
+
+        self::assertEquals(5, $test->getSettings()->getNumberOfTickets());
+        self::assertEquals(2, $test->getSettings()->getNumberQuestionsInTicket());
+        self::assertEquals(1, $test->getSettings()->getAllowedMistakes());
+
+        self::assertCount(5, $test->getTickets());
+        self::assertCount(2, $test->getTickets()[0]->questionIds);
+    }
+
+    public function testChangeSettingsActive(): void
+    {
+        $test = new TestBuilder()
             ->withSettings(new Settings(10, 10, 2))
             ->active()
             ->build();
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Cannot change settings of an active test.');
+
+        $test->changeSettings(new Settings(5, 2, 1), ['ad1388a2-ae3d-4d6d-bd39-0fc74c927acd']);
     }
 }

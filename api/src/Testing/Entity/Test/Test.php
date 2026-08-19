@@ -40,7 +40,7 @@ final class Test implements AggregateRoot
         private string $description,
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $courseIds,
-        $questionIds,
+        array $questionIds,
         #[ORM\Column(type: 'string', length: 255, unique: true)]
         private string $slug,
         #[ORM\Column(type: 'datetime_immutable')]
