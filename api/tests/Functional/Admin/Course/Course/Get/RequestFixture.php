@@ -19,9 +19,13 @@ use Doctrine\Persistence\ObjectManager;
 final class RequestFixture extends AbstractFixture
 {
     public const string COURSE_ID = '63879491-6883-4e88-8be2-295d3d260346';
+    public const string COURSE_ANOTHER_ID = '4afd49ef-889d-4668-b5c4-a837bcd716b9';
     public const string COURSE_NOT_FOUND_ID = '646140a8-f49e-4514-bf7e-da3ee0d6fd80';
     public const string COURSE_NAME = 'Первая помощь';
+    public const string COURSE_ANOTHER_NAME = 'РПО. Земляные работы';
     public const string COURSE_CIPHER = 'ОТ 201.18';
+    public const string COURSE_ANOTHER_CIPHER = 'ОТ 1457.7';
+
     public const string ADMIN_EMAIL = 'admin@mail.ru';
     public const string ADMIN_PASSWORD = 'admin';
 
@@ -30,6 +34,11 @@ final class RequestFixture extends AbstractFixture
     public const array QUESTION_IDS = [
         '90be077454a14f3d965c4b07645e3769',
         '6724ac7652bc47d6913ab8ca11b2ea36',
+    ];
+
+    public const array QUESTION_ANOTHER_IDS = [
+        '684ed10b-198e-4ba6-af22-b66c81c4389e',
+        'b7c1191e-382f-4d43-ae82-0fdc172edc5f',
     ];
 
     public function load(ObjectManager $manager): void
@@ -56,10 +65,19 @@ final class RequestFixture extends AbstractFixture
             new DateTimeImmutable(),
             self::COURSE_CIPHER
         );
-
         $course->releaseEvents();
-
         $manager->persist($course);
+
+        $anotherCourse = new Course(
+            new CourseId(self::COURSE_ANOTHER_ID),
+            self::COURSE_ANOTHER_NAME,
+            $this->getAnotherQuestions(),
+            new DateTimeImmutable(),
+            self::COURSE_ANOTHER_CIPHER
+        );
+        $anotherCourse->releaseEvents();
+        $manager->persist($anotherCourse);
+
         $manager->flush();
     }
 
@@ -124,6 +142,76 @@ final class RequestFixture extends AbstractFixture
                     Answer::fromArray([
                         'id' => '66bc39ee7187f574dfb8699f74e55863',
                         'text' => 'Снимать жгут не рекомендуется',
+                        'isCorrect' => true,
+                        'answerImg' => '',
+                    ]),
+                ],
+                QuestionForm::singleChoice()
+            ),
+        ];
+    }
+
+    private function getAnotherQuestions(): array
+    {
+        return [
+            new Question(
+                self::QUESTION_ANOTHER_IDS[0],
+                'Укажите наиболее безопасное место для нахождения работников во время механического рыхления мерзлого грунта клин-молотом.',
+                '',
+                [
+                    Answer::fromArray([
+                        'id' => 'bbc14085f1e34ca93ccbbbd5ee9b5a01',
+                        'text' => '1 и 2',
+                        'isCorrect' => false,
+                        'answerImg' => '',
+                    ]),
+                    Answer::fromArray([
+                        'id' => '5a81b5f1089cee2b44809bfda245da59',
+                        'text' => '3 и 4',
+                        'isCorrect' => false,
+                        'answerImg' => '',
+                    ]),
+                    Answer::fromArray([
+                        'id' => 'a320df35029816f426dde35848e588bb',
+                        'text' => '4',
+                        'isCorrect' => true,
+                        'answerImg' => '',
+                    ]),
+                    Answer::fromArray([
+                        'id' => '93ff5fdd3e7eeb5cc38696beac126968',
+                        'text' => 'Одинаково безопасно находиться во всех местах',
+                        'isCorrect' => false,
+                        'answerImg' => '',
+                    ]),
+                ],
+                QuestionForm::singleChoice()
+            ),
+            new Question(
+                self::QUESTION_ANOTHER_IDS[1],
+                'Какое нарушение допустил машинист экскаватора, планирующий проведение земельных работ?',
+                '',
+                [
+                    Answer::fromArray([
+                        'id' => '310eb8b5ef4dc79b46e3f968819d0896',
+                        'text' => '1 и 2',
+                        'isCorrect' => false,
+                        'answerImg' => '',
+                    ]),
+                    Answer::fromArray([
+                        'id' => '9f5608e80b8e5497fa0b42aaa3bbe7ae',
+                        'text' => 'Не оградил диэлектрическим щитом зону проведения работ',
+                        'isCorrect' => false,
+                        'answerImg' => '',
+                    ]),
+                    Answer::fromArray([
+                        'id' => '4e98b49484d3755f1c80a4665db74091',
+                        'text' => 'Не выставил в зоне проведения работ табличку "Внимание! Высокое напряжение"',
+                        'isCorrect' => false,
+                        'answerImg' => '',
+                    ]),
+                    Answer::fromArray([
+                        'id' => '66bc39ee7187f574dfb8699f74e55863',
+                        'text' => 'Установил экскаватор непосредственно под проводами воздушной линии электропередачи',
                         'isCorrect' => true,
                         'answerImg' => '',
                     ]),

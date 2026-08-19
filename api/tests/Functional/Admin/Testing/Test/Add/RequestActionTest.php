@@ -148,7 +148,7 @@ final class RequestActionTest extends WebTestCase
                 'numberOfTickets' => 1,
                 'numberQuestionsInTicket' => 10,
                 'allowedMistakes' => 2,
-                'courseIds' => ['4f766a24-ea22-4237-924f-5c47b4e6ea5f'], //not found
+                'courseIds' => ['4f766a24-ea22-4237-924f-5c47b4e6ea5f'], // not found
             ],
             $this->authHeaders($this->adminToken)
         );

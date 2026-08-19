@@ -7,6 +7,7 @@ namespace App\Testing\Command\Test\Add;
 use App\Course\Api\CourseApi;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\Test\DTO\TicketDTO;
+use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
@@ -32,6 +33,12 @@ final class Handler
             throw new DomainException('Test with slug already exists.');
         }
 
+        $settings = new Settings(
+            $command->numberOfTickets,
+            $command->numberQuestionsInTicket,
+            $command->allowedMistakes
+        );
+
         $allQuestionIds = [];
 
         foreach ($command->courseIds as $courseId) {
@@ -44,9 +51,9 @@ final class Handler
 
         /** @var TicketDTO[] $tickets */
         $tickets = [];
-        $chunks = array_chunk($allQuestionIds, $command->numberQuestionsInTicket);
+        $chunks = array_chunk($allQuestionIds, $settings->getNumberQuestionsInTicket());
         foreach ($chunks as $index => $chunk) {
-            if ($index >= $command->numberOfTickets) {
+            if ($index >= $settings->getNumberOfTickets()) {
                 break;
             }
 
@@ -61,11 +68,11 @@ final class Handler
             $command->name,
             $command->cipher,
             $command->description,
-            $command->allowedMistakes,
             $command->courseIds,
             $tickets,
             $slug,
-            new DateTimeImmutable()
+            new DateTimeImmutable(),
+            $settings
         );
 
         $this->tests->add($test);

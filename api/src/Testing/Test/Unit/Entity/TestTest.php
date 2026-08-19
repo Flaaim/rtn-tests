@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Testing\Test\Unit\Entity;
 
 use App\Testing\Entity\Test\DTO\TicketDTO;
+use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Event\TestRemoved;
@@ -27,22 +28,24 @@ final class TestTest extends TestCase
             $name = 'Test name',
             $cipher = 'ОТ 201.18',
             $description = 'Test Description',
-            $allowedMistakes = 3,
             ['ba34f99c-6233-4be3-aa27-287d3726e54d'],
             $tickets = [],
             $slug = 'ot201',
-            $createdAt = new DateTimeImmutable()
+            $createdAt = new DateTimeImmutable(),
+            new Settings(10, 10, 2)
         );
 
         self::assertEquals($id, $test->getId());
         self::assertEquals($name, $test->getName());
         self::assertEquals($cipher, $test->getCipher());
         self::assertEquals($description, $test->getDescription());
-        self::assertEquals($allowedMistakes, $test->getAllowedMistakes());
         self::assertEquals($tickets, $test->getTickets());
         self::assertFalse($test->isActive());
         self::assertEquals($slug, $test->getSlug());
         self::assertEquals($createdAt, $test->getCreatedAt());
+        self::assertEquals(10, $test->getSettings()->getNumberOfTickets());
+        self::assertEquals(10, $test->getSettings()->getNumberQuestionsInTicket());
+        self::assertEquals(2, $test->getSettings()->getAllowedMistakes());
     }
 
     public function testGetSequenceQuestions(): void

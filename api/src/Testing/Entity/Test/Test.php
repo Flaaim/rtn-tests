@@ -23,8 +23,6 @@ final class Test implements AggregateRoot
     use EventTrait;
     #[ORM\Column(type: 'test_status')]
     private Status $status;
-    #[ORM\Embedded(class: Settings::class, columnPrefix: false)]
-    private Settings $settings;
 
     public function __construct(
         #[ORM\Id]
@@ -45,6 +43,8 @@ final class Test implements AggregateRoot
         private string $slug,
         #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $createdAt,
+        #[ORM\Embedded(class: Settings::class, columnPrefix: false)]
+        private Settings $settings
     ) {
         $this->status = Status::inactive();
         $this->recordEvent(new TestCreated($id->getValue()));
@@ -70,11 +70,6 @@ final class Test implements AggregateRoot
     public function getCourseId(): array
     {
         return $this->courseIds;
-    }
-
-    public function getAllowedMistakes(): int
-    {
-        return $this->allowedMistakes;
     }
 
     public function getDescription(): string
