@@ -48,6 +48,7 @@ framework:
             'App\Testing\Event\TestActivated': async
             'App\Testing\Event\TestDeactivated': async
             'App\Testing\Event\TestRemoved': async
+            'App\Testing\Event\TestChanged': async
 
 when@test:
     framework:

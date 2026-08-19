@@ -8,6 +8,7 @@ use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Event\TestActivated;
+use App\Testing\Event\TestChanged;
 use App\Testing\Event\TestCreated;
 use App\Testing\Event\TestDeactivated;
 use App\Testing\Event\TestRemoved;
@@ -136,6 +137,11 @@ final class Test implements AggregateRoot
         $this->settings = $settings;
 
         $this->regenerateTickets($allQuestionIds);
+
+        $this->recordEvent(new TestChanged(
+            $this->id->getValue(),
+            'Настройки теста изменены. Билеты перестроенны.'
+        ));
     }
 
     public function activate(): void
@@ -192,6 +198,11 @@ final class Test implements AggregateRoot
         if (null !== $description) {
             $this->description = $description;
         }
+
+        $this->recordEvent(new TestChanged(
+            $this->id->getValue(),
+            'Наименование/описание теста изменены.'
+        ));
     }
 
     public function changeCipher(string $cipher, string $slug): void
@@ -201,6 +212,11 @@ final class Test implements AggregateRoot
         }
         $this->cipher = $cipher;
         $this->slug = $slug;
+
+        $this->recordEvent(new TestChanged(
+            $this->id->getValue(),
+            'Шифр теста изменен.'
+        ));
     }
 
     public function updateTickets(array $courseIds, array $allQuestionIds): void
@@ -211,6 +227,11 @@ final class Test implements AggregateRoot
         $this->courseIds = $courseIds;
 
         $this->regenerateTickets($allQuestionIds);
+
+        $this->recordEvent(new TestChanged(
+            $this->id->getValue(),
+            'Билеты теста обновлены и перестроенны.'
+        ));
     }
 
     private function regenerateTickets(array $allQuestionIds): void
