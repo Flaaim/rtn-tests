@@ -7,7 +7,6 @@ namespace Tests\Functional\Admin\Testing\Test\Update;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Role;
 use App\Auth\Test\Builder\UserBuilder;
-use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Test\Builder\TestBuilder;
@@ -53,7 +52,7 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
             ->withName(self::TEST_NAME)
             ->withSettings(new Settings(10, 10, 2))
             ->withCourseIds([CourseGetRequestFixture::COURSE_ID])
-            ->withTickets([new TicketDTO(1, CourseGetRequestFixture::QUESTION_IDS)])
+            ->withQuestionIds(CourseGetRequestFixture::QUESTION_IDS)
             ->build();
         $manager->persist($test);
 

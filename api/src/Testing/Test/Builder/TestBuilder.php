@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Builder;
 
-use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
@@ -18,7 +17,7 @@ final class TestBuilder
     private string $description;
     private string $cipher;
     private array $courseIds;
-    private array $tickets;
+    private array $questionIds;
     private ?string $slug = null;
     private DateTimeImmutable $createdAt;
     private Settings $settings;
@@ -31,7 +30,7 @@ final class TestBuilder
         $this->cipher = 'ОТ 201.18';
         $this->description = 'Test description';
         $this->courseIds = ['0121b081-c461-42f0-b8ec-a4632a64faea'];
-        $this->tickets = [new TicketDTO(1, ['7645fc15-26aa-4c3c-a5a4-9724c9f5f455', '48b75db2-113c-4ae7-becb-7bc830016c61'])];
+        $this->questionIds = ['7645fc15-26aa-4c3c-a5a4-9724c9f5f455', '48b75db2-113c-4ae7-becb-7bc830016c61'];
         $this->slug = 'ot201';
         $this->createdAt = new DateTimeImmutable();
         $this->settings = new Settings(10, 10, 2);
@@ -86,11 +85,10 @@ final class TestBuilder
         return $clone;
     }
 
-    /** @param TicketDTO[] $tickets */
-    public function withTickets(array $tickets): self
+    public function withQuestionIds(array $questionIds): self
     {
         $clone = clone $this;
-        $clone->tickets = $tickets;
+        $clone->questionIds = $questionIds;
         return $clone;
     }
 
@@ -120,7 +118,7 @@ final class TestBuilder
             $this->cipher,
             $this->description,
             $this->courseIds,
-            $this->tickets,
+            $this->questionIds,
             $currentSlug,
             $this->createdAt,
             $this->settings,

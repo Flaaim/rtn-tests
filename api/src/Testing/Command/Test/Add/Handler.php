@@ -6,7 +6,6 @@ namespace App\Testing\Command\Test\Add;
 
 use App\Course\Api\CourseApi;
 use App\Infrastructure\Doctrine\Flusher;
-use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
@@ -49,27 +48,13 @@ final class Handler
         $allQuestionIds = array_unique($allQuestionIds);
         shuffle($allQuestionIds);
 
-        /** @var TicketDTO[] $tickets */
-        $tickets = [];
-        $chunks = array_chunk($allQuestionIds, $settings->getNumberQuestionsInTicket());
-        foreach ($chunks as $index => $chunk) {
-            if ($index >= $settings->getNumberOfTickets()) {
-                break;
-            }
-
-            $tickets[] = new TicketDTO(
-                $index + 1,
-                $chunk
-            );
-        }
-
         $test = new Test(
             TestId::generate(),
             $command->name,
             $command->cipher,
             $command->description,
             $command->courseIds,
-            $tickets,
+            $allQuestionIds,
             $slug,
             new DateTimeImmutable(),
             $settings

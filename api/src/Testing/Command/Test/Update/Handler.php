@@ -6,7 +6,6 @@ namespace App\Testing\Command\Test\Update;
 
 use App\Course\Api\CourseApi;
 use App\Infrastructure\Doctrine\Flusher;
-use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
 
@@ -23,7 +22,6 @@ final class Handler
     {
         $courseIds = $command->courseIds;
         $test = $this->tests->get(new TestId($command->id));
-        $settings = $test->getSettings();
 
         $allQuestionIds = [];
 
@@ -33,20 +31,10 @@ final class Handler
         }
 
         $allQuestionIds = array_unique($allQuestionIds);
-        $newTickets = [];
-        $chunks = array_chunk($allQuestionIds, $settings->getNumberQuestionsInTicket());
-        foreach ($chunks as $index => $chunk) {
-            if ($index >= $settings->getNumberOfTickets()) {
-                break;
-            }
 
-            $newTickets[] = new TicketDTO(
-                $index + 1,
-                $chunk
-            );
-        }
+        shuffle($allQuestionIds);
 
-        $test->updateTickets($newTickets);
+        $test->updateTickets($courseIds, $allQuestionIds);
 
         $this->flusher->flush();
     }

@@ -15,6 +15,7 @@ use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use DomainException;
+use Webmozart\Assert\Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'tests')]
@@ -23,6 +24,9 @@ final class Test implements AggregateRoot
     use EventTrait;
     #[ORM\Column(type: 'test_status')]
     private Status $status;
+    /** @param array<int, array|TicketDTO> $tickets */
+    #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
+    private array $tickets;
 
     public function __construct(
         #[ORM\Id]
@@ -36,9 +40,7 @@ final class Test implements AggregateRoot
         private string $description,
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $courseIds,
-        /** @param array<int, array|TicketDTO> $tickets */
-        #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
-        private array $tickets,
+        $questionIds,
         #[ORM\Column(type: 'string', length: 255, unique: true)]
         private string $slug,
         #[ORM\Column(type: 'datetime_immutable')]
@@ -46,6 +48,10 @@ final class Test implements AggregateRoot
         #[ORM\Embedded(class: Settings::class, columnPrefix: false)]
         private Settings $settings
     ) {
+        Assert::notEmpty($questionIds, 'Question IDs should not be empty.');
+
+        $this->regenerateTickets($questionIds);
+
         $this->status = Status::inactive();
         $this->recordEvent(new TestCreated($id->getValue()));
     }
@@ -109,7 +115,7 @@ final class Test implements AggregateRoot
     public function getSequentialQuestions(): array
     {
         $allQuestions = [];
-        foreach ($this->tickets as $ticket) {
+        foreach ($this->getTickets() as $ticket) {
             $allQuestions = array_merge($allQuestions, $ticket->questionIds);
         }
 
@@ -121,12 +127,14 @@ final class Test implements AggregateRoot
         return $this->settings;
     }
 
-    public function changeSettings(Settings $settings): void
+    public function changeSettings(Settings $settings, array $allQuestionIds): void
     {
         if ($this->isActive()) {
             throw new DomainException('Cannot change settings of an active test.');
         }
         $this->settings = $settings;
+
+        $this->regenerateTickets($allQuestionIds);
     }
 
     public function activate(): void
@@ -194,14 +202,34 @@ final class Test implements AggregateRoot
         $this->slug = $slug;
     }
 
-    public function updateTickets(array $newTickets): void
+    public function updateTickets(array $courseIds, array $allQuestionIds): void
     {
         if ($this->isActive()) {
             throw new DomainException('Can not update tickets of active test.');
         }
+        $this->courseIds = $courseIds;
+
+        $this->regenerateTickets($allQuestionIds);
+    }
+
+    private function regenerateTickets(array $allQuestionIds): void
+    {
+        /** @var TicketDTO[] $tickets */
         $this->tickets = [];
-        foreach ($newTickets as $ticket) {
-            $this->tickets[] = $ticket;
+
+        if (empty($allQuestionIds)) {
+            return;
+        }
+        $chunks = array_chunk($allQuestionIds, $this->settings->getNumberQuestionsInTicket());
+        foreach ($chunks as $index => $chunk) {
+            if ($index >= $this->settings->getNumberOfTickets()) {
+                break;
+            }
+
+            $this->tickets[] = new TicketDTO(
+                $index + 1,
+                $chunk
+            );
         }
     }
 }

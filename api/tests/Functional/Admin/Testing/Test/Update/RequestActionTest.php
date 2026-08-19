@@ -94,7 +94,8 @@ final class RequestActionTest extends WebTestCase
 
         self::assertCount(1, $tickets);
 
-        self::assertArraysAreEqual(CourseGetRequestFixture::QUESTION_ANOTHER_IDS, $tickets[0]->questionIds);
+        self::assertEqualsCanonicalizing(CourseGetRequestFixture::QUESTION_ANOTHER_IDS, $tickets[0]->questionIds);
+        self::assertEquals([CourseGetRequestFixture::COURSE_ANOTHER_ID], $test->getCourseId());
     }
 
     public function testCourseQuestionsEmpty(): void
