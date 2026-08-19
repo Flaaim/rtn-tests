@@ -22,6 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
+import {Button} from "@base-ui/react";
 
 interface TestOverviewPageProps {
   params: Promise<{ testId: string }>;
@@ -84,6 +85,24 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
                 <p className="font-mono">
                   <TestStatusBadge status={test.status} />
                 </p>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 items-end">
+              <div>
+                <p className="text-muted-foreground font-medium">Количество билетов</p>
+                <p className="font-mono">{test.numberOfTickets}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground font-medium">Вопросов в билете</p>
+                <p className="font-mono">{test.numberQuestionsInTicket}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground font-medium">Допустимо ошибок</p>
+                <p className="font-mono">{test.allowedMistakes}</p>
+              </div>
+              <div className="sm:justify-self-end w-full sm:w-auto">
+                <Button className="w-full sm:w-auto">Изменить настройки</Button>
               </div>
             </div>
           </CardContent>

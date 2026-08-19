@@ -46,6 +46,8 @@ export interface TestFull {
   slug: string;
   createdAt: string;
   status: string;
+  numberOfTickets: number;
+  numberQuestionsInTicket: number;
 }
 
 export interface Ticket {
