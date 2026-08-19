@@ -170,6 +170,8 @@ final class RequestActionTest extends WebTestCase
             'slug' => '201',
             'createdAt' => new DateTimeImmutable($data['createdAt'])->format('Y-m-d'),
             'status' => $data['status'],
+            'numberOfTickets' => $data['numberOfTickets'],
+            'numberQuestionsInTicket' => $data['numberQuestionsInTicket'],
         ], $data);
     }
 

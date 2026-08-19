@@ -73,7 +73,9 @@ final class TestFetcher implements TestFetcherInterface
             t.course_ids,
             t.slug,
             t.tickets,
-            t.created_at'
+            t.created_at,
+            t.number_of_tickets,
+            t.number_questions_in_ticket',
         )->from('tests', 't')
 
             ->where($qb->expr()->eq('t.id', ':id'))

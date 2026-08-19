@@ -21,7 +21,9 @@ final class TestFullDTO
         public array $tickets,
         public string $slug,
         public string $createdAt,
-        public string $status
+        public string $status,
+        public int $numberOfTickets,
+        public int $numberQuestionsInTicket,
     ) {}
 
     public static function fromArray(array $data): self
@@ -46,7 +48,9 @@ final class TestFullDTO
             tickets: $tickets,
             slug: $data['slug'],
             createdAt: new DateTimeImmutable($data['created_at'])->format('Y-m-d'),
-            status: $data['status']
+            status: $data['status'],
+            numberOfTickets: $data['number_of_tickets'],
+            numberQuestionsInTicket: $data['number_questions_in_ticket'],
         );
     }
 }
