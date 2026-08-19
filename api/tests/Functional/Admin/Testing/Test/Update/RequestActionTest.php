@@ -92,7 +92,7 @@ final class RequestActionTest extends WebTestCase
 
         $tickets = $test->getTickets();
 
-        self::assertCount(1, $tickets);
+        self::assertCount(5, $tickets);
 
         self::assertEqualsCanonicalizing(CourseGetRequestFixture::QUESTION_ANOTHER_IDS, $tickets[0]->questionIds);
         self::assertEquals([CourseGetRequestFixture::COURSE_ANOTHER_ID], $test->getCourseId());

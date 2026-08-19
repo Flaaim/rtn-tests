@@ -11,6 +11,7 @@ use App\Testing\Event\TestActivated;
 use App\Testing\Event\TestCreated;
 use App\Testing\Event\TestDeactivated;
 use App\Testing\Event\TestRemoved;
+use App\Testing\Service\TicketGenerator;
 use DateTimeImmutable;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -214,22 +215,12 @@ final class Test implements AggregateRoot
 
     private function regenerateTickets(array $allQuestionIds): void
     {
-        /** @var TicketDTO[] $tickets */
-        $this->tickets = [];
-
         if (empty($allQuestionIds)) {
+            $this->tickets = [];
             return;
         }
-        $chunks = array_chunk($allQuestionIds, $this->settings->getNumberQuestionsInTicket());
-        foreach ($chunks as $index => $chunk) {
-            if ($index >= $this->settings->getNumberOfTickets()) {
-                break;
-            }
 
-            $this->tickets[] = new TicketDTO(
-                $index + 1,
-                $chunk
-            );
-        }
+        $generator = new TicketGenerator();
+        $this->tickets = $generator->generate($this->settings, $allQuestionIds);
     }
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Testing\Test\Unit\Entity;
 
-use App\Testing\Entity\Test\DTO\TicketDTO;
 use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
@@ -29,54 +28,55 @@ final class TestTest extends TestCase
             $cipher = 'ОТ 201.18',
             $description = 'Test Description',
             ['ba34f99c-6233-4be3-aa27-287d3726e54d'],
-            $questionIds = ['5cf0b271-6e2b-4be9-b0b6-d0674947f0b4', '4f766a24-ea22-4237-924f-5c47b4e6ea5f'],
+            $questionIds = ['ad1388a2-ae3d-4d6d-bd39-0fc74c927acd', '7be866a0-038c-4eda-acaa-9b6754e50185'],
             $slug = 'ot201',
             $createdAt = new DateTimeImmutable(),
-            new Settings(10, 10, 2)
+            new Settings(
+                $numberOfTickets = 1,
+                $numberOfQuestionInTickets = 2,
+                $allowedMistakes = 1
+            )
         );
 
         self::assertEquals($id, $test->getId());
         self::assertEquals($name, $test->getName());
         self::assertEquals($cipher, $test->getCipher());
         self::assertEquals($description, $test->getDescription());
-        self::assertEquals($questionIds, $test->getTickets()[0]->questionIds);
+        self::assertEqualsCanonicalizing($questionIds, $test->getTickets()[0]->questionIds);
         self::assertFalse($test->isActive());
         self::assertEquals($slug, $test->getSlug());
         self::assertEquals($createdAt, $test->getCreatedAt());
-        self::assertEquals(10, $test->getSettings()->getNumberOfTickets());
-        self::assertEquals(10, $test->getSettings()->getNumberQuestionsInTicket());
-        self::assertEquals(2, $test->getSettings()->getAllowedMistakes());
+        self::assertEquals($numberOfTickets, $test->getSettings()->getNumberOfTickets());
+        self::assertEquals($numberOfQuestionInTickets, $test->getSettings()->getNumberQuestionsInTicket());
+        self::assertEquals($allowedMistakes, $test->getSettings()->getAllowedMistakes());
     }
 
     public function testGetSequenceQuestions(): void
     {
         $test = new TestBuilder()
-            ->withQuestionIds(
-                [
-                    '0121b081-c461-42f0-b8ec-a4632a64faea',
-                    '735eb05d-626b-4650-8146-ef1c7a77b5a9',
-                    'b22c2959-2bb2-4e48-8d95-5ebd8de5b84d',
-                    '0121b081-c461-42f0-b8ec-a4632a64faea',
-                    '00c4fdb7-ce4f-41dd-935c-1e8d1475c25f',
-                    '4d44d8d9-bcaf-4fea-9f03-7cf23e9e55df',
-                ],
-            )
+            ->withQuestionIds([
+                'f61f6b36-beab-4fad-9df7-799d25de42d8',
+                'f61f6b36-beab-4fad-9df7-799d25de42d8',
+                'd34f6e22-fb3a-4811-b314-ce19d74290cd',
+                '08398030-d69c-4d09-a331-849806029db3',
+                'fdf906c4-4526-4ac3-9802-88deceb2178e',
+                'c6920c9e-af9f-4ea9-91bc-99a1c0f14564',
+            ])
             ->build();
 
-        self::assertEquals([
-            '0121b081-c461-42f0-b8ec-a4632a64faea',
-            '735eb05d-626b-4650-8146-ef1c7a77b5a9',
-            'b22c2959-2bb2-4e48-8d95-5ebd8de5b84d',
-            '00c4fdb7-ce4f-41dd-935c-1e8d1475c25f',
-            '4d44d8d9-bcaf-4fea-9f03-7cf23e9e55df',
+        self::assertCount(5, $test->getSequentialQuestions());
+        self::assertEqualsCanonicalizing([
+            'f61f6b36-beab-4fad-9df7-799d25de42d8',
+            'd34f6e22-fb3a-4811-b314-ce19d74290cd',
+            '08398030-d69c-4d09-a331-849806029db3',
+            'fdf906c4-4526-4ac3-9802-88deceb2178e',
+            'c6920c9e-af9f-4ea9-91bc-99a1c0f14564',
         ], $test->getSequentialQuestions());
     }
 
     public function testActivate(): void
     {
-        $test = new TestBuilder()
-            ->build();
-
+        $test = new TestBuilder()->build();
         $test->activate();
 
         self::assertTrue($test->isActive());
@@ -84,10 +84,7 @@ final class TestTest extends TestCase
 
     public function testDeactivate(): void
     {
-        $test = new TestBuilder()
-            ->active()
-            ->build();
-
+        $test = new TestBuilder()->active()->build();
         $test->deactivate();
 
         self::assertFalse($test->isActive());
@@ -95,9 +92,7 @@ final class TestTest extends TestCase
 
     public function testRemove(): void
     {
-        $test = new TestBuilder()
-            ->build();
-
+        $test = new TestBuilder()->build();
         $test->remove();
 
         $events = $test->releaseEvents();
@@ -105,11 +100,9 @@ final class TestTest extends TestCase
         self::assertInstanceOf(TestRemoved::class, $events[0]);
     }
 
-    public function testRemoveFailed(): void
+    public function testRemoveActive(): void
     {
-        $test = new TestBuilder()
-            ->active()
-            ->build();
+        $test = new TestBuilder()->active()->build();
 
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Can not remove active test.');
@@ -179,52 +172,43 @@ final class TestTest extends TestCase
                 'b22c2959-2bb2-4e48-8d95-5ebd8de5b84d',
                 '0121b081-c461-42f0-b8ec-a4632a64faea',
                 '4d44d8d9-bcaf-4fea-9f03-7cf23e9e55df',
-            ])->build();
+                '30606e75-9970-4ec9-9a78-b70bf5f828b6',
+            ])->withSettings(new Settings(5, 2, 1))->build();
 
         $test->updateTickets(
             ['e06c3cd7-acad-4b9f-9617-67f327b323b8'],
-            ['735eb05d-626b-4650-8146-ef1c7a77b5a9']
+            $this->getQuestionIds()
         );
 
-        self::assertCount(1, $test->getTickets());
+        self::assertCount(5, $test->getTickets());
         self::assertFalse($test->isActive());
-        self::assertEquals(['735eb05d-626b-4650-8146-ef1c7a77b5a9'], $test->getTickets()[0]->questionIds);
+        self::assertEqualsCanonicalizing($this->getQuestionIds(), $test->getSequentialQuestions());
+        self::assertEquals(['e06c3cd7-acad-4b9f-9617-67f327b323b8'], $test->getCourseId());
     }
 
     public function testUpdateTicketsActive(): void
     {
         $test = new TestBuilder()
-            ->withQuestionIds(['735eb05d-626b-4650-8146-ef1c7a77b5a9'])
             ->active()
             ->build();
 
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Can not update tickets of active test.');
-        $test->updateTickets(['e06c3cd7-acad-4b9f-9617-67f327b323b8'], [new TicketDTO(1, ['735eb05d-626b-4650-8146-ef1c7a77b5a9'])]);
+        $test->updateTickets(
+            ['e06c3cd7-acad-4b9f-9617-67f327b323b8'],
+            $this->getQuestionIds()
+        );
     }
 
     public function testChangeSettings(): void
     {
         $test = new TestBuilder()
-            ->withSettings(
-                new Settings(10, 10, 2)
-            )
+            ->withSettings(new Settings(10, 10, 2))
             ->build();
 
         $test->changeSettings(
             new Settings(5, 2, 1),
-            [
-                'ad1388a2-ae3d-4d6d-bd39-0fc74c927acd',
-                '7be866a0-038c-4eda-acaa-9b6754e50185',
-                'bfd4c940-b935-47f4-824a-010801c7e9ab',
-                'bce8ced4-a8ed-4228-9c1b-47fa319d46d9',
-                'b382bb1e-628c-4c21-bfdb-e9e61309ff4d',
-                '519091a8-4533-4ce1-b78f-4acac46199ad',
-                'f1ef994e-0885-4097-b761-83907adb4c2e',
-                '334d1323-24c2-4a9b-b78d-861bc7d6c67a',
-                '489475db-a624-4091-ac84-2064cafbc2aa',
-                '6bddfeae-df64-4b10-bba7-c9b5d445198a',
-            ]
+            $this->getQuestionIds()
         );
 
         self::assertEquals(5, $test->getSettings()->getNumberOfTickets());
@@ -238,13 +222,32 @@ final class TestTest extends TestCase
     public function testChangeSettingsActive(): void
     {
         $test = new TestBuilder()
-            ->withSettings(new Settings(10, 10, 2))
+            ->withSettings(new Settings(10, 2, 1))
             ->active()
             ->build();
 
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Cannot change settings of an active test.');
 
-        $test->changeSettings(new Settings(5, 2, 1), ['ad1388a2-ae3d-4d6d-bd39-0fc74c927acd']);
+        $test->changeSettings(
+            new Settings(5, 2, 1),
+            $this->getQuestionIds()
+        );
+    }
+
+    private function getQuestionIds(): array
+    {
+        return [
+            'ad1388a2-ae3d-4d6d-bd39-0fc74c927acd',
+            '7be866a0-038c-4eda-acaa-9b6754e50185',
+            'bfd4c940-b935-47f4-824a-010801c7e9ab',
+            'bce8ced4-a8ed-4228-9c1b-47fa319d46d9',
+            'b382bb1e-628c-4c21-bfdb-e9e61309ff4d',
+            '519091a8-4533-4ce1-b78f-4acac46199ad',
+            'f1ef994e-0885-4097-b761-83907adb4c2e',
+            '334d1323-24c2-4a9b-b78d-861bc7d6c67a',
+            '489475db-a624-4091-ac84-2064cafbc2aa',
+            '6bddfeae-df64-4b10-bba7-c9b5d445198a',
+        ];
     }
 }

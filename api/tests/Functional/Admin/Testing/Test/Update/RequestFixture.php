@@ -50,7 +50,7 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
         $test = new TestBuilder()
             ->withId(new TestId(self::TEST_ID))
             ->withName(self::TEST_NAME)
-            ->withSettings(new Settings(10, 10, 2))
+            ->withSettings(new Settings(5, 2, 1))
             ->withCourseIds([CourseGetRequestFixture::COURSE_ID])
             ->withQuestionIds(CourseGetRequestFixture::QUESTION_IDS)
             ->build();

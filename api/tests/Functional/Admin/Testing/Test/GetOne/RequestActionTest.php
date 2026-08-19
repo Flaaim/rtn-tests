@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Tests\Functional\Admin\Course\Course\Get\RequestFixture as CourseGetRequestFixture;
+use Tests\Functional\ArraySubsetAssertTrait;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
@@ -19,6 +20,7 @@ use Tests\Functional\OAuthTokenTrait;
  */
 final class RequestActionTest extends WebTestCase
 {
+    use ArraySubsetAssertTrait;
     use OAuthTokenTrait;
 
     private readonly KernelBrowser $client;
@@ -82,12 +84,12 @@ final class RequestActionTest extends WebTestCase
 
         $data = Json::decode($body);
 
-        self::assertEquals([
+        self::assertArraySubset([
             'id' => RequestFixture::TEST_ID,
             'name' => RequestFixture::TEST_NAME,
             'cipher' => RequestFixture::TEST_CIPHER,
             'description' => RequestFixture::TEST_NAME,
-            'allowedMistakes' => 2,
+            'allowedMistakes' => 1,
             'courses' => [
                 [
                     'id' => CourseGetRequestFixture::COURSE_ID,

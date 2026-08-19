@@ -30,10 +30,21 @@ final class TestBuilder
         $this->cipher = 'ОТ 201.18';
         $this->description = 'Test description';
         $this->courseIds = ['0121b081-c461-42f0-b8ec-a4632a64faea'];
-        $this->questionIds = ['7645fc15-26aa-4c3c-a5a4-9724c9f5f455', '48b75db2-113c-4ae7-becb-7bc830016c61'];
+        $this->questionIds = [
+            '7645fc15-26aa-4c3c-a5a4-9724c9f5f455',
+            '48b75db2-113c-4ae7-becb-7bc830016c61',
+            '0361dad6-ba4a-45f1-b405-c99515d02dde',
+            '8b32a749-fa88-46b9-b881-5e4f14e0a92e',
+            '900d4a3b-ee67-4f20-ae83-d1e655db415c',
+            '4cb8c1bb-bc3b-425e-92cd-7435852d3eb0',
+            'd72a33c8-2474-4128-84dc-36166d61cb32',
+            '2b17aacb-f891-4585-aae3-ebc2124d59f4',
+            '3cc1ac1e-e419-4414-af3b-a0ca0a88c8e4',
+            'd428aca5-77a9-4081-9bf5-52a66e5096dc',
+        ];
         $this->slug = 'ot201';
         $this->createdAt = new DateTimeImmutable();
-        $this->settings = new Settings(10, 10, 2);
+        $this->settings = new Settings(5, 2, 1);
     }
 
     /** @psalm-suppress PossiblyUnusedMethod */

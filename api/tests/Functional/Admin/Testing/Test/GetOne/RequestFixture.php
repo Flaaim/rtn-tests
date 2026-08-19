@@ -49,7 +49,7 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
             ->withName(self::TEST_NAME)
             ->withCipher(self::TEST_CIPHER)
             ->withDescription(self::TEST_NAME)
-            ->withSettings(new Settings(10, 10, 2))
+            ->withSettings(new Settings(5, 2, 1))
             ->withCourseIds([CourseGetRequestFixture::COURSE_ID])
             ->withQuestionIds(CourseGetRequestFixture::QUESTION_IDS)
             ->active()
