@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/table";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
 import UpdateSettingsTestDialog from "@/components/Admin/Test/UpdateSettingsTestDialog";
+import UpdateTestDialog from "@/components/Admin/Test/UpdateTestDialog";
 
 interface TestOverviewPageProps {
   params: Promise<{ testId: string }>;
@@ -108,7 +109,7 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
           </CardContent>
         </Card>
       </div>
-
+      <UpdateTestDialog id={test.id} currentCourses={test.courses} />
       <div className="space-y-6">
         <Tabs defaultValue="json" className="w-full">
           <TabsList className="grid w-full grid-cols-3 mb-4">

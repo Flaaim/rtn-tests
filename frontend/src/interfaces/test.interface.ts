@@ -41,7 +41,10 @@ export interface UpdateSettingsTestPayload {
   numberQuestionsInTicket: number;
   allowedMistakes: number;
 }
-
+export interface UpdateTestPayload {
+  id: string;
+  courseIds: string[];
+}
 export interface TestFull {
   id: string;
   name: string;

@@ -71,5 +71,6 @@ export const API = {
     changeCipher: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/change-cipher`,
     rename: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/rename`,
     updateSettings: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/update-settings`,
+    update: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/update`,
   },
 };
