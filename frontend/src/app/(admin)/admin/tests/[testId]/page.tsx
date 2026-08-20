@@ -24,6 +24,7 @@ import {
 import { PUBLIC_ASSETS_URL } from "@/app/api";
 import UpdateSettingsTestDialog from "@/components/Admin/Test/UpdateSettingsTestDialog";
 import UpdateTestDialog from "@/components/Admin/Test/UpdateTestDialog";
+import { ShowDetailQuestionDialog } from "@/components/Admin/Test/ShowDetailQuestionDialog";
 
 interface TestOverviewPageProps {
   params: Promise<{ testId: string }>;
@@ -42,7 +43,6 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
 
   const allQuestionsFlat = test.tickets.flatMap((ticket) => ticket.questions);
   const uniqueQuestions = Array.from(new Map(allQuestionsFlat.map((q) => [q.id, q])).values());
-
   const items = [{ title: "Тесты", href: "/admin/tests" }, { title: test.name }];
 
   const formattedDate = new Date(test.createdAt).toLocaleString("ru-RU", {
@@ -186,6 +186,7 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
                       <TableRow>
                         <TableHead>№</TableHead>
                         <TableHead>Вопрос</TableHead>
+                        <TableHead></TableHead>
                       </TableRow>
                     </TableHeader>
                     <TableBody>
@@ -206,6 +207,9 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
                                 />
                               </div>
                             )}
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            <ShowDetailQuestionDialog question={q} />
                           </TableCell>
                         </TableRow>
                       ))}

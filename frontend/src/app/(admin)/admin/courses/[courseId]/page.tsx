@@ -9,17 +9,12 @@ import { Badge } from "@/components/ui/badge";
 import RenameCourseDialog from "@/components/Admin/Course/RenameCourseDialog";
 import UpdateQuestionsCourseDialog from "@/components/Admin/Course/UpdateQuestionsCourseDialog";
 import QuestionSearchForm from "@/components/Admin/Course/QuestionSearchForm";
+import QuestionFormTypeBadge from "@/components/Admin/Domain/QuestionFormTypeBadge";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
   searchParams: Promise<{ q?: string }>;
 }
-const QUESTION_FORM: Record<string, string> = {
-  single_choice: "Одиночный выбор",
-  multiple_choice: "Множественный выбор",
-  matching: "Сопоставить выбор",
-  sequence: "Установить последовательность",
-};
 export default async function CourseOverviewPage({
   params,
   searchParams,
@@ -116,7 +111,7 @@ export default async function CourseOverviewPage({
               <CardContent className="pt-4 space-y-6">
                 <div className="space-y-4">
                   <p className="text-muted-foreground font-medium">
-                    Тип: <Badge variant="outline">{QUESTION_FORM[question.form]}</Badge>
+                    Тип: <QuestionFormTypeBadge type={question.form} />
                   </p>
                   <p className="text-base font-medium leading-relaxed">{question.text}</p>
                   {question.questionImg && (

@@ -44,7 +44,7 @@ export interface Question {
   form: string;
 }
 
-interface Answer {
+export interface Answer {
   id: string;
   text: string;
   isCorrect: boolean;
