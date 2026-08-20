@@ -85,7 +85,26 @@ final class TestFetcher implements TestFetcherInterface
         $row = $result->fetchAssociative();
 
         if (false !== $row) {
-            $courseIds = json_decode($row['course_ids'], true, JSON_THROW_ON_ERROR);
+            $test = [
+                'id' => $row['id'],
+                'name' => $row['name'],
+                'cipher' => $row['cipher'],
+                'description' => $row['description'],
+                'status' => $row['status'],
+                'slug' => $row['slug'],
+                'course_ids' => $row['course_ids'],
+                'tickets' => $row['tickets'],
+                'created_at' => $row['created_at'],
+                'settings' => [
+                    'allowedMistakes' => $row['allowed_mistakes'],
+                    'numberOfTickets' => $row['number_of_tickets'],
+                    'numberQuestionsInTicket' => $row['number_questions_in_ticket'],
+                ],
+            ];
+        }
+
+        if (!empty($test)) {
+            $courseIds = json_decode($test['course_ids'], true, JSON_THROW_ON_ERROR);
 
             if (!empty($courseIds) && \is_array($courseIds)) {
                 $qbCourses = $this->connection->createQueryBuilder();
@@ -97,12 +116,12 @@ final class TestFetcher implements TestFetcherInterface
                     ->executeQuery()
                     ->fetchAllAssociative();
 
-                $row['courses'] = $courses;
+                $test['courses'] = $courses;
             } else {
-                $row['courses'] = [];
+                $test['courses'] = [];
             }
 
-            $tickets = json_decode($row['tickets'], true, JSON_THROW_ON_ERROR);
+            $tickets = json_decode($test['tickets'], true, JSON_THROW_ON_ERROR);
             $allQuestionIds = [];
             foreach ($tickets as $ticket) {
                 if (!empty($ticket['questionIds']) && \is_array($ticket['questionIds'])) {
@@ -143,9 +162,9 @@ final class TestFetcher implements TestFetcherInterface
                     'questions' => $ticketQuestions,
                 ];
             }
-            $row['tickets'] = $data;
+            $test['tickets'] = $data;
         }
 
-        return $row ?: [];
+        return $test ?: [];
     }
 }

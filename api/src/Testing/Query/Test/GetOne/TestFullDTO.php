@@ -16,14 +16,12 @@ final class TestFullDTO
         public string $name,
         public string $cipher,
         public string $description,
-        public int $allowedMistakes,
         public array $courses,
         public array $tickets,
         public string $slug,
         public string $createdAt,
         public string $status,
-        public int $numberOfTickets,
-        public int $numberQuestionsInTicket,
+        public array $settings
     ) {}
 
     public static function fromArray(array $data): self
@@ -43,14 +41,12 @@ final class TestFullDTO
             name: $data['name'],
             cipher: $data['cipher'],
             description: $data['description'],
-            allowedMistakes: $data['allowed_mistakes'],
             courses: $courses,
             tickets: $tickets,
             slug: $data['slug'],
             createdAt: new DateTimeImmutable($data['created_at'])->format('Y-m-d'),
             status: $data['status'],
-            numberOfTickets: $data['number_of_tickets'],
-            numberQuestionsInTicket: $data['number_questions_in_ticket'],
+            settings: $data['settings'] ?? []
         );
     }
 }
