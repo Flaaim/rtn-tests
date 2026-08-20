@@ -13,4 +13,6 @@ interface CourseFetcherInterface
     public function getQuestionIdsByCourseId(string $courseId): array;
 
     public function getLookupList(): array;
+
+    public function getQuestionsByCourseIds(array $courseIds): array;
 }

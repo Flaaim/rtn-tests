@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Course\Query\Course;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
@@ -126,5 +127,36 @@ final class CourseFetcher implements CourseFetcherInterface
             ->executeQuery();
 
         return $result->fetchAllAssociative();
+    }
+
+    public function getQuestionsByCourseIds(array $courseIds): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select('q.id, q.text, q.question_img, q.answers, q.form')
+            ->from('questions', 'q')
+            ->where($qb->expr()->in('q.course_id', ':courseId'))
+            ->setParameter('courseId', $courseIds, ArrayParameterType::STRING)
+            ->executeQuery();
+
+        $rows = $result->fetchAllAssociative();
+
+        if (empty($rows)) {
+            return [];
+        }
+
+        $questions = [];
+
+        foreach ($rows as $row) {
+            $questions[] = [
+                'id'          => $row['id'],
+                'text'        => $row['text'],
+                'question_img' => $row['question_img'],
+                'form'        => $row['form'],
+                'answers'     => json_decode($row['answers'], true, 512, JSON_THROW_ON_ERROR),
+            ];
+        }
+
+        return $questions;
     }
 }
