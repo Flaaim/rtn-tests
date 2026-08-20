@@ -40,6 +40,9 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
 
   const test: TestFull = result.data;
 
+  const allQuestionsFlat = test.tickets.flatMap((ticket) => ticket.questions);
+  const uniqueQuestions = Array.from(new Map(allQuestionsFlat.map((q) => [q.id, q])).values());
+
   const items = [{ title: "Тесты", href: "/admin/tests" }, { title: test.name }];
 
   const formattedDate = new Date(test.createdAt).toLocaleString("ru-RU", {
@@ -167,6 +170,47 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
                       </AccordionItem>
                     ))}
                   </Accordion>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="text-muted-foreground text-sm py-4">Нет данных для отображения.</div>
+            )}
+          </TabsContent>
+
+          <TabsContent value="questions" className="w-full">
+            {uniqueQuestions && uniqueQuestions.length > 0 ? (
+              <Card>
+                <CardContent className="pt-6">
+                  <Table>
+                    <TableHeader>
+                      <TableRow>
+                        <TableHead>№</TableHead>
+                        <TableHead>Вопрос</TableHead>
+                      </TableRow>
+                    </TableHeader>
+                    <TableBody>
+                      {uniqueQuestions?.map((q, idx) => (
+                        <TableRow key={q.id}>
+                          <TableCell className="font-medium">{idx + 1}</TableCell>
+                          <TableCell className="font-medium">
+                            <p className="text-sm font-medium leading-relaxed text-wrap">
+                              {q.text}
+                            </p>
+                            {q.questionImg && (
+                              <div className="relative rounded-md overflow-hidden border inline-block">
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <img
+                                  src={`${PUBLIC_ASSETS_URL}${process.env.NEXT_PUBLIC_QUESTION_IMAGES}${q.questionImg}`}
+                                  alt={`К вопросу`}
+                                  className="max-h-32 object-contain"
+                                />
+                              </div>
+                            )}
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
                 </CardContent>
               </Card>
             ) : (
