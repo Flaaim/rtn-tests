@@ -22,7 +22,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
-import {Button} from "@base-ui/react";
+import UpdateSettingsTestDialog from "@/components/Admin/Test/UpdateSettingsTestDialog";
 
 interface TestOverviewPageProps {
   params: Promise<{ testId: string }>;
@@ -91,18 +91,18 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 items-end">
               <div>
                 <p className="text-muted-foreground font-medium">Количество билетов</p>
-                <p className="font-mono">{test.numberOfTickets}</p>
+                <p className="font-mono">{test.settings.numberOfTickets}</p>
               </div>
               <div>
                 <p className="text-muted-foreground font-medium">Вопросов в билете</p>
-                <p className="font-mono">{test.numberQuestionsInTicket}</p>
+                <p className="font-mono">{test.settings.numberQuestionsInTicket}</p>
               </div>
               <div>
                 <p className="text-muted-foreground font-medium">Допустимо ошибок</p>
-                <p className="font-mono">{test.allowedMistakes}</p>
+                <p className="font-mono">{test.settings.allowedMistakes}</p>
               </div>
               <div className="sm:justify-self-end w-full sm:w-auto">
-                <Button className="w-full sm:w-auto">Изменить настройки</Button>
+                <UpdateSettingsTestDialog id={test.id} settings={test.settings} />
               </div>
             </div>
           </CardContent>

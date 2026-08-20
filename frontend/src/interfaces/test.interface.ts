@@ -35,22 +35,33 @@ export interface RenameTestPayload {
   description: string;
 }
 
+export interface UpdateSettingsTestPayload {
+  id: string;
+  numberOfTickets: number;
+  numberQuestionsInTicket: number;
+  allowedMistakes: number;
+}
+
 export interface TestFull {
   id: string;
   name: string;
   cipher: string;
   description: string;
-  allowedMistakes: number;
   courses: CourseSelectOption[];
   tickets: Ticket[];
   slug: string;
   createdAt: string;
   status: string;
-  numberOfTickets: number;
-  numberQuestionsInTicket: number;
+  settings: Settings;
 }
 
 export interface Ticket {
   number: number;
   questions: Question[];
+}
+
+export interface Settings {
+  numberOfTickets: number;
+  numberQuestionsInTicket: number;
+  allowedMistakes: number;
 }

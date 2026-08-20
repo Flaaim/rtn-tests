@@ -7,6 +7,7 @@ import {
   PaginatedTests,
   RenameTestPayload,
   TestFull,
+  UpdateSettingsTestPayload,
 } from "@/interfaces/test.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
@@ -153,6 +154,30 @@ export async function renameTestAction(payload: RenameTestPayload): Promise<ApiR
     return handleApiResponse<void>(response);
   } catch (error) {
     console.error("renameTestAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function updateSettingsTestAction(
+  payload: UpdateSettingsTestPayload
+): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.test.updateSettings(payload.id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        numberOfTickets: payload.numberOfTickets,
+        numberQuestionsInTicket: payload.numberQuestionsInTicket,
+        allowedMistakes: payload.allowedMistakes,
+      }),
+    });
+
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("updateSettingsTestAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

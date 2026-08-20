@@ -83,7 +83,7 @@ final class TestFetcher implements TestFetcherInterface
             ->executeQuery();
 
         $row = $result->fetchAssociative();
-
+        $test = [];
         if (false !== $row) {
             $test = [
                 'id' => $row['id'],
@@ -101,9 +101,7 @@ final class TestFetcher implements TestFetcherInterface
                     'numberQuestionsInTicket' => $row['number_questions_in_ticket'],
                 ],
             ];
-        }
 
-        if (!empty($test)) {
             $courseIds = json_decode($test['course_ids'], true, JSON_THROW_ON_ERROR);
 
             if (!empty($courseIds) && \is_array($courseIds)) {
