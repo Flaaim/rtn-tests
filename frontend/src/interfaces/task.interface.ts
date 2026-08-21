@@ -27,4 +27,5 @@ export interface Question {
   text: string;
   questionImg: string;
   answers: Answer[];
+  form: string;
 }

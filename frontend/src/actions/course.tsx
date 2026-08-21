@@ -12,6 +12,7 @@ import {
   RenameCoursePayload,
   UpdateQuestionCoursePayload,
 } from "@/interfaces/course.interface";
+import { Question } from "@/interfaces/task.interface";
 
 export async function addCourseAction(payload: AddCoursePayload): Promise<ApiResponse<void>> {
   try {
@@ -143,6 +144,25 @@ export async function fetchCoursesToSelectAction(): Promise<ApiResponse<CourseSe
     });
 
     return handleApiResponse<CourseSelectOption[]>(response);
+  } catch (error) {
+    console.error("fetchCoursesToSelectAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchCourseQuestionsByIdsAction(
+  ids: string[]
+): Promise<ApiResponse<Question[]>> {
+  try {
+    const response = await apiFetch(API.course.getQuestions(ids), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    return handleApiResponse<Question[]>(response);
   } catch (error) {
     console.error("fetchCoursesToSelectAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };

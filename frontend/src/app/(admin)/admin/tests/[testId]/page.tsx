@@ -25,6 +25,8 @@ import { PUBLIC_ASSETS_URL } from "@/app/api";
 import UpdateSettingsTestDialog from "@/components/Admin/Test/UpdateSettingsTestDialog";
 import UpdateTestDialog from "@/components/Admin/Test/UpdateTestDialog";
 import { ShowDetailQuestionDialog } from "@/components/Admin/Test/ShowDetailQuestionDialog";
+import { fetchCourseQuestionsByIdsAction } from "@/actions/course";
+import { Question } from "@/interfaces/task.interface";
 
 interface TestOverviewPageProps {
   params: Promise<{ testId: string }>;
@@ -32,17 +34,21 @@ interface TestOverviewPageProps {
 
 export default async function TestOverviewPage({ params }: TestOverviewPageProps) {
   const { testId } = await params;
-
   const result = await fetchTestAction(testId);
-
   if (!result.ok || !result.data) {
     return null;
   }
 
   const test: TestFull = result.data;
+  const ids = test.courses.flatMap((course) => course.id);
 
-  const allQuestionsFlat = test.tickets.flatMap((ticket) => ticket.questions);
-  const uniqueQuestions = Array.from(new Map(allQuestionsFlat.map((q) => [q.id, q])).values());
+  const questions = await fetchCourseQuestionsByIdsAction(ids);
+
+  if (!questions.ok || !questions.data) {
+    return null;
+  }
+  const uniqueQuestions: Question[] = questions.data;
+
   const items = [{ title: "Тесты", href: "/admin/tests" }, { title: test.name }];
 
   const formattedDate = new Date(test.createdAt).toLocaleString("ru-RU", {
@@ -141,6 +147,7 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
                               <TableRow>
                                 <TableHead>№</TableHead>
                                 <TableHead>Вопрос</TableHead>
+                                <TableHead></TableHead>
                               </TableRow>
                             </TableHeader>
                             <TableBody>
@@ -161,6 +168,9 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
                                         />
                                       </div>
                                     )}
+                                  </TableCell>
+                                  <TableCell className="font-medium">
+                                    <ShowDetailQuestionDialog question={q} />
                                   </TableCell>
                                 </TableRow>
                               ))}

@@ -53,6 +53,11 @@ export const API = {
     update: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/update`,
     remove: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}`,
     lookup: () => BASE_URL + `/v1/admin/testing/courses/lookup`,
+    getQuestions: (ids: string[]) => {
+      const url = new URL(BASE_URL + `/v1/admin/testing/courses/questions`);
+      ids.forEach((id) => url.searchParams.append("ids[]", id));
+      return url.toString();
+    },
   },
   test: {
     add: () => BASE_URL + `/v1/admin/testing/tests`,

@@ -22,7 +22,6 @@ import {
 import { Answer } from "@/components/Admin/Course/UpdateQuestionsCourseDialog";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
 import QuestionFormTypeBadge from "@/components/Admin/Domain/QuestionFormTypeBadge";
-import { Badge } from "@/components/ui/badge";
 
 interface ShowDetailQuestionDialogProps {
   question: Question;
@@ -30,31 +29,6 @@ interface ShowDetailQuestionDialogProps {
 
 export function ShowDetailQuestionDialog({ question }: ShowDetailQuestionDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
-
-  const renderCorrectness = (formType: string, isCorrect: any) => {
-    // Для одиночного и множественного выбора (ожидаем boolean или строку "true"/"false")
-    if (formType === "single_choice" || formType === "multiple_choice") {
-      const isRight = isCorrect === true || isCorrect === "true" || isCorrect === 1;
-      return isRight ? (
-        <CheckCircle2 className="h-5 w-5 text-green-500" />
-      ) : (
-        <XCircle className="h-5 w-5 text-muted-foreground opacity-50" />
-      );
-    }
-
-    // Для последовательности (ожидаем порядковый номер, например 1, 2, 3)
-    if (formType === "sequence") {
-      return <Badge variant="default">Позиция: {isCorrect}</Badge>;
-    }
-
-    // Для сопоставления (ожидаем ключ или текст, с которым нужно сопоставить)
-    if (formType === "matching") {
-      return <Badge variant="secondary">{String(isCorrect)}</Badge>;
-    }
-
-    // Фолбэк для неизвестных типов
-    return <span className="text-sm">{String(isCorrect)}</span>;
-  };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
