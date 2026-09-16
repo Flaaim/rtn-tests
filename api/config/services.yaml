@@ -55,6 +55,7 @@ services:
             - '../src/Profile/Test/'
             - '../src/SharedDomain/Test/'
             - '../src/Testing/Test/'
+            - '../src/Subscription/Test/'
             - '../src/**/Fixture/'
 
 
