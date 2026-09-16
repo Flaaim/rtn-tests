@@ -8,8 +8,8 @@ use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use App\Subscription\Event\Subscription\SubscriptionPurchased;
 use DateTimeImmutable;
-use DomainException;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'subscriptions')]

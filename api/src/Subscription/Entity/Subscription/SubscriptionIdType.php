@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Subscription\Entity\Subscription;
 
-use Doctrine\DBAL\Types\StringType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\DBAL\Types\StringType;
 
 final class SubscriptionIdType extends StringType
 {

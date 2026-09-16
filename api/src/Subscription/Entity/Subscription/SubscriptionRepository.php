@@ -34,13 +34,13 @@ final class SubscriptionRepository
     public function hasTrialByUserId(string $userId): bool
     {
         return $this->repo->createQueryBuilder('t')
-                ->select('COUNT(t.id)')
-                ->andWhere('t.userId = :userId')
-                ->andWhere('t.plan = :plan')
-                ->setParameter('userId', $userId)
-                ->setParameter('plan', Plan::TRIAL->value)
-                ->getQuery()
-                ->getSingleScalarResult() > 0;
+            ->select('COUNT(t.id)')
+            ->andWhere('t.userId = :userId')
+            ->andWhere('t.plan = :plan')
+            ->setParameter('userId', $userId)
+            ->setParameter('plan', Plan::TRIAL->value)
+            ->getQuery()
+            ->getSingleScalarResult() > 0;
     }
 
     public function add(Subscription $subscription): void
