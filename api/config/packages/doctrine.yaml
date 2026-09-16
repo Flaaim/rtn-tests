@@ -37,6 +37,8 @@ doctrine:
             profile_role: App\Profile\Entity\Profile\RoleType
             profile_email: App\Profile\Entity\Profile\EmailType
 
+            subscription_id: App\Subscription\Entity\Subscription\SubscriptionIdType
+
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
@@ -86,6 +88,14 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Profile/Entity'
                 prefix: 'App\Profile\Entity'
                 alias: Profile
+            Subscription:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Subscription/Entity'
+                prefix: 'App\Subscription\Entity'
+                alias: Subscription
+
+
 
 when@test:
     doctrine:

@@ -18,12 +18,20 @@ final class Subscription implements AggregateRoot
     use EventTrait;
 
     public function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type: 'subscription_id', unique: true)]
         private SubscriptionId $id,
+        #[ORM\Column(type: 'string')]
         private string $userId,
+        #[ORM\Column(type: 'integer')]
         private int $durationDays,
+        #[ORM\Column(type: 'string', length: 16, enumType: Plan::class)]
         private Plan $plan,
+        #[ORM\Column(type: 'string', length: 16, enumType: Status::class)]
         private Status $status,
+        #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $periodStart,
+        #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $periodEnd
     ) {
         if ($this->plan->isTrial() && 1 !== $this->getDurationDays()) {
