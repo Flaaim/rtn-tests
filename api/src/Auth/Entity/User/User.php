@@ -209,6 +209,13 @@ final class User implements AggregateRoot
         $this->recordEvent(new PasswordChanged($this->id->getValue(), $this->email->getValue()));
     }
 
+    public function forceChangePassword(string $password): void
+    {
+        $this->passwordHash = $password;
+
+        $this->recordEvent(new PasswordChanged($this->id->getValue(), $this->email->getValue()));
+    }
+
     public function requestEmailChanging(Token $token, DateTimeImmutable $date, Email $email): void
     {
         if (!$this->isActive()) {
