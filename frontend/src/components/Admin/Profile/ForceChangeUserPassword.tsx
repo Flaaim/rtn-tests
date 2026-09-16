@@ -17,10 +17,12 @@ import {
 } from "@/components/ui/dialog";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { changePassword } from "@/actions/auth";
+import { forceChangeUserPassword } from "@/actions/auth";
+import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const schema = z.object({
-  new_password: z
+  password: z
     .string()
     .min(8, "Пароль должен содержать минимум 8 символов.")
     .max(18, "Пароль должен содержать максимум 18 символов."),
@@ -34,28 +36,37 @@ type ForceChangePasswordPayload = z.infer<typeof schema>;
 
 export default function ForceChangeUserPassword({ userId }: ForceChangeUserPasswordProps) {
   const [open, setOpen] = useState(false);
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+
+  const router = useRouter();
 
   const form = useForm({
     mode: "onSubmit",
     resolver: zodResolver(schema),
     defaultValues: {
-      new_password: "",
+      password: "",
     },
   });
 
   async function onSubmit(values: ForceChangePasswordPayload) {
-    const result = await forceChangePassword({
+    const result = await forceChangeUserPassword({
       userId: userId,
       password: values.password,
     });
+
+    if (!result.ok) {
+      form.setError("root", { type: "server", message: result.error });
+      return;
+    }
+
+    toast.success("Пароль успешно изменен!");
+    form.reset();
+    setOpen(false);
+    router.refresh();
   }
   const submitButton = (
     <Button
       type="submit"
-      form="add-profile-form"
+      form="change-password-form"
       disabled={form.formState.isSubmitting}
       className="w-full cursor-pointer py-2"
     >
@@ -87,19 +98,19 @@ export default function ForceChangeUserPassword({ userId }: ForceChangeUserPassw
         >
           <FieldGroup>
             <Controller
-              name="new_password"
+              name="password"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid}>
-                  <FieldLabel htmlFor="new-password">Новый пароль</FieldLabel>
+                  <FieldLabel htmlFor="password">Новый пароль</FieldLabel>
                   <Input
                     {...field}
-                    id="new-password"
+                    id="password"
                     type="password"
                     value={field.value}
                     placeholder="Укажите новый пароль"
                     aria-invalid={fieldState.invalid}
-                    autoComplete="new-password"
+                    autoComplete="password"
                   />
                   {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                 </Field>

@@ -1,6 +1,6 @@
 "use server";
 
-import { JoinData, LoginData } from "@/interfaces/auth.interface";
+import { ForceChangePasswordPayload, JoinData, LoginData } from "@/interfaces/auth.interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ApiResponse } from "@/interfaces/response.interface";
@@ -402,7 +402,26 @@ export async function changePassword(old_password: string, new_password: string)
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
-
+export async function forceChangeUserPassword(
+  payload: ForceChangePasswordPayload
+): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.auth.forceChangePassword(payload.userId), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        password: payload.password,
+      }),
+    });
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("forceChangeUserPassword error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
 export async function checkIsAuthenticated(): Promise<boolean> {
   const cookieStore = await cookies();
 

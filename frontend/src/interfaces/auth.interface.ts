@@ -19,3 +19,8 @@ export interface NetworkItem {
   network: string;
   identity: string;
 }
+
+export interface ForceChangePasswordPayload {
+  userId: string;
+  password: string;
+}

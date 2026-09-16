@@ -6,6 +6,7 @@ import UserRoleBadge from "@/components/Admin/Domain/User/UserRoleBadge";
 import ProfileStatusBadge from "@/components/Admin/Domain/User/ProfileStatusBadge";
 import UserStatusBadge from "@/components/Admin/Domain/User/UserStatusBadge";
 import { NetworkItem } from "@/interfaces/auth.interface";
+import ForceChangeUserPassword from "@/components/Admin/Profile/ForceChangeUserPassword";
 
 interface ProfileOverviewPageProps {
   params: Promise<{ profileId: string }>;
@@ -93,6 +94,7 @@ export default async function ProfileOverviewPage({ params }: ProfileOverviewPag
               <div>
                 <p className="text-muted-foreground font-medium">Пароль</p>
                 <p className="font-mono">{profile.passwordHash ? "**********" : "Не установлен"}</p>
+                <ForceChangeUserPassword userId={profile.id} />
               </div>
               <div>
                 <p className="text-muted-foreground font-medium">Соцсети</p>
