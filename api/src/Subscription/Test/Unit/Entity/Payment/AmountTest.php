@@ -24,7 +24,7 @@ final class AmountTest extends TestCase
     }
 
     #[DataProvider('provideInvalidCases')]
-    public function testInvalid($arg): void
+    public function testInvalid(string $arg): void
     {
         self::expectException(InvalidArgumentException::class);
         self::expectExceptionMessage('Amount must have two decimal places, e.g. 490.00');

@@ -15,6 +15,7 @@ use App\Subscription\Service\Payment\PaymentGatewayInterface;
 
 final readonly class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private PaymentGatewayInterface $paymentGateway,
         private PaymentRepository $payments,

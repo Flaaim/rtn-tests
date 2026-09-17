@@ -9,6 +9,7 @@ use Doctrine\ORM\EntityRepository;
 
 final class PaymentRepository
 {
+    /** @psalm-suppress UnusedProperty */
     private readonly EntityRepository $repo;
 
     /** @psalm-suppress PossiblyUnusedMethod */

@@ -9,6 +9,7 @@ use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Service\Payment\PaymentGatewayInterface;
 use App\Subscription\Service\Payment\PaymentGatewayResult;
 
+/** @psalm-suppress UnusedClass */
 final class FakePaymentGateway implements PaymentGatewayInterface
 {
     public function createPayment(

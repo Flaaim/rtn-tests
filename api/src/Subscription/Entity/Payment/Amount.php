@@ -20,11 +20,6 @@ final class Amount
         Assert::lengthBetween($currency, 3, 3);
     }
 
-    public static function fromRubles(string $value): self
-    {
-        return new self($value, 'RUB');
-    }
-
     public function getValue(): string
     {
         return $this->value;
