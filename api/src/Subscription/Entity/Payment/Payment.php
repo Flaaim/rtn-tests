@@ -7,20 +7,38 @@ namespace App\Subscription\Entity\Payment;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use App\Subscription\Entity\Subscription\Plan;
+use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'payments')]
 final class Payment implements AggregateRoot
 {
     use EventTrait;
+    #[ORM\Column(name: 'created_at', type: 'datetime_immutable')]
+    private DateTimeImmutable $createdAt;
+    #[ORM\Column(name: 'confirmed_at', type: 'datetime_immutable', nullable: true)]
+    private ?DateTimeImmutable $confirmedAt = null;
 
     public function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type: 'payment_id')]
         private PaymentId $id,
+        #[ORM\Column(name: 'external_id', type: 'string', length: 64, unique: true)]
         private string $externalId,
+        #[ORM\Column(type: 'string')]
         private string $userId,
+        #[ORM\Column(type: 'string', length: 16, enumType: Plan::class)]
         private Plan $plan,
+        #[ORM\Column(type: 'string', length: 16, enumType: PaymentStatus::class)]
         private PaymentStatus $status,
+        #[ORM\Embedded(class: Amount::class, columnPrefix: false)]
         private Amount $amount,
+        #[ORM\Column(type: 'integer')]
         private int $durationDays,
-    ) {}
+    ) {
+        $this->createdAt = new DateTimeImmutable();
+    }
 
     public function getId(): PaymentId
     {
@@ -55,5 +73,15 @@ final class Payment implements AggregateRoot
     public function getDurationDays(): int
     {
         return $this->durationDays;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getConfirmedAt(): ?DateTimeImmutable
+    {
+        return $this->confirmedAt;
     }
 }

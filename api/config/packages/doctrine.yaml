@@ -38,6 +38,7 @@ doctrine:
             profile_email: App\Profile\Entity\Profile\EmailType
 
             subscription_id: App\Subscription\Entity\Subscription\SubscriptionIdType
+            payment_id: App\Subscription\Entity\Payment\PaymentIdType
 
     orm:
         validate_xml_mapping: true
@@ -94,6 +95,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/Subscription/Entity'
                 prefix: 'App\Subscription\Entity'
                 alias: Subscription
+            Payment:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Subscription/Entity'
+                prefix: 'App\Subscription\Entity'
+                alias: Payment
 
 
 
