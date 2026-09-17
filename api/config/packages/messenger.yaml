@@ -53,6 +53,8 @@ framework:
             'App\Testing\Event\Attempt\TimeoutAttemptCommand': async
             'App\Profile\Event\ProfileRemoved': async
 
+            'App\Subscription\Event\Subscription\SubscriptionPurchased': async
+
 when@test:
     framework:
         messenger:

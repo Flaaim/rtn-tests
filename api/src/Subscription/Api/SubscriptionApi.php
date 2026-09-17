@@ -10,6 +10,7 @@ use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use DomainException;
 
+/** @psalm-suppress UnusedClass */
 final readonly class SubscriptionApi
 {
     public function __construct(

@@ -7,6 +7,7 @@ namespace App\Subscription\Entity\Subscription;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
+/** @psalm-suppress UnusedClass */
 final class SubscriptionIdType extends StringType
 {
     public const string NAME = 'subscription_id';

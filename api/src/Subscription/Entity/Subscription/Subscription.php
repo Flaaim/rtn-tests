@@ -51,6 +51,7 @@ final class Subscription implements AggregateRoot
         return $this->id;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod  */
     public function getUserId(): string
     {
         return $this->userId;

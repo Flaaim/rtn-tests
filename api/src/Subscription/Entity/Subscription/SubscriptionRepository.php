@@ -22,7 +22,7 @@ final class SubscriptionRepository
     {
         return (bool)$this->repo->createQueryBuilder('t')
             ->select('1')
-            ->andWhere('t.user_id = :userId')
+            ->andWhere('t.userId = :userId')
             ->andWhere('t.status = :status')
             ->setParameter('userId', $userId)
             ->setParameter('status', Status::ACTIVE)

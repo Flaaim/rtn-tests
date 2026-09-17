@@ -42,7 +42,7 @@ final class SubscriptionTest extends TestCase
     public function testSubscriptionFailed(): void
     {
         self::expectException(DomainException::class);
-        self::expectExceptionMessage('Trial Subscription Period must be exactly 3 days.');
+        self::expectExceptionMessage('Trial Subscription Period must be exactly 1 day.');
 
         new Subscription(
             SubscriptionId::generate(),
