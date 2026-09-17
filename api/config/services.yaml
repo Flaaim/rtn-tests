@@ -103,6 +103,12 @@ services:
         arguments:
             $path: '%kernel.project_dir%/public/QuestionImages'
 
+    YooKassa\Client:
+        calls:
+            -   setAuth: [ '%env(int:YOOKASSA_SHOP_ID)%', '%env(YOOKASSA_SECRET_KEY)%' ]
+
+    App\Subscription\Service\PaymentGatewayInterface:
+        class: App\Infrastructure\Payment\Yookassa\YookassaPaymentGateway
 
 when@test:
     services:
@@ -115,6 +121,9 @@ when@test:
         App\SharedDomain\Filesystem\FileSystemPathInterface: '@App\SharedDomain\Filesystem\InMemoryFileSystemPath'
         App\SharedDomain\Filesystem\InMemoryFileSystemPath:
             factory: ['App\SharedDomain\Filesystem\InMemoryFileSystemPath', 'createReal']
+
+        App\Subscription\Service\PaymentGatewayInterface:
+            class: App\Subscription\Test\Double\FakePaymentGateway
 
 
         Symfony\Contracts\HttpClient\HttpClientInterface:

@@ -77,6 +77,8 @@ services:
       GOOGLE_CLIENT_SECRET: ""
       GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
       ENCRYPT_SECRET_KEY: flaaim-secret
+      YOOKASSA_SHOP_ID: 221345
+      YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
     volumes:
       - ./api:/app
     user: "1000:1000"
@@ -126,6 +128,8 @@ services:
       GOOGLE_CLIENT_SECRET: ""
       GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
       ENCRYPT_SECRET_KEY: flaaim-secret
+      YOOKASSA_SHOP_ID: 221345
+      YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
     depends_on:
       api-postgres:
         condition: service_started
@@ -201,6 +205,8 @@ services:
       GOOGLE_CLIENT_SECRET: ""
       GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
       ENCRYPT_SECRET_KEY: flaaim-secret
+      YOOKASSA_SHOP_ID: 221345
+      YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
     command: php bin/console messenger:consume async --limit=1000 --memory-limit=128M -vv
     restart: always
     depends_on:
