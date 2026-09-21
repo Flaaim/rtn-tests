@@ -40,7 +40,23 @@ final class SubscriptionTest extends TestCase
         self::assertEquals($status, $subscription->getStatus());
         self::assertEquals($start->format('Y-m-d'), $subscription->getPeriodStart()->format('Y-m-d'));
         self::assertEquals($end->format('Y-m-d'), $subscription->getPeriodEnd()->format('Y-m-d'));
+        self::assertFalse($subscription->isTrialUsed());
     }
+
+    public function testTrialSubscription(): void
+    {
+        $subscription = new Subscription(
+            SubscriptionId::generate(),
+            Uuid::uuid4()->toString(),
+            Plan::TRIAL,
+            Status::ACTIVE,
+            Period::create(
+                new DateTimeImmutable(),
+                new DateTimeImmutable('+ 1 days')
+            )
+        );
+
+        self::assertTrue($subscription->isTrialUsed());    }
 
     public function testSubscriptionFailed(): void
     {
