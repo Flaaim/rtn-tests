@@ -107,8 +107,7 @@ services:
         calls:
             -   setAuth: [ '%env(int:YOOKASSA_SHOP_ID)%', '%env(YOOKASSA_SECRET_KEY)%' ]
 
-    App\Subscription\Service\PaymentGatewayInterface:
-        class: App\Infrastructure\Payment\Yookassa\YookassaPaymentGateway
+    App\Subscription\Service\Payment\PaymentGatewayInterface: '@App\Infrastructure\Payment\Yookassa\YookassaPaymentGateway'
 
 when@test:
     services:
@@ -122,8 +121,10 @@ when@test:
         App\SharedDomain\Filesystem\InMemoryFileSystemPath:
             factory: ['App\SharedDomain\Filesystem\InMemoryFileSystemPath', 'createReal']
 
-        App\Subscription\Service\PaymentGatewayInterface:
-            class: App\Subscription\Test\Double\FakePaymentGateway
+        App\Subscription\Service\Payment\PaymentGatewayInterface: '@App\Infrastructure\Payment\Yookassa\FakePaymentGateway'
+
+
+
 
 
         Symfony\Contracts\HttpClient\HttpClientInterface:

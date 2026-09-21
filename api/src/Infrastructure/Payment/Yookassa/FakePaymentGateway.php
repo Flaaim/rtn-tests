@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\Test\Double;
+namespace App\Infrastructure\Payment\Yookassa;
 
 use App\Subscription\Entity\Payment\Amount;
 use App\Subscription\Entity\Subscription\Plan;

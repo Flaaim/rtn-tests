@@ -31,6 +31,7 @@ final readonly class PaymentConfirmedHandler
         if (null !== $activeSubscription) {
             $activeSubscription->extend($event->durationDays);
             $this->flusher->flush();
+
             $this->logger->info('User Subscription extended after payment confirmation.', [
                 'paymentId' => $event->paymentId,
                 'userId' => $event->userId,

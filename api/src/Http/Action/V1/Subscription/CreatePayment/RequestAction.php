@@ -22,7 +22,7 @@ final readonly class RequestAction
         private Security $security,
     ) {}
 
-    #[Route('v1/subscriptions/payments', name: 'subscriptions.payment.create', methods: ['POST'])]
+    #[Route('/v1/subscriptions/payments', name: 'subscriptions.payment.create', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(Request $request): Response
     {
