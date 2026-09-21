@@ -4,9 +4,8 @@ import { Toaster } from "sonner";
 import { Header } from "@/components/Home/Header";
 
 export const metadata: Metadata = {
-  title: "Тесты по охране труда",
-  description:
-    "Готовые и актуальные тесты по охране труда и смежным направлениям для проверки знаний ваших работников.",
+  title: "Тесты Ростехнадзора",
+  description: "Готовые и актуальные тесты по Ростехнадзора по всем областям аттестации.",
 };
 
 export default function SiteLayout({
@@ -24,7 +23,7 @@ export default function SiteLayout({
         <Toaster position="top-center" richColors />
       </main>
       <footer className="col-start-2 col-end-4 row-start-3 mb-8 text-sm text-muted-foreground max-[765px]:col-start-1 max-[765px]:col-end-2 max-[765px]:mb-4">
-        © {new Date().getFullYear()} Платформа тестов по охране труда. Все права защищены.
+        © {new Date().getFullYear()} Платформа тестов Ростехнадзора. Все права защищены.
       </footer>
     </div>
   );

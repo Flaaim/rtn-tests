@@ -1,6 +1,6 @@
 "use client";
 
-import { LayoutDashboard, User, LogOut, FileText } from "lucide-react";
+import { LayoutDashboard, User, LogOut, FileText, CreditCard } from "lucide-react";
 import {
   Sidebar,
   SidebarContent,
@@ -18,7 +18,8 @@ import Link from "next/link";
 
 const items = [
   { title: "Главная", url: "/user/dashboard", icon: LayoutDashboard },
-  { title: "Результаты тестов", url: "/user/results", icon: FileText },
+  { title: "Результаты", url: "/user/results", icon: FileText },
+  { title: "Подписка", url: "/user/subscriprion", icon: CreditCard },
 ];
 export interface DashboardSidebarProps {
   email: string;

@@ -10,8 +10,8 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Платформа тестов по охране труда",
-  description: "Подготовка и прохождение тестов по охране труда и смежных направлений",
+  title: "Платформа тестов Ростехнадзора",
+  description: "Подготовка и прохождение тестов по облостям аттестации Ростехнадзора",
 };
 
 export default function RootLayout({

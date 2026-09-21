@@ -55,27 +55,21 @@ services:
       DB_USER: app
       DB_PASSWORD: secret
       DB_NAME: app
-      MAILER_HOST: mailer
-      MAILER_PORT: 1025
+      MAILER_DSN: smtp://mailer:1025
+      MAILER_FROM_EMAIL: admin@site.ru
+      MAILER_FROM_NAME: admin
       MAILER_USER: app
       MAILER_PASSWORD: secret
       MAILER_ENCRYPTION: tcp
-      MAILER_FROM_EMAIL: admin@site.ru
-      MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:3000
       MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f/messages
-      TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
-      TELEGRAM_CHAT_ID: 1954013093
-      SENTRY_DSN: https://fc877afad286428611e7152440453816@o4510080200998912.ingest.de.sentry.io/4511806404362320
+      SENTRY_DSN: https://0f9f7c9d95905042e6349f2b827f7beb@o4510080200998912.ingest.de.sentry.io/4512116135493712
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
       YANDEX_CLIENT_ID: 448fcb38cd354521abe6abd7322a21ca
       YANDEX_CLIENT_SECRET: c28905e0f14d40a9aeff6253c0a16df3
       YANDEX_REDIRECT_URI: "http://localhost:3000/join/callback/yandex"
-      GOOGLE_CLIENT_ID: ""
-      GOOGLE_CLIENT_SECRET: ""
-      GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
       ENCRYPT_SECRET_KEY: flaaim-secret
       YOOKASSA_SHOP_ID: 221345
       YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
@@ -106,27 +100,23 @@ services:
       DB_USER: app
       DB_PASSWORD: secret
       DB_NAME: app
-      MAILER_HOST: mailer
-      MAILER_PORT: 1025
+      MAILER_DSN: smtp://mailer:1025
+      MAILER_FROM_EMAIL: admin@site.ru
+      MAILER_FROM_NAME: admin
       MAILER_USER: app
       MAILER_PASSWORD: secret
       MAILER_ENCRYPTION: tcp
-      MAILER_FROM_EMAIL: admin@site.ru
-      MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:3000
       MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f
       TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
       TELEGRAM_CHAT_ID: 1954013093
-      SENTRY_DSN: https://fc877afad286428611e7152440453816@o4510080200998912.ingest.de.sentry.io/4511806404362320
+      SENTRY_DSN: https://0f9f7c9d95905042e6349f2b827f7beb@o4510080200998912.ingest.de.sentry.io/4512116135493712
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
       YANDEX_CLIENT_ID: 448fcb38cd354521abe6abd7322a21ca
       YANDEX_CLIENT_SECRET: c28905e0f14d40a9aeff6253c0a16df3
       YANDEX_REDIRECT_URI: "http://localhost:3000/join/callback/yandex"
-      GOOGLE_CLIENT_ID: ""
-      GOOGLE_CLIENT_SECRET: ""
-      GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
       ENCRYPT_SECRET_KEY: flaaim-secret
       YOOKASSA_SHOP_ID: 221345
       YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM
@@ -183,27 +173,21 @@ services:
       DB_USER: app
       DB_PASSWORD: secret
       DB_NAME: app
-      MAILER_HOST: mailer
-      MAILER_PORT: 1025
+      MAILER_DSN: smtp://mailer:1025
+      MAILER_FROM_EMAIL: admin@site.ru
+      MAILER_FROM_NAME: admin
       MAILER_USER: app
       MAILER_PASSWORD: secret
       MAILER_ENCRYPTION: tcp
-      MAILER_FROM_EMAIL: admin@site.ru
-      MAILER_FROM_NAME: admin
       FRONTEND_URL: http://localhost:3000
       MESSENGER_TRANSPORT_DSN: amqp://guest:guest@rabbitmq:5672/%2f/messages
-      TELEGRAM_BOT_TOKEN: 8114548384:AAEiVHE1whxgUCXT_-slDjku0SJXi3_iv5s
-      TELEGRAM_CHAT_ID: 1954013093
-      SENTRY_DSN: https://fc877afad286428611e7152440453816@o4510080200998912.ingest.de.sentry.io/4511806404362320
+      SENTRY_DSN: https://0f9f7c9d95905042e6349f2b827f7beb@o4510080200998912.ingest.de.sentry.io/4512116135493712
       JWT_ENCRYPTION_KEY: def00000b1141e01bf480a8dfceaa59f40e92e8617c62f614b1b25ee61595fc5f012c1842737b2568102186d92267ac92ceb1e465f4c53fcff2dad1201f11d1899f00790
       JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
       JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
       YANDEX_CLIENT_ID: 448fcb38cd354521abe6abd7322a21ca
       YANDEX_CLIENT_SECRET: c28905e0f14d40a9aeff6253c0a16df3
       YANDEX_REDIRECT_URI: "http://localhost:3000/join/callback/yandex"
-      GOOGLE_CLIENT_ID: ""
-      GOOGLE_CLIENT_SECRET: ""
-      GOOGLE_REDIRECT_URL: "http://localhost:3000/join/callback/google"
       ENCRYPT_SECRET_KEY: flaaim-secret
       YOOKASSA_SHOP_ID: 221345
       YOOKASSA_SECRET_KEY: test_0B3flJqsbdKNA2sS2dT0ahs74LtF7fwJq2oVR-8wTCM

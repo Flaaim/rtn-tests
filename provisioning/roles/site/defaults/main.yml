@@ -1,5 +1,5 @@
-certbot_email: mail@ot-tests.ru
+certbot_email: mail@rtn-tests.ru
 certbot_enabled: false
 certbot_hosts:
-  - ot-tests.ru
-  - api.ot-tests.ru
+  - rtn-tests.ru
+  - api.rtn-tests.ru

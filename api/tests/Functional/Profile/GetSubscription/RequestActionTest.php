@@ -11,6 +11,10 @@ use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class RequestActionTest extends WebTestCase
 {
     use OAuthTokenTrait;
@@ -58,5 +62,4 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('periodEnd', $data);
         self::assertArrayHasKey('trialUsed', $data);
     }
-
 }

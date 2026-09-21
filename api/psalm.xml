@@ -59,6 +59,7 @@
                 <directory name="src/Parser/Query" />
                 <directory name="src/Course/Query" />
                 <directory name="src/Testing/Query" />
+                <directory name="src/Subscription/Query" />
                 <directory name="src/Testing/Entity/Attempt/DTO" />
             </errorLevel>
         </PossiblyUnusedProperty>

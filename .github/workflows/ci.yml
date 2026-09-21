@@ -165,12 +165,11 @@ jobs:
           API_SITE_URL: ${{ secrets.API_SITE_URL }}
           API_SITE_NAME: ${{ secrets.API_SITE_NAME }}
           API_DB_PASSWORD: ${{ secrets.API_DB_PASSWORD }}
-          API_MAILER_HOST: ${{ secrets.API_MAILER_HOST }}
-          API_MAILER_PORT: ${{ secrets.API_MAILER_PORT }}
-          API_MAILER_USER: ${{ secrets.API_MAILER_USER }}
-          API_MAILER_PASSWORD: ${{ secrets.API_MAILER_PASSWORD }}
-          API_MAILER_FROM_EMAIL: ${{ secrets.API_MAILER_FROM_EMAIL }}
-          API_MAILER_FROM_NAME: ${{ secrets.API_MAILER_FROM_NAME }}
+          MAILER_DSN: ${{ secrets.MAILER_DSN }}
+          MAILER_USER: ${{ secrets.MAILER_USER }}
+          MAILER_PASSWORD: ${{ secrets.MAILER_PASSWORD }}
+          MAILER_FROM_EMAIL: ${{ secrets.MAILER_FROM_EMAIL }}
+          MAILER_FROM_NAME: ${{ secrets.MAILER_FROM_NAME }}
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           FRONTEND_URL: ${{ secrets.FRONTEND_URL }}
           RABBITMQ_USER: ${{ secrets.RABBITMQ_USER }}

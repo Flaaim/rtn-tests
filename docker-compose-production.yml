@@ -1,6 +1,6 @@
 services:
   gateway:
-    image: ${REGISTRY}/ot-tests-gateway:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-gateway:${IMAGE_TAG}
     restart: always
     volumes:
       - /etc/letsencrypt:/etc/letsencrypt:ro
@@ -13,7 +13,7 @@ services:
       - api
 
   frontend-node:
-    image: ${REGISTRY}/ot-tests-frontend-node:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-frontend-node:${IMAGE_TAG}
     restart: always
     environment:
       - NODE_ENV=production
@@ -29,13 +29,13 @@ services:
       - api
 
   api:
-    image: ${REGISTRY}/ot-tests-api:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-api:${IMAGE_TAG}
     restart: always
     depends_on:
       - api-php-fpm
 
   api-php-fpm:
-    image: ${REGISTRY}/ot-tests-api-php-fpm:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-api-php-fpm:${IMAGE_TAG}
     restart: always
     environment:
       APP_ENV: prod
@@ -46,8 +46,7 @@ services:
       DB_USER: app
       DB_PASSWORD: ${API_DB_PASSWORD}
       DB_NAME: app
-      MAILER_HOST: ${API_MAILER_HOST}
-      MAILER_PORT: ${API_MAILER_PORT}
+      MAILER_DSN: ${API_MAILER_DSN}
       MAILER_USER: ${API_MAILER_USER}
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
@@ -73,7 +72,7 @@ services:
       - jwt_private_key
 
   api-php-cli:
-    image: ${REGISTRY}/ot-tests-api-php-cli:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
@@ -83,8 +82,7 @@ services:
       DB_USER: app
       DB_PASSWORD: ${API_DB_PASSWORD}
       DB_NAME: app
-      MAILER_HOST: ${API_MAILER_HOST}
-      MAILER_PORT: ${API_MAILER_PORT}
+      MAILER_DSN: ${API_MAILER_DSN}
       MAILER_USER: ${API_MAILER_USER}
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls
@@ -137,7 +135,7 @@ services:
       start_period: 20s
 
   api-php-worker:
-    image: ${REGISTRY}/ot-tests-api-php-cli:${IMAGE_TAG}
+    image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
@@ -147,8 +145,7 @@ services:
       DB_USER: app
       DB_PASSWORD: ${API_DB_PASSWORD}
       DB_NAME: app
-      MAILER_HOST: ${API_MAILER_HOST}
-      MAILER_PORT: ${API_MAILER_PORT}
+      MAILER_DSN: ${API_MAILER_DSN}
       MAILER_USER: ${API_MAILER_USER}
       MAILER_PASSWORD: ${API_MAILER_PASSWORD}
       MAILER_ENCRYPTION: tls

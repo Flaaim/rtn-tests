@@ -14,12 +14,12 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final readonly class RequestAction
 {
-
     public function __construct(
         private QueryHandler $handler,
         private Validator $validator,
         private Security $security,
     ) {}
+
     #[Route('/v1/me/subscriptions', name: 'subscription.get', methods: ['GET'])]
     public function __invoke(): Response
     {

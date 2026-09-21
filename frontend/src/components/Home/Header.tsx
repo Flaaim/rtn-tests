@@ -11,7 +11,7 @@ export async function Header() {
       <div className="mx-auto flex h-16 max-w-6xl items-center justify-between px-4">
         <Link href="/" className="flex items-center space-x-2 transition-opacity hover:opacity-80">
           <ShieldCheck className="h-6 w-6 text-primary" />
-          <span className="text-lg font-bold tracking-tight">OT-tests</span>
+          <span className="text-lg font-bold tracking-tight">RTN-tests</span>
         </Link>
 
         <nav className="flex items-center space-x-6">
