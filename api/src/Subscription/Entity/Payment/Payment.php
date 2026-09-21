@@ -7,8 +7,10 @@ namespace App\Subscription\Entity\Payment;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use App\Subscription\Entity\Subscription\Plan;
+use App\Subscription\Event\Payment\PaymentConfirmed;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use DomainException;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'payments')]
@@ -85,5 +87,28 @@ final class Payment implements AggregateRoot
     public function getConfirmedAt(): ?DateTimeImmutable
     {
         return $this->confirmedAt;
+    }
+
+    public function confirm(): void
+    {
+        if (PaymentStatus::SUCCEEDED === $this->status) {
+            return;
+        }
+
+        if (PaymentStatus::PENDING !== $this->status) {
+            throw new DomainException('Only pending payment can be confirmed.');
+        }
+
+        $this->status = PaymentStatus::SUCCEEDED;
+        $this->confirmedAt = new DateTimeImmutable();
+
+        $this->recordEvent(
+            new PaymentConfirmed(
+                $this->id->getValue(),
+                $this->userId,
+                $this->plan->value,
+                $this->durationDays,
+            )
+        );
     }
 }

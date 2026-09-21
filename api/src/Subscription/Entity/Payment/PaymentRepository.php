@@ -23,4 +23,11 @@ final class PaymentRepository
     {
         $this->em->persist($payment);
     }
+
+    public function findByExternalId(string $externalId): ?Payment
+    {
+        return $this->repo->findOneBy([
+            'externalId' => $externalId,
+        ]);
+    }
 }

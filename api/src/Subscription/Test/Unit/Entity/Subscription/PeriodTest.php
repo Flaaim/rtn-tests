@@ -17,7 +17,7 @@ final class PeriodTest extends TestCase
 {
     public function testPeriod(): void
     {
-        $period = Period::period(
+        $period = Period::create(
             $start = new DateTimeImmutable('21.09.2026'),
             $end = new DateTimeImmutable('25.09.2026'),
         );
@@ -43,7 +43,7 @@ final class PeriodTest extends TestCase
 
     public function testExtendPeriod(): void
     {
-        $period = Period::period(
+        $period = Period::create(
             new DateTimeImmutable('21.09.2026'),
             new DateTimeImmutable('25.09.2026'),
         );
@@ -53,9 +53,9 @@ final class PeriodTest extends TestCase
         self::assertEquals(6, $newPeriod->getDurationDays());
     }
 
-    public function tetsExtendPeriodLessThenOne(): void
+    public function testExtendPeriodLessThenOne(): void
     {
-        $period = Period::period(
+        $period = Period::create(
             new DateTimeImmutable('21.09.2026'),
             new DateTimeImmutable('25.09.2026'),
         );

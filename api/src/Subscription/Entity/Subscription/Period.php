@@ -36,7 +36,7 @@ final class Period
         return new self($start, $end);
     }
 
-    public static function period(DateTimeImmutable $startDate, DateTimeImmutable $endDate): self
+    public static function create(DateTimeImmutable $startDate, DateTimeImmutable $endDate): self
     {
         return new self($startDate, $endDate);
     }
@@ -56,10 +56,26 @@ final class Period
         return (int)$this->startDate->diff($this->endDate)->days;
     }
 
+    public function isActiveAt(DateTimeImmutable $moment): bool
+    {
+        $day = $moment->setTime(0, 0);
+
+        return $day >= $this->startDate && $day <= $this->endDate;
+    }
+
     public function extend(int $additionalDays): self
     {
         if ($additionalDays < 1) {
             throw new InvalidArgumentException('Subscription Period extension must be at least one day.');
+        }
+
+        $today = new DateTimeImmutable('today');
+
+        if ($this->endDate < $today) {
+            return new self(
+                $today,
+                $today->modify('+ ' . $additionalDays . ' days')
+            );
         }
 
         return new self(

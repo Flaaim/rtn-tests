@@ -47,4 +47,23 @@ final class SubscriptionRepository
     {
         $this->em->persist($subscription);
     }
+
+    public function findActiveByUserId(string $userId): ?Subscription
+    {
+        /** @var Subscription[] $subscriptions */
+        $subscriptions = $this->repo->findBy(
+            ['userId' => $userId, 'status' => Status::ACTIVE],
+            ['periodEnd' => 'DESC'],
+        );
+
+        foreach ($subscriptions as $subscription) {
+            if ($subscription->isActive()) {
+                return $subscription;
+            }
+
+            $subscription->expire();
+        }
+
+        return null;
+    }
 }

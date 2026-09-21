@@ -5,15 +5,17 @@ declare(strict_types=1);
 namespace App\Subscription\Command\Activate;
 
 use App\Infrastructure\Doctrine\Flusher;
+use App\Subscription\Entity\Subscription\Period;
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\Status;
 use App\Subscription\Entity\Subscription\Subscription;
 use App\Subscription\Entity\Subscription\SubscriptionId;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
-use DateInterval;
 use DateTimeImmutable;
 use DomainException;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(method: 'handle')]
 final readonly class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
@@ -31,11 +33,12 @@ final readonly class Handler
         $subscription = new Subscription(
             SubscriptionId::generate(),
             $command->userId,
-            $command->durationDays,
             Plan::from($command->plan),
             Status::from('active'),
-            new DateTimeImmutable(),
-            new DateTimeImmutable()->add(new DateInterval('P' . $command->durationDays . 'D')),
+            Period::create(
+                new DateTimeImmutable('now'),
+                new DateTimeImmutable('+ ' . $command->durationDays . ' days')
+            )
         );
 
         $this->subscriptions->add($subscription);

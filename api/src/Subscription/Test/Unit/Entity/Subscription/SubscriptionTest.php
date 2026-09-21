@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Subscription\Test\Unit\Entity\Subscription;
 
+use App\Subscription\Entity\Subscription\Period;
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\Status;
 use App\Subscription\Entity\Subscription\Subscription;
@@ -24,19 +25,21 @@ final class SubscriptionTest extends TestCase
         $subscription = new Subscription(
             $id = SubscriptionId::generate(),
             $userId = Uuid::uuid4()->toString(),
-            $durationDays = 10,
             $plan = Plan::BASIC,
             $status = Status::ACTIVE,
-            $start = new DateTimeImmutable(),
-            $end = new DateTimeImmutable('+ 1 day'),
+            Period::create(
+                $start = new DateTimeImmutable(),
+                $end = new DateTimeImmutable('+ 2 days')
+            )
         );
 
         self::assertEquals($id, $subscription->getId());
-        self::assertEquals($durationDays, $subscription->getDurationDays());
+        self::assertEquals($userId, $subscription->getUserId());
+        self::assertEquals(2, $subscription->getDurationDays());
         self::assertEquals($plan, $subscription->getPlan());
         self::assertEquals($status, $subscription->getStatus());
-        self::assertEquals($start, $subscription->getPeriodStart());
-        self::assertEquals($end, $subscription->getPeriodEnd());
+        self::assertEquals($start->format('Y-m-d'), $subscription->getPeriodStart()->format('Y-m-d'));
+        self::assertEquals($end->format('Y-m-d'), $subscription->getPeriodEnd()->format('Y-m-d'));
     }
 
     public function testSubscriptionFailed(): void
@@ -47,11 +50,73 @@ final class SubscriptionTest extends TestCase
         new Subscription(
             SubscriptionId::generate(),
             Uuid::uuid4()->toString(),
-            2,
             Plan::TRIAL,
             Status::ACTIVE,
-            new DateTimeImmutable(),
-            new DateTimeImmutable('+ 2 day'),
+            Period::create(
+                new DateTimeImmutable(),
+                new DateTimeImmutable('+ 2 days')
+            )
         );
+    }
+
+    public function testExtendActive(): void
+    {
+        $subscription = new Subscription(
+            SubscriptionId::generate(),
+            Uuid::uuid4()->toString(),
+            Plan::BASIC,
+            Status::ACTIVE,
+            Period::create(
+                new DateTimeImmutable(),
+                new DateTimeImmutable('+ 5 days')
+            )
+        );
+
+        $subscription->extend(5);
+
+        self::assertTrue($subscription->isActive());
+        self::assertEquals(10, $subscription->getDurationDays());
+
+        self::assertEquals(new DateTimeImmutable('+ 10 days')->format('Y-m-d'), $subscription->getPeriodEnd()->format('Y-m-d'));
+    }
+
+    public function testExtendCancelled(): void
+    {
+        $subscription = new Subscription(
+            SubscriptionId::generate(),
+            Uuid::uuid4()->toString(),
+            Plan::BASIC,
+            Status::CANCELLED,
+            Period::create(
+                new DateTimeImmutable(),
+                new DateTimeImmutable('+ 2 days')
+            )
+        );
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Cancelled User Subscription cannot be extended.');
+        $subscription->extend(2);
+    }
+
+    public function testExtendExpired(): void
+    {
+        $subscription = new Subscription(
+            SubscriptionId::generate(),
+            Uuid::uuid4()->toString(),
+            Plan::BASIC,
+            Status::EXPIRED,
+            Period::create(
+                $start = new DateTimeImmutable('- 10 days'),
+                new DateTimeImmutable('- 5 days')
+            )
+        );
+
+        $subscription->extend(5);
+
+        $end = new DateTimeImmutable('+ 5 days');
+
+        self::assertEquals($start->format('Y-m-d'), $subscription->getPeriodStart()->format('Y-m-d'));
+        self::assertEquals($end->format('Y-m-d'), $subscription->getPeriodEnd()->format('Y-m-d'));
+        self::assertEquals(5, $subscription->getDurationDays());
     }
 }
