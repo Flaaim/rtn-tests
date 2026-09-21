@@ -7,14 +7,14 @@ namespace App\Subscription\Api;
 use App\Subscription\Command\Activate\Command;
 use App\Subscription\Command\Activate\Handler;
 use App\Subscription\Entity\Subscription\Plan;
-use App\Subscription\Entity\Subscription\SubscriptionRepository;
+use App\Subscription\Query\SubscriptionFetcherInterface;
 use DomainException;
 
 /** @psalm-suppress UnusedClass */
 final readonly class SubscriptionApi
 {
     public function __construct(
-        private SubscriptionRepository $subscriptions,
+        private SubscriptionFetcherInterface $subscriptions,
         private Handler $activateHandler
     ) {}
 

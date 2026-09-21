@@ -13,11 +13,13 @@ use Twig\Environment;
 final readonly class SubscriptionExpiredSender
 {
     public const string TEMPLATE = 'subscribe/payment/expired.html.twig';
+
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private MailerInterface $mailer,
         private Environment $twig
     ) {}
+
     public function send(string $email): void
     {
         $message = new SymfonyEmail()

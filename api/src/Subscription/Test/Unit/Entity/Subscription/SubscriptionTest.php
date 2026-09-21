@@ -56,7 +56,8 @@ final class SubscriptionTest extends TestCase
             )
         );
 
-        self::assertTrue($subscription->isTrialUsed());    }
+        self::assertTrue($subscription->isTrialUsed());
+    }
 
     public function testSubscriptionFailed(): void
     {

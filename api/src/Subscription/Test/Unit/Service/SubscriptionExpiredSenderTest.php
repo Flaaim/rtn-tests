@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Subscription\Test\Unit\Service;
 
-use App\Subscription\Service\PaymentConfirmedSender;
 use App\Subscription\Service\SubscriptionExpiredSender;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Mailer\Exception\TransportException;
@@ -13,6 +12,10 @@ use Symfony\Component\Mime\Email as SymfonyEmail;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class SubscriptionExpiredSenderTest extends TestCase
 {
     public function testSuccess(): void

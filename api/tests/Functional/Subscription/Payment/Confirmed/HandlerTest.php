@@ -8,14 +8,18 @@ use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Event\Payment\PaymentConfirmed;
 use App\Subscription\MessageHandler\PaymentConfirmedHandler;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Tests\Functional\FixturesLoader;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class HandlerTest extends KernelTestCase
 {
-
     private ContainerInterface $container;
     private SubscriptionRepository $subscriptions;
 
@@ -47,9 +51,8 @@ final class HandlerTest extends KernelTestCase
 
         $subscription = $this->subscriptions->findActiveByUserId(RequestFixture::ACTIVE_USER_ID);
 
-
         self::assertEquals(
-            new \DateTimeImmutable('- 1 day')->format('Y-m-d'),
+            new DateTimeImmutable('- 1 day')->format('Y-m-d'),
             $subscription->getPeriodStart()->format('Y-m-d')
         );
         self::assertEquals(11, $subscription->getDurationDays());
@@ -69,12 +72,12 @@ final class HandlerTest extends KernelTestCase
         $subscription = $this->subscriptions->findActiveByUserId(RequestFixture::EXPIRED_USER_ID);
 
         self::assertEquals(
-            new \DateTimeImmutable()->format('Y-m-d'),
+            new DateTimeImmutable()->format('Y-m-d'),
             $subscription->getPeriodStart()->format('Y-m-d')
         );
 
         self::assertEquals(
-            new \DateTimeImmutable('+ 5 day')->format('Y-m-d'),
+            new DateTimeImmutable('+ 5 day')->format('Y-m-d'),
             $subscription->getPeriodEnd()->format('Y-m-d')
         );
 

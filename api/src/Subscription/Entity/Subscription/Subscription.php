@@ -25,6 +25,7 @@ final class Subscription implements AggregateRoot
     private int $durationDays;
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isTrialUsed = false;
+
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'subscription_id', unique: true)]
@@ -45,7 +46,7 @@ final class Subscription implements AggregateRoot
             throw new DomainException('Trial Subscription Period must be exactly 1 day.');
         }
 
-        if($this->plan->isTrial()){
+        if ($this->plan->isTrial()) {
             $this->isTrialUsed = true;
         }
 
@@ -82,10 +83,12 @@ final class Subscription implements AggregateRoot
     {
         return $this->status;
     }
+
     public function isTrialUsed(): bool
     {
         return $this->isTrialUsed;
     }
+
     public function getPeriodStart(): DateTimeImmutable
     {
         return $this->periodStart;
