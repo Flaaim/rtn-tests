@@ -122,6 +122,8 @@ jobs:
             GRANT_TYPE=${{secrets.GRANT_TYPE}}
             CLIENT_ID=${{secrets.CLIENT_ID}}
             CLIENT_SECRET=${{secrets.CLIENT_SECRET}}
+            NEXT_PUBLIC_YANDEX_CLIENT_ID=${{ secrets.YANDEX_CLIENT_ID }}
+            NEXT_PUBLIC_YANDEX_REDIRECT_URI=${{ secrets.YANDEX_REDIRECT_URI }}
             
 
       - name: Build and Push GATEWAY Image
