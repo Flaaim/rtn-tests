@@ -14,17 +14,23 @@ export default function SiteLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="grid min-h-screen grid-cols-[1fr_270px_700px_1fr] grid-rows-[auto_1fr_auto] gap-x-10 gap-y-12 max-[765px]:grid-cols-1 max-[765px]:grid-rows-[auto_auto_auto] max-[765px]:p-2.5">
-      <header className="col-start-2 col-end-4 row-start-1 mt-6 max-[765px]:col-start-1 max-[765px]:col-end-2 max-[765px]:mt-0">
-        <Header />
-      </header>
-      <main className="col-start-2 col-end-4">
-        {children}
-        <Toaster position="top-center" richColors />
-      </main>
-      <footer className="col-start-2 col-end-4 row-start-3 mb-8 text-sm text-muted-foreground max-[765px]:col-start-1 max-[765px]:col-end-2 max-[765px]:mb-4">
-        © {new Date().getFullYear()} Платформа тестов Ростехнадзора. Все права защищены.
-      </footer>
+    <div className="flex min-h-screen flex-col">
+      {/* Центрированный ограничивающий контейнер. Ширина 1024px (max-w-5xl) примерно равна вашим 270+700+gap */}
+      <div className="mx-auto flex w-full max-w-5xl flex-1 flex-col px-4 sm:px-6 md:px-8">
+        <header className="pt-4 sm:pt-6">
+          <Header />
+        </header>
+
+        {/* flex-1 заставляет main занимать всё доступное место, прижимая футер к низу */}
+        <main className="flex-1 py-8 sm:py-12">
+          {children}
+          <Toaster position="top-center" richColors />
+        </main>
+
+        <footer className="pb-4 sm:pb-8 text-sm text-muted-foreground text-center sm:text-left">
+          © {new Date().getFullYear()} Платформа тестов Ростехнадзора. Все права защищены.
+        </footer>
+      </div>
     </div>
   );
 }
