@@ -83,7 +83,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/php-cli/Dockerfile
-          tags: ${{ env.REGISTRY }}/ot-tests-api-php-cli:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/rtn-tests-api-php-cli:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -93,7 +93,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/php-fpm/Dockerfile
-          tags: ${{ env.REGISTRY }}/ot-tests-api-php-fpm:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/rtn-tests-api-php-fpm:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -103,7 +103,7 @@ jobs:
         with:
           context: ./api
           file: ./api/docker/production/nginx/Dockerfile
-          tags: ${{ env.REGISTRY }}/ot-tests-api:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/rtn-tests-api:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
@@ -113,12 +113,12 @@ jobs:
         with:
           context: ./frontend
           file: ./frontend/docker/production/node/Dockerfile
-          tags: ${{ env.REGISTRY }}/ot-tests-frontend-node:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/rtn-tests-frontend-node:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
           build-args: |
-            NEXT_PUBLIC_BACKEND_URL=https://api.ot-tests.ru
+            NEXT_PUBLIC_BACKEND_URL=https://api.rtn-tests.ru
             GRANT_TYPE=${{secrets.GRANT_TYPE}}
             CLIENT_ID=${{secrets.CLIENT_ID}}
             CLIENT_SECRET=${{secrets.CLIENT_SECRET}}
@@ -129,7 +129,7 @@ jobs:
         with:
           context: ./gateway
           file: ./gateway/docker/production/nginx/Dockerfile
-          tags: ${{ env.REGISTRY }}/ot-tests-gateway:${{ env.IMAGE_TAG }}
+          tags: ${{ env.REGISTRY }}/rtn-tests-gateway:${{ env.IMAGE_TAG }}
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
