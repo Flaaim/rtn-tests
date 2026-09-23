@@ -32,7 +32,7 @@ export async function generateMetadata({ params }: TestSlugPageProps) {
     }
     const test: TestPublicDTO = result.data;
     return {
-      title: `Тест: ${test.cipher} ${test.name.toLowerCase()}`,
+      title: `Тест: ${test.name}`,
       description: test.description || `Тест для проверки знаний ${test.name}`,
     };
   } catch (error) {
