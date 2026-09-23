@@ -77,20 +77,27 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         <Link href="/" className="hover:text-foreground transition-colors">
           Главная
         </Link>
-        <ChevronRight className="mx-2 h-4 w-4" />
+        <ChevronRight className="mx-2 h-4 w-4 shrink-0" />
         <Link href="/catalog" className="hover:text-foreground transition-colors">
           Каталог
         </Link>
-        <ChevronRight className="mx-2 h-4 w-4" />
-        <Link href={`/catalog/${categorySlug}`} className="hover:text-foreground transition-colors">
+        <ChevronRight className="mx-2 h-4 w-4 shrink-0" />
+        <Link
+          href={`/catalog/${categorySlug}`}
+          className="hover:text-foreground transition-colors line-clamp-1 max-w-[150px] sm:max-w-none"
+        >
           {parentCategory?.name}
         </Link>
-        <ChevronRight className="mx-2 h-4 w-4" />
-        <span className="text-foreground">{subcategory.name}</span>
+        <ChevronRight className="mx-2 h-4 w-4 shrink-0" />
+        <span className="text-foreground line-clamp-1">{subcategory.name}</span>
       </nav>
 
+      {/* Заголовок и описание */}
       <div className="space-y-4">
         <h1 className="text-3xl font-extrabold tracking-tight md:text-4xl">{subcategory.name}</h1>
+        {subcategory.description && (
+          <p className="text-lg text-muted-foreground max-w-3xl">{subcategory.description}</p>
+        )}
       </div>
 
       {tests.length === 0 ? (
@@ -99,41 +106,59 @@ export default async function SubcategoryPage({ params }: SubcategoryPageProps) 
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-4">
-          {tests.map((test: TestItemPublic) => (
-            <Card
-              key={test.id}
-              className="group relative flex flex-col transition-colors hover:border-primary/50"
-            >
-              <CardHeader className="pb-2">
-                <CardTitle className="flex items-start gap-3 text-xl leading-tight">
-                  <span className="absolute top-4 right-4 text-xs text-muted-foreground">
-                    Создан:{" "}
-                    {new Date(test.createdAt).toLocaleString("ru-RU", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })}{" "}
-                    г.
-                  </span>
-                  <FileText className="mt-1 h-5 w-5 shrink-0 text-primary" />
-                  <Link
-                    // Ссылка ведет на страницу самого теста
-                    href={`/catalog/${categorySlug}/${subcategorySlug}/${test.slug}`}
-                    className="before:absolute before:inset-0 hover:text-primary focus:outline-none"
-                  >
-                    {test.cipher} {test.name}
-                  </Link>
-                </CardTitle>
-              </CardHeader>
-              <CardContent className="relative z-10">
-                <p className="text-muted-foreground line-clamp-2 mb-4 pr-16">{test.description}</p>
-                <div className="flex items-center text-sm font-medium text-muted-foreground transition-colors group-hover:text-primary">
-                  Перейти к билетам
-                  <ArrowRight className="ml-1 h-4 w-4" />
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+          {tests.map((test: TestItemPublic) => {
+            const formattedDate = new Date(test.createdAt).toLocaleDateString("ru-RU", {
+              day: "2-digit",
+              month: "2-digit",
+              year: "numeric",
+            });
+
+            return (
+              <Card
+                key={test.id}
+                className="group relative flex flex-col transition-colors duration-200 hover:border-primary/50 hover:shadow-sm"
+              >
+                <CardHeader className="pb-3">
+                  <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4">
+                    <CardTitle className="flex items-start gap-3 text-xl leading-tight">
+                      <FileText className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
+                      <Link
+                        href={`/catalog/${categorySlug}/${subcategorySlug}/${test.slug}`}
+                        className="before:absolute before:inset-0 hover:text-primary focus:outline-none flex flex-col gap-1 sm:block"
+                      >
+                        {/* Выделяем шифр, чтобы он не сливался с текстом */}
+                        {test.cipher && (
+                          <span className="text-primary font-bold mr-2">{test.cipher}</span>
+                        )}
+                        <span className="group-hover:text-primary transition-colors">
+                          {test.name}
+                        </span>
+                      </Link>
+                    </CardTitle>
+
+                    {/* Дата создания - безопасно позиционирована справа на десктопе и сверху на мобилках */}
+                    <div className="flex items-center gap-1.5 shrink-0 text-xs text-muted-foreground sm:pt-1">
+                      <Calendar className="h-3.5 w-3.5" />
+                      <span>{formattedDate}</span>
+                    </div>
+                  </div>
+                </CardHeader>
+
+                <CardContent className="mt-auto flex flex-col gap-4 relative z-10">
+                  {test.description && (
+                    <p className="text-muted-foreground line-clamp-2 text-sm md:text-base">
+                      {test.description}
+                    </p>
+                  )}
+
+                  <div className="flex items-center text-sm font-medium text-muted-foreground transition-colors group-hover:text-primary pt-2">
+                    Перейти к билетам
+                    <ArrowRight className="ml-1.5 h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>
