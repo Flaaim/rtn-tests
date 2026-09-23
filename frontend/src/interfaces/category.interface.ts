@@ -17,6 +17,11 @@ export interface RenameCategoryPayload {
   name: string;
 }
 
+export interface ChangeDescriptionPayload {
+  id: string;
+  description: string;
+}
+
 export interface MoveCategoryPayload {
   id: string;
   parentId: string | null;

@@ -113,5 +113,7 @@ export const API = {
     rename: (id: string) => BASE_URL + `/v1/admin/testing/categories/${id}/rename`,
     move: (id: string) => BASE_URL + `/v1/admin/testing/categories/${id}/move`,
     remove: (id: string) => BASE_URL + `/v1/admin/testing/categories/${id}`,
+    changeDescription: (id: string) =>
+      BASE_URL + `/v1/admin/testing/categories/${id}/change-description`,
   },
 };

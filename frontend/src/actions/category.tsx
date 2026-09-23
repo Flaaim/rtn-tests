@@ -5,6 +5,7 @@ import {
   AddCategoryPayload,
   CategoryDTO,
   CategoryFull,
+  ChangeDescriptionPayload,
   MoveCategoryPayload,
   RenameCategoryPayload,
 } from "@/interfaces/category.interface";
@@ -135,6 +136,27 @@ export async function removeCategoryAction(id: string): Promise<ApiResponse<void
     return handleApiResponse<void>(response);
   } catch (error) {
     console.error("removeCategoryAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+export async function changeDescriptionCategoryAction(
+  payload: ChangeDescriptionPayload
+): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.category.changeDescription(payload.id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        description: payload.description,
+      }),
+    });
+
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("changeDescriptionCategoryAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

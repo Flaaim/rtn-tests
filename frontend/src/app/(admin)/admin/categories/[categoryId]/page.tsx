@@ -7,6 +7,7 @@ import MoveCategoryDialog from "@/components/Admin/Category/MoveCategoryDialog";
 import { Badge } from "@/components/ui/badge";
 import Link from "next/link";
 import RemoveCategoryDialog from "@/components/Admin/Category/RemoveCategoryDialog";
+import ChangeDescriptionCategoryDialog from "@/components/Admin/Category/ChangeDescriptionCategoryDialog";
 
 interface CategoryOverviewPageProps {
   params: Promise<{ categoryId: string }>;
@@ -45,7 +46,12 @@ export default async function CourseOverviewPage({ params }: CategoryOverviewPag
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <p className="text-muted-foreground border-b pb-4">{category.description}</p>
-
+            <div className="flex-shrink-0">
+              <ChangeDescriptionCategoryDialog
+                id={category.id}
+                description={category.description}
+              />
+            </div>
             <div className="grid grid-cols-2 gap-4 sm:grid-cols-4 items-center">
               <div>
                 <p className="text-muted-foreground font-medium">ID</p>
