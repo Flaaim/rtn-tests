@@ -24,7 +24,7 @@ final class Question
         #[ORM\Id]
         #[ORM\Column(type: 'string', unique: true)]
         private string $id,
-        #[ORM\Column(type: 'string', length: 512)]
+        #[ORM\Column(type: 'text')]
         private string $text,
         #[ORM\Column(type: 'string', length: 255)]
         private string $questionImg,
