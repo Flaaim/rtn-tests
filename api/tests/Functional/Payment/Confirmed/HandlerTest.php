@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Subscription\Payment\Confirmed;
+namespace Tests\Functional\Payment\Confirmed;
 
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;

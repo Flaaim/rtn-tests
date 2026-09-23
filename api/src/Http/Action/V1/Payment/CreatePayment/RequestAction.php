@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Action\V1\Subscription\CreatePayment;
+namespace App\Http\Action\V1\Payment\CreatePayment;
 
 use App\Infrastructure\Http\Validator\Validator;
 use App\Subscription\Command\CreatePayment\Command;
@@ -22,7 +22,7 @@ final readonly class RequestAction
         private Security $security,
     ) {}
 
-    #[Route('/v1/subscriptions/payments', name: 'subscriptions.payment.create', methods: ['POST'])]
+    #[Route('/v1/payments', name: 'payment.create', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(Request $request): Response
     {

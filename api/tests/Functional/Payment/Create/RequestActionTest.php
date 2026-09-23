@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Subscription\Payment\Create;
+namespace Tests\Functional\Payment\Create;
 
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -43,7 +43,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testUnauthenticatedReturns401(): void
     {
-        $this->client->jsonRequest('POST', '/v1/subscriptions/payments');
+        $this->client->jsonRequest('POST', '/v1/payments');
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
     }
@@ -56,7 +56,7 @@ final class RequestActionTest extends WebTestCase
 
         $this->client->jsonRequest(
             'POST',
-            '/v1/subscriptions/payments',
+            '/v1/payments',
             [
                 'plan' => 'basic',
                 'amount' => '10.00',

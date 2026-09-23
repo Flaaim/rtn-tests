@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Action\V1\Subscription\PaymentWebhook;
+namespace App\Http\Action\V1\Payment\PaymentWebhook;
 
 use App\Infrastructure\Payment\Yookassa\YookassaWebhookGuard;
 use App\Subscription\Command\ConfirmPayment\Command as ConfirmPaymentCommand;
-use App\Subscription\Command\FailPayment\Command as FailPaymentCommand;
 use App\Subscription\Command\ConfirmPayment\Handler as ConfirmPaymentHandler;
+use App\Subscription\Command\FailPayment\Command as FailPaymentCommand;
 use App\Subscription\Command\FailPayment\Handler as FailPaymentHandler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
