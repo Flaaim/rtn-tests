@@ -30,9 +30,9 @@ export async function generateMetadata({ params }: TestSlugPageProps) {
         description: "Не удалось загрузить данные теста.",
       };
     }
-    const test = result.data;
+    const test: TestPublicDTO = result.data;
     return {
-      title: `Тест: ${test.name.toLowerCase()}`,
+      title: `Тест: ${test.cipher} ${test.name.toLowerCase()}`,
       description: test.description || `Тест для проверки знаний ${test.name}`,
     };
   } catch (error) {
