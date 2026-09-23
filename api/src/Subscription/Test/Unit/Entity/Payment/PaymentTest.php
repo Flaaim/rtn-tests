@@ -72,4 +72,37 @@ final class PaymentTest extends TestCase
         self::expectExceptionMessage('Only pending payment can be confirmed.');
         $payment->confirm();
     }
+
+    public function testFailPayment(): void
+    {
+        $payment = new Payment(
+            PaymentId::generate(),
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+            Plan::BASIC,
+            PaymentStatus::FAILED,
+            new Amount('100.00'),
+            10,
+        );
+
+        $payment->fail();
+        self::assertEquals(PaymentStatus::FAILED, $payment->getPaymentStatus());
+    }
+
+    public function testFailSuccessPayment(): void
+    {
+        $payment = new Payment(
+            PaymentId::generate(),
+            Uuid::uuid4()->toString(),
+            Uuid::uuid4()->toString(),
+            Plan::BASIC,
+            PaymentStatus::SUCCEEDED,
+            new Amount('100.00'),
+            10,
+        );
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Only pending payment can be failed.');
+        $payment->fail();
+    }
 }
