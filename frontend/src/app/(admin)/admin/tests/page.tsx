@@ -102,7 +102,7 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
         </Table>
         <Pagination
           currentPage={currentPage}
-          totalPages={result.data.totalCount}
+          totalPages={result.data.totalPages}
           baseUrl="/admin/tests"
         />
       </div>
