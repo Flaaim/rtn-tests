@@ -67,4 +67,9 @@ final class Category implements AggregateRoot
         }
         $this->parentId = $parentId;
     }
+
+    public function changeDescription(string $description): void
+    {
+        $this->description = $description;
+    }
 }

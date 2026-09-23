@@ -82,4 +82,18 @@ final class CategoryTest extends TestCase
         self::expectExceptionMessage('Category cannot be a parent of itself.');
         $cat->move($id);
     }
+
+    public function testChangeDescription(): void
+    {
+        $cat = new Category(
+            CategoryId::generate(),
+            'name',
+            'description',
+            'name',
+        );
+
+        $cat->changeDescription('newDescription');
+
+        self::assertEquals('newDescription', $cat->getDescription());
+    }
 }
