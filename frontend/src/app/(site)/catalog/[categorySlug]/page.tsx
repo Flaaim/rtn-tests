@@ -70,12 +70,12 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
         <Link href="/" className="hover:text-foreground transition-colors">
           Главная
         </Link>
-        <ChevronRight className="mx-2 h-4 w-4" />
+        <ChevronRight className="mx-2 h-4 w-4 shrink-0" />
         <Link href="/catalog" className="hover:text-foreground transition-colors">
           Каталог
         </Link>
-        <ChevronRight className="mx-2 h-4 w-4" />
-        <span className="text-foreground">{category.name}</span>
+        <ChevronRight className="mx-2 h-4 w-4 shrink-0" />
+        <span className="text-foreground line-clamp-1">{category.name}</span>
       </nav>
 
       <div className="space-y-4">
@@ -94,22 +94,34 @@ export default async function CategoryPage({ params }: CategoryPageProps) {
           {subcategories.map((sub) => (
             <Card
               key={sub.id}
-              className="relative flex flex-col transition-colors duration-200 hover:border-primary/50 hover:shadow-sm"
+              // Добавлен класс group для работы group-hover внутри
+              className="group relative flex flex-col transition-colors duration-200 hover:border-primary/50 hover:shadow-sm"
             >
               <CardHeader className="pb-4">
-                <CardTitle className="flex items-center gap-3 text-lg">
-                  <Folder className="h-5 w-5 text-muted-foreground" />
+                {/* items-start вместо items-center для корректного выравнивания многострочного текста */}
+                <CardTitle className="flex items-start gap-3 text-lg leading-tight">
+                  {/* Добавлен shrink-0 чтобы иконка не сжималась, и mt-1 чтобы выровнять с первой строкой текста */}
+                  <Folder className="mt-0.5 h-5 w-5 shrink-0 text-muted-foreground transition-colors group-hover:text-primary" />
                   <Link
                     href={`/catalog/${category.slug}/${sub.slug}`}
                     className="before:absolute before:inset-0 hover:text-primary focus:outline-none"
                   >
-                    {sub.name}
+                    <span className="line-clamp-2">{sub.name}</span>
                   </Link>
                 </CardTitle>
+
+                {/* Выводим описание категории, если оно есть */}
+                {sub.description && (
+                  <p className="mt-2 text-sm text-muted-foreground line-clamp-2">
+                    {sub.description}
+                  </p>
+                )}
               </CardHeader>
-              <CardContent className="mt-auto flex items-center justify-between text-sm font-medium text-muted-foreground transition-colors group-hover:text-primary">
+
+              <CardContent className="mt-auto pt-4 flex items-center justify-between text-sm font-medium text-muted-foreground transition-colors group-hover:text-primary">
                 Перейти к тестам
-                <ArrowRight className="h-4 w-4" />
+                {/* Добавлена небольшая анимация движения стрелки */}
+                <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-1" />
               </CardContent>
             </Card>
           ))}
