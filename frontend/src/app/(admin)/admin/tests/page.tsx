@@ -100,12 +100,12 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
             )}
           </TableBody>
         </Table>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={result.data.totalPages}
-          baseUrl="/admin/tests"
-        />
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={result.data.totalPages}
+        baseUrl="/admin/tests"
+      />
     </div>
   );
 }
