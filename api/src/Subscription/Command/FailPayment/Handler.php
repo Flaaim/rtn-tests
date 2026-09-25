@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\Command\ConfirmPayment;
+namespace App\Subscription\Command\FailPayment;
 
 use App\Infrastructure\Doctrine\Flusher;
 use App\Subscription\Entity\Payment\PaymentRepository;
-use DomainException;
 
-/** @psalm-suppress UnusedClass*/
 final readonly class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
@@ -23,10 +21,10 @@ final readonly class Handler
         $payment = $this->payments->findByExternalId($command->externalId);
 
         if (null === $payment) {
-            throw new DomainException('Payment not found.');
+            return;
         }
+        $payment->fail();
 
-        $payment->confirm();
         $this->flusher->flush();
     }
 }

@@ -54,7 +54,7 @@ final readonly class RequestAction
             } elseif ('payment.canceled' === $event) {
                 $this->failPaymentHandler->handle(new FailPaymentCommand($externalId));
             }
-        }catch (Throwable $throwable) {
+        } catch (Throwable $throwable) {
             $this->logger->error('YooKassa webhook processing failed.', [
                 'event' => $event,
                 'externalId' => $externalId,
