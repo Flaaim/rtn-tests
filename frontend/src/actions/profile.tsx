@@ -14,7 +14,6 @@ import {
   UserSubscription,
 } from "@/interfaces/user.interface";
 
-
 export async function fetchUserAttemptsPaginationAction(
   page: number,
   perPage: number
@@ -152,7 +151,7 @@ export async function fetchUserSubscriptionAction(): Promise<ApiResponse<UserSub
         Accept: "application/json",
       },
     });
-    return handleApiResponse<UserSubscription>(response)
+    return handleApiResponse<UserSubscription>(response);
   } catch (error) {
     console.error("fetchSubscriptionAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
