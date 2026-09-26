@@ -82,7 +82,7 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
             ) : (
               result.data.items.map((test: TestItem) => (
                 <TableRow key={test.testId}>
-                  <TableCell className="font-medium min-w-0 max-w-[200px]">
+                  <TableCell className="font-medium min-w-0 max-w-[300px] truncate">
                     <Link href={`/admin/tests/${test.testId}`} className="hover:underline">
                       {test.name}
                     </Link>

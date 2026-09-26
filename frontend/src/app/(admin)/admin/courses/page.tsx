@@ -79,7 +79,7 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
             ) : (
               result.data.items.map((course: CourseItem) => (
                 <TableRow key={course.courseId}>
-                  <TableCell className="font-medium">
+                  <TableCell className="font-medium min-w-0 max-w-[300px] truncate">
                     <Link href={`/admin/courses/${course.courseId}`} className="hover:underline">
                       {course.name}
                     </Link>
