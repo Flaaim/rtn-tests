@@ -241,17 +241,6 @@ final class Test implements AggregateRoot
         ));
     }
 
-    private function regenerateTickets(array $allQuestionIds): void
-    {
-        if (empty($allQuestionIds)) {
-            $this->tickets = [];
-            return;
-        }
-
-        $generator = new TicketGenerator();
-        $this->tickets = $generator->generate($this->settings, $allQuestionIds);
-    }
-
     public function changeCategory(string $categoryId): void
     {
         if ($this->isActive()) {
@@ -261,5 +250,16 @@ final class Test implements AggregateRoot
             return;
         }
         $this->categoryId = $categoryId;
+    }
+
+    private function regenerateTickets(array $allQuestionIds): void
+    {
+        if (empty($allQuestionIds)) {
+            $this->tickets = [];
+            return;
+        }
+
+        $generator = new TicketGenerator();
+        $this->tickets = $generator->generate($this->settings, $allQuestionIds);
     }
 }
