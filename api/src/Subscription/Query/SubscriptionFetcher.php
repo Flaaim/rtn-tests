@@ -15,16 +15,14 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
         private Connection $connection
     ) {}
 
-    public function findActiveByUserId(string $userId): array
+    public function findByUserId(string $userId): array
     {
         $qb = $this->connection->createQueryBuilder();
 
         $subscription = $qb->select('s.id, s.user_id, s.status, s.plan, s.period_start, s.period_end, s.is_trial_used')
             ->from('subscriptions', 's')
             ->where('s.user_id = :userId')
-            ->andWhere('s.status = :status')
             ->setParameter('userId', $userId)
-            ->setParameter('status', Status::ACTIVE->value)
             ->orderBy('s.period_end', 'ASC')
             ->executeQuery()
             ->fetchAssociative();

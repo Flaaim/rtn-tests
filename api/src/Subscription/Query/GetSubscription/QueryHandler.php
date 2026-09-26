@@ -17,7 +17,7 @@ final readonly class QueryHandler
     public function handle(Query $query): SubscriptionDTO
     {
         $userId = $query->userId;
-        $subscription = $this->subscriptions->findActiveByUserId($userId);
+        $subscription = $this->subscriptions->findByUserId($userId);
 
         if (empty($subscription)) {
             throw new DomainException('Подписка не найдена.');
