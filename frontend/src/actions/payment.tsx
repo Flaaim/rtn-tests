@@ -3,7 +3,7 @@
 import { ApiResponse } from "@/interfaces/response.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
-import {CreatePaymentPayload, CreatePaymentResponse} from "@/interfaces/payment.interface";
+import { CreatePaymentPayload, CreatePaymentResponse } from "@/interfaces/payment.interface";
 import { handleApiResponse } from "@/lib/handleApiResponse";
 
 export async function createPaymentAction(

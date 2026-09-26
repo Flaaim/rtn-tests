@@ -48,7 +48,11 @@ const FEATURES = [
   "Безлимитное количество попыток",
 ];
 
-export default function AddSubscriptionDialog() {
+interface AddSubscriptionDialogProps {
+  name: string
+}
+
+export default function AddSubscriptionDialog({name}: AddSubscriptionDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const [selectedPlanId, setSelectedPlanId] = useState<string>("basic_10");
@@ -73,7 +77,7 @@ export default function AddSubscriptionDialog() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger render={<Button className="bg-blue-600 hover:bg-blue-700" />}>
-          <CreditCard className="mr-2 h-4 w-4" /> Оформить подписку
+        <CreditCard className="mr-2 h-4 w-4" /> {name}
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[700px]">

@@ -46,7 +46,7 @@ export default async function SubscriptionPage() {
               </p>
             </CardContent>
             <CardFooter>
-              <AddSubscriptionDialog />
+              <AddSubscriptionDialog name="Оформить подписку"/>
             </CardFooter>
           </Card>
         </div>
@@ -149,13 +149,13 @@ export default async function SubscriptionPage() {
           <CardFooter className="pt-4 border-t">
             {subscription.hasAccess ? (
               <div className="flex gap-3 w-full">
-                <Button className="w-full">Продлить подписку</Button>
-                <Button variant="outline" className="w-full">
+                <AddSubscriptionDialog name="Продлить подписку"/>
+                <Button variant="outline" >
                   Отменить
                 </Button>
               </div>
             ) : (
-              <Button className="w-full bg-blue-600 hover:bg-blue-700">Оформить подписку</Button>
+              <AddSubscriptionDialog name="Оформить подписку"/>
             )}
           </CardFooter>
         </Card>
