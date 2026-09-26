@@ -3,6 +3,7 @@
 import { ApiResponse } from "@/interfaces/response.interface";
 import {
   AddTestPayload,
+  ChangeCategoryTestPayload,
   ChangeCipherTestPayload,
   PaginatedTests,
   RenameTestPayload,
