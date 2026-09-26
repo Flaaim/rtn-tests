@@ -160,6 +160,17 @@ export default async function SubscriptionPage() {
           </CardFooter>
         </Card>
       </div>
+
+      <div>
+        <h1 className="text-3xl font-bold tracking-tight">История</h1>
+        <p className="text-muted-foreground text-sm mt-2">
+          Ниже вы можете посмотреть историю ваших покупок доступа к материалам сайта.
+        </p>
+      </div>
+
+      <div className="rounded-md border">
+
+      </div>
     </div>
   );
 }
