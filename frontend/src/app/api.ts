@@ -118,4 +118,7 @@ export const API = {
     changeDescription: (id: string) =>
       BASE_URL + `/v1/admin/testing/categories/${id}/change-description`,
   },
+  payment: {
+    create: () => BASE_URL + `/v1/payments`,
+  },
 };

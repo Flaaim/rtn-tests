@@ -14,6 +14,7 @@ import { ru } from "date-fns/locale";
 import { UserSubscription } from "@/interfaces/user.interface";
 import { fetchUserSubscriptionAction } from "@/actions/profile";
 import SubscriptionStatusBadge from "@/components/Domain/SubscriptionStatusBadge";
+import AddSubscriptionDialog from "@/components/Subscription/AddSubscriptionDialog";
 
 const SUBSCRIPTION_PLAN: Record<string, string> = {
   trial: "Пробный",
@@ -45,7 +46,7 @@ export default async function SubscriptionPage() {
               </p>
             </CardContent>
             <CardFooter>
-              <Button>Оформить базовую подписку</Button>
+              <AddSubscriptionDialog />
             </CardFooter>
           </Card>
         </div>
