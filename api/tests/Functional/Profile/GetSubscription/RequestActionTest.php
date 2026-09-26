@@ -60,6 +60,5 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('status', $data);
         self::assertArrayHasKey('periodStart', $data);
         self::assertArrayHasKey('periodEnd', $data);
-        self::assertArrayHasKey('trialUsed', $data);
     }
 }

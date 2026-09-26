@@ -64,5 +64,4 @@ export interface UserSubscription {
   status: string;
   periodStart: string;
   periodEnd: string;
-  trialUser: boolean;
 }

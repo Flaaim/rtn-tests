@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Subscription\Query;
 
 use App\Subscription\Entity\Subscription\Plan;
+use App\Subscription\Entity\Subscription\Status;
 use Doctrine\DBAL\Connection;
 
 /** @psalm-suppress UnusedClass */
@@ -18,11 +19,11 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $subscription = $qb->select('s.id, s.user_id, s.status, s.plan, s.period_start, s.period_end, s.is_trial_used')
+        $subscription = $qb->select('s.id, s.user_id, s.status, s.plan, s.period_start, s.period_end')
             ->from('subscriptions', 's')
             ->where('s.user_id = :userId')
             ->setParameter('userId', $userId)
-            ->orderBy('s.period_end', 'ASC')
+            ->orderBy('s.period_end', 'DESC')
             ->executeQuery()
             ->fetchAssociative();
 
@@ -36,7 +37,6 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
             'plan' => $subscription['plan'],
             'period_start' => $subscription['period_start'],
             'period_end' => $subscription['period_end'],
-            'is_trial_used' => $subscription['is_trial_used'],
         ];
     }
 
@@ -48,8 +48,10 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
             ->from('subscriptions', 's')
             ->where('s.user_id = :userId')
             ->andWhere('s.plan = :plan')
+            ->andWhere('s.status = :status')
             ->setParameter('userId', $userId)
             ->setParameter('plan', Plan::BASIC->value)
+            ->setParameter('status', Status::ACTIVE->value)
             ->executeQuery()
             ->fetchOne();
     }
