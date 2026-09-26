@@ -251,4 +251,15 @@ final class Test implements AggregateRoot
         $generator = new TicketGenerator();
         $this->tickets = $generator->generate($this->settings, $allQuestionIds);
     }
+
+    public function changeCategory(string $categoryId): void
+    {
+        if ($this->isActive()) {
+            throw new DomainException('Can not change category of an active test.');
+        }
+        if ($this->categoryId === $categoryId) {
+            return;
+        }
+        $this->categoryId = $categoryId;
+    }
 }

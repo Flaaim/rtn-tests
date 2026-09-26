@@ -237,6 +237,29 @@ final class TestTest extends TestCase
         );
     }
 
+    public function testChangeCategory(): void
+    {
+        $test = new TestBuilder()
+            ->withCategoryId('9467fb4c-730c-435a-8bee-0d736cfa3d6a')
+            ->build();
+        $newCategoryId = 'bc29e21a-fe46-4165-98d5-7c15532b4b28';
+        $test->changeCategory($newCategoryId);
+
+        self::assertEquals($newCategoryId, $test->getCategoryId());
+    }
+
+    public function testChangeCategoryActive(): void
+    {
+        $test = new TestBuilder()
+            ->active()
+            ->build();
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Can not change category of an active test.');
+
+        $test->changeCategory('bc29e21a-fe46-4165-98d5-7c15532b4b28');
+    }
+
     private function getQuestionIds(): array
     {
         return [
