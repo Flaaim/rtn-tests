@@ -15,7 +15,7 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
         private Connection $connection
     ) {}
 
-    public function findByUserId(string $userId): array
+    public function getByUserId(string $userId): array
     {
         $qb = $this->connection->createQueryBuilder();
 
@@ -68,5 +68,18 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
             ->setParameter('plan', Plan::TRIAL->value)
             ->executeQuery()
             ->fetchOne();
+    }
+
+    public function getSubscriptionsByUserId(string $userId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        return $qb->select('s.id, s.plan, s.status, s.period_start, s.period_end, s.duration_day')
+            ->from('subscriptions', 's')
+            ->where('s.user_id = :userId')
+            ->setParameter('userId', $userId)
+            ->orderBy('s.period_end', 'DESC')
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 }

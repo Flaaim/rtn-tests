@@ -6,7 +6,7 @@ namespace App\Subscription\Query;
 
 interface SubscriptionFetcherInterface
 {
-    public function findByUserId(string $userId): array;
+    public function getByUserId(string $userId): array;
 
     public function hasActiveByUserId(string $userId): bool;
 
