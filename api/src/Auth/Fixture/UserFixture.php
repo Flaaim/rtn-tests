@@ -17,15 +17,21 @@ use Ramsey\Uuid\Uuid;
 
 final class UserFixture extends AbstractFixture
 {
-    private const PASSWORD_HASH = '$2y$12$qwnND33o8DGWvFoepotSju7eTAQ6gzLD/zy6W8NCVtiHPbkybz.w6';
+    public const string USER_ID = 'eaa3e157-5017-4d01-84f7-3275f8e4492e';
+    public const string USER_EMAIL = 'flaaim@list.ru';
+
+    public const string TRIAL_USER_ID = 'f0809564-fdc0-4bdc-b51f-53107414b4c5';
+    public const string TRIAL_USER_EMAIL = 'user@app.test';
 
     public function load(ObjectManager $manager): void
     {
+        $passwordHasher = new PasswordHasher();
+
         $user = User::requestJoinByEmail(
-            new Id('00000000-0000-0000-0000-000000000001'),
+            new Id(self::TRIAL_USER_ID),
             $date = new DateTimeImmutable('-30 days'),
-            new Email('user@app.test'),
-            self::PASSWORD_HASH,
+            new Email(self::TRIAL_USER_EMAIL),
+            $passwordHasher->hash('12345678'),
             new Token($value = Uuid::uuid4()->toString(), $date->modify('+1 day'))
         );
 
@@ -35,16 +41,15 @@ final class UserFixture extends AbstractFixture
         $passwordHasher = new PasswordHasher();
 
         $myUser = User::requestJoinByEmail(
-            new Id('eaa3e157-5017-4d01-84f7-3275f8e4492e'),
+            new Id(self::USER_ID),
             $date = new DateTimeImmutable('-30 days'),
-            new Email('flaaim@list.ru'),
+            new Email(self::USER_EMAIL),
             $passwordHasher->hash('12345678'),
             new Token($value = Uuid::uuid4()->toString(), $date->modify('+1 day'))
         );
 
         $myUser->confirmJoin($value, $date);
         $myUser->changeRole(Role::admin());
-
         $manager->persist($myUser);
 
         $manager->flush();

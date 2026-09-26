@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Profile\Fixture;
 
+use App\Auth\Fixture\UserFixture;
 use App\Profile\Entity\Profile\Email;
 use App\Profile\Entity\Profile\ProfileId;
 use App\Profile\Entity\Profile\Role;
@@ -17,12 +18,18 @@ final class ProfileFixture extends AbstractFixture
     public function load(ObjectManager $manager): void
     {
         $profile = new ProfileBuilder()
-            ->withProfileId(new ProfileId('eaa3e157-5017-4d01-84f7-3275f8e4492e'))
-            ->withEmail(new Email('flaaim@list.ru'))
+            ->withProfileId(new ProfileId(UserFixture::USER_ID))
+            ->withEmail(new Email(UserFixture::USER_EMAIL))
             ->withRole(Role::admin())
             ->build();
-
         $manager->persist($profile);
+
+        $trialProfile = new ProfileBuilder()
+            ->withProfileId(new ProfileId(UserFixture::TRIAL_USER_ID))
+            ->withEmail(new Email(UserFixture::TRIAL_USER_EMAIL))
+            ->withRole(Role::user())
+            ->build();
+        $manager->persist($trialProfile);
 
         $manager->flush();
     }
