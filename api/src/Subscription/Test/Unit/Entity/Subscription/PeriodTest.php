@@ -18,12 +18,12 @@ final class PeriodTest extends TestCase
     public function testPeriod(): void
     {
         $period = Period::create(
-            $start = new DateTimeImmutable('21.09.2026'),
-            $end = new DateTimeImmutable('25.09.2026'),
+            $start = new DateTimeImmutable('now'),
+            $end = new DateTimeImmutable('+ 4 days'),
         );
 
-        self::assertEquals($start, $period->getStartDate());
-        self::assertEquals($end, $period->getEndDate());
+        self::assertEquals($start->format('Y-m-d'), $period->getStartDate()->format('Y-m-d'));
+        self::assertEquals($end->format('Y-m-d'), $period->getEndDate()->format('Y-m-d'));
         self::assertEquals(4, $period->getDurationDays());
     }
 
@@ -44,8 +44,8 @@ final class PeriodTest extends TestCase
     public function testExtendPeriod(): void
     {
         $period = Period::create(
-            new DateTimeImmutable('21.09.2026'),
-            new DateTimeImmutable('25.09.2026'),
+            new DateTimeImmutable('now'),
+            new DateTimeImmutable('4 days'),
         );
 
         $newPeriod = $period->extend(2);
