@@ -7,6 +7,8 @@ namespace Tests\Functional\Admin\Testing\Test\GetOne;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Role;
 use App\Auth\Test\Builder\UserBuilder;
+use App\Testing\Entity\Category\Category;
+use App\Testing\Entity\Category\CategoryId;
 use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Test\Builder\TestBuilder;
@@ -21,6 +23,8 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
     public const string TEST_NOT_FOUND_ID = '57035df4-ad75-4ac9-acc1-2c027f239f9b';
     public const string TEST_NAME = 'Первая помощь';
     public const string TEST_CIPHER = 'ОТ 201.18';
+    public const string CATEGORY_ID = '93c642c8-fe17-42f7-8f60-a51baa55a47a';
+    public const string CATEGORY_NAME = 'Охрана труда';
     public const string ADMIN_EMAIL = 'admin@mail.ru';
     public const string ADMIN_PASSWORD = 'admin';
 
@@ -44,6 +48,14 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
             ->build();
         $manager->persist($user);
 
+        $category = new Category(
+            new CategoryId(self::CATEGORY_ID),
+            self::CATEGORY_NAME,
+            'Category description',
+            'category',
+        );
+        $manager->persist($category);
+
         $test = new TestBuilder()
             ->withId(new TestId(self::TEST_ID))
             ->withName(self::TEST_NAME)
@@ -52,6 +64,7 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
             ->withSettings(new Settings(5, 2, 1))
             ->withCourseIds([CourseGetRequestFixture::COURSE_ID])
             ->withQuestionIds(CourseGetRequestFixture::QUESTION_IDS)
+            ->withCategoryId(self::CATEGORY_ID)
             ->active()
             ->build();
         $manager->persist($test);

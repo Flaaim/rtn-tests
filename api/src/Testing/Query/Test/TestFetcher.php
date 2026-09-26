@@ -75,11 +75,14 @@ final class TestFetcher implements TestFetcherInterface
             t.slug,
             t.tickets,
             t.created_at,
+            t.category_id,
+            tc.name as category_name,
             t.number_of_tickets,
             t.number_questions_in_ticket',
         )->from('tests', 't')
 
             ->where($qb->expr()->eq('t.id', ':id'))
+            ->leftJoin('t', 'test_categories', 'tc', 't.category_id = tc.id')
             ->setParameter('id', $id)
             ->executeQuery();
 
@@ -100,6 +103,10 @@ final class TestFetcher implements TestFetcherInterface
                     'allowedMistakes' => $row['allowed_mistakes'],
                     'numberOfTickets' => $row['number_of_tickets'],
                     'numberQuestionsInTicket' => $row['number_questions_in_ticket'],
+                ],
+                'category' => [
+                    'id' => $row['category_id'],
+                    'name' => $row['category_name'],
                 ],
             ];
 

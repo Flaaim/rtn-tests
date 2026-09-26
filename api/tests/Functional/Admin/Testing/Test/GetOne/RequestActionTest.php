@@ -104,6 +104,10 @@ final class RequestActionTest extends WebTestCase
                 'numberOfTickets' => $data['settings']['numberOfTickets'],
                 'numberQuestionsInTicket' => $data['settings']['numberQuestionsInTicket'],
             ],
+            'category' => [
+                'id' => RequestFixture::CATEGORY_ID,
+                'name' => RequestFixture::CATEGORY_NAME,
+            ],
         ];
 
         self::assertArraySubset($expectedStaticData, $data);

@@ -21,7 +21,8 @@ final class TestFullDTO
         public string $slug,
         public string $createdAt,
         public string $status,
-        public array $settings
+        public array $settings,
+        public CategoryDTO $category
     ) {}
 
     public static function fromArray(array $data): self
@@ -36,6 +37,8 @@ final class TestFullDTO
             $data['tickets'] ?? []
         );
 
+        $category = CategoryDTO::fromArray($data['category']);
+
         return new self(
             id: $data['id'],
             name: $data['name'],
@@ -46,7 +49,8 @@ final class TestFullDTO
             slug: $data['slug'],
             createdAt: new DateTimeImmutable($data['created_at'])->format('Y-m-d'),
             status: $data['status'],
-            settings: $data['settings'] ?? []
+            settings: $data['settings'] ?? [],
+            category: $category,
         );
     }
 }
