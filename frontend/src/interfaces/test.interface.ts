@@ -65,6 +65,7 @@ export interface TestFull {
   createdAt: string;
   status: string;
   settings: Settings;
+  category: { id: string; name: string };
 }
 
 export interface Ticket {
@@ -98,4 +99,9 @@ interface TicketPublic {
 interface CategoryPublic {
   name: string;
   slug: string;
+}
+
+export interface ChangeCategoryTestPayload {
+  id: string;
+  categoryId: string;
 }

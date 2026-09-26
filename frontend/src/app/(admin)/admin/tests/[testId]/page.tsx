@@ -28,6 +28,8 @@ import { ShowDetailQuestionDialog } from "@/components/Admin/Test/ShowDetailQues
 import { fetchCourseQuestionsByIdsAction } from "@/actions/course";
 import { Question } from "@/interfaces/task.interface";
 import AttemptBasedOnTicket from "@/components/Admin/Test/AttemptBasedOnTicket";
+import ChangeCategoryTestDialog from "@/components/Admin/Test/ChangeCategoryTestDialog";
+import { fetchCategoryTreeAction } from "@/actions/category";
 
 interface TestOverviewPageProps {
   params: Promise<{ testId: string }>;
@@ -35,7 +37,12 @@ interface TestOverviewPageProps {
 
 export default async function TestOverviewPage({ params }: TestOverviewPageProps) {
   const { testId } = await params;
-  const result = await fetchTestAction(testId);
+
+  const [result, categoriesResult] = await Promise.all([
+    fetchTestAction(testId),
+    fetchCategoryTreeAction(),
+  ]);
+
   if (!result.ok || !result.data) {
     return null;
   }
@@ -49,6 +56,10 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
     return null;
   }
   const uniqueQuestions: Question[] = questions.data;
+
+  const categoriesTree = categoriesResult.ok && categoriesResult.data ? categoriesResult.data : [];
+
+  const currentCategory: { id: string; name: string } = test.category;
 
   const items = [{ title: "Тесты", href: "/admin/tests" }, { title: test.name }];
 
@@ -114,6 +125,20 @@ export default async function TestOverviewPage({ params }: TestOverviewPageProps
               </div>
               <div className="sm:justify-self-end w-full sm:w-auto">
                 <UpdateSettingsTestDialog id={test.id} settings={test.settings} />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-2 sm:grid-cols-2">
+              <div>
+                <p className="text-muted-foreground font-medium">Категория:</p>
+                <p className="font-mono">
+                  {currentCategory.name}
+                  <ChangeCategoryTestDialog
+                    testId={test.id}
+                    currentCategory={currentCategory}
+                    categories={categoriesTree}
+                  />
+                </p>
               </div>
             </div>
           </CardContent>
