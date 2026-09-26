@@ -23,6 +23,9 @@ final class UserFixture extends AbstractFixture
     public const string TRIAL_USER_ID = 'f0809564-fdc0-4bdc-b51f-53107414b4c5';
     public const string TRIAL_USER_EMAIL = 'user@app.test';
 
+    public const string EXPIRED_USER_ID = '23421fa9-2cea-49f1-94fc-6498f24059ee';
+    public const string EXPIRED_USER_EMAIL = 'expired@app.test';
+
     public function load(ObjectManager $manager): void
     {
         $passwordHasher = new PasswordHasher();
@@ -47,10 +50,19 @@ final class UserFixture extends AbstractFixture
             $passwordHasher->hash('12345678'),
             new Token($value = Uuid::uuid4()->toString(), $date->modify('+1 day'))
         );
-
         $myUser->confirmJoin($value, $date);
         $myUser->changeRole(Role::admin());
         $manager->persist($myUser);
+
+        $expiredUser = User::requestJoinByEmail(
+            new Id(self::EXPIRED_USER_ID),
+            $date = new DateTimeImmutable('-30 days'),
+            new Email(self::EXPIRED_USER_EMAIL),
+            $passwordHasher->hash('12345678'),
+            new Token($value = Uuid::uuid4()->toString(), $date->modify('+1 day'))
+        );
+        $expiredUser->confirmJoin($value, $date);
+        $manager->persist($expiredUser);
 
         $manager->flush();
     }

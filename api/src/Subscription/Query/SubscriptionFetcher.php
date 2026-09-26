@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Subscription\Query;
 
 use App\Subscription\Entity\Subscription\Plan;
-use App\Subscription\Entity\Subscription\Status;
 use Doctrine\DBAL\Connection;
 
 /** @psalm-suppress UnusedClass */
