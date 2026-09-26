@@ -57,3 +57,12 @@ export interface ProfileFull {
   name?: string | null;
   surname?: string | null;
 }
+
+export interface UserSubscription {
+  hasAccess: boolean;
+  plan: string;
+  status: string;
+  periodStart: string;
+  periodEnd: string;
+  trialUser: boolean;
+}

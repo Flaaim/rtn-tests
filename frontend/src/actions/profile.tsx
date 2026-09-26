@@ -11,7 +11,9 @@ import {
   ProfileDTO,
   ProfileFull,
   UserAttemptStatsDTO,
+  UserSubscription,
 } from "@/interfaces/user.interface";
+
 
 export async function fetchUserAttemptsPaginationAction(
   page: number,
@@ -137,6 +139,22 @@ export async function fetchProfileAction(id: string): Promise<ApiResponse<Profil
     return handleApiResponse<ProfileFull>(response);
   } catch (error) {
     console.error("fetchProfileAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchUserSubscriptionAction(): Promise<ApiResponse<UserSubscription>> {
+  try {
+    const response = await apiFetch(API.profile.getSubscription(), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<UserSubscription>(response)
+  } catch (error) {
+    console.error("fetchSubscriptionAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

@@ -1,28 +1,33 @@
 import UserBreadcrumbs from "@/components/User/UserBreadcrumbs";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { CreditCard, CalendarDays, ShieldCheck, AlertCircle, Zap } from "lucide-react";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
-import { SubscriptionFull } from "@/interfaces/subscription.interface"; // Укажите ваш путь
-// import { fetchSubscriptionAction } from "@/actions/subscription"; // Пример вашего экшена
+import {UserSubscription} from "@/interfaces/user.interface";
+import {fetchUserSubscriptionAction} from "@/actions/profile";
+
 
 export default async function SubscriptionPage() {
-  // Имитация получения данных (замените на ваш реальный fetch)
-  // const result = await fetchSubscriptionAction();
-  // const subscription: SubscriptionFull = result.data;
 
-  const subscription: SubscriptionFull = {
-    hasAccess: true,
-    plan: "Premium",
-    status: "active",
-    periodStart: "2026-09-01T10:00:00Z",
-    periodEnd: "2026-10-01T10:00:00Z",
-    trialUser: false,
-  };
+  const result = await fetchUserSubscriptionAction();
 
-
+  if(!result.ok || !result.data){
+    return (
+      <div>
+        Подписка не найдена. Вероятно вы только создали аккаунт. При запуске теста активируется пробная подписка (Trial - 1 день). Чтобы получить полный доступ к материалам сайта необходимо перейти на базовую подписку.
+      </div>
+    );
+  }
+  const subscription: UserSubscription = result.data
   const formatDate = (dateString: string) => {
     return format(new Date(dateString), "dd MMMM yyyy", { locale: ru });
   };
@@ -56,7 +61,6 @@ export default async function SubscriptionPage() {
             <CardDescription>Основная информация о вашем тарифе.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
-
             <div className="flex items-center justify-between p-4 bg-muted/30 rounded-lg border">
               <div className="space-y-1">
                 <p className="text-sm text-muted-foreground font-medium">Тариф</p>
@@ -108,13 +112,15 @@ export default async function SubscriptionPage() {
               <div className="bg-blue-50 text-blue-900 border border-blue-200 p-4 rounded-lg flex gap-3">
                 <AlertCircle className="h-5 w-5 shrink-0 mt-0.5 text-blue-600" />
                 <p className="text-sm leading-relaxed">
-                  Сейчас у вас нет активной подписки. Доступ к курсам и тестам ограничен. Выберите подходящий тариф для продолжения обучения.
+                  Сейчас у вас нет активной подписки. Доступ к курсам и тестам ограничен. Выберите
+                  подходящий тариф для продолжения обучения.
                 </p>
               </div>
             ) : (
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
-                  Ваша подписка в статусе: <strong className="text-foreground capitalize">{subscription.status}</strong>.
+                  Ваша подписка в статусе:{" "}
+                  <strong className="text-foreground capitalize">{subscription.status}</strong>.
                   Если вы отмените подписку, она продолжит работать до конца оплаченного периода.
                 </p>
               </div>
@@ -124,7 +130,9 @@ export default async function SubscriptionPage() {
             {subscription.hasAccess ? (
               <div className="flex gap-3 w-full">
                 <Button className="w-full">Продлить подписку</Button>
-                <Button variant="outline" className="w-full">Отменить</Button>
+                <Button variant="outline" className="w-full">
+                  Отменить
+                </Button>
               </div>
             ) : (
               <Button className="w-full bg-blue-600 hover:bg-blue-700">Оформить подписку</Button>

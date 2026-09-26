@@ -40,6 +40,7 @@ export const API = {
     },
     getTestingStat: () => BASE_URL + `/v1/profiles/testing/stat`,
     add: () => BASE_URL + `/v1/admin/profiles`,
+    getSubscription: () => BASE_URL + `/v1/me/subscriptions`
   },
   parser: {
     add: () => BASE_URL + `/v1/admin/parsers`,
