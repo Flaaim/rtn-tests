@@ -19,7 +19,7 @@ final class YookassaWebhookGuard
     ];
 
     public function __construct(
-        private string $environment = 'prod',
+        private readonly string $environment = 'test',
     ) {}
 
     public function isAllowed(Request $request): bool

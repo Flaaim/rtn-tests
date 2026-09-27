@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\Query;
+namespace App\Subscription\Query\Subscription;
 
 interface SubscriptionFetcherInterface
 {
@@ -11,4 +11,6 @@ interface SubscriptionFetcherInterface
     public function hasActiveByUserId(string $userId): bool;
 
     public function hasTrialByUserId(string $userId): bool;
+
+    public function getByUserPaginated(string $userId, int $page, int $limit): array;
 }

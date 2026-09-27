@@ -49,10 +49,10 @@ const FEATURES = [
 ];
 
 interface AddSubscriptionDialogProps {
-  name: string
+  name: string;
 }
 
-export default function AddSubscriptionDialog({name}: AddSubscriptionDialogProps) {
+export default function AddSubscriptionDialog({ name }: AddSubscriptionDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
 
   const [selectedPlanId, setSelectedPlanId] = useState<string>("basic_10");

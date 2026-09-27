@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\Query;
+namespace App\Subscription\Query\Subscription;
 
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\Status;
@@ -70,16 +70,33 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
             ->fetchOne();
     }
 
-    public function getSubscriptionsByUserId(string $userId): array
+    public function getByUserPaginated(string $userId, int $page, int $limit): array
     {
+        $page = max(1, $page);
+        $limit = min(max(1, $limit), 100);
+        $offset = ($page - 1) * $limit;
+
         $qb = $this->connection->createQueryBuilder();
 
-        return $qb->select('s.id, s.plan, s.status, s.period_start, s.period_end, s.duration_day')
-            ->from('subscriptions', 's')
+        $qb->from('subscriptions', 's')
             ->where('s.user_id = :userId')
-            ->setParameter('userId', $userId)
+            ->setParameter('userId', $userId);
+
+        $countQb = clone $qb;
+        $totalCount = (int)$countQb->select('COUNT(s.id)')
+            ->executeQuery()
+            ->fetchOne();
+
+        $rows = $qb->select('s.id, s.plan, s.period_start, s.period_end, s.duration_days')
             ->orderBy('s.period_end', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
             ->executeQuery()
             ->fetchAllAssociative();
+
+        return [
+            'items' => $rows,
+            'totalCount' => $totalCount,
+        ];
     }
 }

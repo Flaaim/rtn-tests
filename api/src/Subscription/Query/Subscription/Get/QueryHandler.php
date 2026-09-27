@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\Query\GetSubscription;
+namespace App\Subscription\Query\Subscription\Get;
 
-use App\Subscription\Query\SubscriptionFetcherInterface;
+use App\Subscription\Query\Subscription\SubscriptionFetcherInterface;
 use DomainException;
 
 final readonly class QueryHandler

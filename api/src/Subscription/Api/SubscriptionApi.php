@@ -7,7 +7,7 @@ namespace App\Subscription\Api;
 use App\Subscription\Command\Activate\Command;
 use App\Subscription\Command\Activate\Handler;
 use App\Subscription\Entity\Subscription\Plan;
-use App\Subscription\Query\SubscriptionFetcherInterface;
+use App\Subscription\Query\Subscription\SubscriptionFetcherInterface;
 use DomainException;
 
 /** @psalm-suppress UnusedClass */

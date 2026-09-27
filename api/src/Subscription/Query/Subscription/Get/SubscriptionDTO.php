@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\Query\GetSubscription;
+namespace App\Subscription\Query\Subscription\Get;
 
 use App\Subscription\Entity\Subscription\Status;
 
