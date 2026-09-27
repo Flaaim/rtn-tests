@@ -134,11 +134,10 @@ final class AttemptFetcher implements AttemptFetcherInterface
 
         $qb = $this->connection->createQueryBuilder();
 
-        $rows =  $qb->select('a.id, a.status, a.score, a.mistakes, a.started_at, a.finished_at, a.ticket_number, t.name, t.cipher, t.allowed_mistakes')
+        $rows = $qb->select('a.id, a.status, a.score, a.mistakes, a.started_at, a.finished_at, a.ticket_number, t.name, t.cipher, t.allowed_mistakes')
             ->from('attempts', 'a')
             ->leftJoin('a', 'tests', 't', 'a.test_id = t.id')
-            ->leftJoin('a', 'users', 'u', 'a.user_id = u.id')
-            ->andWhere($qb->expr()->eq('u.id', ':userId'))
+            ->where($qb->expr()->eq('a.user_id', ':userId'))
             ->andWhere($qb->expr()->neq('a.status', ':status'))
             ->setParameter('userId', $userId)
             ->setParameter('status', Status::STATUS_IN_PROGRESS)
