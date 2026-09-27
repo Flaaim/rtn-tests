@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\MessageHandler;
+namespace App\Subscription\MessageHandler\Subscription;
 
 use App\Profile\Api\GetDetail\QueryHandlerApi;
 use App\Subscription\Event\Subscription\SubscriptionExpired;

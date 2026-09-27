@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\MessageHandler;
+namespace App\Subscription\MessageHandler\Payment;
 
 use App\Infrastructure\Doctrine\Flusher;
 use App\Subscription\Command\Activate\Command;

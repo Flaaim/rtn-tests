@@ -12,9 +12,9 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
+/** @psalm-suppress UnusedClass */
 final class TestFixture extends AbstractFixture implements DependentFixtureInterface
 {
-
     public function load(ObjectManager $manager): void
     {
         $test = new Test(

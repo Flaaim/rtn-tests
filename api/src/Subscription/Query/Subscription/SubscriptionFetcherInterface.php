@@ -10,7 +10,7 @@ interface SubscriptionFetcherInterface
 
     public function hasActiveByUserId(string $userId): bool;
 
-    public function hasTrialByUserId(string $userId): bool;
+    public function isTrialUsedByUserId(string $userId): bool;
 
     public function getByUserPaginated(string $userId, int $page, int $limit): array;
 }

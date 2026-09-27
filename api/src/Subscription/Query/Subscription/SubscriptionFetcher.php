@@ -44,7 +44,7 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
     {
         $qb = $this->connection->createQueryBuilder();
 
-        return $qb->select('COUNT(s.id)')
+        $count = $qb->select('COUNT(s.id)')
             ->from('subscriptions', 's')
             ->where('s.user_id = :userId')
             ->andWhere('s.plan = :plan')
@@ -54,20 +54,26 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
             ->setParameter('status', Status::ACTIVE->value)
             ->executeQuery()
             ->fetchOne();
+
+        return $count > 0;
     }
 
-    public function hasTrialByUserId(string $userId): bool
+    public function isTrialUsedByUserId(string $userId): bool
     {
         $qb = $this->connection->createQueryBuilder();
 
-        return $qb->select('COUNT(s.id)')
+        $count = $qb->select('COUNT(s.id)')
             ->from('subscriptions', 's')
             ->where('s.user_id = :userId')
-            ->andWhere('s.plan = :plan')
+            ->andWhere('s.is_trial_used = :is_trial_used')
+            ->andWhere($qb->expr()->neq('s.plan', ':plan'))
             ->setParameter('userId', $userId)
-            ->setParameter('plan', Plan::TRIAL->value)
+            ->setParameter('is_trial_used', true)
+            ->setParameter('plan', Plan::BASIC->value)
             ->executeQuery()
             ->fetchOne();
+
+        return $count > 0;
     }
 
     public function getByUserPaginated(string $userId, int $page, int $limit): array

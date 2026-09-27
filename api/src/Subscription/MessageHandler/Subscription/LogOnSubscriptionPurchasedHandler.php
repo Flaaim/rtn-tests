@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\MessageHandler;
+namespace App\Subscription\MessageHandler\Subscription;
 
 use App\Subscription\Event\Subscription\SubscriptionPurchased;
 use Psr\Log\LoggerInterface;

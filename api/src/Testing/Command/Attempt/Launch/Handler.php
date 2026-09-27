@@ -6,6 +6,7 @@ namespace App\Testing\Command\Attempt\Launch;
 
 use App\Course\Api\Course\GetQuestions\QueryHandlerApi;
 use App\Infrastructure\Doctrine\Flusher;
+use App\Subscription\Api\SubscriptionApi;
 use App\Testing\Entity\Attempt\Attempt;
 use App\Testing\Entity\Attempt\AttemptId;
 use App\Testing\Entity\Attempt\AttemptRepository;
@@ -18,19 +19,22 @@ use DomainException;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
-final class Handler
+final readonly class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly TestRepository $tests,
-        private readonly AttemptRepository $attempts,
-        private readonly QueryHandlerApi $queryHandler,
-        private readonly MessageBusInterface $messageBus,
-        private readonly Flusher $flusher,
+        private TestRepository $tests,
+        private AttemptRepository $attempts,
+        private QueryHandlerApi $queryHandler,
+        private MessageBusInterface $messageBus,
+        private Flusher $flusher,
+        private SubscriptionApi $subscriptionApi,
     ) {}
 
     public function handle(Command $command): string
     {
+        $this->subscriptionApi->ensureHasAccess($command->userId);
+
         $processedAttempt = $this->attempts->findUserProcessedAttempt(
             $command->userId,
             $command->testId,

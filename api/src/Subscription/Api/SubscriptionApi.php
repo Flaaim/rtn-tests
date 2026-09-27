@@ -13,6 +13,7 @@ use DomainException;
 /** @psalm-suppress UnusedClass */
 final readonly class SubscriptionApi
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private SubscriptionFetcherInterface $subscriptions,
         private Handler $activateHandler
@@ -24,7 +25,7 @@ final readonly class SubscriptionApi
             return;
         }
 
-        if ($this->subscriptions->hasTrialByUserId($userId)) {
+        if ($this->subscriptions->isTrialUsedByUserId($userId)) {
             throw new DomainException('Ваш пробный период завершен. Для продолжения необходимо приобрести подписку.');
         }
 

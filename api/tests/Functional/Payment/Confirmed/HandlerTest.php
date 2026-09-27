@@ -7,7 +7,7 @@ namespace Tests\Functional\Payment\Confirmed;
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Event\Payment\PaymentConfirmed;
-use App\Subscription\MessageHandler\PaymentConfirmedHandler;
+use App\Subscription\MessageHandler\Payment\PaymentConfirmedHandler;
 use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;

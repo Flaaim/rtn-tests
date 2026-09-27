@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Subscription\Subscription\Activate;
+namespace Tests\Functional\Admin\Subscription\Activate;
 
 use App\Subscription\Event\Subscription\SubscriptionPurchased;
 use Psr\Container\ContainerInterface;
@@ -23,6 +23,7 @@ final class RequestActionTest extends WebTestCase
     private readonly KernelBrowser $client;
     private readonly ContainerInterface $container;
     private string $userToken;
+    private string $adminToken;
 
     protected function setUp(): void
     {
@@ -40,6 +41,12 @@ final class RequestActionTest extends WebTestCase
             RequestFixture::USER_EMAIL,
             RequestFixture::USER_PASSWORD,
         );
+
+        $this->adminToken = $this->getAccessToken(
+            $this->client,
+            RequestFixture::ADMIN_EMAIL,
+            RequestFixture::ADMIN_PASSWORD,
+        );
     }
 
     public function testUnauthenticatedReturns401(): void
@@ -47,6 +54,13 @@ final class RequestActionTest extends WebTestCase
         $this->client->jsonRequest('POST', '/v1/subscriptions');
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testForbiddenForRegularUsers(): void
+    {
+        $this->client->jsonRequest('POST', '/v1/subscriptions', [], $this->authHeaders($this->userToken));
+
+        self::assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
     public function testSuccess(): void
@@ -62,7 +76,7 @@ final class RequestActionTest extends WebTestCase
                 'durationDays' => 5,
                 'plan' => 'basic',
             ],
-            $this->authHeaders($this->userToken),
+            $this->authHeaders($this->adminToken),
         );
 
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
@@ -79,7 +93,7 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/subscriptions',
             [],
-            $this->authHeaders($this->userToken),
+            $this->authHeaders($this->adminToken),
         );
 
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
@@ -103,7 +117,7 @@ final class RequestActionTest extends WebTestCase
                 'durationDays' => 0,
                 'plan' => 'test',
             ],
-            $this->authHeaders($this->userToken),
+            $this->authHeaders($this->adminToken),
         );
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 

@@ -12,6 +12,7 @@ use Doctrine\Persistence\ObjectManager;
 final class CategoryFixture extends AbstractFixture
 {
     public const string CATEGORY_ID = '199f466e-a593-45be-9bdb-959c06ed5572';
+
     public function load(ObjectManager $manager): void
     {
         $parent = new Category(
