@@ -121,4 +121,13 @@ export const API = {
   payment: {
     create: () => BASE_URL + `/v1/payments`,
   },
+  subscription: {
+    getPaginated: (page: number, perPage: number) => {
+      const params = new URLSearchParams({
+        page: String(page),
+        limit: String(perPage),
+      });
+      return BASE_URL + `/v1/subscriptions?${params.toString()}`;
+    },
+  },
 };

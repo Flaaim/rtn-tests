@@ -15,49 +15,70 @@ import { UserSubscription } from "@/interfaces/user.interface";
 import { fetchUserSubscriptionAction } from "@/actions/profile";
 import SubscriptionStatusBadge from "@/components/Domain/SubscriptionStatusBadge";
 import AddSubscriptionDialog from "@/components/Subscription/AddSubscriptionDialog";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import fetchSubscriptionsPaginatedByUser from "@/actions/subscriptions";
 
 const SUBSCRIPTION_PLAN: Record<string, string> = {
   trial: "Пробный",
   basic: "Базовый",
 };
 
-export default async function SubscriptionPage() {
-  const result = await fetchUserSubscriptionAction();
+const formatDate = (dateString?: string | null) => {
+  if (!dateString) return "—";
+  return format(new Date(dateString), "dd MMM yyyy", { locale: ru });
+};
 
-  if (!result.ok || !result.data) {
-    if (!result.ok || !result.data) {
-      return (
-        <div className="space-y-6">
-          <UserBreadcrumbs items={[{ title: "Подписка" }]} />
-          <Card className="max-w-2xl mt-8 border-blue-200 shadow-sm">
-            <CardHeader>
-              <CardTitle className="text-xl flex items-center gap-2 text-blue-800">
-                <Info className="h-5 w-5" />
-                Подписка не найдена
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="pt-6">
-              <p className="text-muted-foreground leading-relaxed">
-                Вероятно, вы только создали аккаунт. При первом запуске теста автоматически
-                активируется
-                <strong className="text-foreground"> пробная подписка (на 1 день)</strong>. Чтобы
-                получить полный и неограниченный доступ ко всем материалам сайта, необходимо перейти
-                на базовую подписку.
-              </p>
-            </CardContent>
-            <CardFooter>
-              <AddSubscriptionDialog name="Оформить подписку"/>
-            </CardFooter>
-          </Card>
-        </div>
-      );
-    }
+interface SubscriptionPageProps {
+  searchParams: Promise<{ page?: string; perPage?: string }>;
+}
+
+export default async function SubscriptionPage({ searchParams }: SubscriptionPageProps) {
+  const currentPage = Number((await searchParams).page) || 1;
+  const perPage = Number((await searchParams).perPage) || 10;
+
+  const [currentRes, listRes] = await Promise.all([
+    fetchUserSubscriptionAction(),
+    fetchSubscriptionsPaginatedByUser(currentPage, perPage),
+  ]);
+
+  if (!currentRes.ok || !currentRes.data) {
+    return (
+      <div className="space-y-6">
+        <UserBreadcrumbs items={[{ title: "Подписка" }]} />
+        <Card className="max-w-2xl mt-8 border-blue-200 shadow-sm">
+          <CardHeader>
+            <CardTitle className="text-xl flex items-center gap-2 text-blue-800">
+              <Info className="h-5 w-5" />
+              Подписка не найдена
+            </CardTitle>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <p className="text-muted-foreground leading-relaxed">
+              Вероятно, вы только создали аккаунт. При первом запуске теста автоматически
+              активируется
+              <strong className="text-foreground"> пробная подписка (на 1 день)</strong>. Чтобы
+              получить полный и неограниченный доступ ко всем материалам сайта, необходимо перейти
+              на базовую подписку.
+            </p>
+          </CardContent>
+          <CardFooter>
+            <AddSubscriptionDialog name="Оформить подписку" />
+          </CardFooter>
+        </Card>
+      </div>
+    );
   }
+  const subscription: UserSubscription = currentRes.data;
 
-  const subscription: UserSubscription = result.data;
-  const formatDate = (dateString: string) => {
-    return format(new Date(dateString), "dd MMMM yyyy", { locale: ru });
-  };
+  const userSubscriptions = listRes.data?.items || [];
+  const hasHistory = userSubscriptions.length > 0;
 
   return (
     <div className="space-y-6">
@@ -149,13 +170,11 @@ export default async function SubscriptionPage() {
           <CardFooter className="pt-4 border-t">
             {subscription.hasAccess ? (
               <div className="flex gap-3 w-full">
-                <AddSubscriptionDialog name="Продлить подписку"/>
-                <Button variant="outline" >
-                  Отменить
-                </Button>
+                <AddSubscriptionDialog name="Продлить подписку" />
+                <Button variant="outline">Отменить</Button>
               </div>
             ) : (
-              <AddSubscriptionDialog name="Оформить подписку"/>
+              <AddSubscriptionDialog name="Оформить подписку" />
             )}
           </CardFooter>
         </Card>
@@ -169,7 +188,38 @@ export default async function SubscriptionPage() {
       </div>
 
       <div className="rounded-md border">
-
+        <Table>
+          <TableHeader className="bg-muted/50">
+            <TableRow>
+              <TableHead className="w-[300px]">Номер</TableHead>
+              <TableHead>План</TableHead>
+              <TableHead>Кол-во дней</TableHead>
+              <TableHead>Начат</TableHead>
+              <TableHead>Окончание</TableHead>
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {hasHistory ? (
+              userSubscriptions.map((item) => (
+                <TableRow key={item.id} className="hover:bg-muted/30 transition-colors">
+                  <TableCell className="font-medium text-xs font-mono">
+                    {item.id.split("-")[0]}...
+                  </TableCell>
+                  <TableCell>{SUBSCRIPTION_PLAN[item.plan]}</TableCell>
+                  <TableCell>{item.durationDays}</TableCell>
+                  <TableCell>{formatDate(item.periodStart)}</TableCell>
+                  <TableCell>{formatDate(item.periodEnd)}</TableCell>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell colSpan={5} className="h-24 text-center text-muted-foreground">
+                  История подписок не найдена.
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
       </div>
     </div>
   );
