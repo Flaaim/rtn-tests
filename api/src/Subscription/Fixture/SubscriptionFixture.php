@@ -24,7 +24,7 @@ final class SubscriptionFixture extends AbstractFixture
 
     public function load(ObjectManager $manager): void
     {
-        $activeSubscription = new Subscription(
+        $activeSubscription = Subscription::create(
             new SubscriptionId(self::SUBSCRIPTION_ID),
             UserFixture::USER_ID,
             Plan::BASIC,
@@ -36,7 +36,7 @@ final class SubscriptionFixture extends AbstractFixture
         );
         $manager->persist($activeSubscription);
 
-        $trialSubscription = new Subscription(
+        $trialSubscription = Subscription::create(
             new SubscriptionId(self::TRIAL_SUBSCRIPTION_ID),
             UserFixture::TRIAL_USER_ID,
             Plan::TRIAL,
@@ -48,7 +48,7 @@ final class SubscriptionFixture extends AbstractFixture
         );
         $manager->persist($trialSubscription);
 
-        $expiredSubscription = new Subscription(
+        $expiredSubscription = Subscription::create(
             new SubscriptionId(self::EXPIRED_SUBSCRIPTION_ID),
             UserFixture::EXPIRED_USER_ID,
             Plan::BASIC,
