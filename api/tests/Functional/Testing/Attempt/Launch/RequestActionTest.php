@@ -26,6 +26,8 @@ final class RequestActionTest extends WebTestCase
     private string $trialUsedUserToken;
     private string $newUserToken;
 
+    private string $expiredUserToken;
+
     protected function setUp(): void
     {
         parent::setUp();
@@ -52,6 +54,12 @@ final class RequestActionTest extends WebTestCase
         $this->newUserToken = $this->getAccessToken(
             $this->client,
             UserFixture::NEW_USER_EMAIL,
+            UserFixture::USER_PASSWORD,
+        );
+
+        $this->expiredUserToken = $this->getAccessToken(
+            $this->client,
+            UserFixture::EXPIRED_USER_EMAIL,
             UserFixture::USER_PASSWORD,
         );
     }
@@ -142,6 +150,29 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('attemptId', $data);
 
         self::assertCount(2, $transport->getSent());
+    }
+
+    public function testExpiredLaunch(): void
+    {
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/testing/attempts',
+            [
+                'testId' => RequestFixture::TEST_ID,
+                'ticketNumber' => RequestFixture::TICKET_NUMBER,
+            ],
+            $this->authHeaders($this->expiredUserToken)
+        );
+        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertEquals(['message' => 'Ваш оплаченный период завершен. Для продолжения необходимо приобрести подписку.'], $data);
     }
 
     public function testNotFound(): void

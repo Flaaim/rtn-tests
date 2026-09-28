@@ -13,8 +13,8 @@ use Doctrine\Persistence\ObjectManager;
 final class SubscriptionFixture extends AbstractFixture implements DependentFixtureInterface
 {
     public const string ACTIVE_ID = 'c1ea3e03-f178-4276-bffb-c7a81f33e72e';
-
     public const string TRIAL_ID = 'feb10f77-083d-4eac-bec2-6d9631bdcffe';
+    public const string EXPIRED_ID = '80ca5d34-ab20-4454-aa90-82bbb948c746';
 
     public function load(ObjectManager $manager): void
     {
@@ -31,6 +31,13 @@ final class SubscriptionFixture extends AbstractFixture implements DependentFixt
             ->withTrialUsed()
             ->build();
         $manager->persist($trialUsed);
+
+        $expired = new SubscriptionBuilder()
+            ->withId(new SubscriptionId(self::EXPIRED_ID))
+            ->withUserId(UserFixture::EXPIRED_USER_ID)
+            ->withExpiredPlan()
+            ->build();
+        $manager->persist($expired);
 
         $manager->flush();
     }
