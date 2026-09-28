@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Payment\Confirmed;
 
+use App\Infrastructure\Doctrine\Flusher;
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Event\Payment\PaymentConfirmed;
@@ -43,13 +44,13 @@ final class HandlerTest extends KernelTestCase
 
         $message = new PaymentConfirmed(
             'e4225adb-3845-4b2c-b212-a39fc4614795',
-            RequestFixture::ACTIVE_USER_ID,
+            UserFixture::USER_ID,
             Plan::BASIC->value,
             5
         );
         $handler($message);
 
-        $subscription = $this->subscriptions->findActiveByUserId(RequestFixture::ACTIVE_USER_ID);
+        $subscription = $this->subscriptions->findActiveByUserId(UserFixture::USER_ID);
 
         self::assertEquals(
             new DateTimeImmutable('- 1 day')->format('Y-m-d'),
@@ -63,16 +64,16 @@ final class HandlerTest extends KernelTestCase
         $handler = $this->container->get(PaymentConfirmedHandler::class);
         $message = new PaymentConfirmed(
             '70a44e95-d8e4-425e-ad56-9bca014c1c47',
-            RequestFixture::EXPIRED_USER_ID,
+            UserFixture::EXPIRED_USER_ID,
             Plan::BASIC->value,
             5
         );
         $handler($message);
 
-        $subscription = $this->subscriptions->findActiveByUserId(RequestFixture::EXPIRED_USER_ID);
+        $subscription = $this->subscriptions->findActiveByUserId(UserFixture::EXPIRED_USER_ID);
 
         self::assertEquals(
-            new DateTimeImmutable()->format('Y-m-d'),
+            new DateTimeImmutable('now')->format('Y-m-d'),
             $subscription->getPeriodStart()->format('Y-m-d')
         );
 
@@ -82,5 +83,77 @@ final class HandlerTest extends KernelTestCase
         );
 
         self::assertEquals(5, $subscription->getDurationDays());
+    }
+
+    public function testStaleSubscription(): void
+    {
+        $handler = $this->container->get(PaymentConfirmedHandler::class);
+        $message = new PaymentConfirmed(
+            '70a44e95-d8e4-425e-ad56-9bca014c1c47',
+            UserFixture::STALE_USER_ID,
+            Plan::BASIC->value,
+            5
+        );
+        $handler($message);
+
+        $subscription = $this->subscriptions->findActiveByUserId(UserFixture::STALE_USER_ID);
+
+        self::assertEquals(
+            new DateTimeImmutable('now')->format('Y-m-d'),
+            $subscription->getPeriodStart()->format('Y-m-d')
+        );
+
+        self::assertEquals(
+            new DateTimeImmutable('+ 5 day')->format('Y-m-d'),
+            $subscription->getPeriodEnd()->format('Y-m-d')
+        );
+    }
+
+    public function testTrialSubscription(): void
+    {
+        $handler = $this->container->get(PaymentConfirmedHandler::class);
+        $message = new PaymentConfirmed(
+            '70a44e95-d8e4-425e-ad56-9bca014c1c47',
+            UserFixture::TRIAL_USER_ID,
+            Plan::BASIC->value,
+            5
+        );
+        $handler($message);
+
+        $subscription = $this->subscriptions->findActiveByUserId(UserFixture::TRIAL_USER_ID);
+
+        self::assertEquals(
+            new DateTimeImmutable('now')->format('Y-m-d'),
+            $subscription->getPeriodStart()->format('Y-m-d')
+        );
+
+        self::assertEquals(
+            new DateTimeImmutable('+ 6 day')->format('Y-m-d'),
+            $subscription->getPeriodEnd()->format('Y-m-d')
+        );
+    }
+
+    public function testNewSubscription(): void
+    {
+        $handler = $this->container->get(PaymentConfirmedHandler::class);
+        $message = new PaymentConfirmed(
+            '70a44e95-d8e4-425e-ad56-9bca014c1c47',
+            UserFixture::NEW_USER_ID,
+            Plan::BASIC->value,
+            5
+        );
+        $handler($message);
+
+        $subscription = $this->subscriptions->findActiveByUserId(UserFixture::NEW_USER_ID);
+
+        self::assertEquals(
+            new DateTimeImmutable('now')->format('Y-m-d'),
+            $subscription->getPeriodStart()->format('Y-m-d')
+        );
+
+        self::assertEquals(
+            new DateTimeImmutable('+ 5 day')->format('Y-m-d'),
+            $subscription->getPeriodEnd()->format('Y-m-d')
+        );
     }
 }

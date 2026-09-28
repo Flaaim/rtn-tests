@@ -22,7 +22,9 @@ final class RequestActionTest extends WebTestCase
     use OAuthTokenTrait;
     private readonly KernelBrowser $client;
     private readonly ContainerInterface $container;
-    private string $userToken;
+    private string $activeUserToken; // Пользователь с базовой подпиской
+    private string $trialUsedUserToken;
+    private string $newUserToken;
 
     protected function setUp(): void
     {
@@ -35,10 +37,22 @@ final class RequestActionTest extends WebTestCase
         $fixturesLoader = new FixturesLoader($this->container);
         $fixturesLoader->loadFixtures([RequestFixture::class]);
 
-        $this->userToken = $this->getAccessToken(
+        $this->activeUserToken = $this->getAccessToken(
             $this->client,
-            RequestFixture::USER_EMAIL,
-            RequestFixture::USER_PASSWORD,
+            UserFixture::USER_EMAIL,
+            UserFixture::USER_PASSWORD,
+        );
+
+        $this->trialUsedUserToken = $this->getAccessToken(
+            $this->client,
+            UserFixture::TRIAL_USER_EMAIL,
+            UserFixture::USER_PASSWORD,
+        );
+
+        $this->newUserToken = $this->getAccessToken(
+            $this->client,
+            UserFixture::NEW_USER_EMAIL,
+            UserFixture::USER_PASSWORD,
         );
     }
 
@@ -62,7 +76,7 @@ final class RequestActionTest extends WebTestCase
                 'testId' => RequestFixture::TEST_ID,
                 'ticketNumber' => RequestFixture::TICKET_NUMBER,
             ],
-            $this->authHeaders($this->userToken)
+            $this->authHeaders($this->activeUserToken)
         );
 
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
@@ -77,6 +91,57 @@ final class RequestActionTest extends WebTestCase
 
         $message = $transport->getSent()[0]->getMessage();
         self::assertInstanceOf(TimeoutAttemptCommand::class, $message);
+        self::assertNotNull($message->attemptId);
+    }
+
+    public function testTrialUsed(): void
+    {
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/testing/attempts',
+            [
+                'testId' => RequestFixture::TEST_ID,
+                'ticketNumber' => RequestFixture::TICKET_NUMBER,
+            ],
+            $this->authHeaders($this->trialUsedUserToken)
+        );
+
+        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertEquals(['message' => 'Ваш пробный период завершен. Для продолжения необходимо приобрести подписку.'], $data);
+    }
+
+    public function testNewUserLaunch(): void
+    {
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/testing/attempts',
+            [
+                'testId' => RequestFixture::TEST_ID,
+                'ticketNumber' => RequestFixture::TICKET_NUMBER,
+            ],
+            $this->authHeaders($this->newUserToken)
+        );
+
+        self::assertEquals(201, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertArrayHasKey('attemptId', $data);
+
+        self::assertCount(2, $transport->getSent());
     }
 
     public function testNotFound(): void
@@ -88,7 +153,7 @@ final class RequestActionTest extends WebTestCase
                 'testId' => RequestFixture::TEST_NOT_FOUND,
                 'ticketNumber' => RequestFixture::TICKET_NUMBER,
             ],
-            $this->authHeaders($this->userToken)
+            $this->authHeaders($this->activeUserToken)
         );
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -111,7 +176,7 @@ final class RequestActionTest extends WebTestCase
                 'testId' => RequestFixture::TEST_ID,
                 'ticketNumber' => 6,
             ],
-            $this->authHeaders($this->userToken)
+            $this->authHeaders($this->activeUserToken)
         );
 
         self::assertEquals(409, $this->client->getResponse()->getStatusCode());
@@ -134,7 +199,7 @@ final class RequestActionTest extends WebTestCase
                 'testId' => 'invalid',
                 'ticketNumber' => 'invalid',
             ],
-            $this->authHeaders($this->userToken)
+            $this->authHeaders($this->activeUserToken)
         );
         self::assertEquals(422, $this->client->getResponse()->getStatusCode());
 

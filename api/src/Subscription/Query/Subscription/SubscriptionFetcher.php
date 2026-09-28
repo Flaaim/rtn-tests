@@ -57,7 +57,23 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
 
         return $count > 0;
     }
+    public function hasExpiredByUserId(string $userId): bool
+    {
+        $qb = $this->connection->createQueryBuilder();
 
+        $count = $qb->select('COUNT(s.id)')
+            ->from('subscriptions', 's')
+            ->where('s.user_id = :userId')
+            ->andWhere('s.plan = :plan')
+            ->andWhere($qb->expr()->neq('s.status', ':status'))
+            ->setParameter('userId', $userId)
+            ->setParameter('plan', Plan::BASIC->value)
+            ->setParameter('status', Status::ACTIVE->value)
+            ->executeQuery()
+            ->fetchOne();
+
+        return $count > 0;
+    }
     public function isTrialUsedByUserId(string $userId): bool
     {
         $qb = $this->connection->createQueryBuilder();

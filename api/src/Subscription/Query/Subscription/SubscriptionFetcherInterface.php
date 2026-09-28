@@ -12,5 +12,7 @@ interface SubscriptionFetcherInterface
 
     public function isTrialUsedByUserId(string $userId): bool;
 
+    public function hasExpiredByUserId(string $userId): bool;
+
     public function getByUserPaginated(string $userId, int $page, int $limit): array;
 }

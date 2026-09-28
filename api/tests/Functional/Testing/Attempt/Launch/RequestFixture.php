@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Testing\Attempt\Launch;
 
-use App\Auth\Entity\User\Email;
-use App\Auth\Test\Builder\UserBuilder;
 use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Test\Builder\TestBuilder;
@@ -21,18 +19,9 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
     public const string TEST_NAME = 'Первая помощь';
     public const string TEST_CIPHER = 'ОТ 201.18';
     public const int TICKET_NUMBER = 1;
-    public const string USER_EMAIL = 'user@mail.ru';
-    public const string USER_PASSWORD = 'user';
 
     public function load(ObjectManager $manager): void
     {
-        $user = new UserBuilder()
-            ->withEmail(new Email(self::USER_EMAIL))
-            ->withPassword(self::USER_PASSWORD)
-            ->active()
-            ->build();
-        $manager->persist($user);
-
         $test = new TestBuilder()
             ->withId(new TestId(self::TEST_ID))
             ->withName(self::TEST_NAME)
@@ -52,6 +41,7 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
     {
         return [
             CourseGetRequestFixture::class,
+            SubscriptionFixture::class,
         ];
     }
 }

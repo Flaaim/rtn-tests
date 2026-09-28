@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace App\Subscription\Entity\Subscription;
 
+use App\Infrastructure\Doctrine\Flusher;
+use App\Subscription\Test\Builder\SubscriptionBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
-final class SubscriptionRepository
+final readonly class SubscriptionRepository
 {
-    private readonly EntityRepository $repo;
+    private EntityRepository $repo;
 
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly EntityManagerInterface $em
+        private EntityManagerInterface $em,
     ) {
         $this->repo = $em->getRepository(Subscription::class);
     }
@@ -50,8 +52,9 @@ final class SubscriptionRepository
             }
 
             $subscription->expire();
-        }
 
+        }
+        $this->em->flush();
         return null;
     }
 }

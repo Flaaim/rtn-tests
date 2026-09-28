@@ -66,6 +66,12 @@ final class SubscriptionBuilder
         $clone->periodStart = (null !== $period) ? $period->getStartDate() : new DateTimeImmutable('now');
         $clone->periodEnd = (null !== $period) ? $period->getEndDate() : new DateTimeImmutable('+ 5 day');
         $clone->isTrialUsed = true;
+
+        if ($period !== null) {
+            $clone->durationDays = $clone->periodStart->diff($clone->periodEnd)->days;
+        }
+
+
         return $clone;
     }
 
@@ -76,6 +82,26 @@ final class SubscriptionBuilder
         $clone->status = Status::EXPIRED;
         $clone->periodStart = new DateTimeImmutable('- 10 days');
         $clone->periodEnd = new DateTimeImmutable('- 5 days');
+        $clone->isTrialUsed = true;
+        return $clone;
+    }
+
+    public function withStaleActivePlan(): self
+    {
+        $clone = clone $this;
+        $clone->plan = Plan::BASIC;
+        $clone->status = Status::ACTIVE;
+        $clone->periodStart = new DateTimeImmutable('- 10 days');
+        $clone->periodEnd = new DateTimeImmutable('- 5 days');
+        return $clone;
+    }
+    public function withTrialUsed(): self
+    {
+        $clone = clone $this;
+        $clone->plan = Plan::TRIAL;
+        $clone->status = Status::EXPIRED;
+        $clone->periodStart = new DateTimeImmutable('- 10 days');
+        $clone->periodEnd = new DateTimeImmutable('- 9 days');
         $clone->isTrialUsed = true;
         return $clone;
     }
@@ -94,6 +120,11 @@ final class SubscriptionBuilder
             $this->status,
             Period::create($this->periodStart, $this->periodEnd)
         );
+        if ($reflection->hasProperty('isTrialUsed')) {
+            $prop = $reflection->getProperty('isTrialUsed');
+            $prop->setAccessible(true);
+            $prop->setValue($subscription, $this->isTrialUsed);
+        }
 
         return $subscription;
     }

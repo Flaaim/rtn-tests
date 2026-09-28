@@ -7,12 +7,10 @@ namespace Tests\Functional\Subscription\Subscription\Api;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
 use App\Auth\Test\Builder\UserBuilder;
-use App\Subscription\Entity\Subscription\SubscriptionId;
-use App\Subscription\Test\Builder\SubscriptionBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
-final class RequestFixture extends AbstractFixture
+final class UserFixture extends AbstractFixture
 {
     public const string USER_ID = '39bc2486-50b5-4207-a366-323389d21507';
     public const string USER_EMAIL = 'test@email.ru';
@@ -21,10 +19,10 @@ final class RequestFixture extends AbstractFixture
 
     public const string NEW_USER_ID = 'f8c3b225-d7c6-4f57-9e72-a64919de7181';
     public const string NEW_USER_EMAIL = 'new@app.test';
-    public const string PASSWORD = 'password';
-    public const string ACTIVE_ID = 'c1ea3e03-f178-4276-bffb-c7a81f33e72e';
-    public const string TRIAL_ID = '5d8d94d2-9180-4fb0-9617-25833015b00a';
 
+    public const string EXPIRED_USER_ID = '731bac7d-5df7-4799-89c8-60d54da9458b';
+    public const string EXPIRED_USER_EMAIL = 'expired@app.test';
+    public const string PASSWORD = 'password';
     public function load(ObjectManager $manager): void
     {
         $activeUser = new UserBuilder()
@@ -51,21 +49,13 @@ final class RequestFixture extends AbstractFixture
             ->build();
         $manager->persist($newUser);
 
-        $active = new SubscriptionBuilder()
-            ->withId(new SubscriptionId(self::ACTIVE_ID))
-            ->withUserId(self::USER_ID)
-            ->withBasicPlan()
+        $expiredUser = new UserBuilder()
+            ->withId(new Id(self::EXPIRED_USER_ID))
+            ->withEmail(new Email(self::EXPIRED_USER_EMAIL))
+            ->withPassword(self::PASSWORD)
+            ->active()
             ->build();
-
-        $manager->persist($active);
-
-        $trialUsed = new SubscriptionBuilder()
-            ->withId(new SubscriptionId(self::TRIAL_USER_ID))
-            ->withUserId(self::TRIAL_USER_ID)
-            ->withTrialPlan()
-            ->build();
-
-        $manager->persist($trialUsed);
+        $manager->persist($expiredUser);
 
         $manager->flush();
     }

@@ -7,6 +7,7 @@ namespace App\Subscription\Api;
 use App\Subscription\Command\Activate\Command;
 use App\Subscription\Command\Activate\Handler;
 use App\Subscription\Entity\Subscription\Plan;
+use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Query\Subscription\SubscriptionFetcherInterface;
 use DomainException;
 
@@ -16,23 +17,31 @@ final readonly class SubscriptionApi
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private SubscriptionFetcherInterface $subscriptions,
-        private Handler $activateHandler
+        private Handler $activateHandler,
+        private SubscriptionRepository $subscriptionsRepo,
     ) {}
 
     public function ensureHasAccess(string $userId): void
     {
-        if ($this->subscriptions->hasActiveByUserId($userId)) {
+        if ($this->subscriptionsRepo->findActiveByUserId($userId) !== null) {
             return;
         }
 
-        if ($this->subscriptions->isTrialUsedByUserId($userId)) {
+        $latestSubscription = $this->subscriptions->getByUserId($userId);
+
+        if (empty($latestSubscription)) {
+            $this->activateHandler->handle(new Command(
+                userId: $userId,
+                durationDays: 1,
+                plan: Plan::TRIAL->value
+            ));
+            return;
+        }
+
+        if ($latestSubscription['plan'] === Plan::TRIAL->value) {
             throw new DomainException('Ваш пробный период завершен. Для продолжения необходимо приобрести подписку.');
         }
 
-        $this->activateHandler->handle(new Command(
-            userId: $userId,
-            durationDays: 1,
-            plan: Plan::TRIAL->value
-        ));
+        throw new DomainException('Ваш оплаченный период завершен. Для продолжения необходимо приобрести подписку.');
     }
 }
