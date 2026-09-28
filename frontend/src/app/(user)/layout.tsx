@@ -37,7 +37,19 @@ export default async function UserDashboardLayout({
           </header>
           <main className="flex-1 p-6 max-[765px]:p-2.5">{children}</main>
           <footer className="col-start-2 col-end-4 row-start-3 mb-8 mx-3 text-sm text-muted-foreground max-[765px]:col-start-1 max-[765px]:col-end-2 max-[765px]:mb-4">
-            © {new Date().getFullYear()} Платформа тестов по охране труда. Все права защищены.
+            <div>
+              © {new Date().getFullYear()} Платформа тестов Ростехнадзора. Все права защищены.
+            </div>
+            <div className="mt-1 text-xs text-muted-foreground/80">
+              Григорьев Александр Иванович, ИНН 272497691420. Вопросы и предложения направлять по
+              адресу:{" "}
+              <a
+                href="mailto:flaeim@gmail.com"
+                className="hover:underline text-primary font-medium"
+              >
+                flaeim@gmail.com
+              </a>
+            </div>
           </footer>
         </div>
       </div>

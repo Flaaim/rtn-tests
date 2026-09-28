@@ -28,7 +28,16 @@ export default function SiteLayout({
         </main>
 
         <footer className="pb-4 sm:pb-8 text-sm text-muted-foreground text-center sm:text-left">
-          © {new Date().getFullYear()} Платформа тестов Ростехнадзора. Все права защищены.
+          <div>
+            © {new Date().getFullYear()} Платформа тестов Ростехнадзора. Все права защищены.
+          </div>
+          <div className="mt-1 text-xs text-muted-foreground/80">
+            Григорьев Александр Иванович, ИНН 272497691420. Вопросы и предложения направлять по
+            адресу:{" "}
+            <a href="mailto:flaeim@gmail.com" className="hover:underline text-primary font-medium">
+              flaeim@gmail.com
+            </a>
+          </div>
         </footer>
       </div>
     </div>
