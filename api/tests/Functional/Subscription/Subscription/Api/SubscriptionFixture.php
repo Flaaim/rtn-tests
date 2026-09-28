@@ -18,7 +18,6 @@ final class SubscriptionFixture extends AbstractFixture implements DependentFixt
 
     public function load(ObjectManager $manager): void
     {
-
         $active = new SubscriptionBuilder()
             ->withId(new SubscriptionId(self::ACTIVE_ID))
             ->withUserId(UserFixture::USER_ID)

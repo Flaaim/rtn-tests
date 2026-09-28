@@ -65,8 +65,8 @@ final class UserFixture extends AbstractFixture implements DependentFixtureInter
 
     public function getDependencies(): array
     {
-       return [
-           ProfileFixture::class,
-       ];
+        return [
+            ProfileFixture::class,
+        ];
     }
 }

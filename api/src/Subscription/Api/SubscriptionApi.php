@@ -23,7 +23,7 @@ final readonly class SubscriptionApi
 
     public function ensureHasAccess(string $userId): void
     {
-        if ($this->subscriptionsRepo->findActiveByUserId($userId) !== null) {
+        if (null !== $this->subscriptionsRepo->findActiveByUserId($userId)) {
             return;
         }
 

@@ -7,7 +7,6 @@ namespace Tests\Functional\Payment\Confirmed;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
 use App\Auth\Test\Builder\UserBuilder;
-use App\Profile\Test\Builder\ProfileBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
@@ -29,6 +28,7 @@ final class UserFixture extends AbstractFixture implements DependentFixtureInter
     public const string TRIAL_USER_ID = '4cba5fbd-92e2-47cb-b580-e122750f73e0';
     public const string TRIAL_USER_EMAIL = 'trial@app.test';
     public const string PASSWORD = 'password';
+
     public function load(ObjectManager $manager): void
     {
         $activeUser = new UserBuilder()
@@ -70,7 +70,6 @@ final class UserFixture extends AbstractFixture implements DependentFixtureInter
             ->active()
             ->build();
         $manager->persist($trialUser);
-
 
         $manager->flush();
     }

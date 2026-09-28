@@ -23,6 +23,7 @@ final class UserFixture extends AbstractFixture
     public const string EXPIRED_USER_ID = '731bac7d-5df7-4799-89c8-60d54da9458b';
     public const string EXPIRED_USER_EMAIL = 'expired@app.test';
     public const string PASSWORD = 'password';
+
     public function load(ObjectManager $manager): void
     {
         $activeUser = new UserBuilder()

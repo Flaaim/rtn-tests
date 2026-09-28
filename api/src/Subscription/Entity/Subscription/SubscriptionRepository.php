@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Subscription\Entity\Subscription;
 
-use App\Infrastructure\Doctrine\Flusher;
-use App\Subscription\Test\Builder\SubscriptionBuilder;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 
@@ -52,7 +50,6 @@ final readonly class SubscriptionRepository
             }
 
             $subscription->expire();
-
         }
         $this->em->flush();
         return null;

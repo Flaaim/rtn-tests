@@ -74,7 +74,5 @@ final class SubscriptionApiTest extends KernelTestCase
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Ваш оплаченный период завершен. Для продолжения необходимо приобрести подписку.');
         $api->ensureHasAccess(UserFixture::EXPIRED_USER_ID);
-
-
     }
 }

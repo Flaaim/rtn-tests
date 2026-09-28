@@ -32,7 +32,6 @@ final class ProfileFixture extends AbstractFixture
             ->build();
         $manager->persist($expiredUserProfile);
 
-
         $trialUserProfile = new ProfileBuilder()
             ->withProfileId(new ProfileId(UserFixture::TRIAL_USER_ID))
             ->withEmail(new Email(UserFixture::TRIAL_USER_EMAIL))

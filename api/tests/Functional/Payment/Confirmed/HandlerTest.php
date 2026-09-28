@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Payment\Confirmed;
 
-use App\Infrastructure\Doctrine\Flusher;
 use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Event\Payment\PaymentConfirmed;
