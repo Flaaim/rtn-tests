@@ -30,7 +30,7 @@ final readonly class Handler
             throw new DomainException('User already has an active subscription.');
         }
 
-        $subscription = new Subscription(
+        $subscription = Subscription::create(
             SubscriptionId::generate(),
             $command->userId,
             Plan::from($command->plan),

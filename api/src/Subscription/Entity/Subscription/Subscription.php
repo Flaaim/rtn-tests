@@ -26,7 +26,7 @@ final class Subscription implements AggregateRoot
     #[ORM\Column(type: 'boolean', options: ['default' => false])]
     private bool $isTrialUsed = false;
 
-    public function __construct(
+    private function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'subscription_id', unique: true)]
         private SubscriptionId $id,
@@ -49,13 +49,20 @@ final class Subscription implements AggregateRoot
         if ($this->plan->isTrial()) {
             $this->isTrialUsed = true;
         }
+    }
 
-        $this->recordEvent(new SubscriptionPurchased(
-            $this->id->getValue(),
-            $this->userId,
-            $this->plan->value,
-            $this->periodEnd->format('Y-m-d'),
+    public static function create(SubscriptionId $id, string $userId, Plan $plan, Status $status, Period $period): self
+    {
+        $subscription = new self($id, $userId, $plan, $status, $period);
+
+        $subscription->recordEvent(new SubscriptionPurchased(
+            $id->getValue(),
+            $userId,
+            $plan->value,
+            $subscription->periodEnd->format('Y-m-d'),
         ));
+
+        return $subscription;
     }
 
     public function getId(): SubscriptionId

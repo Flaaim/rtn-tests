@@ -1,0 +1,100 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Subscription\Test\Builder;
+
+use App\Subscription\Entity\Subscription\Period;
+use App\Subscription\Entity\Subscription\Plan;
+use App\Subscription\Entity\Subscription\Status;
+use App\Subscription\Entity\Subscription\Subscription;
+use App\Subscription\Entity\Subscription\SubscriptionId;
+use DateTimeImmutable;
+use ReflectionClass;
+
+final class SubscriptionBuilder
+{
+    private SubscriptionId $id;
+    private string $userId;
+    private Plan $plan;
+    private Status $status;
+    private DateTimeImmutable $periodStart;
+    private DateTimeImmutable $periodEnd;
+    private int $durationDays;
+    private bool $isTrialUsed = false;
+
+    public function __construct(
+    ) {
+        $this->id = new SubscriptionId('09ace734-919c-4b9b-a699-aff2d27da111');
+        $this->userId = '4664ecc0-ccb0-4984-84fe-377f2a12b4cc';
+        $this->plan = Plan::BASIC;
+        $this->status = Status::ACTIVE;
+        $this->periodStart = new DateTimeImmutable('now');
+        $this->periodEnd = new DateTimeImmutable('+ 5 days');
+        $this->durationDays = 5;
+    }
+
+    public function withId(SubscriptionId $id): self
+    {
+        $clone = clone $this;
+        $clone->id = $id;
+        return $clone;
+    }
+
+    public function withUserId(string $userId): self
+    {
+        $clone = clone $this;
+        $clone->userId = $userId;
+        return $clone;
+    }
+
+    public function withTrialPlan(): self
+    {
+        $clone = clone $this;
+        $clone->plan = Plan::TRIAL;
+        $clone->periodStart = new DateTimeImmutable('now');
+        $clone->periodEnd = new DateTimeImmutable('+ 1 day');
+        $clone->isTrialUsed = true;
+        return $clone;
+    }
+
+    public function withBasicPlan(?Period $period = null): self
+    {
+        $clone = clone $this;
+        $clone->plan = Plan::BASIC;
+        $clone->status = Status::ACTIVE;
+        $clone->periodStart = (null !== $period) ? $period->getStartDate() : new DateTimeImmutable('now');
+        $clone->periodEnd = (null !== $period) ? $period->getEndDate() : new DateTimeImmutable('+ 5 day');
+        $clone->isTrialUsed = true;
+        return $clone;
+    }
+
+    public function withExpiredPlan(): self
+    {
+        $clone = clone $this;
+        $clone->plan = Plan::BASIC;
+        $clone->status = Status::EXPIRED;
+        $clone->periodStart = new DateTimeImmutable('- 10 days');
+        $clone->periodEnd = new DateTimeImmutable('- 5 days');
+        $clone->isTrialUsed = true;
+        return $clone;
+    }
+
+    public function build(): Subscription
+    {
+        $reflection = new ReflectionClass(Subscription::class);
+        $constructor = $reflection->getConstructor();
+        $subscription = $reflection->newInstanceWithoutConstructor();
+
+        $constructor->invoke(
+            $subscription,
+            $this->id,
+            $this->userId,
+            $this->plan,
+            $this->status,
+            Period::create($this->periodStart, $this->periodEnd)
+        );
+
+        return $subscription;
+    }
+}

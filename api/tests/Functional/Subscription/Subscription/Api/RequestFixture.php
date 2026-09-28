@@ -7,12 +7,8 @@ namespace Tests\Functional\Subscription\Subscription\Api;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
 use App\Auth\Test\Builder\UserBuilder;
-use App\Subscription\Entity\Subscription\Period;
-use App\Subscription\Entity\Subscription\Plan;
-use App\Subscription\Entity\Subscription\Status;
-use App\Subscription\Entity\Subscription\Subscription;
 use App\Subscription\Entity\Subscription\SubscriptionId;
-use DateTimeImmutable;
+use App\Subscription\Test\Builder\SubscriptionBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -55,28 +51,20 @@ final class RequestFixture extends AbstractFixture
             ->build();
         $manager->persist($newUser);
 
-        $active = new Subscription(
-            new SubscriptionId(self::ACTIVE_ID),
-            self::USER_ID,
-            Plan::BASIC,
-            Status::ACTIVE,
-            Period::create(
-                new DateTimeImmutable('- 1 day'),
-                new DateTimeImmutable('+ 5 days'),
-            )
-        );
+        $active = new SubscriptionBuilder()
+            ->withId(new SubscriptionId(self::ACTIVE_ID))
+            ->withUserId(self::USER_ID)
+            ->withBasicPlan()
+            ->build();
+
         $manager->persist($active);
 
-        $trialUsed = new Subscription(
-            new SubscriptionId(self::TRIAL_ID),
-            self::TRIAL_USER_ID,
-            Plan::TRIAL,
-            Status::ACTIVE,
-            Period::create(
-                new DateTimeImmutable('- 2 days'),
-                new DateTimeImmutable('- 1 day'),
-            )
-        );
+        $trialUsed = new SubscriptionBuilder()
+            ->withId(new SubscriptionId(self::TRIAL_USER_ID))
+            ->withUserId(self::TRIAL_USER_ID)
+            ->withTrialPlan()
+            ->build();
+
         $manager->persist($trialUsed);
 
         $manager->flush();

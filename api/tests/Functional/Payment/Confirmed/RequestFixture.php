@@ -5,10 +5,8 @@ declare(strict_types=1);
 namespace Tests\Functional\Payment\Confirmed;
 
 use App\Subscription\Entity\Subscription\Period;
-use App\Subscription\Entity\Subscription\Plan;
-use App\Subscription\Entity\Subscription\Status;
-use App\Subscription\Entity\Subscription\Subscription;
 use App\Subscription\Entity\Subscription\SubscriptionId;
+use App\Subscription\Test\Builder\SubscriptionBuilder;
 use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
@@ -22,28 +20,21 @@ final class RequestFixture extends AbstractFixture
 
     public function load(ObjectManager $manager): void
     {
-        $activeSubscription = new Subscription(
-            new SubscriptionId(self::ACTIVE_SUBSCRIPTION_ID),
-            self::ACTIVE_USER_ID,
-            Plan::BASIC,
-            Status::ACTIVE,
-            Period::create(
+        $activeSubscription = new SubscriptionBuilder()
+            ->withId(new SubscriptionId(self::ACTIVE_SUBSCRIPTION_ID))
+            ->withUserId(self::ACTIVE_USER_ID)
+            ->withBasicPlan(Period::create(
                 new DateTimeImmutable('- 1 day'),
                 new DateTimeImmutable('+ 5 days'),
-            )
-        );
+            ))
+            ->build();
         $manager->persist($activeSubscription);
 
-        $expiredSubscription = new Subscription(
-            new SubscriptionId(self::EXPIRED_SUBSCRIPTION_ID),
-            self::EXPIRED_USER_ID,
-            Plan::BASIC,
-            Status::EXPIRED,
-            Period::create(
-                new DateTimeImmutable('- 10 day'),
-                new DateTimeImmutable('- 5 days'),
-            )
-        );
+        $expiredSubscription = new SubscriptionBuilder()
+            ->withId(new SubscriptionId(self::EXPIRED_SUBSCRIPTION_ID))
+            ->withUserId(self::EXPIRED_USER_ID)
+            ->withExpiredPlan()
+            ->build();
         $manager->persist($expiredSubscription);
 
         $manager->flush();

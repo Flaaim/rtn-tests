@@ -22,7 +22,7 @@ final class SubscriptionTest extends TestCase
 {
     public function testSubscription(): void
     {
-        $subscription = new Subscription(
+        $subscription = Subscription::create(
             $id = SubscriptionId::generate(),
             $userId = Uuid::uuid4()->toString(),
             $plan = Plan::BASIC,
@@ -45,7 +45,7 @@ final class SubscriptionTest extends TestCase
 
     public function testTrialSubscription(): void
     {
-        $subscription = new Subscription(
+        $subscription = Subscription::create(
             SubscriptionId::generate(),
             Uuid::uuid4()->toString(),
             Plan::TRIAL,
@@ -55,7 +55,6 @@ final class SubscriptionTest extends TestCase
                 new DateTimeImmutable('+ 1 days')
             )
         );
-
         self::assertTrue($subscription->isTrialUsed());
     }
 
@@ -64,7 +63,7 @@ final class SubscriptionTest extends TestCase
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Trial Subscription Period must be exactly 1 day.');
 
-        new Subscription(
+        Subscription::create(
             SubscriptionId::generate(),
             Uuid::uuid4()->toString(),
             Plan::TRIAL,
@@ -78,7 +77,7 @@ final class SubscriptionTest extends TestCase
 
     public function testExtendActive(): void
     {
-        $subscription = new Subscription(
+        $subscription = Subscription::create(
             SubscriptionId::generate(),
             Uuid::uuid4()->toString(),
             Plan::BASIC,
@@ -99,7 +98,7 @@ final class SubscriptionTest extends TestCase
 
     public function testExtendCancelled(): void
     {
-        $subscription = new Subscription(
+        $subscription = Subscription::create(
             SubscriptionId::generate(),
             Uuid::uuid4()->toString(),
             Plan::BASIC,
@@ -117,7 +116,7 @@ final class SubscriptionTest extends TestCase
 
     public function testExtendExpired(): void
     {
-        $subscription = new Subscription(
+        $subscription = Subscription::create(
             SubscriptionId::generate(),
             Uuid::uuid4()->toString(),
             Plan::BASIC,
