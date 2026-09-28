@@ -5,6 +5,9 @@ export const BASE_URL = isServer
   : process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8081";
 
 export const API = {
+  admin: {
+    getUsersStats: () => BASE_URL + `/v1/admin/users/stats`,
+  },
   auth: {
     joinByEmail: () => BASE_URL + `/v1/auth/join/request`,
     login: () => BASE_URL + `/token`,

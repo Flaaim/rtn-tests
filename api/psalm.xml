@@ -26,6 +26,7 @@
                 <directory name="src/Parser/MessageHandler" />
                 <directory name="src/Parser/Entity" />
                 <directory name="src/Parser/Query" />
+                <directory name="src/Admin/Query" />
                 <directory name="src/Parser/Service" />
                 <directory name="src/Infrastructure" />
                 <directory name="src/Course/Command" />
@@ -55,6 +56,7 @@
         <PossiblyUnusedProperty>
             <errorLevel type="suppress">
                 <directory name="src/Profile/Query" />
+                <directory name="src/Admin/Query" />
                 <directory name="src/Auth/Event" />
                 <directory name="src/Parser/Query" />
                 <directory name="src/Course/Query" />

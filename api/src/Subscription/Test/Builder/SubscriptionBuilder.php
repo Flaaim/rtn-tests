@@ -102,6 +102,7 @@ final class SubscriptionBuilder
         $clone->periodEnd = new DateTimeImmutable('- 5 days');
         return $clone;
     }
+
     /** @psalm-suppress PossiblyUnusedMethod  */
     public function withTrialUsed(): self
     {
