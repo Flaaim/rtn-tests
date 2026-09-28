@@ -1,5 +1,5 @@
 import { AdminUsersStats } from "@/interfaces/admin.interface";
-import { Users } from "lucide-react";
+import { UserPlus, Users } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface UsersStatsCardProps {
@@ -13,6 +13,12 @@ export default function UsersStatsCard({ stats }: UsersStatsCardProps) {
       value: stats.totalUsers,
       hint: `+${stats.registrationsLast30Days} за 30 дней`,
       icon: Users,
+    },
+    {
+      title: "День / Неделя / 30 дней",
+      value: `+${stats.registrationsToday} / +${stats.registrationsThisWeek} / +${stats.registrationsLast30Days}`,
+      hint: "Динамика регистраций",
+      icon: UserPlus,
     },
   ];
 

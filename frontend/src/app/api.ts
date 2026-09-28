@@ -6,7 +6,7 @@ export const BASE_URL = isServer
 
 export const API = {
   admin: {
-    getUsersStats: () => BASE_URL + `/v1/admin/users/stats`,
+    getUsersStats: () => BASE_URL + `/v1/admin/stats/users`,
   },
   auth: {
     joinByEmail: () => BASE_URL + `/v1/auth/join/request`,
