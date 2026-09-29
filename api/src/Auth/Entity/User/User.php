@@ -76,6 +76,8 @@ final class User implements AggregateRoot
             $email->getValue()
         ));
 
+        $user->recordEvent(new UserCreated($id->getValue(), $email->getValue(), Role::user()->getName()));
+
         return $user;
     }
 
@@ -88,6 +90,8 @@ final class User implements AggregateRoot
     ): self {
         $user = new self($id, $date, $email, Status::active());
         $user->networks->add(new Network($user, $network, $identity));
+
+        $user->recordEvent(new UserCreated($id->getValue(), $email->getValue(), Role::user()->getName()));
         return $user;
     }
 

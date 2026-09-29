@@ -108,6 +108,8 @@ final class RequestActionTest extends WebTestCase
         self::assertInstanceOf(UserCreated::class, $message);
 
         self::assertEquals(RequestFixture::JOIN_BY_YANDEX['email'], $message->email);
+        self::assertNotNull($message->id);
+        self::assertNotNull($message->role);
     }
 
     public function testEmpty(): void

@@ -8,18 +8,15 @@ use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\User;
 use App\Auth\Entity\User\UserRepository;
-use App\Auth\Event\UserCreated;
 use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 final class Handler
 {
     public function __construct(
         private readonly UserRepository $users,
-        private readonly Flusher $flusher,
-        private readonly MessageBusInterface $messageBus
+        private readonly Flusher $flusher
     ) {}
 
     public function handle(Command $command): void
@@ -48,11 +45,5 @@ final class Handler
         $this->users->add($user);
 
         $this->flusher->flush();
-
-        $this->messageBus->dispatch(new UserCreated(
-            $user->getId()->getValue(),
-            $user->getEmail()->getValue(),
-            $user->getRole()->getName()
-        ));
     }
 }

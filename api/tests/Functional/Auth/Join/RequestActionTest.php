@@ -7,6 +7,7 @@ namespace Tests\Functional\Auth\Join;
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\UserRepository;
 use App\Auth\Event\JoinByEmailRequested;
+use App\Auth\Event\UserCreated;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -69,13 +70,21 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals($user->getEmail()->getValue(), $email);
 
-        self::assertCount(1, $transport->getSent());
+        self::assertCount(2, $transport->getSent());
 
         $message = $transport->getSent()[0]->getMessage();
 
-        self::assertInstanceOf(JoinByEmailRequested::class, $message);
-        self::assertEquals($email, $message->email);
-        self::assertNotEmpty($message->token);
+        $joinMessage = $transport->getSent()[0]->getMessage();
+        $createMessage = $transport->getSent()[1]->getMessage();
+
+        self::assertInstanceOf(JoinByEmailRequested::class, $joinMessage);
+        self::assertEquals($email, $joinMessage->email);
+        self::assertNotEmpty($joinMessage->token);
+
+        self::assertInstanceOf(UserCreated::class, $createMessage);
+        self::assertEquals($email, $createMessage->email);
+        self::assertNotEmpty($createMessage->id);
+        self::assertNotEmpty($createMessage->role);
     }
 
     public function testInvalidCredentials(): void
