@@ -1,5 +1,5 @@
 import { AdminUsersStats } from "@/interfaces/admin.interface";
-import { UserPlus, Users } from "lucide-react";
+import { Users, UserPlus, Calendar, BarChart3 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface UsersStatsCardProps {
@@ -9,16 +9,28 @@ interface UsersStatsCardProps {
 export default function UsersStatsCard({ stats }: UsersStatsCardProps) {
   const cards = [
     {
-      title: "Всего регистраций",
+      title: "Всего пользователей",
       value: stats.totalUsers,
-      hint: `+${stats.registrationsLast30Days} за 30 дней`,
+      hint: "Общая база",
       icon: Users,
     },
     {
-      title: "День / Неделя / 30 дней",
-      value: `+${stats.registrationsToday} / +${stats.registrationsThisWeek} / +${stats.registrationsLast30Days}`,
-      hint: "Динамика регистраций",
+      title: "За сегодня",
+      value: `+${stats.registrationsToday}`,
+      hint: "Новые регистрации",
       icon: UserPlus,
+    },
+    {
+      title: "За неделю",
+      value: `+${stats.registrationsThisWeek}`,
+      hint: "Динамика за 7 дней",
+      icon: Calendar,
+    },
+    {
+      title: "За 30 дней",
+      value: `+${stats.registrationsLast30Days}`,
+      hint: "Динамика за месяц",
+      icon: BarChart3,
     },
   ];
 

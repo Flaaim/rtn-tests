@@ -4,3 +4,10 @@ export interface AdminUsersStats {
   registrationsThisWeek: number;
   registrationsLast30Days: number;
 }
+
+export interface AdminSubscriptionsStats {
+  trialSubscriptions: number;
+  activeSubscriptions: number;
+  expiredSubscriptions: number;
+  conversionRate: number;
+}

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Admin\Stats\Query\Users;
 
 use App\Admin\Stats\Query\StatsFetcherInterface;
+use DomainException;
 
 final readonly class QueryHandler
 {
@@ -15,10 +16,10 @@ final readonly class QueryHandler
 
     public function handle(): UsersStatsDTO
     {
-        $result = $this->fetcher->getUserStats();
+        $result = $this->fetcher->getUsersStats();
 
-        if($result === null){
-            throw new \DomainException('Can not fetch user statistics.');
+        if (null === $result) {
+            throw new DomainException('Can not fetch user statistics.');
         }
 
         return UsersStatsDTO::fromArray($result);
