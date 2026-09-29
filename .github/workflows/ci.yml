@@ -186,6 +186,8 @@ jobs:
           YANDEX_REDIRECT_URI: ${{secrets.YANDEX_REDIRECT_URI }}
           JWT_PUBLIC_KEY: ${{secrets.JWT_PUBLIC_KEY}}
           JWT_PRIVATE_KEY: ${{secrets.JWT_PRIVATE_KEY}}
+          YOOKASSA_SHOP_ID: ${{secrets.YOOKASSA_SHOP_ID}}
+          YOOKASSA_SECRET_KEY: ${{secrets.YOOKASSA_SECRET_KEY}}
 
 
 
