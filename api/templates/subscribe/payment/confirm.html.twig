@@ -1,0 +1,52 @@
+{% extends 'mail.html.twig' %}
+
+{% block title %}Подписка активирована | RTN-TESTS.RU{% endblock %}
+{% block preheader %}Ваша подписка успешно оформлена и активирована. Добро пожаловать!{% endblock %}
+
+{% block body %}
+    <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 600; color: #0f172a; letter-spacing: -0.02em;">
+        Здравствуйте!
+    </h2>
+
+    <p style="margin: 0 0 20px 0;">
+        Оплата прошла успешно, и ваша подписка на сайте RTN-TESTS.RU активирована. Теперь у вас есть полный доступ ко всем тестам и материалам платформы.
+    </p>
+
+    <!-- Карточка с деталями подписки в стиле shadcn Card -->
+    <div style="margin: 0 0 24px 0; padding: 16px 20px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="padding-bottom: 8px; font-size: 14px; color: #64748b; width: 40%;">Аккаунт:</td>
+                <td style="padding-bottom: 8px; font-size: 14px; color: #0f172a; font-weight: 500;">{{ email }}</td>
+            </tr>
+            <tr>
+                <td style="font-size: 14px; color: #64748b;">Действует до:</td>
+                <td style="font-size: 14px; color: #0f172a; font-weight: 500;">{{ ended }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <!-- Замени 'tests' на нужный маршрут для перехода к тестам/личному кабинету -->
+    {% set url = frontend_url('catalog') %}
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px;">
+        <tr>
+            <td align="left">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="center" style="border-radius: 6px;" bgcolor="#0f172a">
+                            <a href="{{ url }}" target="_blank" style="font-size: 14px; color: #ffffff; text-decoration: none; border-radius: 6px; padding: 10px 24px; border: 1px solid #0f172a; display: inline-block; font-weight: 500;">
+                                Перейти к тестам
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin: 0; font-size: 14px; color: #475569;">
+        Спасибо, что выбрали наш сервис. Желаем успешной подготовки!
+    </p>
+
+{% endblock %}

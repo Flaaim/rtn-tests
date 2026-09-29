@@ -1,24 +1,26 @@
 {% extends 'mail.html.twig' %}
 
-{% block title %}Подтверждение регистрации | RTN-TEST.RU{% endblock %}
+{% block title %}Подтверждение регистрации | RTN-TESTS.RU{% endblock %}
 {% block preheader %}Завершите регистрацию, подтвердив ваш адрес электронной почты.{% endblock %}
 
 {% block body %}
-    <h2 style="margin: 0 0 20px 0; font-size: 20px; color: #0f172a;">Здравствуйте!</h2>
+    <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 600; color: #0f172a; letter-spacing: -0.02em;">
+        Здравствуйте!
+    </h2>
 
-    <p style="margin: 0 0 25px 0;">
+    <p style="margin: 0 0 24px 0;">
         Спасибо за регистрацию. Чтобы завершить создание аккаунта и получить полный доступ к тестам, пожалуйста, подтвердите ваш адрес электронной почты, нажав на кнопку ниже.
     </p>
 
     {% set url = frontend_url('join/confirm', {'token': token } ) %}
 
-    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 30px;">
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 32px;">
         <tr>
-            <td align="center">
+            <td align="left">
                 <table border="0" cellspacing="0" cellpadding="0">
                     <tr>
-                        <td align="center" style="border-radius: 6px;" bgcolor="#2563eb">
-                            <a href="{{ url }}" target="_blank" style="font-size: 16px; color: #ffffff; text-decoration: none; border-radius: 6px; padding: 14px 30px; border: 1px solid #2563eb; display: inline-block; font-weight: bold;">
+                        <td align="center" style="border-radius: 6px;" bgcolor="#0f172a">
+                            <a href="{{ url }}" target="_blank" style="font-size: 14px; color: #ffffff; text-decoration: none; border-radius: 6px; padding: 10px 24px; border: 1px solid #0f172a; display: inline-block; font-weight: 500;">
                                 Подтвердить email
                             </a>
                         </td>
@@ -28,11 +30,11 @@
         </tr>
     </table>
 
-    <p style="margin: 0 0 10px 0; font-size: 14px; color: #64748b;">
-        Если кнопка не работает, скопируйте и вставьте эту ссылку в адресную строку браузера:
+    <p style="margin: 0 0 8px 0; font-size: 14px; color: #64748b;">
+        Если кнопка не работает, скопируйте и вставьте ссылку в браузер:
     </p>
     <p style="margin: 0; font-size: 14px; word-break: break-all;">
-        <a style="color: #2563eb; text-decoration: underline;" href="{{ url }}">{{ url }}</a>
+        <a style="color: #0f172a; text-decoration: underline; text-underline-offset: 4px;" href="{{ url }}">{{ url }}</a>
     </p>
 
 {% endblock %}

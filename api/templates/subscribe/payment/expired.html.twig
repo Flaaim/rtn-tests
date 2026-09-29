@@ -1,0 +1,46 @@
+{% extends 'mail.html.twig' %}
+
+{% block title %}Срок действия подписки истек | RTN-TESTS.RU{% endblock %}
+{% block preheader %}Ваша подписка завершилась. Продлите ее, чтобы восстановить доступ к тестам.{% endblock %}
+
+{% block body %}
+    <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 600; color: #0f172a; letter-spacing: -0.02em;">
+        Здравствуйте!
+    </h2>
+
+    <p style="margin: 0 0 20px 0;">
+        Уведомляем вас о том, что срок действия вашей подписки на платформе RTN-TESTS.RU подошел к концу. Доступ к закрытым тестам и платным материалам приостановлен.
+    </p>
+
+    <!-- shadcn Alert -->
+    <div style="margin: 0 0 24px 0; padding: 16px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 14px; color: #0f172a;">
+        <strong style="display: block; margin-bottom: 4px; font-weight: 600;">Не теряйте прогресс</strong>
+        <span style="color: #475569;">
+            Вся ваша история прохождений и статистика сохранены. Как только подписка будет продлена, вы сможете продолжить ровно с того места, где остановились.
+        </span>
+    </div>
+
+    <!-- Замени 'billing' или 'pricing' на нужный маршрут оплаты -->
+    {% set url = frontend_url('user/subscription') %}
+
+    <table width="100%" border="0" cellspacing="0" cellpadding="0" style="margin-bottom: 24px;">
+        <tr>
+            <td align="left">
+                <table border="0" cellspacing="0" cellpadding="0">
+                    <tr>
+                        <td align="center" style="border-radius: 6px;" bgcolor="#0f172a">
+                            <a href="{{ url }}" target="_blank" style="font-size: 14px; color: #ffffff; text-decoration: none; border-radius: 6px; padding: 10px 24px; border: 1px solid #0f172a; display: inline-block; font-weight: 500;">
+                                Продлить подписку
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
+
+    <p style="margin: 0; font-size: 14px; color: #475569;">
+        Если у вас возникли вопросы или трудности с оплатой, наша служба поддержки всегда готова помочь.
+    </p>
+
+{% endblock %}
