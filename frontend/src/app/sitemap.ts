@@ -5,7 +5,7 @@ import { fetchPublicTestsByCategoryAction } from "@/actions/test";
 export const revalidate = 86400; // Обновляем раз в сутки
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = "https://ot-tests.ru";
+  const baseUrl = "https://rtn-tests.ru";
   const now = new Date();
 
   const staticPages: MetadataRoute.Sitemap = [
