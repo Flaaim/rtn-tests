@@ -18,7 +18,7 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/admin/profiles/{id}/remove', name: 'auth.user.pending.remove', methods: ['DELETE'])]
+    #[Route('/v1/admin/profiles/{id}', name: 'auth.user.pending.remove', methods: ['DELETE'])]
     #[IsGranted('ROLE_ADMIN')]
     public function __invoke(string $id): Response
     {
