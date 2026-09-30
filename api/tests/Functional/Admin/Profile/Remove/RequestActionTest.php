@@ -59,7 +59,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testUnauthenticatedReturns401(): void
     {
-        $this->client->jsonRequest('DELETE', '/v1/admin/profiles/' . RequestFixture::USER_ID . '/remove');
+        $this->client->jsonRequest('DELETE', '/v1/admin/profiles/' . RequestFixture::USER_ID);
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
     }
@@ -68,7 +68,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'DELETE',
-            '/v1/admin/profiles/' . RequestFixture::USER_ID . '/remove',
+            '/v1/admin/profiles/' . RequestFixture::USER_ID,
             [],
             $this->authHeaders($this->userToken)
         );
@@ -84,7 +84,7 @@ final class RequestActionTest extends WebTestCase
 
         $this->client->jsonRequest(
             'DELETE',
-            '/v1/admin/profiles/' . RequestFixture::USER_ID . '/remove',
+            '/v1/admin/profiles/' . RequestFixture::USER_ID,
             [],
             $this->authHeaders($this->adminToken)
         );
@@ -104,7 +104,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'DELETE',
-            '/v1/admin/profiles/' . RequestFixture::ADMIN_ID . '/remove',
+            '/v1/admin/profiles/' . RequestFixture::ADMIN_ID,
             [],
             $this->authHeaders($this->adminToken)
         );
