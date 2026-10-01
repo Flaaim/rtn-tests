@@ -15,6 +15,7 @@ import { format } from "date-fns";
 import { ru } from "date-fns/locale";
 import SubscriptionStatusBadge from "@/components/Domain/SubscriptionStatusBadge";
 import SubscriptionPlanBadge from "@/components/Admin/Domain/Subscription/SubscriptionPlanBadge";
+import SubscriptionSearch from "@/components/Admin/Subscription/SubscriptionSearch";
 
 interface AdminSubscriptionsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -66,6 +67,7 @@ export default async function AdminSubscriptionsPage({
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Список подписок</h1>
       </div>
+      <SubscriptionSearch />
       <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
@@ -89,7 +91,7 @@ export default async function AdminSubscriptionsPage({
             )}
             {subscriptions.map((sub: SubscriptionAdminDTO) => (
               <TableRow key={sub.id}>
-                <TableCell className="font-medium min-w-0 max-w-[300px] truncate">
+                <TableCell className="font-medium min-w-0 max-w-[150px] truncate">
                   <Link href={`/admin/subscriptions/${sub.id}`} className="hover:underline">
                     {sub.id}
                   </Link>
