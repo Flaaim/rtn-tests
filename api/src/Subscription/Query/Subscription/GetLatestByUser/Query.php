@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\Query\Subscription\Get;
+namespace App\Subscription\Query\Subscription\GetLatestByUser;
 
 use Symfony\Component\Validator\Constraints as Assert;
 

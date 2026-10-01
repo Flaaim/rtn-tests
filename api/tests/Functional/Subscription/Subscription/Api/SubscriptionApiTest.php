@@ -61,7 +61,7 @@ final class SubscriptionApiTest extends KernelTestCase
         $api = $this->container->get(SubscriptionApi::class);
         $api->ensureHasAccess(UserFixture::NEW_USER_ID);
 
-        $subscription = $this->subscriptions->getByUserId(UserFixture::NEW_USER_ID);
+        $subscription = $this->subscriptions->getLatestByUserId(UserFixture::NEW_USER_ID);
 
         self::assertEquals(Plan::TRIAL->value, $subscription['plan']);
     }

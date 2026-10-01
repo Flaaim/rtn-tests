@@ -27,7 +27,7 @@ final readonly class SubscriptionApi
             return;
         }
 
-        $latestSubscription = $this->subscriptions->getByUserId($userId);
+        $latestSubscription = $this->subscriptions->getLatestByUserId($userId);
 
         if (empty($latestSubscription)) {
             $this->activateHandler->handle(new Command(

@@ -6,7 +6,7 @@ namespace App\Subscription\Query\Subscription;
 
 interface SubscriptionFetcherInterface
 {
-    public function getByUserId(string $userId): array;
+    public function getLatestByUserId(string $userId): array;
 
     public function getByUserPaginated(string $userId, int $page, int $limit): array;
 

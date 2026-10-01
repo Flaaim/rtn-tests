@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Action\V1\Profile\GetSubscription;
 
 use App\Infrastructure\Http\Validator\Validator;
-use App\Subscription\Query\Subscription\Get\Query;
-use App\Subscription\Query\Subscription\Get\QueryHandler;
+use App\Subscription\Query\Subscription\GetLatestByUser\Query;
+use App\Subscription\Query\Subscription\GetLatestByUser\QueryHandler;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;

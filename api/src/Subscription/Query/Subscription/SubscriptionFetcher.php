@@ -13,7 +13,7 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
         private Connection $connection
     ) {}
 
-    public function getByUserId(string $userId): array
+    public function getLatestByUserId(string $userId): array
     {
         $qb = $this->connection->createQueryBuilder();
 
