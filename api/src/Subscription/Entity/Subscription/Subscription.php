@@ -113,7 +113,7 @@ final class Subscription implements AggregateRoot
 
     public function isActive(): bool
     {
-        if (Status::ACTIVE !== $this->status) {
+        if (Status::ACTIVE !== $this->status || $this->getPeriod()->getEndDate() < new DateTimeImmutable()) {
             return false;
         }
 

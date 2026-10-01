@@ -26,7 +26,7 @@ final readonly class Handler
 
     public function handle(Command $command): void
     {
-        if ($this->subscriptions->hasActiveByUserId($command->userId)) {
+        if ($this->subscriptions->findActiveByUserId($command->userId)) {
             throw new DomainException('User already has an active subscription.');
         }
 

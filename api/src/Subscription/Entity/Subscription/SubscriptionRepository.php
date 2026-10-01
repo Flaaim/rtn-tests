@@ -18,19 +18,6 @@ final readonly class SubscriptionRepository
         $this->repo = $em->getRepository(Subscription::class);
     }
 
-    public function hasActiveByUserId(string $userId): bool
-    {
-        return (bool)$this->repo->createQueryBuilder('t')
-            ->select('1')
-            ->andWhere('t.userId = :userId')
-            ->andWhere('t.status = :status')
-            ->setParameter('userId', $userId)
-            ->setParameter('status', Status::ACTIVE)
-            ->setMaxResults(1)
-            ->getQuery()
-            ->getOneOrNullResult();
-    }
-
     public function add(Subscription $subscription): void
     {
         $this->em->persist($subscription);
