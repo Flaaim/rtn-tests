@@ -4,6 +4,7 @@ import {
   Brackets,
   ChartBarStacked,
   ChevronRight,
+  CreditCard,
   FileText,
   GraduationCap,
   LayoutDashboard,
@@ -49,6 +50,7 @@ const items = [
   { title: "Курсы", url: "/admin/courses", icon: GraduationCap },
   { title: "Тесты", url: "/admin/tests", icon: NotepadText },
   { title: "Категории", url: "/admin/categories", icon: ChartBarStacked },
+  { title: "Подписки", url: "/admin/subscriptions", icon: CreditCard },
 ];
 
 interface AdminSidebarProps {

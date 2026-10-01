@@ -15,12 +15,14 @@ export interface SubscriptionDTO {
   periodEnd: string;
 }
 
-export interface SubscriptionAdminDTO {
-  id: string;
+export interface SubscriptionAdminListDTO {
+  items: SubscriptionAdminDTO[];
+  totalPages: number;
+  totalCount: number;
+}
+
+export interface SubscriptionAdminDTO extends Omit<SubscriptionDTO, "plan"> {
   plan: SubscriptionType;
   status: SubscriptionStatus;
-  durationDays: number;
-  periodStart: string;
-  periodEnd: string;
   email: string;
 }
