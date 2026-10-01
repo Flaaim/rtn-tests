@@ -1,3 +1,6 @@
+export type SubscriptionStatus = "active" | "expired" | "cancelled";
+export type SubscriptionType = "basic" | "trial";
+
 export interface SubscriptionListDTO {
   items: SubscriptionDTO[];
   totalPages: number;
@@ -10,4 +13,14 @@ export interface SubscriptionDTO {
   durationDays: number;
   periodStart: string;
   periodEnd: string;
+}
+
+export interface SubscriptionAdminDTO {
+  id: string;
+  plan: SubscriptionType;
+  status: SubscriptionStatus;
+  durationDays: number;
+  periodStart: string;
+  periodEnd: string;
+  email: string;
 }
