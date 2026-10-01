@@ -16,6 +16,7 @@ import { ru } from "date-fns/locale";
 import SubscriptionStatusBadge from "@/components/Domain/SubscriptionStatusBadge";
 import SubscriptionPlanBadge from "@/components/Admin/Domain/Subscription/SubscriptionPlanBadge";
 import SubscriptionSearch from "@/components/Admin/Subscription/SubscriptionSearch";
+import Pagination from "@/components/Pagination/Pagination";
 
 interface AdminSubscriptionsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -53,8 +54,8 @@ export default async function AdminSubscriptionsPage({
   }
 
   const subscriptions: SubscriptionAdminDTO[] = result.data.items;
-
   const isHasSubscriptions = subscriptions && subscriptions.length > 0;
+  const totalPages = result.data.totalPages;
 
   const formatDate = (dateString: string | null) => {
     if (!dateString) return "—";
@@ -111,6 +112,11 @@ export default async function AdminSubscriptionsPage({
           </TableBody>
         </Table>
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={totalPages}
+        baseUrl="/admin/subscriptions"
+      />
     </div>
   );
 }

@@ -99,12 +99,12 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
             )}
           </TableBody>
         </Table>
-        <Pagination
-          currentPage={currentPage}
-          totalPages={result.data.totalPages}
-          baseUrl="/admin/courses"
-        />
       </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={result.data.totalPages}
+        baseUrl="/admin/courses"
+      />
     </div>
   );
 }
