@@ -13,6 +13,8 @@ import { SubscriptionAdminDTO } from "@/interfaces/subscription.interface";
 import Link from "next/link";
 import { format } from "date-fns";
 import { ru } from "date-fns/locale";
+import SubscriptionStatusBadge from "@/components/Domain/SubscriptionStatusBadge";
+import SubscriptionPlanBadge from "@/components/Admin/Domain/Subscription/SubscriptionPlanBadge";
 
 interface AdminSubscriptionsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -93,8 +95,12 @@ export default async function AdminSubscriptionsPage({
                   </Link>
                 </TableCell>
                 <TableCell className="font-medium">{sub.email}</TableCell>
-                <TableCell className="font-medium">{sub.plan}</TableCell>
-                <TableCell className="font-medium">{sub.status}</TableCell>
+                <TableCell className="font-medium">
+                  <SubscriptionPlanBadge plan={sub.plan} />
+                </TableCell>
+                <TableCell className="font-medium">
+                  <SubscriptionStatusBadge status={sub.status} />
+                </TableCell>
                 <TableCell className="font-medium">{sub.durationDays}</TableCell>
                 <TableCell className="font-medium">{formatDate(sub.periodStart)}</TableCell>
                 <TableCell className="font-medium">{formatDate(sub.periodEnd)}</TableCell>
