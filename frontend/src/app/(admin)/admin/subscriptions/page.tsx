@@ -1,4 +1,4 @@
-import fetchSubscriptionsPaginated from "@/actions/subscriptions";
+import { fetchSubscriptionsPaginated } from "@/actions/subscriptions";
 import AdminBreadcrumbs from "@/components/Admin/AdminBreadcrumbs";
 import { AlertCircle } from "lucide-react";
 import {

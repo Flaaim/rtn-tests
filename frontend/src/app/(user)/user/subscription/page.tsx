@@ -23,7 +23,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import fetchSubscriptionsPaginatedByUser from "@/actions/subscriptions";
+import { fetchSubscriptionsPaginatedByUser } from "@/actions/subscriptions";
 
 const SUBSCRIPTION_PLAN: Record<string, string> = {
   trial: "Пробный",

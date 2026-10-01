@@ -1,7 +1,11 @@
 "use server";
 
 import { ApiResponse } from "@/interfaces/response.interface";
-import { SubscriptionAdminListDTO, SubscriptionListDTO } from "@/interfaces/subscription.interface";
+import {
+  SubscriptionAdminDTO,
+  SubscriptionAdminListDTO,
+  SubscriptionListDTO,
+} from "@/interfaces/subscription.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
 import { handleApiResponse } from "@/lib/handleApiResponse";
@@ -25,7 +29,7 @@ export async function fetchSubscriptionsPaginatedByUser(
   }
 }
 
-export default async function fetchSubscriptionsPaginated(
+export async function fetchSubscriptionsPaginated(
   page: number,
   perPage: number,
   search?: string
@@ -41,6 +45,24 @@ export default async function fetchSubscriptionsPaginated(
     return handleApiResponse<SubscriptionAdminListDTO>(response);
   } catch (error) {
     console.error("fetchSubscriptionsPaginatedByUser Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchSubscriptionAction(
+  subscriptionId: string
+): Promise<ApiResponse<SubscriptionAdminDTO>> {
+  try {
+    const response = await apiFetch(API.subscription.get(subscriptionId), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<SubscriptionAdminDTO>(response);
+  } catch (error) {
+    console.error("fetchSubscriptionAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
