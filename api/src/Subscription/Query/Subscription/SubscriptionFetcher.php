@@ -13,6 +13,34 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
         private Connection $connection
     ) {}
 
+    public function getById(string $id): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $subscription = $qb->select('s.id, s.user_id, s.status, s.plan, s.period_start, s.period_end, s.duration_days, u.email')
+            ->from('subscriptions', 's')
+            ->leftJoin('s', 'users', 'u', 's.user_id = u.id')
+            ->where('s.id = :id')
+            ->setParameter('id', $id)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (false === $subscription) {
+            return [];
+        }
+
+        return [
+            'id' => $subscription['id'],
+            'user_id' => $subscription['user_id'],
+            'status' => $subscription['status'],
+            'plan' => $subscription['plan'],
+            'period_start' => $subscription['period_start'],
+            'period_end' => $subscription['period_end'],
+            'duration_days' => $subscription['duration_days'],
+            'email' => $subscription['email'],
+        ];
+    }
+
     public function getLatestByUserId(string $userId): array
     {
         $qb = $this->connection->createQueryBuilder();
