@@ -67,4 +67,41 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
             'totalCount' => $totalCount,
         ];
     }
+
+    public function getPaginated(int $page = 1, int $limit = 25, ?string $search = null): array
+    {
+        $page = max(1, $page);
+        $limit = min(max(1, $limit), 100);
+        $offset = ($page - 1) * $limit;
+
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->from('subscriptions', 's')
+            ->leftJoin('s', 'users', 'u', 's.user_id = u.id');
+
+        $normalizedSearch = null !== $search ? trim($search) : '';
+
+        if ('' !== $normalizedSearch) {
+            $qb->andWhere(
+                $qb->expr()->like('u.email', ':search')
+            )->setParameter('search', '%' . $normalizedSearch . '%');
+        }
+
+        $countQb = clone $qb;
+        $totalCount = (int)$countQb->select('COUNT(s.id)')
+            ->executeQuery()
+            ->fetchOne();
+
+        $rows = $qb->select('s.id, s.plan, s.status, s.period_start, s.period_end, s.duration_days, u.email')
+            ->orderBy('s.period_end', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        return [
+            'items' => $rows,
+            'totalCount' => $totalCount,
+        ];
+    }
 }
