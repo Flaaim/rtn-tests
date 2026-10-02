@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Profile\Query;
 
+use App\Profile\Entity\Profile\Role;
 use Doctrine\DBAL\Connection;
 
 /** @psalm-suppress UnusedClass */
@@ -101,5 +102,18 @@ final class ProfileFetcher implements ProfileFetcherInterface
             'password_hash' => $result['password_hash'],
             'auth_status' => $result['auth_status'],
         ];
+    }
+
+    public function getLookupList(): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        return $qb->select('p.id, p.email')
+            ->from('profiles', 'p')
+            ->orderBy('p.email', 'DESC')
+            ->where('p.role = :role')
+            ->setParameter('role', Role::USER)
+            ->executeQuery()
+            ->fetchAllAssociative();
     }
 }

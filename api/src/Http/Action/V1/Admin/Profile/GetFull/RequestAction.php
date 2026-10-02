@@ -10,6 +10,7 @@ use App\Profile\Query\GetFull\QueryHandler;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Requirement\Requirement;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 final class RequestAction
@@ -19,7 +20,12 @@ final class RequestAction
         private readonly Validator $validator
     ) {}
 
-    #[Route('/v1/admin/profiles/{id}', name: 'admin.profiles.get.one', methods: ['GET'])]
+    #[Route(
+        '/v1/admin/profiles/{id}',
+        name: 'admin.profiles.get.one',
+        requirements: ['id' => Requirement::UUID],
+        methods: ['GET']
+    )]
     #[IsGranted('ROLE_ADMIN')]
     public function __invoke(string $id): Response
     {

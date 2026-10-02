@@ -11,4 +11,6 @@ interface ProfileFetcherInterface
     public function getUsers(int $page, int $limit): array;
 
     public function getFullProfile(string $id): array;
+
+    public function getLookupList(): array;
 }
