@@ -9,6 +9,7 @@ use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\Status;
 use App\Subscription\Entity\Subscription\Subscription;
 use App\Subscription\Entity\Subscription\SubscriptionId;
+use App\Subscription\Test\Builder\SubscriptionBuilder;
 use DateTimeImmutable;
 use DomainException;
 use PHPUnit\Framework\TestCase;
@@ -134,5 +135,27 @@ final class SubscriptionTest extends TestCase
         self::assertEquals($start->format('Y-m-d'), $subscription->getPeriodStart()->format('Y-m-d'));
         self::assertEquals($end->format('Y-m-d'), $subscription->getPeriodEnd()->format('Y-m-d'));
         self::assertEquals(5, $subscription->getDurationDays());
+    }
+
+    public function testNotReadyToActivate(): void
+    {
+        $subscription = new SubscriptionBuilder()
+            ->withWaitPlan()
+            ->build();
+
+        $subscription->activate();
+        self::assertFalse($subscription->isActive());
+    }
+
+    public function testActivate(): void
+    {
+        $subscription = new SubscriptionBuilder()
+            ->withWaitPlan(Period::create(
+                new DateTimeImmutable('- 1 day'),
+                new DateTimeImmutable('+ 4 days')
+            ))
+            ->build();
+        $subscription->activate();
+        self::assertTrue($subscription->isActive());
     }
 }

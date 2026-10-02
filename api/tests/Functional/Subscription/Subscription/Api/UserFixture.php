@@ -22,6 +22,13 @@ final class UserFixture extends AbstractFixture
 
     public const string EXPIRED_USER_ID = '731bac7d-5df7-4799-89c8-60d54da9458b';
     public const string EXPIRED_USER_EMAIL = 'expired@app.test';
+
+    public const string WAIT_NOT_READY_USER_ID = '5e02b8bd-925f-47af-8ca4-5f79dbb5aaf0';
+    public const string WAIT_NOT_READY_USER_EMAIL = 'waitNotReady@app.test';
+
+    public const string WAIT_READY_USER_ID = '4d8fd62f-478c-4ce4-b78e-3f264b54d4ab';
+    public const string WAIT_READY_USER_EMAIL = 'waitReady@app.test';
+
     public const string PASSWORD = 'password';
 
     public function load(ObjectManager $manager): void
@@ -57,6 +64,22 @@ final class UserFixture extends AbstractFixture
             ->active()
             ->build();
         $manager->persist($expiredUser);
+
+        $waitNotReadyUser = new UserBuilder()
+            ->withId(new Id(self::WAIT_NOT_READY_USER_ID))
+            ->withEmail(new Email(self::WAIT_NOT_READY_USER_EMAIL))
+            ->withPassword(self::PASSWORD)
+            ->active()
+            ->build();
+        $manager->persist($waitNotReadyUser);
+
+        $waitReadyUser = new UserBuilder()
+            ->withId(new Id(self::WAIT_READY_USER_ID))
+            ->withEmail(new Email(self::WAIT_READY_USER_EMAIL))
+            ->withPassword(self::PASSWORD)
+            ->active()
+            ->build();
+        $manager->persist($waitReadyUser);
 
         $manager->flush();
     }

@@ -46,6 +46,10 @@ final class Subscription implements AggregateRoot
             throw new DomainException('Trial Subscription Period must be exactly 1 day.');
         }
 
+        if ($this->periodStart > new DateTimeImmutable()) {
+            $this->status = Status::WAIT;
+        }
+
         if ($this->plan->isTrial()) {
             $this->isTrialUsed = true;
         }
@@ -118,6 +122,32 @@ final class Subscription implements AggregateRoot
         }
 
         return $this->getPeriod()->isActiveAt(new DateTimeImmutable('today'));
+    }
+
+    public function isWait(): bool
+    {
+        return Status::WAIT === $this->status;
+    }
+
+    public function isReadyToActivate(): bool
+    {
+        return $this->isWait() && $this->periodStart <= new DateTimeImmutable();
+    }
+
+    public function activate(): void
+    {
+        if (!$this->isReadyToActivate()) {
+            return;
+        }
+
+        $this->status = Status::ACTIVE;
+
+        $this->recordEvent(new SubscriptionPurchased(
+            $this->id->getValue(),
+            $this->userId,
+            $this->plan->value,
+            $this->periodEnd->format('Y-m-d'),
+        ));
     }
 
     public function extend(int $additionalDays): void

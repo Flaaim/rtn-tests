@@ -9,4 +9,5 @@ enum Status: string
     case ACTIVE = 'active';
     case EXPIRED = 'expired';
     case CANCELLED = 'cancelled';
+    case WAIT  = 'wait';
 }

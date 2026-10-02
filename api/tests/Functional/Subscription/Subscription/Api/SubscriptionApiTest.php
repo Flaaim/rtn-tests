@@ -6,6 +6,7 @@ namespace Tests\Functional\Subscription\Subscription\Api;
 
 use App\Subscription\Api\SubscriptionApi;
 use App\Subscription\Entity\Subscription\Plan;
+use App\Subscription\Entity\Subscription\Status;
 use App\Subscription\Query\Subscription\SubscriptionFetcher;
 use App\Subscription\Query\Subscription\SubscriptionFetcherInterface;
 use Doctrine\DBAL\Connection;
@@ -74,5 +75,26 @@ final class SubscriptionApiTest extends KernelTestCase
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Ваш оплаченный период завершен. Для продолжения необходимо приобрести подписку.');
         $api->ensureHasAccess(UserFixture::EXPIRED_USER_ID);
+    }
+
+    public function testWaitNotReady(): void
+    {
+        /** @var SubscriptionApi $api */
+        $api = $this->container->get(SubscriptionApi::class);
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Ваша подписка еще не началась. Доступ будет открыт в день начала оплаченного периода.');
+        $api->ensureHasAccess(UserFixture::WAIT_NOT_READY_USER_ID);
+    }
+
+    public function testWaitReady(): void
+    {
+        /** @var SubscriptionApi $api */
+        $api = $this->container->get(SubscriptionApi::class);
+        $api->ensureHasAccess(UserFixture::WAIT_READY_USER_ID);
+
+        $subscription = $this->subscriptions->getLatestByUserId(UserFixture::WAIT_READY_USER_ID);
+
+        self::assertEquals(Status::ACTIVE->value, $subscription['status']);
     }
 }

@@ -10,6 +10,7 @@ use App\Subscription\Entity\Subscription\Status;
 use App\Subscription\Entity\Subscription\Subscription;
 use App\Subscription\Entity\Subscription\SubscriptionId;
 use DateTimeImmutable;
+use DomainException;
 use ReflectionClass;
 
 final class SubscriptionBuilder
@@ -75,6 +76,10 @@ final class SubscriptionBuilder
 
         if (null !== $period) {
             $clone->durationDays = $clone->periodStart->diff($clone->periodEnd)->days;
+
+            if ($period->getEndDate() < $period->getStartDate()) {
+                throw new DomainException('End date must be greater than start date');
+            }
         }
 
         return $clone;
@@ -112,6 +117,26 @@ final class SubscriptionBuilder
         $clone->periodStart = new DateTimeImmutable('- 10 days');
         $clone->periodEnd = new DateTimeImmutable('- 9 days');
         $clone->isTrialUsed = true;
+        return $clone;
+    }
+
+    public function withWaitPlan(?Period $period = null): self
+    {
+        $clone = clone $this;
+        $clone->plan = Plan::BASIC;
+        $clone->status = Status::WAIT;
+        $clone->periodStart = (null !== $period) ? $period->getStartDate() : new DateTimeImmutable('+ 10 days');
+        $clone->periodEnd = (null !== $period) ? $period->getEndDate() : new DateTimeImmutable('+ 15 days');
+        $clone->isTrialUsed = true;
+
+        if (null !== $period) {
+            $clone->durationDays = $clone->periodStart->diff($clone->periodEnd)->days;
+
+            if ($period->getEndDate() < $period->getStartDate()) {
+                throw new DomainException('End date must be greater than start date');
+            }
+        }
+
         return $clone;
     }
 

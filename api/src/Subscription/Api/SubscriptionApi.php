@@ -7,6 +7,7 @@ namespace App\Subscription\Api;
 use App\Subscription\Command\Activate\Command;
 use App\Subscription\Command\Activate\Handler;
 use App\Subscription\Entity\Subscription\Plan;
+use App\Subscription\Entity\Subscription\Status;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Query\Subscription\SubscriptionFetcherInterface;
 use DomainException;
@@ -40,6 +41,10 @@ final readonly class SubscriptionApi
 
         if ($latestSubscription['plan'] === Plan::TRIAL->value) {
             throw new DomainException('Ваш пробный период завершен. Для продолжения необходимо приобрести подписку.');
+        }
+
+        if ($latestSubscription['status'] === Status::WAIT->value) {
+            throw new DomainException('Ваша подписка еще не началась. Доступ будет открыт в день начала оплаченного периода.');
         }
 
         throw new DomainException('Ваш оплаченный период завершен. Для продолжения необходимо приобрести подписку.');

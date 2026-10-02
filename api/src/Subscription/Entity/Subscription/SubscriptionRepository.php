@@ -27,15 +27,23 @@ final readonly class SubscriptionRepository
     {
         /** @var Subscription[] $subscriptions */
         $subscriptions = $this->repo->findBy(
-            ['userId' => $userId, 'status' => Status::ACTIVE],
+            ['userId' => $userId, 'status' => [Status::ACTIVE, Status::WAIT]],
             ['periodEnd' => 'DESC'],
         );
 
         foreach ($subscriptions as $subscription) {
+            if ($subscription->isReadyToActivate()) {
+                $subscription->activate();
+                $this->em->flush();
+            }
+
             if ($subscription->isActive()) {
                 return $subscription;
             }
 
+            if ($subscription->isWait()) {
+                continue;
+            }
             $subscription->expire();
         }
         $this->em->flush();
