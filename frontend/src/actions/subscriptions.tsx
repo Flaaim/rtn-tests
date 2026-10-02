@@ -2,6 +2,7 @@
 
 import { ApiResponse } from "@/interfaces/response.interface";
 import {
+  AssignSubscriptionPayload,
   ProfileSelectOption,
   SubscriptionAdminDTO,
   SubscriptionAdminListDTO,
@@ -81,6 +82,29 @@ export async function fetchProfilesToSelectAction(): Promise<ApiResponse<Profile
     return handleApiResponse<ProfileSelectOption[]>(response);
   } catch (error) {
     console.error("fetchCoursesToSelectAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function activateSubscriptionAction(
+  payload: AssignSubscriptionPayload
+): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.subscription.activate(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        userId: payload.userId,
+        plan: payload.plan,
+        durationDays: payload.durationDays,
+      }),
+    });
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("ActivateSubscriptionAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

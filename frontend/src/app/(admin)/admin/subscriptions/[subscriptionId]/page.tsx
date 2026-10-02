@@ -9,7 +9,7 @@ export default async function SubscriptionOverviewPage({ params }: SubscriptionO
   const { subscriptionId } = await params;
 
   const result = await fetchSubscriptionAction(subscriptionId);
-  console.log(result);
+
   if (!result.ok || !result.data) {
     return null;
   }

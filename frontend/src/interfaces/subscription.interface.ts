@@ -31,3 +31,9 @@ export interface ProfileSelectOption {
   id: string;
   email: string;
 }
+
+export interface AssignSubscriptionPayload {
+  userId: string;
+  plan: SubscriptionType;
+  durationDays: number;
+}

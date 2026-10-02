@@ -17,6 +17,7 @@ import SubscriptionStatusBadge from "@/components/Domain/SubscriptionStatusBadge
 import SubscriptionPlanBadge from "@/components/Admin/Domain/Subscription/SubscriptionPlanBadge";
 import SubscriptionSearch from "@/components/Admin/Subscription/SubscriptionSearch";
 import Pagination from "@/components/Pagination/Pagination";
+import AssignSubscription from "@/components/Admin/Subscription/AssignSubscription";
 
 interface AdminSubscriptionsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -67,6 +68,7 @@ export default async function AdminSubscriptionsPage({
       <AdminBreadcrumbs items={[{ title: "Подписки" }]} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Список подписок</h1>
+        <AssignSubscription />
       </div>
       <SubscriptionSearch />
       <div className="rounded-md border bg-white">

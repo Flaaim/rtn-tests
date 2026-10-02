@@ -45,7 +45,7 @@ export const API = {
     getTestingStat: () => BASE_URL + `/v1/profiles/testing/stat`,
     add: () => BASE_URL + `/v1/admin/profiles`,
     getSubscription: () => BASE_URL + `/v1/me/subscriptions`,
-    lookup: () => BASE_URL + `/v1/profiles/lookup`,
+    lookup: () => BASE_URL + `/v1/admin/profiles/lookup`,
   },
   parser: {
     add: () => BASE_URL + `/v1/admin/parsers`,
@@ -143,5 +143,6 @@ export const API = {
       return BASE_URL + `/v1/admin/subscriptions?${params.toString()}`;
     },
     get: (id: string) => BASE_URL + `/v1/admin/subscriptions/${id}`,
+    activate: () => BASE_URL + `/v1/admin/subscriptions`,
   },
 };
