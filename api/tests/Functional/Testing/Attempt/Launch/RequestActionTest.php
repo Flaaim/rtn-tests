@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Testing\Attempt\Launch;
 
+use App\Subscription\Event\Subscription\SubscriptionPurchased;
 use App\Testing\Event\Attempt\TimeoutAttemptCommand;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -25,6 +26,8 @@ final class RequestActionTest extends WebTestCase
     private string $activeUserToken; // Пользователь с базовой подпиской
     private string $trialUsedUserToken;
     private string $newUserToken;
+    private string $waitNotReadyUserToken;
+    private string $waitReadyUserToken;
 
     private string $expiredUserToken;
 
@@ -60,6 +63,18 @@ final class RequestActionTest extends WebTestCase
         $this->expiredUserToken = $this->getAccessToken(
             $this->client,
             UserFixture::EXPIRED_USER_EMAIL,
+            UserFixture::USER_PASSWORD,
+        );
+
+        $this->waitNotReadyUserToken = $this->getAccessToken(
+            $this->client,
+            UserFixture::WAIT_NOT_READY_USER_EMAIL,
+            UserFixture::USER_PASSWORD,
+        );
+
+        $this->waitReadyUserToken = $this->getAccessToken(
+            $this->client,
+            UserFixture::WAIT_READY_USER_EMAIL,
             UserFixture::USER_PASSWORD,
         );
     }
@@ -173,6 +188,77 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertEquals(['message' => 'Ваш оплаченный период завершен. Для продолжения необходимо приобрести подписку.'], $data);
+    }
+
+    public function testWaitNotReadyLaunch(): void
+    {
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/testing/attempts',
+            [
+                'testId' => RequestFixture::TEST_ID,
+                'ticketNumber' => RequestFixture::TICKET_NUMBER,
+            ],
+            $this->authHeaders($this->waitNotReadyUserToken)
+        );
+
+        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertEquals(['message' => 'Ваша подписка еще не началась. Доступ будет открыт в день начала оплаченного периода.'], $data);
+    }
+
+    public function testWaitReadyLaunch(): void
+    {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/testing/attempts',
+            [
+                'testId' => RequestFixture::TEST_ID,
+                'ticketNumber' => RequestFixture::TICKET_NUMBER,
+            ],
+            $this->authHeaders($this->waitReadyUserToken)
+        );
+
+        self::assertEquals(201, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+        self::assertArrayHasKey('attemptId', $data);
+
+        self::assertCount(2, $transport->getSent());
+
+        $messages = $transport->getSent();
+
+        $timeoutMessages = array_filter($messages, static fn ($message) => $message->getMessage() instanceof TimeoutAttemptCommand);
+        $subscriptionsMessages = array_filter($messages, static fn ($message) => $message->getMessage() instanceof SubscriptionPurchased);
+
+        $timeoutMessages = array_values($timeoutMessages);
+        $subscriptionsMessages = array_values($subscriptionsMessages);
+
+        self::assertCount(1, $timeoutMessages);
+        $timeoutMessage = $timeoutMessages[0]->getMessage();
+
+        self::assertInstanceOf(TimeoutAttemptCommand::class, $timeoutMessage);
+        self::assertNotNull($timeoutMessage->attemptId);
+
+        self::assertCount(1, $subscriptionsMessages);
+        $subscriptionPurchaseMessage = $subscriptionsMessages[0]->getMessage();
+
+        self::assertInstanceOf(SubscriptionPurchased::class, $subscriptionPurchaseMessage);
+
+        self::assertNotNull($subscriptionPurchaseMessage->id);
+        self::assertNotNull($subscriptionPurchaseMessage->userId);
+        self::assertNotNull($subscriptionPurchaseMessage->plan);
+        self::assertNotNull($subscriptionPurchaseMessage->ended);
     }
 
     public function testNotFound(): void

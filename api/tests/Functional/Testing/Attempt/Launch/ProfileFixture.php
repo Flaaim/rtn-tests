@@ -38,6 +38,18 @@ final class ProfileFixture extends AbstractFixture
             ->build();
         $manager->persist($trialUserProfile);
 
+        $waitNotReadyUserProfile = new ProfileBuilder()
+            ->withProfileId(new ProfileId(UserFixture::WAIT_NOT_READY_USER_ID))
+            ->withEmail(new Email(UserFixture::WAIT_NOT_READY_USER_EMAIL))
+            ->build();
+        $manager->persist($waitNotReadyUserProfile);
+
+        $waitReadyUserProfile = new ProfileBuilder()
+            ->withProfileId(new ProfileId(UserFixture::WAIT_READY_USER_ID))
+            ->withEmail(new Email(UserFixture::WAIT_READY_USER_EMAIL))
+            ->build();
+        $manager->persist($waitReadyUserProfile);
+
         $manager->flush();
     }
 }
