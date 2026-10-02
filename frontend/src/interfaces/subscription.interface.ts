@@ -26,3 +26,8 @@ export interface SubscriptionAdminDTO extends Omit<SubscriptionDTO, "plan"> {
   status: SubscriptionStatus;
   email: string;
 }
+
+export interface ProfileSelectOption {
+  id: string;
+  email: string;
+}

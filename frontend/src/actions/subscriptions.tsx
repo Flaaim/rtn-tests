@@ -2,6 +2,7 @@
 
 import { ApiResponse } from "@/interfaces/response.interface";
 import {
+  ProfileSelectOption,
   SubscriptionAdminDTO,
   SubscriptionAdminListDTO,
   SubscriptionListDTO,
@@ -63,6 +64,23 @@ export async function fetchSubscriptionAction(
     return handleApiResponse<SubscriptionAdminDTO>(response);
   } catch (error) {
     console.error("fetchSubscriptionAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchProfilesToSelectAction(): Promise<ApiResponse<ProfileSelectOption[]>> {
+  try {
+    const response = await apiFetch(API.profile.lookup(), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+
+    return handleApiResponse<ProfileSelectOption[]>(response);
+  } catch (error) {
+    console.error("fetchCoursesToSelectAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
