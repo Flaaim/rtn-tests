@@ -66,7 +66,7 @@ final readonly class SubscriptionFetcher implements SubscriptionFetcherInterface
         ];
     }
 
-    public function getByUserPaginated(string $userId, int $page, int $limit): array
+    public function getByUserPaginated(string $userId, int $page = 1, int $limit = 15): array
     {
         $page = max(1, $page);
         $limit = min(max(1, $limit), 100);

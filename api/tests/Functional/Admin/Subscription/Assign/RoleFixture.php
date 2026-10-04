@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Subscription\Activate;
+namespace Tests\Functional\Admin\Subscription\Assign;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Role as UserRole;
@@ -10,7 +10,7 @@ use App\Auth\Test\Builder\UserBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
-final class RequestFixture extends AbstractFixture
+final class RoleFixture extends AbstractFixture
 {
     public const string USER_EMAIL = 'user@mail.ru';
     public const string USER_PASSWORD = 'user';
