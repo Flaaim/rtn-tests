@@ -8,6 +8,7 @@ export const API = {
   admin: {
     getUsersStats: () => BASE_URL + `/v1/admin/stats/users`,
     getSubscriptionsStats: () => BASE_URL + `/v1/admin/stats/subscriptions`,
+    getAttemptsStats: () => BASE_URL + `/v1/admin/stats/attempts`,
   },
   auth: {
     joinByEmail: () => BASE_URL + `/v1/auth/join/request`,

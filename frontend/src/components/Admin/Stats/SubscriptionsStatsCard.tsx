@@ -1,5 +1,5 @@
 import { AdminSubscriptionsStats } from "@/interfaces/admin.interface";
-import {Activity, Clock, Zap, Percent, Target} from "lucide-react";
+import { Activity, Clock, Zap, Percent, Target } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface SubscriptionsStatsCardProps {

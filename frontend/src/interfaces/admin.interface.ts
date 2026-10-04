@@ -12,3 +12,11 @@ export interface AdminSubscriptionsStats {
   waitSubscriptions: number;
   conversionRate: number;
 }
+
+export interface AdminAttemptsStats {
+  totalAttempts: number;
+  attemptsToday: number;
+  attemptsThisWeek: number;
+  totalPassedAttempts: number;
+  successRate: number;
+}

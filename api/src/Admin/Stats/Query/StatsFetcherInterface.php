@@ -9,4 +9,6 @@ interface StatsFetcherInterface
     public function getUsersStats(): ?array;
 
     public function getSubscriptionsStats(): ?array;
+
+    public function getAttemptsStats(): ?array;
 }
