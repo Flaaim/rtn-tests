@@ -144,5 +144,6 @@ export const API = {
     },
     get: (id: string) => BASE_URL + `/v1/admin/subscriptions/${id}`,
     assign: () => BASE_URL + `/v1/admin/subscriptions`,
+    remove: (id: string) => BASE_URL + `/v1/admin/subscriptions/${id}`,
   },
 };

@@ -73,8 +73,6 @@ final class RequestActionTest extends WebTestCase
         );
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
-
-
     }
 
     public function testInvalid(): void

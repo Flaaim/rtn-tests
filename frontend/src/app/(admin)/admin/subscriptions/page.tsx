@@ -18,6 +18,7 @@ import SubscriptionPlanBadge from "@/components/Admin/Domain/Subscription/Subscr
 import SubscriptionSearch from "@/components/Admin/Subscription/SubscriptionSearch";
 import Pagination from "@/components/Pagination/Pagination";
 import AssignSubscription from "@/components/Admin/Subscription/AssignSubscription";
+import RemoveSubscriptionDialog from "@/components/Admin/Subscription/RemoveSubscriptionDialog";
 
 interface AdminSubscriptionsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -82,12 +83,13 @@ export default async function AdminSubscriptionsPage({
               <TableHead>Кол-во дней</TableHead>
               <TableHead>Начат</TableHead>
               <TableHead>Окончен</TableHead>
+              <TableHead>Удалить</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {!isHasSubscriptions && (
               <TableRow>
-                <TableCell colSpan={7} className="text-muted-foreground">
+                <TableCell colSpan={8} className="text-muted-foreground">
                   Подписки отсутствуют...
                 </TableCell>
               </TableRow>
@@ -109,6 +111,9 @@ export default async function AdminSubscriptionsPage({
                 <TableCell className="font-medium">{sub.durationDays}</TableCell>
                 <TableCell className="font-medium">{formatDate(sub.periodStart)}</TableCell>
                 <TableCell className="font-medium">{formatDate(sub.periodEnd)}</TableCell>
+                <TableCell>
+                  <RemoveSubscriptionDialog id={sub.id} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
