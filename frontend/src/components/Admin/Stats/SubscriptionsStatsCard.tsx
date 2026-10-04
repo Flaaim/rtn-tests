@@ -1,5 +1,5 @@
 import { AdminSubscriptionsStats } from "@/interfaces/admin.interface";
-import { Activity, Clock, Zap, Percent } from "lucide-react";
+import {Activity, Clock, Zap, Percent, Target} from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 interface SubscriptionsStatsCardProps {
@@ -27,6 +27,12 @@ export default function SubscriptionsStatsCard({ stats }: SubscriptionsStatsCard
       icon: Clock,
     },
     {
+      title: "Ожидающие",
+      value: stats.waitSubscriptions,
+      hint: "Запланированые админом",
+      icon: Target,
+    },
+    {
       title: "Конверсия",
       value: `${stats.conversionRate}%`,
       hint: "Из регистрации в оплату",
@@ -35,7 +41,7 @@ export default function SubscriptionsStatsCard({ stats }: SubscriptionsStatsCard
   ];
 
   return (
-    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
       {cards.map((card) => (
         <Card key={card.title} className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">

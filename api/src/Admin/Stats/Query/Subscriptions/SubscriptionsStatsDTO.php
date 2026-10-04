@@ -10,6 +10,7 @@ final readonly class SubscriptionsStatsDTO
         public int $trialSubscriptions,
         public int $activeSubscriptions,
         public int $expiredSubscriptions,
+        public int $waitSubscriptions,
         public float $conversionRate,
     ) {}
 
@@ -19,6 +20,7 @@ final readonly class SubscriptionsStatsDTO
             trialSubscriptions: $data['trial_subscriptions'],
             activeSubscriptions: $data['active_subscriptions'],
             expiredSubscriptions: $data['expired_subscriptions'],
+            waitSubscriptions: $data['wait_subscriptions'],
             conversionRate: (float)$data['conversion_rate'],
         );
     }

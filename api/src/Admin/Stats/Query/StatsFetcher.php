@@ -36,8 +36,9 @@ final readonly class StatsFetcher implements StatsFetcherInterface
         $sql = <<<'SQL'
                     SELECT
                         COUNT(s.id) FILTER (WHERE s.plan = 'trial') as trial_subscriptions,
-                        COUNT(s.id) FILTER (WHERE s.status = 'active') as active_subscriptions,
+                        COUNT(s.id) FILTER (WHERE s.status = 'active' AND s.plan <> 'trial') as active_subscriptions,
                         COUNT(s.id) FILTER (WHERE s.status = 'expired') as expired_subscriptions,
+                        COUNT (s.id) FILTER (WHERE s.status = 'wait') as wait_subscriptions,
                         COUNT(DISTINCT s.user_id) as total_subscriptions,
                         COUNT(DISTINCT u.id) as total_users,
                     ROUND (

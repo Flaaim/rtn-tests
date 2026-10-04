@@ -9,5 +9,6 @@ export interface AdminSubscriptionsStats {
   trialSubscriptions: number;
   activeSubscriptions: number;
   expiredSubscriptions: number;
+  waitSubscriptions: number;
   conversionRate: number;
 }
