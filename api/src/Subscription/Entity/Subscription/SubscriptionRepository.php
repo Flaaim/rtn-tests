@@ -6,6 +6,7 @@ namespace App\Subscription\Entity\Subscription;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use DomainException;
 
 final readonly class SubscriptionRepository
 {
@@ -48,5 +49,19 @@ final readonly class SubscriptionRepository
         }
         $this->em->flush();
         return null;
+    }
+
+    public function get(SubscriptionId $id): Subscription
+    {
+        $subscription = $this->repo->find($id);
+        if (null === $subscription) {
+            throw new DomainException('Subscription not found.');
+        }
+        return $subscription;
+    }
+
+    public function remove(Subscription $subscription): void
+    {
+        $this->em->remove($subscription);
     }
 }
