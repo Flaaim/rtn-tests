@@ -9,9 +9,9 @@ const SUBSCRIPTION_STATUS: Record<string, { label: string; className: string }> 
     label: "Срок истек",
     className: "bg-gray-500",
   },
-  cancelled: {
-    label: "Отменен",
-    className: "destructive",
+  wait: {
+    label: "Запланирован",
+    className: "bg-amber-500",
   },
 };
 

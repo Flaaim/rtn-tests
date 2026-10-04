@@ -1,4 +1,4 @@
-export type SubscriptionStatus = "active" | "expired" | "cancelled";
+export type SubscriptionStatus = "active" | "expired" | "wait";
 export type SubscriptionType = "basic" | "trial";
 
 export interface SubscriptionListDTO {
