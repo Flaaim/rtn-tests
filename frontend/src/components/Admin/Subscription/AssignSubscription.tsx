@@ -4,7 +4,7 @@ import { z } from "zod";
 import { ProfileSelectOption } from "@/interfaces/subscription.interface";
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import { activateSubscriptionAction, fetchProfilesToSelectAction } from "@/actions/subscriptions";
+import { assignSubscriptionAction, fetchProfilesToSelectAction } from "@/actions/subscriptions";
 import { toast } from "sonner";
 import {
   Dialog,
@@ -15,7 +15,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Check, ChevronsUpDown, Plus } from "lucide-react";
+import { Check, ChevronsUpDown, Plus, CalendarIcon } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
@@ -29,7 +29,6 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -37,11 +36,17 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { format } from "date-fns";
+import { ru } from "date-fns/locale";
+import { Calendar } from "@/components/ui/calendar";
 
 const schema = z.object({
   userId: z.string().uuid(),
-  durationDays: z.number().min(1),
   plan: z.enum(["basic", "trial"]),
+  period: z.object({
+    from: z.date(),
+    to: z.date(),
+  }),
 });
 
 type AssignSubscriptionFormData = z.infer<typeof schema>;
@@ -50,6 +55,7 @@ export default function AssignSubscription() {
   const [open, setOpen] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [profiles, setProfiles] = useState<ProfileSelectOption[]>([]);
+
   const isProfilesLoaded = profiles.length > 0;
   const [openPopover, setOpenPopover] = useState<boolean>(false);
 
@@ -76,10 +82,11 @@ export default function AssignSubscription() {
   }, [open]);
 
   async function onSubmit(values: AssignSubscriptionFormData) {
-    const result = await activateSubscriptionAction({
+    const result = await assignSubscriptionAction({
       userId: values.userId,
       plan: values.plan,
-      durationDays: values.durationDays,
+      periodStart: format(values.period.from, "yyyy-MM-dd"),
+      periodEnd: format(values.period.to, "yyyy-MM-dd"),
     });
     if (!result.ok) {
       form.setError("root", { type: "server", message: result.error });
@@ -97,8 +104,8 @@ export default function AssignSubscription() {
     resolver: zodResolver(schema),
     defaultValues: {
       userId: "",
-      durationDays: 0,
       plan: undefined as unknown as "basic" | "trial",
+      period: undefined,
     },
   });
 
@@ -109,7 +116,7 @@ export default function AssignSubscription() {
       disabled={form.formState.isSubmitting}
       className="cursor-pointer py-2"
     >
-      {form.formState.isSubmitting ? "Загрузка..." : "Добавить подписку"}
+      {form.formState.isSubmitting ? "Загрузка..." : "Добавить"}
     </Button>
   );
 
@@ -215,26 +222,63 @@ export default function AssignSubscription() {
               )}
             />
           </FieldGroup>
+
           <FieldGroup>
             <Controller
-              name="durationDays"
+              name="period"
               control={form.control}
               render={({ field, fieldState }) => (
                 <Field data-invalid={fieldState.invalid} className="flex flex-col gap-2">
-                  <FieldLabel htmlFor="durationDays">Количество дней</FieldLabel>
-                  <Input
-                    {...field}
-                    id="durationDays"
-                    value={field.value ?? ""}
-                    placeholder=""
-                    aria-invalid={fieldState.invalid}
-                    type="number"
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      field.onChange(val === "" ? undefined : Number(val));
-                    }}
-                  />
-                  {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+                  <FieldLabel htmlFor="period">Период подписки</FieldLabel>
+                  <Popover>
+                    <PopoverTrigger
+                      render={
+                        <Button
+                          variant="outline"
+                          id="date-picker-range"
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !field.value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon data-icon="inline-start" />
+                          {field.value?.from ? (
+                            field.value?.to ? (
+                              <>
+                                {format(field.value.from, "dd.MM.yyyy")} -{" "}
+                                {format(field.value.to, "dd.MM.yyyy")}
+                              </>
+                            ) : (
+                              format(field.value.from, "dd.MM.yyyy")
+                            )
+                          ) : (
+                            <span>Выберите период</span>
+                          )}
+                        </Button>
+                      }
+                    />
+                    {field.value
+                      ? `Выбран ${format(field.value.from, "dd.MM.yyyy")} -
+                          ${format(field.value.to, "dd.MM.yyyy")}`
+                      : `Выберите период`}
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="range"
+                        defaultMonth={field.value?.from || new Date()}
+                        selected={field.value}
+                        onSelect={field.onChange}
+                        numberOfMonths={2}
+                        locale={ru}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                  {(fieldState.error || form.formState.errors.period?.from) && (
+                    <FieldError
+                      errors={[
+                        { message: fieldState.error?.message || "Укажите корректный период" },
+                      ]}
+                    />
+                  )}
                 </Field>
               )}
             />

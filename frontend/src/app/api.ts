@@ -143,6 +143,6 @@ export const API = {
       return BASE_URL + `/v1/admin/subscriptions?${params.toString()}`;
     },
     get: (id: string) => BASE_URL + `/v1/admin/subscriptions/${id}`,
-    activate: () => BASE_URL + `/v1/admin/subscriptions`,
+    assign: () => BASE_URL + `/v1/admin/subscriptions`,
   },
 };

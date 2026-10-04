@@ -35,5 +35,6 @@ export interface ProfileSelectOption {
 export interface AssignSubscriptionPayload {
   userId: string;
   plan: SubscriptionType;
-  durationDays: number;
+  periodStart: string;
+  periodEnd: string;
 }

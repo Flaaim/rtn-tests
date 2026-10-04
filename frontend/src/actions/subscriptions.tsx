@@ -86,11 +86,11 @@ export async function fetchProfilesToSelectAction(): Promise<ApiResponse<Profile
   }
 }
 
-export async function activateSubscriptionAction(
+export async function assignSubscriptionAction(
   payload: AssignSubscriptionPayload
 ): Promise<ApiResponse<void>> {
   try {
-    const response = await apiFetch(API.subscription.activate(), {
+    const response = await apiFetch(API.subscription.assign(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -99,7 +99,8 @@ export async function activateSubscriptionAction(
       body: JSON.stringify({
         userId: payload.userId,
         plan: payload.plan,
-        durationDays: payload.durationDays,
+        periodStart: payload.periodStart,
+        periodEnd: payload.periodEnd,
       }),
     });
     return handleApiResponse<void>(response);
