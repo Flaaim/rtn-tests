@@ -2,11 +2,11 @@ import { fetchPublicCategoryTreeAction } from "@/actions/category";
 import { CategoryDTO } from "@/interfaces/category.interface";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import Link from "next/link";
-import { ArrowRight, Flame, FolderOpen, ShieldCheck, Zap } from "lucide-react";
+import { ArrowRight, Factory, FolderOpen, ShieldCheck, Zap } from "lucide-react";
 
 const getCategoryIcon = (slug: string) => {
-  if (slug.includes("pozharnaya")) return <Flame className="h-7 w-7 text-orange-500" />;
-  if (slug.includes("elektro")) return <Zap className="h-7 w-7 text-yellow-500" />;
+  if (slug.includes("promyslennaa")) return <Factory className="h-7 w-7 text-orange-500" />;
+  if (slug.includes("energeticeskaa")) return <Zap className="h-7 w-7 text-yellow-500" />;
   if (slug.includes("ohrana-truda")) return <ShieldCheck className="h-7 w-7 text-blue-500" />;
   return <FolderOpen className="h-7 w-7 text-primary" />;
 };
@@ -29,11 +29,11 @@ export default async function HomePage() {
       {/* Hero секция */}
       <section className="space-y-4">
         <h1 className="text-4xl font-extrabold tracking-tight md:text-5xl">
-          Платформа проверки знаний
+          Платформа подготовки к аттестации в Ростехнадзоре
         </h1>
         <p className="max-w-[700px] text-lg text-muted-foreground">
-          Выберите направление для подготовки и прохождения квалификационных тестов. Актуальная база
-          вопросов и мгновенный результат.
+          Подготовьтесь к аттестации в РТН по актуальным тестам. Выберите направление для подготовки
+          и прохождения квалификационных тестов. Актуальная база вопросов и мгновенный результат.
         </p>
       </section>
 
