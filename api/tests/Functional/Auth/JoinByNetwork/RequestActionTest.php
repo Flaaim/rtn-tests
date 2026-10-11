@@ -112,6 +112,26 @@ final class RequestActionTest extends WebTestCase
         self::assertNotNull($message->role);
     }
 
+    public function testSuccessJoinByNetworkWithGuestId(): void
+    {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/auth/join/network/request',
+            [
+                'email' => RequestFixture::JOIN_BY_YANDEX['email'],
+                'network' => RequestFixture::JOIN_BY_YANDEX['network'],
+                'identity' => RequestFixture::JOIN_BY_YANDEX['identity'],
+            ],
+            ['HTTP_X-Guest-ID' => RequestFixture::GUEST_ID]
+        );
+        self::assertEquals(201, $this->client->getResponse()->getStatusCode());
+        self::assertCount(2, $transport->getSent());
+    }
+
     public function testEmpty(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/network/request');

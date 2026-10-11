@@ -23,6 +23,7 @@ final class RequestFixture extends AbstractFixture
         'identity' => '00003',
     ];
     public const string EXISTS_EMAIL = 'exists@email.com';
+    public const string GUEST_ID = 'e92fa0c3-beb1-4fa6-bd85-fcc6a8dba182';
 
     public function load(ObjectManager $manager): void
     {

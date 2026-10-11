@@ -15,6 +15,8 @@ final class Command
         #[Assert\NotBlank]
         public string $network,
         #[Assert\NotBlank]
-        public string $identity
+        public string $identity,
+        #[Assert\Uuid]
+        public ?string $guestId = null
     ) {}
 }

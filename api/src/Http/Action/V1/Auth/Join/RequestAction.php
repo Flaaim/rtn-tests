@@ -21,11 +21,12 @@ final class RequestAction
     #[Route('/v1/auth/join/request', name: 'auth.join.request', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
+        $guestId = $request->headers->get('X-Guest-ID');
         $body = $request->toArray();
         $email = (string)($body['email'] ?? '');
         $password = (string)($body['password'] ?? '');
 
-        $command = new Command($email, $password);
+        $command = new Command($email, $password, $guestId);
 
         $this->validator->validate($command);
 

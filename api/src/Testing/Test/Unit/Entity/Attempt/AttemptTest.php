@@ -135,4 +135,22 @@ final class AttemptTest extends TestCase
 
         $attempt->finishByTimeout();
     }
+
+    public function testAssignToUser(): void
+    {
+        $attempt = new Attempt(
+            AttemptId::generate(),
+            '244b276c-0f55-4940-8d73-e87f9aacab42',
+            '6b3ae503-2e33-45bf-be3d-93c7383aebf9',
+            Status::passed(),
+            new DateTimeImmutable(),
+            1,
+            [],
+            8,
+            1
+        );
+
+        $attempt->assignToUser($userId = '623993fc-e0f4-4343-a517-5ad3a477ade5');
+        self::assertEquals($userId, $attempt->getUserId());
+    }
 }

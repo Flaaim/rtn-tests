@@ -21,13 +21,14 @@ final class RequestAction
     #[Route('/v1/auth/join/network/request', name: 'auth.join.network.request', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
+        $guestId = $request->headers->get('X-Guest-ID');
         $body = $request->toArray();
 
         $email = (string)($body['email'] ?? '');
         $network = (string)($body['network'] ?? '');
         $identity = (string)($body['identity'] ?? '');
 
-        $command = new Command($email, $network, $identity);
+        $command = new Command($email, $network, $identity, $guestId);
 
         $this->validator->validate($command);
         $this->handler->handle($command);

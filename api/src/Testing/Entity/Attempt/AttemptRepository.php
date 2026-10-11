@@ -53,4 +53,9 @@ final class AttemptRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function findByUserId(string $userId): array
+    {
+        return $this->repo->findBy(['userId' => $userId]);
+    }
 }
