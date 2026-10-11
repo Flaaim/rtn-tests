@@ -43,4 +43,14 @@ final class AttemptRepository
             'ticketNumber' => $ticketNumber,
         ]);
     }
+
+    public function countByUserId(string $userId): int
+    {
+        return (int)$this->repo->createQueryBuilder('t')
+            ->select('COUNT(t.id)')
+            ->where('t.userId = :user')
+            ->setParameter('user', $userId)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

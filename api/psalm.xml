@@ -30,6 +30,7 @@
                 <directory name="src/Parser/Service" />
                 <directory name="src/Infrastructure" />
                 <directory name="src/Course/Command" />
+                <directory name="src/Testing/Command" />
             </errorLevel>
         </UnusedClass>
 

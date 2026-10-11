@@ -16,9 +16,11 @@ use App\Testing\Entity\Test\TestRepository;
 use App\Testing\Event\Attempt\TimeoutAttemptCommand;
 use DateTimeImmutable;
 use DomainException;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\DelayStamp;
 
+#[AsMessageHandler(method: 'handle')]
 final readonly class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */

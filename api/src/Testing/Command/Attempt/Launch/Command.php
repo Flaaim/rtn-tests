@@ -6,16 +6,16 @@ namespace App\Testing\Command\Attempt\Launch;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
-final class Command
+final readonly class Command
 {
     public function __construct(
         #[Assert\NotBlank]
         #[Assert\Uuid]
-        public readonly string $testId,
+        public string $testId,
         #[Assert\NotBlank]
         #[Assert\Uuid]
-        public readonly string $userId,
+        public string $userId,
         #[Assert\GreaterThan(0)]
-        public readonly int $ticketNumber,
+        public int $ticketNumber
     ) {}
 }

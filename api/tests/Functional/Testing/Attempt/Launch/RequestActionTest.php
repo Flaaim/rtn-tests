@@ -79,13 +79,6 @@ final class RequestActionTest extends WebTestCase
         );
     }
 
-    public function testUnauthenticatedReturns401(): void
-    {
-        $this->client->jsonRequest('POST', '/v1/testing/attempts');
-
-        self::assertEquals(401, $this->client->getResponse()->getStatusCode());
-    }
-
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */

@@ -48,7 +48,6 @@ final class HandlerExceptionSubscriptionTest extends TestCase
         $subscriber->onKernelException($event);
         $throwable = $event->getThrowable();
 
-        self::assertNotNull($throwable);
         self::assertInstanceOf(DomainException::class, $throwable);
 
         self::assertEquals('Domain exception', $throwable->getMessage());

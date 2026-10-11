@@ -55,6 +55,9 @@ framework:
 
             'App\Subscription\Event\Subscription\SubscriptionPurchased': async
 
+            'App\Testing\Command\Attempt\Launch\Command': sync
+            'App\Testing\Command\Attempt\DemoLaunch\Command': sync
+
 when@test:
     framework:
         messenger:
