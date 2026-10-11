@@ -23,7 +23,7 @@ final class PasswordChangeSender
     public function send(Email $email): void
     {
         $message = new SymfonyEmail()
-            ->subject('Change password')
+            ->subject('Смена пароля')
             ->to($email->getValue())
             ->html($this->twig->render(self::TEMPLATE));
 
