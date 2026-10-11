@@ -37,7 +37,7 @@ export default async function AttemptResultPage({ params }: ResultPageProps) {
             <div className="flex flex-col p-4 bg-muted/30 rounded-lg">
               <span className="text-sm text-muted-foreground">Пользователь</span>
               <span className="font-semibold truncate" title={attemptData.email}>
-                {attemptData.email}
+                {attemptData.email || "Гость"}
               </span>
             </div>
             <div className="flex flex-col p-4 bg-muted/30 rounded-lg">

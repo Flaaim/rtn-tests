@@ -45,8 +45,6 @@ final readonly class Handler
 
         $this->users->add($user);
 
-        $this->flusher->flush();
-
         if (null !== $command->guestId) {
             $this->messageBus->dispatch(
                 new GuestJoined(
@@ -55,5 +53,7 @@ final readonly class Handler
                 )
             );
         }
+
+        $this->flusher->flush();
     }
 }

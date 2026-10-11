@@ -40,12 +40,28 @@ final class RequestActionTest extends WebTestCase
         );
     }
 
-    public function testUnauthenticatedReturns401(): void
+    public function testAnonymousUserReturns403(): void
     {
         $this->client->jsonRequest(
             'POST',
-            '/v1/testing/attempts/' . RequestFixture::TEST_ID . '/sumbit'
+            '/v1/testing/attempts/' . RequestFixture::TEST_ID . '/submit'
         );
+        self::assertEquals(403, $this->client->getResponse()->getStatusCode());
+    }
+
+    public function testSuccessGuestUser(): void
+    {
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/testing/attempts/' . RequestFixture::ATTEMPT_ID . '/submit',
+            [
+                'questionId' => '23ca06c6-6d2d-45d6-ae89-0526afdff6f4',
+                'selectedAnswersIds' => ['93ff5fdd3e7eeb5cc38696beac126968'],
+            ],
+            ['HTTP_X-Guest-ID' => RequestFixture::GUEST_ID]
+        );
+
+        self::assertEquals(201, $this->client->getResponse()->getStatusCode());
     }
 
     public function testSuccess(): void

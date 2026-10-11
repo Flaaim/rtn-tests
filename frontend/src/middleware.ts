@@ -12,12 +12,27 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/join/login", request.url));
   }
 
+  if (pathname === "/join/login" && (accessToken || refreshToken)) {
+    return NextResponse.redirect(new URL("/user/dashboard", request.url));
+  }
+
   const requestHeaders = new Headers(request.headers);
   let response = NextResponse.next({
     request: {
       headers: requestHeaders,
     },
   });
+
+  if (!request.cookies.has("guest_id")) {
+    const guestId = crypto.randomUUID();
+
+    response.cookies.set("guest_id", guestId, {
+      maxAge: 60 * 60 * 24 * 30,
+      path: "/",
+      httpOnly: false,
+      sameSite: "lax",
+    });
+  }
 
   if (isProtected && !accessToken && refreshToken) {
     try {
@@ -36,6 +51,15 @@ export async function middleware(request: NextRequest) {
       response = NextResponse.next({
         request: { headers: requestHeaders },
       });
+
+      const guestId = request.cookies.get("guest_id")?.value;
+      if (guestId) {
+        response.cookies.set("guest_id", guestId, {
+          maxAge: 60 * 60 * 24 * 30,
+          path: "/",
+          httpOnly: false,
+        });
+      }
 
       response.cookies.set({
         name: "access_token",
@@ -67,5 +91,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/user/:path*", "/admin/:path*", "/join/login"],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico|sitemap.xml|robots.txt).*)"],
 };

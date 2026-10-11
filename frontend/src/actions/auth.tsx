@@ -18,7 +18,7 @@ interface TokenResponseData {
 
 export async function JoinAction(data: JoinData): Promise<ApiResponse> {
   try {
-    const response = await fetch(API.auth.joinByEmail(), {
+    const response = await apiFetch(API.auth.joinByEmail(), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -29,11 +29,7 @@ export async function JoinAction(data: JoinData): Promise<ApiResponse> {
         password: data.password,
       }),
     });
-    const parsed = await handleApiResponse(response);
-    if (!parsed.ok) {
-      return { ok: false, error: parsed.error };
-    }
-    return { ok: true };
+    return await handleApiResponse(response);
   } catch (error) {
     console.error("JoinAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API" };
@@ -261,7 +257,7 @@ export async function yandexLoginAction(code: string): Promise<ApiResponse> {
   });
 
   try {
-    const response = await fetch(API.auth.socialLogin(), {
+    const response = await apiFetch(API.auth.socialLogin(), {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",

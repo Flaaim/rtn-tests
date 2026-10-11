@@ -59,7 +59,7 @@ export default function JoinByEmail() {
   async function onSubmit(values: FormData) {
     const result = await JoinAction(values);
 
-    if (!result.ok) {
+    if (!result.ok || !result.data) {
       form.setError("root", { type: "server", message: result.error });
       return;
     }

@@ -69,7 +69,7 @@ final class AttemptFetcher implements AttemptFetcherInterface
             ->leftJoin('a', 'tests', 't', 'a.test_id = t.id')
             ->leftJoin('a', 'users', 'u', 'a.user_id = u.id')
             ->andWhere($qb->expr()->eq('a.id', ':id'))
-            ->andWhere($qb->expr()->eq('u.id', ':userId'))
+            ->andWhere($qb->expr()->eq('a.user_id', ':userId'))
             ->setParameter('id', $attemptId)
             ->setParameter('userId', $userId)
             ->executeQuery()

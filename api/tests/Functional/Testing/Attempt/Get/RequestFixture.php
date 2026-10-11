@@ -29,6 +29,8 @@ final class RequestFixture extends AbstractFixture
     public const string USER_PASSWORD = 'user';
     public const string COURSE_ID = '63879491-6883-4e88-8be2-295d3d260346';
 
+    public const string GUEST_ID = 'c8132964-a425-4e53-82d1-6509e4787db3';
+
     public function load(ObjectManager $manager): void
     {
         $user = new UserBuilder()

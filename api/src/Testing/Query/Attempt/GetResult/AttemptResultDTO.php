@@ -17,7 +17,7 @@ final class AttemptResultDTO
         public string $startedAt,
         public TestDTO $test,
         public array $questions,
-        public string $email,
+        public ?string $email = null,
         public ?string $finishedAt = null,
     ) {}
 
