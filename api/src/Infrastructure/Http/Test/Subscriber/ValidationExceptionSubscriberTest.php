@@ -36,7 +36,7 @@ final class ValidationExceptionSubscriberTest extends TestCase
         $subscriber = new ValidationExceptionSubscriber();
         $request = new Request();
 
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = self::createStub(HttpKernelInterface::class);
         $event = new ExceptionEvent(
             $kernel,
             $request,
@@ -62,7 +62,7 @@ final class ValidationExceptionSubscriberTest extends TestCase
         $subscriber = new ValidationExceptionSubscriber();
 
         $request = new Request();
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = self::createStub(HttpKernelInterface::class);
 
         $event = new ExceptionEvent(
             $kernel,

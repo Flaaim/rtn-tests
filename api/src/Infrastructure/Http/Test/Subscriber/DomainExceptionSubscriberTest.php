@@ -35,7 +35,7 @@ final class DomainExceptionSubscriberTest extends TestCase
         $subscriber = new DomainExceptionSubscriber($logger);
 
         $request = Request::create('http://localhost/api/test');
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = self::createStub(HttpKernelInterface::class);
         $event = new ExceptionEvent(
             $kernel,
             $request,
@@ -55,7 +55,7 @@ final class DomainExceptionSubscriberTest extends TestCase
 
         self::assertNotNull($response);
         self::assertInstanceOf(JsonResponse::class, $response);
-        self::assertEquals(JsonResponse::HTTP_BAD_REQUEST, $response->getStatusCode());
+        self::assertEquals(JsonResponse::HTTP_CONFLICT, $response->getStatusCode());
         self::assertJson($body = (string)$response->getContent());
 
         $data = json_decode($body, true);
@@ -70,7 +70,7 @@ final class DomainExceptionSubscriberTest extends TestCase
         $subscriber = new DomainExceptionSubscriber($logger);
 
         $request = new Request();
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = self::createStub(HttpKernelInterface::class);
         $event = new ExceptionEvent(
             $kernel,
             $request,

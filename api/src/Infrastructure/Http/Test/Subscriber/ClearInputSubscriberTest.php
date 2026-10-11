@@ -23,7 +23,7 @@ final class ClearInputSubscriberTest extends TestCase
     {
         $subscriber = ClearEmptyInputSubscriber::getSubscribedEvents();
         self::assertArrayHasKey(KernelEvents::REQUEST, $subscriber);
-        self::assertEquals(['onKernelRequest', 20], $subscriber['kernel.request']);
+        self::assertEquals(['onKernelRequest', 100], $subscriber['kernel.request']);
     }
 
     public function testParsedBody(): void
@@ -42,7 +42,7 @@ final class ClearInputSubscriberTest extends TestCase
             ],
         ]);
 
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = self::createStub(HttpKernelInterface::class);
         $event = new RequestEvent(
             $kernel,
             $request,
@@ -83,7 +83,7 @@ final class ClearInputSubscriberTest extends TestCase
             'emptyArray' => [$noFile, $noFile],
         ]);
 
-        $kernel = $this->createMock(HttpKernelInterface::class);
+        $kernel = self::createStub(HttpKernelInterface::class);
         $event = new RequestEvent(
             $kernel,
             $request,

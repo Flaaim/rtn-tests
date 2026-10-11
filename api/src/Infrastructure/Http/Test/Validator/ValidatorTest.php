@@ -37,7 +37,7 @@ final class ValidatorTest extends TestCase
         $object = new stdClass();
 
         $validatorInterface->expects(self::once())
-            ->method('validate')->willReturn($violations = new ConstraintViolationList([$this->createMock(ConstraintViolation::class)]));
+            ->method('validate')->willReturn($violations = new ConstraintViolationList([self::createStub(ConstraintViolation::class)]));
         try {
             $validator->validate($object);
             self::fail('Expected exception is not thrown');
