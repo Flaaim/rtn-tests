@@ -22,7 +22,7 @@ final class PasswordChangeSenderTest extends TestCase
     public function testSuccess(): void
     {
         $email = new Email('test@email.ru');
-        $subject = 'Change password';
+        $subject = 'Смена пароля';
         $template = 'auth/password/change.html.twig';
 
         $loader = new ArrayLoader([
@@ -51,7 +51,7 @@ final class PasswordChangeSenderTest extends TestCase
     public function testError(): void
     {
         $email = new Email('test@email.ru');
-        $subject = 'Change password';
+        $subject = 'Смена пароля';
         $template = 'auth/password/change.html.twig';
 
         $loader = new ArrayLoader([
