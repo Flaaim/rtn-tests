@@ -145,7 +145,7 @@ deploy:
 
 	rm -f temp_jwt_public.key temp_jwt_private.key
 
-	ssh ${HOST} -p ${PORT} 'cd $(SITE_DIR) && docker compose pull --with-registry-auth'
+	ssh ${HOST} -p ${PORT} 'cd $(SITE_DIR) && docker compose pull'
 	ssh ${HOST} -p ${PORT} 'cd $(SITE_DIR) && docker compose up --build --remove-orphans -d'
 
 	ssh ${HOST} -p ${PORT} 'cd $(SITE_DIR) && docker compose run --rm api-php-cli php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration'
