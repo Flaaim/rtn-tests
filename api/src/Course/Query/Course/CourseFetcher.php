@@ -283,4 +283,13 @@ final readonly class CourseFetcher implements CourseFetcherInterface
             ],
         ];
     }
+
+    public function getAllQuestionIdsForSitemap(): array
+    {
+        return $this->connection->createQueryBuilder()
+            ->select('id')
+            ->from('questions')
+            ->executeQuery()
+            ->fetchFirstColumn();
+    }
 }

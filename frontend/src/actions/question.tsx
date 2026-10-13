@@ -23,3 +23,16 @@ export async function fetchPublicQuestionAction(
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function fetchQuestionIdsForSitemapAction(): Promise<ApiResponse<string[]>> {
+  try {
+    const response = await apiFetch(`/v1/seo/sitemap/questions`, {
+      method: "GET",
+      next: { revalidate: 86400 },
+    });
+
+    return await handleApiResponse<string[]>(response);
+  } catch {
+    return { ok: false, error: "Failed to fetch sitemap questions" };
+  }
+}
