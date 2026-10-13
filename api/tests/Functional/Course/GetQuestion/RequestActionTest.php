@@ -59,5 +59,6 @@ final class RequestActionTest extends WebTestCase
         $category = $data['category'];
         self::assertArrayHasKey('name', $category);
         self::assertArrayHasKey('slug', $category);
+        self::assertArrayHasKey('parent', $category);
     }
 }

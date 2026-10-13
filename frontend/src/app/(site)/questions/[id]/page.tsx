@@ -3,12 +3,12 @@ import { Metadata } from "next";
 import { checkIsAuthenticated } from "@/actions/auth";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { BookOpen, CheckCircle2, ChevronRight, Circle, Sparkles } from "lucide-react";
+import { CheckCircle2, ChevronRight, Circle, Sparkles } from "lucide-react";
 import { fetchPublicQuestionAction } from "@/actions/question";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { PublicAnswerData } from "@/interfaces/question.interface";
 import PublicTicketButton from "@/components/Testing/Test/PublicTicketButton";
-import { Button } from "@base-ui/react";
+import { Button } from "@/components/ui/button";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -52,6 +52,10 @@ export default async function PublicQuestionPage({ params }: PageProps) {
     .map((a) => a.text)
     .join("; ");
 
+  const testUrl = question.category.parent
+    ? `/catalog/${question.category.parent.slug}/${question.category.slug}/${question.test.slug}`
+    : `/catalog/${question.category.slug}/${question.test.slug}`;
+
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "QAPage",
@@ -77,16 +81,34 @@ export default async function PublicQuestionPage({ params }: PageProps) {
         <Link href="/" className="hover:text-foreground transition-colors">
           Главная
         </Link>
+
+        {question.category.parent && (
+          <>
+            <ChevronRight className="h-4 w-4 shrink-0" />
+            <Link
+              href={`/catalog/${question.category.parent.slug}`}
+              className="hover:text-foreground transition-colors"
+            >
+              {question.category.parent.name}
+            </Link>
+          </>
+        )}
+
         <ChevronRight className="h-4 w-4 shrink-0" />
         <Link
-          href={`/categories/${question.category.slug}`}
+          href={
+            question.category.parent
+              ? `/catalog/${question.category.parent.slug}/${question.category.slug}`
+              : `/catalog/${question.category.slug}`
+          }
           className="hover:text-foreground transition-colors"
         >
           {question.category.name}
         </Link>
+
         <ChevronRight className="h-4 w-4 shrink-0" />
         <Link
-          href={`/tests/${question.test.slug}`}
+          href={testUrl}
           className="hover:text-foreground transition-colors font-medium text-foreground"
         >
           {question.test.name}
@@ -95,9 +117,7 @@ export default async function PublicQuestionPage({ params }: PageProps) {
 
       <Card className="mb-8 border-border/80 shadow-sm">
         <CardHeader className="space-y-3 pb-4">
-          <div className="flex items-center justify-between gap-2">
-              Актуальная база вопросов
-          </div>
+          <div className="flex items-center justify-between gap-2">Актуальная база вопросов</div>
           <h1 className="text-xl md:text-2xl font-bold leading-snug">{question.text}</h1>
         </CardHeader>
 
@@ -145,40 +165,43 @@ export default async function PublicQuestionPage({ params }: PageProps) {
         </CardContent>
       </Card>
 
-      <div className="rounded-xl border bg-gradient-to-br from-primary/5 via-background to-primary/10 p-6 md:p-8 flex flex-col md:flex-row items-center justify-between gap-6">
-        <div className="space-y-2 text-center md:text-left">
-          <div className="inline-flex items-center gap-2 text-sm font-semibold text-primary">
-            <Sparkles className="h-4 w-4" />
-            <span>Бесплатный демо-режим без регистрации</span>
-          </div>
-          <h2 className="text-xl font-bold">
-            Проверьте свои знания по курсу «{question.test.name}»
-          </h2>
-          <p className="text-sm text-muted-foreground max-w-xl">
-            Не нужно зубрить ответы по одному. Запустите полноценный симулятор экзамена прямо сейчас
-            (доступно 2 бесплатных билета) или перейдите ко всем билетам курса.
-          </p>
-        </div>
+      <div className="relative overflow-hidden rounded-2xl border border-primary/20 bg-gradient-to-br from-primary/[0.07] via-background to-primary/[0.12] p-6 md:p-8 shadow-sm">
+        <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
+          <div className="space-y-2.5 text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">
+              <Sparkles className="h-3.5 w-3.5" />
+              <span>Тренажер экзамена Ростехнадзора • Без регистрации</span>
+            </div>
 
-        <div className="flex flex-col sm:flex-row items-center gap-3 shrink-0">
-          {/* Если добавил test.id в ответ бэкенда — запускаем сразу 1-й билет */}
-          {question.test.id && (
-            <div className="flex items-center gap-2">
+            <h2 className="text-xl md:text-2xl font-bold tracking-tight">
+              Готовы проверить знания по курсу «{question.test.name}»?
+            </h2>
+
+            <p className="text-sm md:text-base text-muted-foreground max-w-2xl">
+              Не нужно учить вопросы вразнобой. Запустите режим реального экзамена прямо сейчас
+              (доступно 2 бесплатных билета) или откройте полный список билетов и вопросов курса.
+            </p>
+          </div>
+
+          {/* Кнопки действий */}
+          <div className="flex flex-col sm:flex-row lg:flex-col xl:flex-row items-stretch sm:items-center justify-center gap-3 shrink-0">
+            {question.test.id && (
               <PublicTicketButton
                 testId={question.test.id}
                 ticketNumber={1}
                 isAuthenticated={isAuthenticated}
+                label="Начать экзамен (Билет №1)"
               />
-              <span className="text-sm font-medium">Начать Билет №1</span>
-            </div>
-          )}
+            )}
 
-          <Button >
-            <Link href={`/tests/${question.test.slug}`}>
-              <BookOpen className="h-4 w-4 mr-2" />
-              Все билеты курса
-            </Link>
-          </Button>
+            <Button
+              variant="outline"
+              size="lg"
+              className="w-full sm:w-auto bg-background/80 hover:bg-background font-medium"
+            >
+              <Link href={testUrl}>Все вопросы курса</Link>
+            </Button>
+          </div>
         </div>
       </div>
     </main>

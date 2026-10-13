@@ -15,6 +15,7 @@ interface PublicTestData {
 interface PublicCategoryData {
   name: string;
   slug: string;
+  parent: PublicCategoryData;
 }
 export interface PublicAnswerData {
   id: string;

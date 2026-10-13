@@ -239,12 +239,17 @@ final readonly class CourseFetcher implements CourseFetcherInterface
         t.name as test_name,
         t.description as test_description,
         t.slug,
+        c.id as category_id,
         c.name as category_name,
-        c.slug as category_slug
+        c.slug as category_slug,
+        p.id as parent_id,
+        p.name as parent_name,
+        p.slug as parent_slug
         ')
             ->from('questions', 'q')
             ->join('q', 'tests', 't', 't.course_ids @> jsonb_build_array(q.course_id::text)')
             ->join('t', 'test_categories', 'c', 't.category_id = c.id')
+            ->leftJoin('c', 'test_categories', 'p', 'c.parent_id = p.id')
             ->where($qb->expr()->eq('q.id', ':questionId'))
             ->setParameter('questionId', $questionId)
             ->executeQuery()
@@ -270,6 +275,11 @@ final readonly class CourseFetcher implements CourseFetcherInterface
             'category' => [
                 'name' => $result['category_name'],
                 'slug' => $result['category_slug'],
+                'parent' => $result['parent_id'] ? [
+                    'id' => $result['parent_id'],
+                    'name' => $result['parent_name'],
+                    'slug' => $result['parent_slug'],
+                ] : null,
             ],
         ];
     }

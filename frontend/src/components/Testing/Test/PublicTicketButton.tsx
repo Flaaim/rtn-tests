@@ -11,12 +11,14 @@ interface PublicTicketButtonProps {
   testId: string;
   ticketNumber: number;
   isAuthenticated: boolean;
+  label?: string;
 }
 
 export default function PublicTicketButton({
   testId,
   ticketNumber,
   isAuthenticated,
+  label,
 }: PublicTicketButtonProps) {
   const [loading, setLoading] = useState<boolean>(false);
   const router = useRouter();
@@ -46,6 +48,24 @@ export default function PublicTicketButton({
 
     router.push(`/attempts/${result.data.attemptId}`);
   };
+
+  if (label) {
+    return (
+      <Button
+        onClick={handleLaunch}
+        disabled={loading}
+        size="lg"
+        className="w-full sm:w-auto font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer gap-2"
+      >
+        {loading ? (
+          <Loader2 className="h-5 w-5 animate-spin" />
+        ) : (
+          <PlayCircle className="h-5 w-5" />
+        )}
+        <span>{label}</span>
+      </Button>
+    );
+  }
 
   return (
     <Button

@@ -9,6 +9,7 @@ final readonly class CategoryDTO
     public function __construct(
         public string $name,
         public string $slug,
+        public ?array $parent = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -16,6 +17,7 @@ final readonly class CategoryDTO
         return new self(
             name: $data['name'],
             slug: $data['slug'],
+            parent: $data['parent'],
         );
     }
 }
