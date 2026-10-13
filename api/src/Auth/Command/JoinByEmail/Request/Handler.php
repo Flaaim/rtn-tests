@@ -55,7 +55,5 @@ final readonly class Handler
                 )
             );
         }
-
-
     }
 }

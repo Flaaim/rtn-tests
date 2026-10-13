@@ -10,10 +10,10 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
 /** @psalm-suppress UnusedClass */
-final class CourseFetcher implements CourseFetcherInterface
+final readonly class CourseFetcher implements CourseFetcherInterface
 {
     public function __construct(
-        private readonly Connection $connection
+        private Connection $connection
     ) {}
 
     /**
@@ -224,5 +224,53 @@ final class CourseFetcher implements CourseFetcherInterface
         }
 
         return $data;
+    }
+
+    public function getQuestion(string $questionId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select('
+        q.id,
+        q.text,
+        q.answers,
+        q.form,
+        t.id as test_id,
+        t.name as test_name,
+        t.description as test_description,
+        t.slug,
+        c.name as category_name,
+        c.slug as category_slug
+        ')
+            ->from('questions', 'q')
+            ->join('q', 'tests', 't', 't.course_ids @> jsonb_build_array(q.course_id::text)')
+            ->join('t', 'test_categories', 'c', 't.category_id = c.id')
+            ->where($qb->expr()->eq('q.id', ':questionId'))
+            ->setParameter('questionId', $questionId)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (false === $result) {
+            return [];
+        }
+
+        $answers = json_decode($result['answers'], true, 512, JSON_THROW_ON_ERROR);
+
+        return [
+            'id' => $result['id'],
+            'text' => $result['text'],
+            'answers' => $answers,
+            'form' => $result['form'],
+            'test' => [
+                'id' => $result['test_id'],
+                'name' => $result['test_name'],
+                'description' => $result['test_description'],
+                'slug' => $result['slug'],
+            ],
+            'category' => [
+                'name' => $result['category_name'],
+                'slug' => $result['category_slug'],
+            ],
+        ];
     }
 }

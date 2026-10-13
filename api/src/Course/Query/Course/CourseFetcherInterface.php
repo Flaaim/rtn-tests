@@ -17,4 +17,6 @@ interface CourseFetcherInterface
     public function getQuestionsByCourseIds(array $courseIds): array;
 
     public function getQuestions(array $questionIds): array;
+
+    public function getQuestion(string $questionId): array;
 }
