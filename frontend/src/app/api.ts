@@ -85,6 +85,9 @@ export const API = {
       return url.toString();
     },
   },
+  question: {
+    getQuestion: (id: string) => BASE_URL + `/v1/questions/${id}`,
+  },
   test: {
     add: () => BASE_URL + `/v1/admin/testing/tests`,
     getPaginated: (page: number, perPage: number, search?: string) => {
