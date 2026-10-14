@@ -10,7 +10,8 @@ final class TestDTO
         public string $id,
         public string $name,
         public string $cipher,
-        public int $allowedMistakes
+        public int $allowedMistakes,
+        public string $slug,
     ) {}
 
     public static function fromArray(array $data): self
@@ -20,6 +21,7 @@ final class TestDTO
             name: $data['name'],
             cipher: $data['cipher'],
             allowedMistakes: $data['allowed_mistakes'],
+            slug: $data['slug'],
         );
     }
 }

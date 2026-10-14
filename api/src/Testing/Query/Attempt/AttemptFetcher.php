@@ -64,11 +64,37 @@ final class AttemptFetcher implements AttemptFetcherInterface
     {
         $qb = $this->connection->createQueryBuilder();
 
-        $attempt = $qb->select('a.id, a.status, a.questions_snapshot, a.score, a.mistakes, a.started_at, a.finished_at, a.ticket_number, a.test_id, t.name, t.cipher, t.allowed_mistakes, u.email')
+        $attempt = $qb->select('
+        a.id,
+        a.status,
+        a.questions_snapshot,
+        a.score,
+        a.mistakes,
+        a.started_at,
+        a.finished_at,
+        a.ticket_number,
+        a.test_id,
+        t.name,
+        t.cipher,
+        t.allowed_mistakes,
+        t.slug as test_slug,
+        u.email,
+        p.name as profile_name,
+        p.surname as profile_surname,
+        chld.id as category_id,
+        chld.name as category_name,
+        chld.slug as category_slug,
+        prnt.id as parent_id,
+        prnt.name as parent_name,
+        prnt.slug as parent_slug
+        ')
             ->from('attempts', 'a')
             ->leftJoin('a', 'tests', 't', 'a.test_id = t.id')
             ->leftJoin('a', 'users', 'u', 'a.user_id = u.id')
-            ->andWhere($qb->expr()->eq('a.id', ':id'))
+            ->leftJoin('u', 'profiles', 'p', 'u.id = p.id')
+            ->leftJoin('t', 'test_categories', 'chld', 't.category_id  = chld.id')
+            ->leftJoin('chld', 'test_categories', 'prnt', 'chld.parent_id = prnt.id')
+            ->where($qb->expr()->eq('a.id', ':id'))
             ->andWhere($qb->expr()->eq('a.user_id', ':userId'))
             ->setParameter('id', $attemptId)
             ->setParameter('userId', $userId)
@@ -115,12 +141,22 @@ final class AttemptFetcher implements AttemptFetcherInterface
             'started_at' => $attempt['started_at'],
             'finished_at' => $attempt['finished_at'],
             'ticket_number' => $attempt['ticket_number'],
-            'email' => $attempt['email'],
+            'email' => $attempt['email'] ?? 'Гость',
             'test' => [
                 'test_id' => $attempt['test_id'],
                 'name' => $attempt['name'],
                 'cipher' => $attempt['cipher'],
                 'allowed_mistakes' => $attempt['allowed_mistakes'],
+                'slug' => $attempt['test_slug'],
+            ],
+            'category' => [
+                'name' => $attempt['category_name'],
+                'slug' => $attempt['category_slug'],
+                'parent' => $attempt['parent_id'] ? [
+                    'id' => $attempt['parent_id'],
+                    'name' => $attempt['parent_name'],
+                    'slug' => $attempt['parent_slug'],
+                ] : null,
             ],
             'questions_snapshot' => $questionsSnapshot,
         ];
