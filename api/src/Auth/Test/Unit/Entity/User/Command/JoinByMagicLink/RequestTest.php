@@ -39,7 +39,6 @@ final class RequestTest extends TestCase
         $user = new UserBuilder()
             ->build();
 
-
         $magicLinkToken = new Token(Uuid::uuid4()->toString(), new DateTimeImmutable('+ 1 hour'));
         $user->requestMagicLink($magicLinkToken, new DateTimeImmutable());
 

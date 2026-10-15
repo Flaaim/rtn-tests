@@ -7,6 +7,7 @@ namespace App\Auth\Event;
 final readonly class MagicLinkRequested
 {
     public function __construct(
-        public string $email
+        public string $email,
+        public string $token
     ) {}
 }

@@ -354,12 +354,12 @@ final class User implements AggregateRoot
         if (!$this->isActive()) {
             $this->status = Status::active();
         }
-        if (null !== $this->magicLinkToken && !$this->magicLinkToken->isExpiredTo($date)) {
-            throw new DomainException('Ссылка на вход без пароля уже запрощена.');
+        if (null !== $this->magicLinkToken && $this->magicLinkToken->isExpiredTo($date)) {
+            return;
         }
         $this->magicLinkToken = $magicLinkToken;
 
-        $this->recordEvent(new MagicLinkRequested($this->email->getValue()));
+        $this->recordEvent(new MagicLinkRequested($this->email->getValue(), $this->magicLinkToken->getValue()));
     }
 
     public function getMagicLinkToken(): ?Token

@@ -73,7 +73,6 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $this->client->catchExceptions(false);
         $this->client->jsonRequest(
             'PUT',
             '/v1/testing/attempts/' . RequestFixture::ATTEMPT_ID . '/finish',
