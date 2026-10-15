@@ -31,6 +31,7 @@ use DomainException;
 final class User implements AggregateRoot
 {
     use EventTrait;
+    #[ORM\Embedded(class: Token::class, columnPrefix: 'magic_link_token_')]
     private ?Token $magicLinkToken = null;
     #[ORM\Column(type: 'string', nullable: true)]
     private ?string $passwordHash = null;

@@ -65,7 +65,8 @@ final class ConfirmActionTest extends WebTestCase
         $transport->reset();
 
         $this->client->jsonRequest(
-            'POST', '/v1/auth/join/confirm',
+            'POST',
+            '/v1/auth/join/confirm',
             ['token' => ConfirmFixture::VALID],
             ['HTTP_X-Guest-ID' => $guestId]
         );
@@ -73,8 +74,8 @@ final class ConfirmActionTest extends WebTestCase
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
 
         self::assertCount(2, $transport->getSent());
-
     }
+
     public function testExpired(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
@@ -134,7 +135,6 @@ final class ConfirmActionTest extends WebTestCase
 
     public function testInvalidGuestId(): void
     {
-
         $this->client->jsonRequest(
             'POST',
             '/v1/auth/join/confirm',

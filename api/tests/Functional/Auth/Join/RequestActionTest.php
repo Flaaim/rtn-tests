@@ -6,7 +6,6 @@ namespace Tests\Functional\Auth\Join;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\UserRepository;
-use App\Auth\Event\GuestJoined;
 use App\Auth\Event\JoinByEmailRequested;
 use App\Auth\Event\UserCreated;
 use Doctrine\ORM\EntityManagerInterface;

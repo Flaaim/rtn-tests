@@ -14,8 +14,6 @@ final class Command
         public string $email,
         #[Assert\NotBlank]
         #[Assert\Length(min: 6, max: 32)]
-        public string $password,
-        #[Assert\Uuid]
-        public ?string $guestId = null
+        public string $password
     ) {}
 }

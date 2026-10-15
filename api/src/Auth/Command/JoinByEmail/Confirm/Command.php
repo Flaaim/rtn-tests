@@ -11,6 +11,8 @@ final class Command
     public function __construct(
         #[Assert\NotBlank]
         #[Assert\Uuid]
-        public string $token
+        public string $token,
+        #[Assert\Uuid]
+        public ?string $guestId = null,
     ) {}
 }
