@@ -354,8 +354,8 @@ final class User implements AggregateRoot
         if (!$this->isActive()) {
             $this->status = Status::active();
         }
-        if (null !== $this->magicLinkToken && $this->magicLinkToken->isExpiredTo($date)) {
-            return;
+        if (null !== $this->magicLinkToken && !$this->magicLinkToken->isExpiredTo($date)) {
+            throw new DomainException('Ссылка уже отправлена. Пожалуйста, проверьте почту.');
         }
         $this->magicLinkToken = $magicLinkToken;
 
