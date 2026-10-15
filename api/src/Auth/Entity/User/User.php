@@ -88,7 +88,7 @@ final class User implements AggregateRoot
         DateTimeImmutable $date,
         Email $email,
     ): self {
-        $user = new self($id, $date, $email, Status::active());
+        $user = new self($id, $date, $email, Status::wait());
 
         $user->recordEvent(new UserCreated($id->getValue(), $email->getValue(), Role::user()->getName()));
         return $user;
