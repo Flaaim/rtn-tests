@@ -3,6 +3,9 @@ export interface JoinData {
   password: string;
   confirm_password?: string;
 }
+export interface MagicLinkPayload {
+  email: string;
+}
 
 export interface LoginData {
   email: string;

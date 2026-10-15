@@ -1,6 +1,11 @@
 "use server";
 
-import { ForceChangePasswordPayload, JoinData, LoginData } from "@/interfaces/auth.interface";
+import {
+  ForceChangePasswordPayload,
+  JoinData,
+  LoginData,
+  MagicLinkPayload,
+} from "@/interfaces/auth.interface";
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { ApiResponse } from "@/interfaces/response.interface";
@@ -425,4 +430,23 @@ export async function checkIsAuthenticated(): Promise<boolean> {
   const refreshToken = cookieStore.get("refresh_token")?.value;
 
   return !!(accessToken || refreshToken);
+}
+
+export async function requestMagicLinkAction(payload: MagicLinkPayload): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.auth.requestMagicLink(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        email: payload.email,
+      }),
+    });
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("requestMagicLinkAction error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
 }

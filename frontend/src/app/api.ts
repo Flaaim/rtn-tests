@@ -24,6 +24,7 @@ export const API = {
     socialLogin: () => BASE_URL + `/token`,
     attachNetwork: () => BASE_URL + `/v1/auth/network/attach`,
     forceChangePassword: (id: string) => BASE_URL + `/v1/admin/auth/${id}/change-password`,
+    requestMagicLink: () => BASE_URL + `/v1/auth/join/magic/request`,
   },
   profile: {
     getProfile: () => BASE_URL + `/v1/me`,

@@ -55,9 +55,17 @@ export interface ResultQuestionDTO {
   userResult: UserResultDTO | null;
 }
 export interface TestInfoDTO {
+  id: string;
   name: string;
   cipher: string;
   allowedMistakes: number;
+  slug: string;
+}
+
+export interface CategoryInfoDTO {
+  name: string;
+  slug: string;
+  parent: CategoryInfoDTO;
 }
 
 export interface AttemptResultData {
@@ -71,4 +79,5 @@ export interface AttemptResultData {
   test: TestInfoDTO;
   questions: ResultQuestionDTO[];
   email: string;
+  category: CategoryInfoDTO;
 }
