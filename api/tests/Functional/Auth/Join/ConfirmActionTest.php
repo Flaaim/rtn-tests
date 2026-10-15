@@ -50,13 +50,31 @@ final class ConfirmActionTest extends WebTestCase
         $user = $this->users->getByEmail(new Email(ConfirmFixture::VALID_EMAIL));
         self::assertTrue($user->isActive());
 
-        self::assertCount(2, $transport->getSent());
+        self::assertCount(1, $transport->getSent());
         $message = $transport->getSent()[0]->getMessage();
 
         self::assertInstanceOf(UserJoinConfirmed::class, $message);
         self::assertEquals($user->getEmail()->getValue(), $message->email);
     }
 
+    public function testSuccessGuest(): void
+    {
+        $guestId = 'e92fa0c3-beb1-4fa6-bd85-fcc6a8dba182';
+
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
+        $this->client->jsonRequest(
+            'POST', '/v1/auth/join/confirm',
+            ['token' => ConfirmFixture::VALID],
+            ['HTTP_X-Guest-ID' => $guestId]
+        );
+
+        self::assertEquals(204, $this->client->getResponse()->getStatusCode());
+
+        self::assertCount(2, $transport->getSent());
+
+    }
     public function testExpired(): void
     {
         $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
@@ -111,6 +129,25 @@ final class ConfirmActionTest extends WebTestCase
 
         self::assertEquals(['errors' => [
             'token' => 'This is not a valid UUID.',
+        ]], $data);
+    }
+
+    public function testInvalidGuestId(): void
+    {
+
+        $this->client->jsonRequest(
+            'POST',
+            '/v1/auth/join/confirm',
+            ['token' => ConfirmFixture::VALID],
+            ['HTTP_X-Guest-ID' => 'some_text']
+        );
+
+        self::assertEquals(422, $this->client->getResponse()->getStatusCode());
+        self::assertJson($body = $this->client->getResponse()->getContent());
+        $data = Json::decode($body);
+
+        self::assertEquals(['errors' => [
+            'guestId' => 'This is not a valid UUID.',
         ]], $data);
     }
 }

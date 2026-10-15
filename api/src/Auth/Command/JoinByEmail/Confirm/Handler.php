@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Auth\Command\JoinByEmail\Confirm;
 
 use App\Auth\Entity\User\UserRepository;
-use App\Auth\Event\UserCreated;
+use App\Auth\Event\GuestJoined;
 use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
@@ -29,10 +29,13 @@ final class Handler
 
         $this->flusher->flush();
 
-        $this->messageBus->dispatch(new UserCreated(
-            $user->getId()->getValue(),
-            $user->getEmail()->getValue(),
-            $user->getRole()->getName()
-        ));
+        if (null !== $command->guestId) {
+            $this->messageBus->dispatch(
+                new GuestJoined(
+                    $user->getId()->getValue(),
+                    $command->guestId
+                )
+            );
+        }
     }
 }
