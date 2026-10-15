@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Auth\JoinByMagicLink;
 
-use App\Auth\Command\JoinByMagicLink\Command;
-use App\Auth\Command\JoinByMagicLink\Handler;
+use App\Auth\Command\JoinByMagicLink\Request\Command;
+use App\Auth\Command\JoinByMagicLink\Request\Handler;
 use App\Infrastructure\Http\Validator\Validator;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
