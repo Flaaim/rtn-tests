@@ -24,7 +24,8 @@ final readonly class Handler
         private AccessTokenRepository $accessToken,
         #[Autowire('%env(JWT_PRIVATE_KEY_PATH)%')]
         private string $privateKeyPath,
-        private string $passPhrase = 'my-super-secret-123',
+        #[Autowire('%env(CLIENT_SECRET)%')]
+        private string $passPhrase = '',
     ) {}
 
     public function handle(Command $command): string
