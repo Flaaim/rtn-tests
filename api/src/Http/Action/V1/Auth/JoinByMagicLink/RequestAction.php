@@ -22,12 +22,11 @@ final readonly class RequestAction
     #[Route('/v1/auth/join/magic/request', name: 'auth.join.magic.request', methods: ['POST'])]
     public function __invoke(Request $request): Response
     {
-        $guestId = $request->headers->get('X-Guest-ID');
         $body = $request->toArray();
 
         $email = (string)($body['email'] ?? '');
 
-        $command = new Command($email, $guestId);
+        $command = new Command($email);
 
         $this->validator->validate($command);
 

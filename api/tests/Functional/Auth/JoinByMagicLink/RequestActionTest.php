@@ -6,7 +6,6 @@ namespace Tests\Functional\Auth\JoinByMagicLink;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\UserRepository;
-use App\Auth\Event\GuestJoined;
 use App\Auth\Event\MagicLinkRequested;
 use App\Auth\Event\UserCreated;
 use Doctrine\ORM\EntityManagerInterface;
@@ -41,7 +40,7 @@ final class RequestActionTest extends WebTestCase
         $this->users = new UserRepository($em);
     }
 
-    public function testGuest(): void
+    public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
         $transport = $this->client->getContainer()->get('messenger.transport.async');
@@ -51,40 +50,32 @@ final class RequestActionTest extends WebTestCase
             'POST',
             '/v1/auth/join/magic/request',
             [
-                'email' => RequestFixture::GUEST_EMAIL,
-            ],
-            ['HTTP_X-Guest-ID' => RequestFixture::GUEST_ID]
+                'email' => RequestFixture::USER_EMAIL,
+            ]
         );
 
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
 
-        $user = $this->users->getByEmail(new Email(RequestFixture::GUEST_EMAIL));
+        $user = $this->users->getByEmail(new Email(RequestFixture::USER_EMAIL));
 
-        self::assertEquals(RequestFixture::GUEST_EMAIL, $user->getEmail()->getValue());
+        self::assertEquals(RequestFixture::USER_EMAIL, $user->getEmail()->getValue());
 
-        self::assertCount(3, $transport->getSent());
+        self::assertCount(2, $transport->getSent());
 
         $userCreatedMessages = array_filter($transport->getSent(), static fn ($message) => $message->getMessage() instanceof UserCreated);
         $userCreatedMessages = array_values($userCreatedMessages);
 
         $userCreatedMessage = $userCreatedMessages[0]->getMessage();
         self::assertNotNull($userCreatedMessage->id);
-        self::assertEquals(RequestFixture::GUEST_EMAIL, $userCreatedMessage->email);
+        self::assertEquals(RequestFixture::USER_EMAIL, $userCreatedMessage->email);
         self::assertEquals('user', $userCreatedMessage->role);
 
         $magicLinkRequestedMessages = array_filter($transport->getSent(), static fn ($message) => $message->getMessage() instanceof MagicLinkRequested);
         $magicLinkRequestedMessages = array_values($magicLinkRequestedMessages);
 
         $magicLinkRequestedMessage = $magicLinkRequestedMessages[0]->getMessage();
-        self::assertEquals(RequestFixture::GUEST_EMAIL, $magicLinkRequestedMessage->email);
+        self::assertEquals(RequestFixture::USER_EMAIL, $magicLinkRequestedMessage->email);
         self::assertNotNull($magicLinkRequestedMessage->token);
-
-        $guestJoinedMessages = array_filter($transport->getSent(), static fn ($message) => $message->getMessage() instanceof GuestJoined);
-
-        $guestJoinedMessages = array_values($guestJoinedMessages);
-        $guestJoinedMessage = $guestJoinedMessages[0]->getMessage();
-        self::assertEquals($user->getId()->getValue(), $guestJoinedMessage->userId);
-        self::assertEquals(RequestFixture::GUEST_ID, $guestJoinedMessage->guestId);
     }
 
     public function testAlreadyExists(): void

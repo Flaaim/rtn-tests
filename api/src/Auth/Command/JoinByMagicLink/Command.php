@@ -11,8 +11,6 @@ final readonly class Command
     public function __construct(
         #[Assert\NotBlank]
         #[Assert\Email]
-        public string $email,
-        #[Assert\Uuid]
-        public ?string $guestId = null
+        public string $email
     ) {}
 }
