@@ -44,6 +44,16 @@ final class UserRepository
      * @return object|User|null
      * @psalm-return User|null
      */
+    public function findByMagicLinkToken(string $token): ?User
+    {
+        /** @psalm-var User|null */
+        return $this->repo->findOneBy(['magicLinkToken.value' => $token]);
+    }
+
+    /**
+     * @return object|User|null
+     * @psalm-return User|null
+     */
     public function findByPasswordResetToken(string $token): ?User
     {
         /** @psalm-var User|null */

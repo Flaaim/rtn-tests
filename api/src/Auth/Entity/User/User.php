@@ -277,6 +277,18 @@ final class User implements AggregateRoot
         $this->recordEvent(new UserJoinConfirmed($this->email->getValue()));
     }
 
+    public function confirmMagicLink(string $token, DateTimeImmutable $date): void
+    {
+        if (null === $this->magicLinkToken) {
+            throw new DomainException('Magic link is not required.');
+        }
+        $this->magicLinkToken->validate($token, $date);
+        $this->status = Status::active();
+        $this->magicLinkToken = null;
+
+        $this->recordEvent(new UserJoinConfirmed($this->email->getValue()));
+    }
+
     public function confirmEmailChanging(string $token, DateTimeImmutable $date): void
     {
         if (null === $this->newEmail || null === $this->newEmailToken) {
@@ -351,9 +363,6 @@ final class User implements AggregateRoot
 
     public function requestMagicLink(Token $magicLinkToken, DateTimeImmutable $date): void
     {
-        if (!$this->isActive()) {
-            $this->status = Status::active();
-        }
         if (null !== $this->magicLinkToken && !$this->magicLinkToken->isExpiredTo($date)) {
             throw new DomainException('Ссылка уже отправлена. Пожалуйста, проверьте почту.');
         }

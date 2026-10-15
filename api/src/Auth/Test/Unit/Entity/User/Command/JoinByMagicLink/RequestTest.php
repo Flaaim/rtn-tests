@@ -10,6 +10,7 @@ use App\Auth\Entity\User\Token;
 use App\Auth\Entity\User\User;
 use App\Auth\Test\Builder\UserBuilder;
 use DateTimeImmutable;
+use DomainException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
@@ -31,7 +32,7 @@ final class RequestTest extends TestCase
         self::assertEquals($date, $user->getDate());
         self::assertEquals($email, $user->getEmail());
 
-        self::assertTrue($user->isActive());
+        self::assertTrue($user->isWait());
     }
 
     public function testRequestMagicLink(): void
@@ -43,6 +44,18 @@ final class RequestTest extends TestCase
         $user->requestMagicLink($magicLinkToken, new DateTimeImmutable());
 
         self::assertEquals($magicLinkToken, $user->getMagicLinkToken());
-        self::assertTrue($user->isActive());
+    }
+
+    public function testRequestMagicLinkAlready(): void
+    {
+        $magicLinkToken = new Token(Uuid::uuid4()->toString(), new DateTimeImmutable('+ 1 hour'));
+        $user = new UserBuilder()
+            ->withMagicLinkToken($magicLinkToken)
+            ->build();
+
+        self::expectException(DomainException::class);
+        self::expectExceptionMessage('Ссылка уже отправлена. Пожалуйста, проверьте почту.');
+
+        $user->requestMagicLink($magicLinkToken, new DateTimeImmutable());
     }
 }
