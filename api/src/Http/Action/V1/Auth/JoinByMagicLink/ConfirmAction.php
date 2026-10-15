@@ -30,8 +30,8 @@ final readonly class ConfirmAction
 
         $this->validator->validate($command);
 
-        $accessToken = $this->handler->handle($command);
+        $result = $this->handler->handle($command);
 
-        return new JsonResponse(['access_token' => $accessToken], Response::HTTP_CREATED);
+        return new JsonResponse($result, Response::HTTP_CREATED);
     }
 }

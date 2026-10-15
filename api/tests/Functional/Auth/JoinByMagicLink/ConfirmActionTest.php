@@ -57,6 +57,8 @@ final class ConfirmActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertArrayHasKey('access_token', $data);
+        self::assertArrayHasKey('refresh_token', $data);
+        self::assertArrayHasKey('expires_in', $data);
 
         $user = $this->users->get(new Id(ConfirmFixture::USER_ID));
         self::assertTrue($user->isActive());
@@ -91,6 +93,8 @@ final class ConfirmActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertArrayHasKey('access_token', $data);
+        self::assertArrayHasKey('refresh_token', $data);
+        self::assertArrayHasKey('expires_in', $data);
 
         $user = $this->users->get(new Id(ConfirmFixture::GUEST_ID));
         self::assertTrue($user->isActive());

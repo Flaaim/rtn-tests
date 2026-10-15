@@ -10,6 +10,8 @@ use App\Infrastructure\Doctrine\Flusher;
 use App\OAuth\Entity\AccessTokenRepository;
 use App\OAuth\Entity\Client;
 use DateTimeImmutable;
+use Defuse\Crypto\Crypto;
+use Defuse\Crypto\Key;
 use DomainException;
 use League\OAuth2\Server\CryptKey;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -25,10 +27,12 @@ final readonly class Handler
         #[Autowire('%env(JWT_PRIVATE_KEY_PATH)%')]
         private string $privateKeyPath,
         #[Autowire('%env(CLIENT_SECRET)%')]
-        private string $passPhrase = '',
+        private string $passPhrase,
+        #[Autowire('%env(JWT_ENCRYPTION_KEY)%')]
+        private string $encryptionKey,
     ) {}
 
-    public function handle(Command $command): string
+    public function handle(Command $command): array
     {
         if (!$user = $this->users->findByMagicLinkToken($command->token)) {
             throw new DomainException('Incorrect magicLinkToken.');
@@ -57,6 +61,32 @@ final readonly class Handler
         $privateKey = new CryptKey($this->privateKeyPath, $this->passPhrase, false);
         $accessToken->setPrivateKey($privateKey);
 
-        return $accessToken->toString();
+        $refreshTokenId = bin2hex(random_bytes(40));
+        $refreshTokenExpiry = new DateTimeImmutable()->modify('+30 days');
+
+        $payload = [
+            'client_id'        => $client->getIdentifier(),
+            'refresh_token_id' => $refreshTokenId,
+            'access_token_id'  => $accessToken->getIdentifier(),
+            'scopes'           => [],
+            'user_id'          => $user->getId()->getValue(),
+            'expire_time'      => $refreshTokenExpiry->getTimestamp(),
+        ];
+
+        $key = Key::loadFromAsciiSafeString($this->encryptionKey);
+
+        $encodedPayload = json_encode($payload);
+
+        if($encodedPayload === false) {
+            throw new DomainException('Encoded payload is invalid.');
+        }
+
+        $refreshTokenString = Crypto::encrypt($encodedPayload, $key);
+
+        return [
+            'access_token' => $accessToken->toString(),
+            'refresh_token' => $refreshTokenString,
+            'expires_in' => 3600,
+        ];
     }
 }
