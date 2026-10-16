@@ -5,7 +5,7 @@ import { Header } from "@/components/Home/Header";
 
 export const metadata: Metadata = {
   title: "Тесты Ростехнадзора",
-  description: "Готовые и актуальные тесты по Ростехнадзора по всем областям аттестации.",
+  description: "Актуальные тесты Ростехнадзора для подготовки к аттестации по промышленной безопасности. Все области. Пройдите пробный экзамен онлайн на RTN-tests!",
 };
 
 export default function SiteLayout({
