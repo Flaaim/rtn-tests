@@ -92,7 +92,6 @@ export default function AddTestDialog({ categories = [] }: AddTestDialogProps) {
   const router = useRouter();
 
   const flatCategories = flattenCategories(categories);
-
   useEffect(() => {
     if (open) {
       const initData = async () => {
