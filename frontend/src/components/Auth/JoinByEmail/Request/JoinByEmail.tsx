@@ -1,35 +1,20 @@
 "use client";
 
 import { z } from "zod";
+import { useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { JoinAction } from "@/actions/auth";
+import { MailCheck } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import Link from "next/link";
-import { useState } from "react";
-import { MailCheck } from "lucide-react";
-import { JoinAction } from "@/actions/auth";
 
 const schema = z
   .object({
     email: z.email("Пожалуйста, введите корректный email адрес."),
-    password: z
-      .string()
-      .min(8, "Пароль должен содержать минимум 8 символов.")
-      .max(18, "Пароль должен содержать максимум 18 символов."),
-    confirm_password: z
-      .string()
-      .min(8, "Пароль должен содержать минимум 8 символов.")
-      .max(18, "Пароль должен содержать максимум 18 символов."),
+    password: z.string().min(8, "Минимум 8 символов.").max(18, "Максимум 18 символов."),
+    confirm_password: z.string(),
   })
   .superRefine(({ confirm_password, password }, ctx) => {
     if (confirm_password !== password) {
@@ -49,156 +34,86 @@ export default function JoinByEmail() {
   const form = useForm({
     mode: "onBlur",
     resolver: zodResolver(schema),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirm_password: "",
-    },
+    defaultValues: { email: "", password: "", confirm_password: "" },
   });
 
   async function onSubmit(values: FormData) {
     const result = await JoinAction(values);
 
-    if (!result.ok || !result.data) {
-      form.setError("root", { type: "server", message: result.error });
+    if (!result.ok) {
+      form.setError("root", { type: "server", message: result.error || "Произошла ошибка" });
       return;
     }
     setIsSuccess(true);
   }
+
   if (isSuccess) {
     return (
-      <Card className="mx-auto w-full max-w-md py-6 text-center shadow-sm">
-        <CardHeader className="space-y-4">
-          <div className="mx-auto w-fit rounded-full bg-green-100 p-4">
-            <MailCheck className="h-10 w-10 text-green-600" />
-          </div>
-          <CardTitle className="text-2xl font-semibold tracking-tight">
-            <h1>Проверьте вашу почту</h1>
-          </CardTitle>
-          <CardDescription className="text-base">
-            Мы отправили письмо со ссылкой для подтверждения на адрес
-            <br />
-            <strong className="text-foreground">{form.getValues("email")}</strong>.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p className="text-muted-foreground text-sm">
-            Пожалуйста, перейдите по ссылке в письме, чтобы завершить регистрацию и активировать
-            аккаунт.
-          </p>
-        </CardContent>
-        <CardFooter>
-          <Button variant="link" className="w-full">
-            <Link className="link" href="/join/login">
-              Вернуться на страницу входа
-            </Link>
-          </Button>
-        </CardFooter>
-      </Card>
+      <div className="py-6 text-center animate-in fade-in zoom-in duration-300">
+        <div className="mx-auto mb-4 w-fit rounded-full bg-green-100 p-4">
+          <MailCheck className="h-10 w-10 text-green-600" />
+        </div>
+        <h3 className="text-xl font-semibold tracking-tight mb-2">Аккаунт создан</h3>
+        <p className="text-muted-foreground text-sm">
+          Письмо для подтверждения отправлено на <br />
+          <strong className="text-foreground">{form.getValues("email")}</strong>
+        </p>
+      </div>
     );
   }
+
   return (
-    <div className="flex h-screen items-center justify-center">
-      <Card className="mx-auto w-full max-w-md shadow-sm">
-        <CardHeader className="space-y-2 text-center">
-          <CardTitle className="text-2xl font-semibold tracking-tight">
-            Регистрация в системе
-          </CardTitle>
-          <CardDescription>
-            Зарегистрируйтесь, чтобы получить полный доступ к функциям системы и управлять вашими
-            данными.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form id="join-form" onSubmit={form.handleSubmit(onSubmit)} method="POST">
-            <FieldGroup>
-              <Controller
-                name="email"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="join-email">Электронная почта</FieldLabel>
-                    <Input
-                      {...field}
-                      id="join-email"
-                      value={field.value}
-                      placeholder="Email"
-                      aria-invalid={fieldState.invalid}
-                      autoComplete="email"
-                    />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
+    <form id="join-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+      <FieldGroup className="space-y-3">
+        <Controller
+          name="email"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="join-email">Электронная почта</FieldLabel>
+              <Input {...field} id="join-email" placeholder="Email" autoComplete="email" />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="password"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="join-password">Пароль</FieldLabel>
+              <Input {...field} id="join-password" type="password" placeholder="Укажите пароль" />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+        <Controller
+          name="confirm_password"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <FieldLabel htmlFor="join-confirm-password">Подтвердите пароль</FieldLabel>
+              <Input
+                {...field}
+                id="join-confirm-password"
+                type="password"
+                placeholder="Повторите пароль"
               />
-              <Controller
-                name="password"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="join-password">Пароль</FieldLabel>
-                    <Input
-                      {...field}
-                      id="join-password"
-                      type="password"
-                      value={field.value}
-                      placeholder="Укажите пароль"
-                      aria-invalid={fieldState.invalid}
-                      autoComplete="current-password"
-                    />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
+              {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
+            </Field>
+          )}
+        />
+      </FieldGroup>
 
-              <Controller
-                name="confirm_password"
-                control={form.control}
-                render={({ field, fieldState }) => (
-                  <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="join-confirm-password">Подтвердите пароль</FieldLabel>
-                    <Input
-                      {...field}
-                      id="join-confirm-password"
-                      type="password"
-                      value={field.value}
-                      placeholder="Подтвердите пароль"
-                      aria-invalid={fieldState.invalid}
-                      autoComplete="current-password"
-                    />
-                    {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
-                  </Field>
-                )}
-              />
-            </FieldGroup>
-          </form>
-        </CardContent>
-        <CardFooter>
-          <div className="flex flex-col">
-            <div className="space-y-4 pt-4">
-              {form.formState.errors.root && (
-                <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
-                  {form.formState.errors.root.message}
-                </div>
-              )}
-              <Button
-                type="submit"
-                form="join-form"
-                disabled={form.formState.isSubmitting}
-                className="cursor-pointer py-2"
-              >
-                {form.formState.isSubmitting ? "Загрузка..." : "Присоединиться"}
-              </Button>
-            </div>
+      {form.formState.errors.root && (
+        <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
+          {form.formState.errors.root.message}
+        </div>
+      )}
 
-            <div className="space-y-4 pt-4">
-              Есть аккаунт?{" "}
-              <Link className="link" href="/join/login">
-                Войти в систему
-              </Link>
-            </div>
-          </div>
-        </CardFooter>
-      </Card>
-    </div>
+      <Button type="submit" disabled={form.formState.isSubmitting} className="w-full mt-2">
+        {form.formState.isSubmitting ? "Загрузка..." : "Зарегистрироваться"}
+      </Button>
+    </form>
   );
 }

@@ -23,7 +23,7 @@ const schema = z.object({
   password: z
     .string()
     .min(8, "Пароль должен содержать минимум 8 символов.")
-    .max(18, "Пароль должен содержать максимум 18 символов."),
+    .max(18, "Максимум 18 символов."),
 });
 
 type FormData = z.infer<typeof schema>;
@@ -34,44 +34,39 @@ export default function Login() {
   const form = useForm({
     mode: "onSubmit",
     resolver: zodResolver(schema),
-    defaultValues: {
-      email: "",
-      password: "",
-    },
+    defaultValues: { email: "", password: "" },
   });
+
   const getYandexAuthUrl = () => {
     const rootUrl = "https://oauth.yandex.ru/authorize";
-    const options = {
+    const qs = new URLSearchParams({
       response_type: "code",
       client_id: process.env.NEXT_PUBLIC_YANDEX_CLIENT_ID || "",
       redirect_uri: process.env.NEXT_PUBLIC_YANDEX_REDIRECT_URI || "",
-    };
-    const qs = new URLSearchParams(options);
+    });
     return `${rootUrl}?${qs.toString()}`;
   };
+
   async function onSubmit(values: FormData) {
     const result = await LoginAction(values);
 
     if (!result.ok) {
-      form.setError("root", { type: "server", message: result.error });
+      form.setError("root", { type: "server", message: result.error || "Ошибка авторизации" });
       return;
     }
-
     router.push("/user/dashboard");
   }
 
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="mx-auto w-full max-w-md shadow-sm">
         <CardHeader className="space-y-2 text-center">
           <CardTitle className="text-2xl font-semibold tracking-tight">Вход в систему</CardTitle>
-          <CardDescription>
-            Войдите в свой аккаунт, чтобы продолжить работу и управлять вашими данными.
-          </CardDescription>
+          <CardDescription>Войдите в свой аккаунт, чтобы продолжить работу</CardDescription>
         </CardHeader>
         <CardContent>
-          <form id="login-form" onSubmit={form.handleSubmit(onSubmit)} method="POST">
-            <FieldGroup>
+          <form id="login-form" onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FieldGroup className="space-y-3">
               <Controller
                 name="email"
                 control={form.control}
@@ -81,9 +76,7 @@ export default function Login() {
                     <Input
                       {...field}
                       id="login-email"
-                      value={field.value}
-                      placeholder="Email"
-                      aria-invalid={fieldState.invalid}
+                      placeholder="name@example.com"
                       autoComplete="email"
                     />
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
@@ -95,24 +88,22 @@ export default function Login() {
                 control={form.control}
                 render={({ field, fieldState }) => (
                   <Field data-invalid={fieldState.invalid}>
-                    <FieldLabel htmlFor="login-password">Пароль</FieldLabel>
+                    <div className="flex items-center justify-between">
+                      <FieldLabel htmlFor="login-password">Пароль</FieldLabel>
+                      <Link
+                        href="/join/reset/request"
+                        className="text-xs text-primary hover:underline font-medium"
+                      >
+                        Забыли пароль?
+                      </Link>
+                    </div>
                     <Input
                       {...field}
                       id="login-password"
                       type="password"
-                      value={field.value}
                       placeholder="Пароль"
-                      aria-invalid={fieldState.invalid}
-                      autoComplete="password"
+                      autoComplete="current-password"
                     />
-                    <div className="items-rigth flex">
-                      <Link
-                        href="/join/reset/request"
-                        className="ml-auto inline-block text-sm underline-offset-4 hover:underline"
-                      >
-                        Забыли свой пароль?
-                      </Link>
-                    </div>
                     {fieldState.invalid && <FieldError errors={[fieldState.error]} />}
                   </Field>
                 )}
@@ -120,34 +111,41 @@ export default function Login() {
             </FieldGroup>
           </form>
         </CardContent>
-        <CardFooter>
-          <div className="flex flex-col">
-            <div className="space-y-2 pt-2">
-              {form.formState.errors.root && (
-                <div className="text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
-                  {form.formState.errors.root.message}
-                </div>
-              )}
-              <Button
-                type="submit"
-                form="login-form"
-                disabled={form.formState.isSubmitting}
-                className="cursor-pointer py-2"
-              >
-                {form.formState.isSubmitting ? "Загрузка..." : "Войти"}
-              </Button>
+        <CardFooter className="flex flex-col space-y-4">
+          <div className="w-full">
+            {form.formState.errors.root && (
+              <div className="mb-4 text-destructive bg-destructive/10 rounded-md p-2 text-center text-sm font-medium">
+                {form.formState.errors.root.message}
+              </div>
+            )}
+            <Button
+              type="submit"
+              form="login-form"
+              disabled={form.formState.isSubmitting}
+              className="w-full"
+            >
+              {form.formState.isSubmitting ? "Вход..." : "Войти"}
+            </Button>
+          </div>
+
+          <div className="relative w-full">
+            <div className="absolute inset-0 flex items-center">
+              <span className="w-full border-t border-muted-foreground/20" />
             </div>
-            <div className="flex gap-2 space-y-4 pt-4">
-              <Button variant="outline" type="button" className="cursor-pointer py-2">
-                <Link href={getYandexAuthUrl()}>Войти через Яндекс</Link>
-              </Button>
+            <div className="relative flex justify-center text-xs uppercase">
+              <span className="bg-card px-2 text-muted-foreground">Или продолжите через</span>
             </div>
-            <div className="space-y-4 pt-4">
-              Нет аккаунта?{" "}
-              <Link className="link" href="/join/register">
-                Зарегистрироваться
-              </Link>
-            </div>
+          </div>
+
+          <Button variant="outline" className="w-full">
+            <Link href={getYandexAuthUrl()}>Яндекс ID</Link>
+          </Button>
+
+          <div className="w-full border-t pt-4 mt-2 text-center text-sm text-muted-foreground">
+            Нет аккаунта?{" "}
+            <Link className="text-primary hover:underline font-medium" href="/join/register">
+              Зарегистрироваться
+            </Link>
           </div>
         </CardFooter>
       </Card>

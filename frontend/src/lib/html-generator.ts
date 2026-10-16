@@ -10,7 +10,7 @@ export const generateExportableHtml = (questions: Question[]): string => {
     ul { margin: 8px 0 0; padding-left: 20px; }
     li { margin-bottom: 6px; }
     a { color: #2563eb; text-decoration: none; }
-  `.replace(/\s{2,}/g, ' '); // Небольшая минификация стилей
+  `.replace(/\s{2,}/g, " "); // Небольшая минификация стилей
 
   const header = `<!DOCTYPE html>
 <html lang="ru">
@@ -25,30 +25,32 @@ export const generateExportableHtml = (questions: Question[]): string => {
   <hr style="margin-bottom:20px; border:none; border-top:1px solid #e5e7eb;">
 `;
 
-  const body = questions.map((q) => {
-    let qHtml = `  <div class="q">\n`;
+  const body = questions
+    .map((q) => {
+      let qHtml = `  <div class="q">\n`;
 
-    // Нумерация добавлена непосредственно в текст вопроса, используется тег <b>
-    qHtml += `    <b>${q.number}. ${q.text}</b>\n`;
+      // Нумерация добавлена непосредственно в текст вопроса, используется тег <b>
+      qHtml += `    <b>${q.number}. ${q.text}</b>\n`;
 
-    if (q.questionImg) {
-      qHtml += `    <img src="${q.questionImg}" alt="К вопросу ${q.number}" />\n`;
-    }
-    qHtml += `    <ul>\n`;
-    q.answers.forEach((a) => {
-      const liClass = a.isCorrect ? ' class="c"' : '';
-      const checkMark = a.isCorrect ? ' ✓' : '';
-
-      qHtml += `      <li${liClass}>${a.text}${checkMark}`;
-      if (a.answerImg) {
-        qHtml += `<br><img src="${a.answerImg}" alt="К ответу" />`;
+      if (q.questionImg) {
+        qHtml += `    <img src="${q.questionImg}" alt="К вопросу ${q.number}" />\n`;
       }
-      qHtml += `</li>\n`;
-    });
+      qHtml += `    <ul>\n`;
+      q.answers.forEach((a) => {
+        const liClass = a.isCorrect ? ' class="c"' : "";
+        const checkMark = a.isCorrect ? " ✓" : "";
 
-    qHtml += `    </ul>\n  </div>`;
-    return qHtml;
-  }).join('\n');
+        qHtml += `      <li${liClass}>${a.text}${checkMark}`;
+        if (a.answerImg) {
+          qHtml += `<br><img src="${a.answerImg}" alt="К ответу" />`;
+        }
+        qHtml += `</li>\n`;
+      });
+
+      qHtml += `    </ul>\n  </div>`;
+      return qHtml;
+    })
+    .join("\n");
 
   return header + body + `\n</body>\n</html>`;
 };

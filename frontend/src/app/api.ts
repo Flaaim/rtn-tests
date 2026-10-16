@@ -25,6 +25,7 @@ export const API = {
     attachNetwork: () => BASE_URL + `/v1/auth/network/attach`,
     forceChangePassword: (id: string) => BASE_URL + `/v1/admin/auth/${id}/change-password`,
     requestMagicLink: () => BASE_URL + `/v1/auth/join/magic/request`,
+    confirmMagicLink: () => BASE_URL + `/v1/auth/join/magic/confirm`,
   },
   profile: {
     getProfile: () => BASE_URL + `/v1/me`,
