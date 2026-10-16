@@ -33,7 +33,7 @@ final class MagicLinkSenderTest extends TestCase
         $symfonyEmail = new SymfonyEmail()
             ->to($to->getValue())
             ->subject('Ссылка для входа на сайт.')
-            ->html($twig->render($template, ['token' => $token, 'email' => $to->getValue()]));
+            ->html($twig->render($template, ['token' => $token]));
 
         $mailer = $this->createMock(MailerInterface::class);
         $mailer->expects(self::once())->method('send')
