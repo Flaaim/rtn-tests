@@ -9,6 +9,9 @@ use App\Auth\Test\Builder\UserBuilder;
 use App\Testing\Entity\Attempt\Attempt;
 use App\Testing\Entity\Attempt\AttemptId;
 use App\Testing\Entity\Attempt\Status;
+use App\Testing\Entity\Test\Settings;
+use App\Testing\Entity\Test\TestId;
+use App\Testing\Test\Builder\TestBuilder;
 use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
@@ -23,6 +26,9 @@ final class RequestFixture extends AbstractFixture
     public const string USER_PASSWORD = 'user';
     public const string COURSE_ID = '63879491-6883-4e88-8be2-295d3d260346';
 
+    public const string TEST_NAME = 'Первая помощь';
+    public const string TEST_CIPHER = 'ОТ 201.18';
+
     public function load(ObjectManager $manager): void
     {
         $user = new UserBuilder()
@@ -31,6 +37,18 @@ final class RequestFixture extends AbstractFixture
             ->active()
             ->build();
         $manager->persist($user);
+
+        $test = new TestBuilder()
+            ->withId(new TestId(self::TEST_ID))
+            ->withName(self::TEST_NAME)
+            ->withCipher(self::TEST_CIPHER)
+            ->withDescription(self::TEST_NAME)
+            ->withSettings(new Settings(5, 2, 1))
+            ->withCourseIds([self::COURSE_ID])
+            ->withQuestionIds(['23ca06c6-6d2d-45d6-ae89-0526afdff6f4', '16b1df62-5ad0-4707-ab1c-746affd6670f'])
+            ->active()
+            ->build();
+        $manager->persist($test);
 
         $attempt = new Attempt(
             new AttemptId(self::ATTEMPT_ID),

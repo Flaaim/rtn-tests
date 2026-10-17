@@ -201,56 +201,56 @@ final class AttemptFetcher implements AttemptFetcherInterface
 
     public function getUserStats(string $userId): array
     {
-        $qb = $this->connection->createQueryBuilder();
+        $statsQb = $this->connection->createQueryBuilder();
 
-        $completedTests = $qb->select('COUNT(DISTINCT a.id)')
-            ->from('attempts', 'a')
-            ->where($qb->expr()->eq('a.user_id', ':userId'))
-            ->andWhere($qb->expr()->eq('a.status', ':status'))
+        $statsResults = $statsQb
+            ->select(
+                'SUM(CASE WHEN a.status = :statusPassed THEN 1 ELSE 0 END) as completed_tests',
+                'SUM(CASE WHEN a.status = :statusInProgress THEN 1 ELSE 0 END) as in_progress_tests',
+                'SUM(CASE WHEN a.status != :statusInProgress THEN a.score ELSE 0 END) as score',
+                'SUM(CASE WHEN a.status != :statusInProgress THEN a.mistakes ELSE 0 END) as mistakes'
+            )->from('attempts', 'a')
+            ->where('a.user_id = :userId')
             ->setParameter('userId', $userId)
-            ->setParameter('status', Status::STATUS_PASSED)
-            ->executeQuery()
-            ->fetchOne();
-
-        if (false === $completedTests) {
-            $completedTests = 0;
-        }
-
-        $inProgressTests = $qb->select('COUNT(DISTINCT a.id)')
-            ->from('attempts', 'a')
-            ->where($qb->expr()->eq('a.user_id', ':userId'))
-            ->andWhere($qb->expr()->eq('a.status', ':status'))
-            ->setParameter('userId', $userId)
-            ->setParameter('status', Status::STATUS_IN_PROGRESS)
-            ->executeQuery()
-            ->fetchOne();
-
-        if (false === $inProgressTests) {
-            $inProgressTests = 0;
-        }
-
-        $result = $qb->select('SUM(a.score) as score, SUM(a.mistakes) as mistakes')
-            ->from('attempts', 'a')
-            ->where($qb->expr()->eq('a.user_id', ':userId'))
-            ->andWhere($qb->expr()->neq('a.status', ':status'))
-            ->setParameter('userId', $userId)
-            ->setParameter('status', Status::STATUS_IN_PROGRESS)
+            ->setParameter('statusPassed', Status::STATUS_PASSED)
+            ->setParameter('statusInProgress', Status::STATUS_IN_PROGRESS)
             ->executeQuery()
             ->fetchAssociative();
 
-        $data = [
-            'score' => (int)($result['score'] ?? 0),
-            'mistakes' => (int)($result['mistakes'] ?? 0),
-        ];
+        $score = (int)($statsResult['score'] ?? 0);
+        $mistakes = (int)($statsResult['mistakes'] ?? 0);
+        $count = $score + $mistakes;
 
-        $count = $data['score'] + $data['mistakes'];
+        $averageScore = ($count > 0) ? (($score * 100) / $count) : 0;
 
-        $averageScore = ($count > 0) ? (($data['score'] * 100) / $count) : 0;
+        $popularQb = $this->connection->createQueryBuilder();
+
+        $popularTests = $popularQb->select('t.name', 't.cipher', 'COUNT(a.test_id) as tests_attempts')
+            ->from('attempts', 'a')
+            ->join('a', 'tests', 't', 'a.test_id = t.id')
+            ->where('a.user_id = :userId')
+            ->groupBy('t.id', 't.name', 't.cipher')
+            ->orderBy('tests_attempts', 'DESC')
+            ->setMaxResults(5)
+            ->setParameter('userId', $userId)
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $popularTestsData = [];
+
+        foreach ($popularTests as $test) {
+            $popularTestsData[] = [
+                'name' => $test['name'],
+                'cipher' => $test['cipher'],
+                'testsAttempts' => $test['tests_attempts'],
+            ];
+        }
 
         return [
-            'completedTests' => $completedTests,
-            'inProgressTests' => $inProgressTests,
+            'completedTests' => (int)($statsResult['completed_tests'] ?? 0),
+            'inProgressTests' => (int)($statsResult['in_progress_tests'] ?? 0),
             'averageScore' => $averageScore,
+            'popularTests' => $popularTestsData,
         ];
     }
 }

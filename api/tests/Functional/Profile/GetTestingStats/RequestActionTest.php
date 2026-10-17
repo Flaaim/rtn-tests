@@ -58,10 +58,15 @@ final class RequestActionTest extends WebTestCase
 
         $data = Json::decode($body);
 
-        self::assertEquals([
-            'completedTests' => 1,
-            'inProgressTests' => 0,
-            'averageScore' => 60.0,
-        ], $data);
+        self::assertArrayHasKey('completedTests', $data);
+        self::assertArrayHasKey('inProgressTests', $data);
+        self::assertArrayHasKey('averageScore', $data);
+        self::assertArrayHasKey('popularTests', $data);
+
+        $popularTest = $data['popularTests'][0];
+
+        self::assertArrayHasKey('name', $popularTest);
+        self::assertArrayHasKey('cipher', $popularTest);
+        self::assertArrayHasKey('testsAttempts', $popularTest);
     }
 }

@@ -20,6 +20,7 @@ final class QueryHandler
             completedTests: $result['completedTests'],
             inProgressTests: $result['inProgressTests'],
             averageScore: $result['averageScore'],
+            popularTests: $result['popularTests'],
         );
     }
 }
