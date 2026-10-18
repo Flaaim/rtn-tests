@@ -492,7 +492,6 @@ export async function confirmMagicLinkAction(token: string): Promise<ApiResponse
         maxAge: 2592000, // 30 дней
       });
 
-      // ❗️ Гость стал пользователем — удаляем гостевой ID!
       cookieStore.delete("guest_id");
     }
 

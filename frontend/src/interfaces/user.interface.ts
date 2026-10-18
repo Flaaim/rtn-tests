@@ -23,6 +23,13 @@ export interface UserAttemptStatsDTO {
   completedTests: number;
   inProgressTests: number;
   averageScore: number;
+  popularTests: PopularTestsDTO[];
+}
+
+interface PopularTestsDTO {
+  name: string;
+  cipher: string;
+  testsAttempts: number;
 }
 
 export interface ProfileDTO {
