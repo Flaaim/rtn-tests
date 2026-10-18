@@ -10,10 +10,10 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Exception;
 
 /** @psalm-suppress UnusedClass */
-final class TestFetcher implements TestFetcherInterface
+final readonly class TestFetcher implements TestFetcherInterface
 {
     public function __construct(
-        private readonly Connection $connection
+        private Connection $connection
     ) {}
 
     /**
@@ -244,5 +244,64 @@ final class TestFetcher implements TestFetcherInterface
         }
 
         return $test ?: [];
+    }
+
+    public function getCompetencyMatrix(string $actorId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $statuses = [
+            \App\Testing\Entity\Attempt\Status::STATUS_PASSED,
+            \App\Testing\Entity\Attempt\Status::STATUS_FAILED,
+        ];
+
+        $rows = $qb->select(
+            't.id as test_id',
+            't.name as test_name',
+            't.cipher as test_cipher',
+            'COUNT(ans.id) as total_answers',
+            'SUM(CASE WHEN ans.is_correct = true THEN 1 ELSE 0 END) as correct_answers'
+        )
+            ->from('answers', 'ans')
+            ->join('ans', 'attempts', 'a', 'ans.attempt_id = a.id')
+            ->join('a', 'tests', 't', 'a.test_id = t.id')
+            ->where('a.user_id = :actorId')
+            ->andWhere($qb->expr()->in('a.status', ':statuses'))
+            ->setParameter('actorId', $actorId)
+            ->setParameter('statuses', $statuses, ArrayParameterType::STRING)
+            ->groupBy('t.id', 't.name, t.cipher')
+            ->orderBy('SUM(CASE WHEN ans.is_correct = true THEN 1 ELSE 0 END) * 100.0 / COUNT(ans.id)', 'ASC')
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $matrix = [
+            'excellent' => [], // > 80%
+            'good' => [],      // 50-80%
+            'needsWork' => [], // < 50%
+        ];
+
+        foreach ($rows as $row) {
+            $total = (int)$row['total_answers'];
+            $correct = (int)$row['correct_answers'];
+            $percentage = $total > 0 ? ($correct / $total) * 100 : 0;
+
+            $item = [
+                'id' => $row['test_id'],
+                'name' => $row['test_name'],
+                'cipher' => $row['test_cipher'],
+                'percentage' => round($percentage, 2),
+                'total' => $total
+            ];
+
+            if ($percentage >= 80) {
+                $matrix['excellent'][] = $item;
+            } elseif ($percentage >= 50) {
+                $matrix['good'][] = $item;
+            } else {
+                $matrix['needsWork'][] = $item;
+            }
+        }
+
+        return $matrix;
     }
 }

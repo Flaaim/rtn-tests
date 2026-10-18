@@ -13,4 +13,6 @@ interface TestFetcherInterface
     public function getByCategory(string $categorySlug): array;
 
     public function getBySlug(string $slug): array;
+
+    public function getCompetencyMatrix(string $actorId): array;
 }
