@@ -147,30 +147,28 @@ export default async function DashboardPage() {
                 {popularTests.map((test, index) => (
                   <div
                     key={`${test.cipher}-${index}`}
-                    className="flex items-center justify-between gap-4"
+                    className="flex items-center gap-4"
                   >
-                    <div className="flex items-center gap-4 overflow-hidden">
+                    <div className="flex items-center gap-4 flex-1 min-w-0">
                       <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-sm">
                         {index + 1}
                       </div>
-                      <div className="overflow-hidden">
+                      <div className="min-w-0">
                         <p className="text-sm font-medium leading-none truncate">{test.name}</p>
                         <p className="text-xs text-muted-foreground mt-1 truncate">
                           Шифр: {test.cipher}
                         </p>
                       </div>
                     </div>
-                    <div className="text-sm font-semibold">
-                      {test.averageScore.toFixed(1) + " %"}
-                      <span className="text-xs text-muted-foreground font-normal ml-1">
-                        правильных ответов
-                      </span>
-                    </div>
-                    <div className="text-sm font-semibold shrink-0">
-                      {test.testsAttempts.toLocaleString("ru-RU")}
-                      <span className="text-xs text-muted-foreground font-normal ml-1">
-                        попыток
-                      </span>
+                    <div className="flex items-center gap-6 shrink-0 text-right">
+                      <div className="text-sm font-semibold">
+                        {test.averageScore.toFixed(1)} %
+                        <span className="text-xs text-muted-foreground font-normal ml-1">правильных ответов</span>
+                      </div>
+                      <div className="text-sm font-semibold">
+                        {test.testsAttempts.toLocaleString("ru-RU")}
+                        <span className="text-xs text-muted-foreground font-normal ml-1">попыток</span>
+                      </div>
                     </div>
                   </div>
                 ))}
