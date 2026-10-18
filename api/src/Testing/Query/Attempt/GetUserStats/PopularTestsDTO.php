@@ -10,6 +10,7 @@ final readonly class PopularTestsDTO
         public string $name,
         public string $cipher,
         public int $testsAttempts,
+        public float $averageScore,
     ) {}
 
     public static function fromArray(array $data): self
@@ -18,6 +19,7 @@ final readonly class PopularTestsDTO
             name: $data['name'],
             cipher: $data['cipher'],
             testsAttempts: $data['testsAttempts'],
+            averageScore: $data['averageScore'],
         );
     }
 }

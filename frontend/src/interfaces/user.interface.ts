@@ -30,6 +30,7 @@ interface PopularTestsDTO {
   name: string;
   cipher: string;
   testsAttempts: number;
+  averageScore: number;
 }
 
 export interface ProfileDTO {

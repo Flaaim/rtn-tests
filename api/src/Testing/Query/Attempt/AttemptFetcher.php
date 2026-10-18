@@ -217,15 +217,21 @@ final class AttemptFetcher implements AttemptFetcherInterface
             ->executeQuery()
             ->fetchAssociative();
 
-        $score = (int)($statsResult['score'] ?? 0);
-        $mistakes = (int)($statsResult['mistakes'] ?? 0);
+        $score = (int)($statsResults['score'] ?? 0);
+        $mistakes = (int)($statsResults['mistakes'] ?? 0);
         $count = $score + $mistakes;
 
         $averageScore = ($count > 0) ? (($score * 100) / $count) : 0;
 
         $popularQb = $this->connection->createQueryBuilder();
 
-        $popularTests = $popularQb->select('t.name', 't.cipher', 'COUNT(a.test_id) as tests_attempts')
+        $popularTests = $popularQb->select(
+            't.name',
+            't.cipher',
+            'COUNT(a.test_id) as tests_attempts',
+            'SUM(CASE WHEN a.status != :statusInProgress THEN a.score ELSE 0 END) as test_score',
+            'SUM(CASE WHEN a.status != :statusInProgress THEN a.mistakes ELSE 0 END) as test_mistakes'
+        )
             ->from('attempts', 'a')
             ->join('a', 'tests', 't', 'a.test_id = t.id')
             ->where('a.user_id = :userId')
@@ -233,22 +239,30 @@ final class AttemptFetcher implements AttemptFetcherInterface
             ->orderBy('tests_attempts', 'DESC')
             ->setMaxResults(5)
             ->setParameter('userId', $userId)
+            ->setParameter('statusInProgress', Status::STATUS_IN_PROGRESS)
             ->executeQuery()
             ->fetchAllAssociative();
 
         $popularTestsData = [];
 
         foreach ($popularTests as $test) {
+            $tScore = (int)($test['test_score'] ?? 0);
+            $tMistakes = (int)($test['test_mistakes'] ?? 0);
+            $tCount = $tScore + $tMistakes;
+
+            $testAverage = ($tCount > 0) ? (($tScore * 100) / $tCount) : 0;
+
             $popularTestsData[] = [
                 'name' => $test['name'],
                 'cipher' => $test['cipher'],
                 'testsAttempts' => $test['tests_attempts'],
+                'averageScore'  => round($testAverage, 2),
             ];
         }
 
         return [
-            'completedTests' => (int)($statsResult['completed_tests'] ?? 0),
-            'inProgressTests' => (int)($statsResult['in_progress_tests'] ?? 0),
+            'completedTests' => (int)($statsResults['completed_tests'] ?? 0),
+            'inProgressTests' => (int)($statsResults['in_progress_tests'] ?? 0),
             'averageScore' => $averageScore,
             'popularTests' => $popularTestsData,
         ];

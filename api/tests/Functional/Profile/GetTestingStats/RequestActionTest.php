@@ -68,5 +68,6 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('name', $popularTest);
         self::assertArrayHasKey('cipher', $popularTest);
         self::assertArrayHasKey('testsAttempts', $popularTest);
+        self::assertArrayHasKey('averageScore', $popularTest);
     }
 }

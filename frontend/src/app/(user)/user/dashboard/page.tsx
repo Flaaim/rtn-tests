@@ -118,7 +118,6 @@ export default async function DashboardPage() {
               render={
                 <Link href="/user/results">
                   {" "}
-                  {/* Обновите ссылку на ту, где лежит таблица с результатами */}
                   Смотреть историю
                   <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Link>
@@ -160,6 +159,12 @@ export default async function DashboardPage() {
                           Шифр: {test.cipher}
                         </p>
                       </div>
+                    </div>
+                    <div className="text-sm font-semibold">
+                      {test.averageScore.toFixed(1) + " %"}
+                      <span className="text-xs text-muted-foreground font-normal ml-1">
+                        правильных ответов
+                      </span>
                     </div>
                     <div className="text-sm font-semibold shrink-0">
                       {test.testsAttempts.toLocaleString("ru-RU")}
