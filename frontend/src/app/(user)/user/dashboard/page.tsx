@@ -5,6 +5,7 @@ import Link from "next/link";
 import { fetchAttemptStatAction } from "@/actions/profile";
 import { UserAttemptStatsDTO } from "@/interfaces/user.interface";
 import UserBreadcrumbs from "@/components/User/UserBreadcrumbs";
+import SmartMistakesWidget from "@/components/User/Dashboard/SmartMistakesWidget";
 
 export default async function DashboardPage() {
   const result = await fetchAttemptStatAction();
@@ -126,6 +127,11 @@ export default async function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      <div className="grid gap-6 md:grid-cols-1">
+        <SmartMistakesWidget />
+      </div>
+
       <div className="grid gap-6 md:grid-cols-1">
         <Card className="shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -145,10 +151,7 @@ export default async function DashboardPage() {
             ) : (
               <div className="space-y-4 mt-4">
                 {popularTests.map((test, index) => (
-                  <div
-                    key={`${test.cipher}-${index}`}
-                    className="flex items-center gap-4"
-                  >
+                  <div key={`${test.cipher}-${index}`} className="flex items-center gap-4">
                     <div className="flex items-center gap-4 flex-1 min-w-0">
                       <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-sm">
                         {index + 1}
@@ -163,11 +166,15 @@ export default async function DashboardPage() {
                     <div className="flex items-center gap-6 shrink-0 text-right">
                       <div className="text-sm font-semibold">
                         {test.averageScore.toFixed(1)} %
-                        <span className="text-xs text-muted-foreground font-normal ml-1">правильных ответов</span>
+                        <span className="text-xs text-muted-foreground font-normal ml-1">
+                          правильных ответов
+                        </span>
                       </div>
                       <div className="text-sm font-semibold">
                         {test.testsAttempts.toLocaleString("ru-RU")}
-                        <span className="text-xs text-muted-foreground font-normal ml-1">попыток</span>
+                        <span className="text-xs text-muted-foreground font-normal ml-1">
+                          попыток
+                        </span>
                       </div>
                     </div>
                   </div>

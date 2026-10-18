@@ -5,6 +5,7 @@ import {
   AddTestPayload,
   ChangeCategoryTestPayload,
   ChangeCipherTestPayload,
+  CompetencyMatrix,
   PaginatedTests,
   RenameTestPayload,
   TestFull,
@@ -260,6 +261,22 @@ export async function changeCategoryTestAction(
     return handleApiResponse<void>(response);
   } catch (error) {
     console.error("changeCategoryTestAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchCompetencyMatrix(): Promise<ApiResponse<CompetencyMatrix>> {
+  try {
+    const response = await apiFetch(API.test.getCompetencyMatrix(), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<CompetencyMatrix>(response);
+  } catch (error) {
+    console.error("fetchCompetencyMatrix Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

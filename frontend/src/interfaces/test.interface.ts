@@ -105,3 +105,17 @@ export interface ChangeCategoryTestPayload {
   id: string;
   categoryId: string;
 }
+
+export interface CompetencyMatrix {
+  excellent: MatrixCategory[];
+  good: MatrixCategory[];
+  needsWork: MatrixCategory[];
+}
+
+interface MatrixCategory {
+  id: string;
+  name: string;
+  cipher: string;
+  percentage: number;
+  total: number;
+}
