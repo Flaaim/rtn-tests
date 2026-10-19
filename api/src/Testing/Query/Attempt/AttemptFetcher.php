@@ -267,4 +267,20 @@ final class AttemptFetcher implements AttemptFetcherInterface
             'popularTests' => $popularTestsData,
         ];
     }
+
+    public function findFailedQuestionsIds(string $userId, string $testId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        return $qb->select('DISTINCT ans.question_id')
+            ->from('answers', 'ans')
+            ->join('ans', 'attempts', 'a', 'ans.attempt_id = a.id')
+            ->where('a.user_id = :userId')
+            ->andWhere('ans.is_correct = false')
+            ->andWhere('a.test_id = :testId')
+            ->setParameter('userId', $userId)
+            ->setParameter('testId', $testId)
+            ->executeQuery()
+            ->fetchFirstColumn();
+    }
 }

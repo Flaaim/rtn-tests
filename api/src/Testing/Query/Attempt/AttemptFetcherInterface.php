@@ -13,4 +13,6 @@ interface AttemptFetcherInterface
     public function getByUser(string $userId, int $page, int $limit): array;
 
     public function getUserStats(string $userId): array;
+
+    public function findFailedQuestionsIds(string $userId, string $testId): array;
 }

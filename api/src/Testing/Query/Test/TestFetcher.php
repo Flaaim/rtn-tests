@@ -283,14 +283,14 @@ final readonly class TestFetcher implements TestFetcherInterface
         foreach ($rows as $row) {
             $total = (int)$row['total_answers'];
             $correct = (int)$row['correct_answers'];
-            $percentage = $total > 0 ? ($correct / $total) * 100 : 0;
+            $percentage = ($total > 0) ? (($correct * 100) / $total) : 0;
 
             $item = [
                 'id' => $row['test_id'],
                 'name' => $row['test_name'],
                 'cipher' => $row['test_cipher'],
-                'percentage' => round($percentage, 2),
-                'total' => $total
+                'percentage' => round($percentage, 1),
+                'total' => $total,
             ];
 
             if ($percentage >= 80) {
