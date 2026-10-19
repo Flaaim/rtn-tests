@@ -107,3 +107,24 @@ export async function finishAttemptAction(attemptId: string): Promise<ApiRespons
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function launchMistakesAttemptAction(
+  testId: string
+): Promise<ApiResponse<{ attemptId: string }>> {
+  try {
+    const response = await apiFetch(API.attempt.launchMistakes(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        testId: testId,
+      }),
+    });
+    return handleApiResponse<{ attemptId: string }>(response);
+  } catch (error) {
+    console.error("launchMistakesAttemptAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}

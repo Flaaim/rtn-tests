@@ -119,6 +119,7 @@ export const API = {
     submitAnswer: (id: string) => BASE_URL + `/v1/testing/attempts/${id}/submit`,
     getResult: (id: string) => BASE_URL + `/v1/testing/attempts/${id}/result`,
     finish: (id: string) => BASE_URL + `/v1/testing/attempts/${id}/finish`,
+    launchMistakes: () => BASE_URL + `/v1/testing/attempts/mistakes`,
   },
   category: {
     add: () => BASE_URL + `/v1/admin/testing/categories`,
