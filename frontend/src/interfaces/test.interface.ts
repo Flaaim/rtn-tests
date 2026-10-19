@@ -119,3 +119,11 @@ interface MatrixCategory {
   percentage: number;
   total: number;
 }
+
+interface PopularTestsDTO {
+  id: string;
+  name: string;
+  cipher: string;
+  testsAttempts: number;
+  averageScore: number;
+}
