@@ -7,6 +7,7 @@ namespace App\Testing\Query\Attempt\GetPopularTests;
 final readonly class PopularTestsDTO
 {
     public function __construct(
+        public string $id,
         public string $name,
         public string $cipher,
         public int $testsAttempts,
@@ -16,6 +17,7 @@ final readonly class PopularTestsDTO
     public static function fromArray(array $data): self
     {
         return new self(
+            id: $data['id'],
             name: $data['name'],
             cipher: $data['cipher'],
             testsAttempts: $data['testsAttempts'],

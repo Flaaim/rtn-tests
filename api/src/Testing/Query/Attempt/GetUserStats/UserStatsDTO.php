@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Testing\Query\Attempt\GetUserStats;
 
-use App\Testing\Query\Attempt\GetPopularTests\PopularTestsDTO;
-
 final class UserStatsDTO
 {
     public function __construct(

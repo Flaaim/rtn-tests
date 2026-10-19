@@ -19,8 +19,7 @@ final class QueryHandler
         return new UserStatsDTO(
             completedTests: $result['completedTests'],
             inProgressTests: $result['inProgressTests'],
-            averageScore: $result['averageScore'],
-            popularTests: $result['popularTests'],
+            averageScore: $result['averageScore']
         );
     }
 }
