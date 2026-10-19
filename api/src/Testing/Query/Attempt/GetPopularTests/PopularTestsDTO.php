@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Query\Attempt\GetUserStats;
+namespace App\Testing\Query\Attempt\GetPopularTests;
 
 final readonly class PopularTestsDTO
 {
