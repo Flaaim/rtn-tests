@@ -32,6 +32,9 @@ export default async function AttemptResultPage({ params }: ResultPageProps) {
     : `/catalog/${category.slug}/${test.slug}`;
 
   const isAuthenticated = await checkIsAuthenticated();
+  const ticketNumber =
+    attemptData.ticketNumber !== 0 ? attemptData.ticketNumber : "Работа над ошибками";
+  const hasTicketNumber = attemptData.ticketNumber !== 0;
 
   return (
     <div className="max-w-4xl mx-auto space-y-8 py-8">
@@ -54,7 +57,7 @@ export default async function AttemptResultPage({ params }: ResultPageProps) {
             </div>
             <div className="flex flex-col p-4 bg-muted/30 rounded-lg">
               <span className="text-sm text-muted-foreground">Билет</span>
-              <span className="font-semibold">{attemptData.ticketNumber}</span>
+              <span className="font-semibold">{ticketNumber}</span>
             </div>
             <div className="flex flex-col p-4 bg-green-500/10 rounded-lg">
               <span className="text-sm text-muted-foreground">Правильно</span>
@@ -79,12 +82,14 @@ export default async function AttemptResultPage({ params }: ResultPageProps) {
         <CardFooter className="flex justify-center w-full">
           <div className="flex flex-row flex-wrap items-center justify-center w-full max-w-2xl">
             <div className="flex items-center gap-6">
-              <PublicTicketButton
-                testId={test.id}
-                ticketNumber={attemptData.ticketNumber}
-                isAuthenticated={isAuthenticated}
-                label="Пройти еще раз"
-              />
+              {hasTicketNumber && (
+                <PublicTicketButton
+                  testId={test.id}
+                  ticketNumber={attemptData.ticketNumber}
+                  isAuthenticated={isAuthenticated}
+                  label="Пройти еще раз"
+                />
+              )}
               <PrintButton />
               <Link className="inline-flex items-center gap-2" href={testUrl}>
                 <BookOpen />

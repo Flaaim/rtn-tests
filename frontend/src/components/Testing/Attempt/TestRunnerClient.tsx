@@ -104,10 +104,13 @@ export default function TestRunnerClient({ attempt }: TestRunnerClientProps) {
         return <div className="text-destructive">Неизвестный тип вопроса</div>;
     }
   };
+
+  const ticketNumber =
+    attempt.ticketNumber !== 0 ? `Билет № ${attempt.ticketNumber}` : "Работа над ошибками";
   return (
     <div className="max-w-3xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Билет № {attempt.ticketNumber}</h1>
+        <h1 className="text-2xl font-bold">{ticketNumber}</h1>
         Вопрос {currentQuestionIndex + 1} из {questions.length}
       </div>
       <Card>

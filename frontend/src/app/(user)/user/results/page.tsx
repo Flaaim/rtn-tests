@@ -113,7 +113,9 @@ export default async function UserResultsPage({ searchParams }: UserResultsPageP
                 </TableCell>
                 <TableCell className="text-muted-foreground">{attempt.cipher}</TableCell>
                 <TableCell>{getStatusBadge(attempt.status)}</TableCell>
-                <TableCell className="text-center font-mono">{attempt.ticketNumber}</TableCell>
+                <TableCell className="text-center font-mono">
+                  {attempt.ticketNumber !== 0 ? attempt.ticketNumber : `Работа над ошибками`}
+                </TableCell>
                 <TableCell className="text-center font-semibold text-green-600">
                   {attempt.score > 0 ? attempt.score : "—"}
                 </TableCell>
