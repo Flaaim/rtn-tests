@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Action\V1\Testing\Attempt\GetPopularTests;
+namespace App\Http\Action\V1\Testing\Analytics\GetPopular;
 
 use App\Infrastructure\Http\Validator\Validator;
-use App\Testing\Query\Attempt\GetPopularTests\Query;
-use App\Testing\Query\Attempt\GetPopularTests\QueryHandler;
+use App\Testing\Query\Analytics\GetPopularTests\Query;
+use App\Testing\Query\Analytics\GetPopularTests\QueryHandler;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -20,7 +20,7 @@ final readonly class RequestAction
         private Security $security,
     ) {}
 
-    #[Route('/v1/attempts/popular-tests', name: 'testing.attempts.popular.tests', methods: ['GET'])]
+    #[Route('/v1/testing/analytics/popular', name: 'testing.analytics.popular', methods: ['GET'])]
     public function __invoke(): Response
     {
         $user = $this->security->getUser();

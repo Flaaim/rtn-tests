@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Testing\Attempt\GetPopularTests;
+namespace Tests\Functional\Testing\Analytics\GetPopular;
 
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -42,7 +42,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testUnauthenticatedReturns401(): void
     {
-        $this->client->jsonRequest('GET', '/v1/attempts/popular-tests');
+        $this->client->jsonRequest('GET', '/v1/testing/analytics/popular');
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
     }
@@ -50,7 +50,7 @@ final class RequestActionTest extends WebTestCase
     public function testSuccess(): void
     {
         $this->client->catchExceptions(false);
-        $this->client->jsonRequest('GET', '/v1/attempts/popular-tests', [], $this->authHeaders($this->userToken));
+        $this->client->jsonRequest('GET', '/v1/testing/analytics/popular', [], $this->authHeaders($this->userToken));
 
         self::assertEquals(200, $this->client->getResponse()->getStatusCode());
 

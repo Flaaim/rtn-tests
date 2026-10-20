@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Query\Attempt\GetPopularTests;
+namespace App\Testing\Query\Analytics\GetPopularTests;
 
 use Symfony\Component\Validator\Constraints as Assert;
 
