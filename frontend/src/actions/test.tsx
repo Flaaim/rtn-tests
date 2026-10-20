@@ -7,6 +7,7 @@ import {
   ChangeCipherTestPayload,
   CompetencyMatrix,
   PaginatedTests,
+  PopularTestsDTO,
   RenameTestPayload,
   TestFull,
   TestItemPublic,
@@ -277,6 +278,22 @@ export async function fetchCompetencyMatrix(): Promise<ApiResponse<CompetencyMat
     return handleApiResponse<CompetencyMatrix>(response);
   } catch (error) {
     console.error("fetchCompetencyMatrix Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchPopularTests(): Promise<ApiResponse<PopularTestsDTO[]>> {
+  try {
+    const response = await apiFetch(API.test.getPopularTests(), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<PopularTestsDTO[]>(response);
+  } catch (error) {
+    console.error("fetchPopularTests Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

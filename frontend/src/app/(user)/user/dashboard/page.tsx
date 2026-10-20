@@ -1,5 +1,5 @@
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { BookOpen, History, Trophy, Activity, ArrowRight, TrendingUp } from "lucide-react";
+import { BookOpen, History, Trophy, Activity, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { fetchAttemptStatAction } from "@/actions/profile";
@@ -24,7 +24,7 @@ export default async function DashboardPage() {
     );
   }
   const userAttemptStats: UserAttemptStatsDTO = result.data;
-  const popularTests = userAttemptStats.popularTests;
+
   return (
     <div className="mx-auto max-w-4xl space-y-8 p-4 md:p-8">
       {/* Заголовок страницы */}
@@ -130,59 +130,6 @@ export default async function DashboardPage() {
 
       <div className="grid gap-6 md:grid-cols-1">
         <SmartMistakesWidget />
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-1">
-        <Card className="shadow-sm">
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <div className="space-y-1">
-              <CardTitle className="text-base font-semibold">Популярные тесты</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                Топ ваших тестов по количеству прохождений
-              </p>
-            </div>
-            <TrendingUp className="size-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            {popularTests.length === 0 ? (
-              <p className="text-sm text-muted-foreground text-center py-4">
-                Нет данных для отображения
-              </p>
-            ) : (
-              <div className="space-y-4 mt-4">
-                {popularTests.map((test, index) => (
-                  <div key={`${test.cipher}-${index}`} className="flex items-center gap-4">
-                    <div className="flex items-center gap-4 flex-1 min-w-0">
-                      <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary font-semibold text-sm">
-                        {index + 1}
-                      </div>
-                      <div className="min-w-0">
-                        <p className="text-sm font-medium leading-none truncate">{test.name}</p>
-                        <p className="text-xs text-muted-foreground mt-1 truncate">
-                          Шифр: {test.cipher}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-6 shrink-0 text-right">
-                      <div className="text-sm font-semibold">
-                        {test.averageScore.toFixed(1)} %
-                        <span className="text-xs text-muted-foreground font-normal ml-1">
-                          правильных ответов
-                        </span>
-                      </div>
-                      <div className="text-sm font-semibold">
-                        {test.testsAttempts.toLocaleString("ru-RU")}
-                        <span className="text-xs text-muted-foreground font-normal ml-1">
-                          попыток
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </CardContent>
-        </Card>
       </div>
     </div>
   );

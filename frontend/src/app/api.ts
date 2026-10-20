@@ -112,6 +112,7 @@ export const API = {
     getBySlug: (slug: string) => BASE_URL + `/v1/testing/tests/${slug}`,
     changeCategory: (id: string) => BASE_URL + `/v1/admin/testing/tests/${id}/change-category`,
     getCompetencyMatrix: () => BASE_URL + `/v1/testing/competency-matrix`,
+    getPopularTests: () => BASE_URL + `/v1/testing/analytics/popular`,
   },
   attempt: {
     launch: () => BASE_URL + `/v1/testing/attempts`,

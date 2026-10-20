@@ -120,7 +120,7 @@ interface MatrixCategory {
   total: number;
 }
 
-interface PopularTestsDTO {
+export interface PopularTestsDTO {
   id: string;
   name: string;
   cipher: string;
