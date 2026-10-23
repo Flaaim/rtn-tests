@@ -31,6 +31,9 @@
                 <directory name="src/Infrastructure" />
                 <directory name="src/Course/Command" />
                 <directory name="src/Testing/Command" />
+                <directory name="src/OAuth/Api" />
+                <directory name="src/Profile/Api" />
+                <directory name="src/Course/Api" />
             </errorLevel>
         </UnusedClass>
 
@@ -64,6 +67,8 @@
                 <directory name="src/Testing/Query" />
                 <directory name="src/Subscription/Query" />
                 <directory name="src/Testing/Entity/Attempt/DTO" />
+                <directory name="src/Auth/Interfaces/DTO" />
+                <directory name="src/Subscription/Interfaces/DTO" />
             </errorLevel>
         </PossiblyUnusedProperty>
 
