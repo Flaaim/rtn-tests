@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Testing\Command\Attempt\LaunchMistakes;
 
 use App\Infrastructure\Doctrine\Flusher;
-use App\Subscription\Api\SubscriptionApi;
 use App\Testing\Entity\Attempt\Attempt;
 use App\Testing\Entity\Attempt\AttemptId;
 use App\Testing\Entity\Attempt\AttemptRepository;
 use App\Testing\Entity\Attempt\Status;
 use App\Testing\Event\Attempt\TimeoutAttemptCommand;
 use App\Testing\Interfaces\CourseInterface;
+use App\Testing\Interfaces\SubscriptionInterface;
 use App\Testing\Query\Attempt\AttemptFetcherInterface;
 use DateTimeImmutable;
 use DomainException;
@@ -24,7 +24,7 @@ final readonly class Handler
     public function __construct(
         private AttemptFetcherInterface $attemptsFetcher,
         private AttemptRepository $attempts,
-        private SubscriptionApi $subscriptionApi,
+        private SubscriptionInterface $subscription,
         private CourseInterface $course,
         private Flusher $flusher,
         private MessageBusInterface $messageBus,
@@ -32,7 +32,7 @@ final readonly class Handler
 
     public function handle(Command $command): string
     {
-        $this->subscriptionApi->ensureHasAccess($command->userId);
+        $this->subscription->ensureHasAccess($command->userId);
 
         $failedQuestionIds = $this->attemptsFetcher->findFailedQuestionsIds($command->userId, $command->testId);
 

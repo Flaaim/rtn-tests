@@ -10,10 +10,11 @@ use App\Subscription\Entity\Subscription\Plan;
 use App\Subscription\Entity\Subscription\Status;
 use App\Subscription\Entity\Subscription\SubscriptionRepository;
 use App\Subscription\Query\Subscription\SubscriptionFetcherInterface;
+use App\Testing\Interfaces\SubscriptionInterface;
 use DomainException;
 
 /** @psalm-suppress UnusedClass */
-final readonly class SubscriptionApi
+final readonly class SubscriptionApi implements SubscriptionInterface
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Testing\Command\Attempt\Launch;
 
 use App\Infrastructure\Doctrine\Flusher;
-use App\Subscription\Api\SubscriptionApi;
 use App\Testing\Entity\Attempt\Attempt;
 use App\Testing\Entity\Attempt\AttemptId;
 use App\Testing\Entity\Attempt\AttemptRepository;
@@ -14,6 +13,7 @@ use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
 use App\Testing\Event\Attempt\TimeoutAttemptCommand;
 use App\Testing\Interfaces\CourseInterface;
+use App\Testing\Interfaces\SubscriptionInterface;
 use DateTimeImmutable;
 use DomainException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -30,12 +30,12 @@ final readonly class Handler
         private CourseInterface $course,
         private MessageBusInterface $messageBus,
         private Flusher $flusher,
-        private SubscriptionApi $subscriptionApi,
+        private SubscriptionInterface $subscription,
     ) {}
 
     public function handle(Command $command): string
     {
-        $this->subscriptionApi->ensureHasAccess($command->userId);
+        $this->subscription->ensureHasAccess($command->userId);
 
         $processedAttempt = $this->attempts->findUserProcessedAttempt(
             $command->userId,

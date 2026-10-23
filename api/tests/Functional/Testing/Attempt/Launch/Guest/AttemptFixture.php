@@ -41,6 +41,45 @@ final class AttemptFixture extends AbstractFixture
         );
         $manager->persist($attempt);
 
+        $attempt = new Attempt(
+            AttemptId::generate(),
+            RequestFixture::TEST_ID,
+            RequestFixture::GUEST_ID_ATTEMPT_EXCEEDED,
+            Status::passed(),
+            new DateTimeImmutable(),
+            RequestFixture::TICKET_NUMBER,
+            [],
+            8,
+            2
+        );
+        $manager->persist($attempt);
+
+        $attempt = new Attempt(
+            AttemptId::generate(),
+            RequestFixture::TEST_ID,
+            RequestFixture::GUEST_ID_ATTEMPT_EXCEEDED,
+            Status::passed(),
+            new DateTimeImmutable(),
+            RequestFixture::TICKET_NUMBER,
+            [],
+            8,
+            2
+        );
+        $manager->persist($attempt);
+
+        $attempt = new Attempt(
+            AttemptId::generate(),
+            RequestFixture::TEST_ID,
+            RequestFixture::GUEST_ID_ATTEMPT_EXCEEDED,
+            Status::passed(),
+            new DateTimeImmutable(),
+            RequestFixture::TICKET_NUMBER,
+            [],
+            8,
+            2
+        );
+        $manager->persist($attempt);
+
         $manager->flush();
     }
 }
