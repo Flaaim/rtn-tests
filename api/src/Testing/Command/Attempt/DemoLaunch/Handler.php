@@ -31,7 +31,7 @@ final readonly class Handler
     {
         $demoCountAttempts = $this->attempts->countByUserId($command->guestId);
 
-        if ($demoCountAttempts >= 2) {
+        if ($demoCountAttempts >= 5) {
             throw new DomainException('Демо-доступ исчерпан. Пожалуйста, зарегистрируйтесь.');
         }
 
