@@ -11,7 +11,6 @@ use App\Course\Query\Course\GetQuestions\QueryHandler;
 use Doctrine\DBAL\Connection;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use Tests\Functional\Admin\Course\Course\Api\GetQuestionIds\RequestFixture;
 use Tests\Functional\FixturesLoader;
 
 /**

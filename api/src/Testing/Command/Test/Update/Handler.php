@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace App\Testing\Command\Test\Update;
 
-use App\Course\Api\Course\GetQuestionIds\QueryHandlerApi;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
+use App\Testing\Interfaces\CourseInterface;
 
-final class Handler
+final readonly class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly QueryHandlerApi $courseApi,
-        private readonly TestRepository $tests,
-        private readonly Flusher $flusher
+        private CourseInterface $course,
+        private TestRepository $tests,
+        private Flusher $flusher
     ) {}
 
     public function handle(Command $command): void
@@ -26,7 +26,7 @@ final class Handler
         $allQuestionIds = [];
 
         foreach ($courseIds as $courseId) {
-            $courseQuestions = $this->courseApi->getQuestionIds($courseId);
+            $courseQuestions = $this->course->getQuestionIds($courseId);
             $allQuestionIds = array_merge($allQuestionIds, $courseQuestions);
         }
 

@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace App\Course\Api\Course\GetQuestionIds;
+namespace App\Course\Api;
 
 use App\Course\Query\Course\GetQuestionsIds\Query;
 use App\Course\Query\Course\GetQuestionsIds\QueryHandler;
+use App\Testing\Interfaces\CourseInterface;
 
-final class QueryHandlerApi
+final readonly class CourseApi implements CourseInterface
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly QueryHandler $queryHandler,
+        private QueryHandler $queryHandler,
     ) {}
 
     public function getQuestionIds(string $courseId): array

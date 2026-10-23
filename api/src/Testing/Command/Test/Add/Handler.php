@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace App\Testing\Command\Test\Add;
 
-use App\Course\Api\Course\GetQuestionIds\QueryHandlerApi;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\Test\Settings;
 use App\Testing\Entity\Test\Test;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
+use App\Testing\Interfaces\CourseInterface;
 use App\Testing\Service\SlugGenerator\SlugGeneratorByCipher;
 use DateTimeImmutable;
 use DomainException;
 
-final class Handler
+final readonly class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly QueryHandlerApi $courseApi,
-        private readonly SlugGeneratorByCipher $slugGenerator,
-        private readonly TestRepository $tests,
-        private readonly Flusher $flusher
+        private CourseInterface $course,
+        private SlugGeneratorByCipher $slugGenerator,
+        private TestRepository $tests,
+        private Flusher $flusher
     ) {}
 
     public function handle(Command $command): void
@@ -41,7 +41,7 @@ final class Handler
         $allQuestionIds = [];
 
         foreach ($command->courseIds as $courseId) {
-            $courseQuestions = $this->courseApi->getQuestionIds($courseId);
+            $courseQuestions = $this->course->getQuestionIds($courseId);
             $allQuestionIds = array_merge($allQuestionIds, $courseQuestions);
         }
 
