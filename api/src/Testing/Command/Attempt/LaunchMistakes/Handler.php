@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Testing\Command\Attempt\LaunchMistakes;
 
-use App\Course\Api\Course\GetQuestions\QueryHandlerApi;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Subscription\Api\SubscriptionApi;
 use App\Testing\Entity\Attempt\Attempt;
@@ -12,6 +11,7 @@ use App\Testing\Entity\Attempt\AttemptId;
 use App\Testing\Entity\Attempt\AttemptRepository;
 use App\Testing\Entity\Attempt\Status;
 use App\Testing\Event\Attempt\TimeoutAttemptCommand;
+use App\Testing\Interfaces\CourseInterface;
 use App\Testing\Query\Attempt\AttemptFetcherInterface;
 use DateTimeImmutable;
 use DomainException;
@@ -25,7 +25,7 @@ final readonly class Handler
         private AttemptFetcherInterface $attemptsFetcher,
         private AttemptRepository $attempts,
         private SubscriptionApi $subscriptionApi,
-        private QueryHandlerApi $queryHandler,
+        private CourseInterface $course,
         private Flusher $flusher,
         private MessageBusInterface $messageBus,
     ) {}
@@ -43,7 +43,7 @@ final readonly class Handler
         shuffle($failedQuestionIds);
         $selectedIds = \array_slice($failedQuestionIds, 0, 20);
 
-        $questionsSnapshot = $this->queryHandler->getQuestions($selectedIds);
+        $questionsSnapshot = $this->course->getQuestions($selectedIds);
 
         if (empty($questionsSnapshot)) {
             throw new DomainException('No questions found in course.');

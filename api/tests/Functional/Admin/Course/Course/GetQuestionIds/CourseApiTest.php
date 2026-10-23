@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Tests\Functional\Admin\Course\Course\GetQuestionIds;
 
 use App\Course\Api\CourseApi;
+use App\Course\Query\Course;
 use App\Course\Query\Course\CourseFetcher;
 use App\Course\Query\Course\CourseFetcherInterface;
-use App\Course\Query\Course\GetQuestionsIds\QueryHandler;
 use Doctrine\DBAL\Connection;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -36,8 +36,10 @@ final class CourseApiTest extends KernelTestCase
 
     public function testSuccess(): void
     {
-        $questionIdsHandler = new QueryHandler($this->courseFetcher);
-        $courseApi = new CourseApi($questionIdsHandler);
+        $questionIdsHandler = new Course\GetQuestionsIds\QueryHandler($this->courseFetcher);
+        $getQuestionsHandler = new Course\GetQuestions\QueryHandler($this->courseFetcher);
+
+        $courseApi = new CourseApi($questionIdsHandler, $getQuestionsHandler);
 
         $ids = $courseApi->getQuestionIds(RequestFixture::COURSE_ID);
 

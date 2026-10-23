@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Course\Course\Api\GetQuestions;
+namespace Tests\Functional\Admin\Course\Course\GetQuestions;
 
-use App\Course\Api\Course\GetQuestions\QueryHandlerApi;
+use App\Course\Api\CourseApi;
+use App\Course\Query\Course;
 use App\Course\Query\Course\CourseFetcher;
 use App\Course\Query\Course\CourseFetcherInterface;
-use App\Course\Query\Course\GetQuestions\QueryHandler;
 use Doctrine\DBAL\Connection;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -17,7 +17,7 @@ use Tests\Functional\FixturesLoader;
  * @internal
  * @coversNothing
  */
-final class QueryHandlerApiTest extends KernelTestCase
+final class CourseApiTest extends KernelTestCase
 {
     private readonly ContainerInterface $container;
     private readonly CourseFetcherInterface $courseFetcher;
@@ -36,9 +36,10 @@ final class QueryHandlerApiTest extends KernelTestCase
 
     public function testSuccess(): void
     {
-        $questionsHandler = new QueryHandler($this->courseFetcher);
-        $courseApi = new QueryHandlerApi($questionsHandler);
+        $questionIdsHandler = new Course\GetQuestionsIds\QueryHandler($this->courseFetcher);
+        $getQuestionsHandler = new Course\GetQuestions\QueryHandler($this->courseFetcher);
 
+        $courseApi = new CourseApi($questionIdsHandler, $getQuestionsHandler);
         $questions = $courseApi->getQuestions(['90be077454a14f3d965c4b07645e3769', '6724ac7652bc47d6913ab8ca11b2ea36']);
 
         self::assertCount(2, $questions);

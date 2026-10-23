@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Course\Course\Api\GetQuestions;
+namespace Tests\Functional\Admin\Course\Course\GetQuestions;
 
 use App\Course\Entity\Course\Answer;
 use App\Course\Entity\Course\Course;

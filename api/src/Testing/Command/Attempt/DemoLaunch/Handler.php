@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Testing\Command\Attempt\DemoLaunch;
 
-use App\Course\Api\Course\GetQuestions\QueryHandlerApi;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\Attempt\Attempt;
 use App\Testing\Entity\Attempt\AttemptId;
@@ -12,6 +11,7 @@ use App\Testing\Entity\Attempt\AttemptRepository;
 use App\Testing\Entity\Attempt\Status;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
+use App\Testing\Interfaces\CourseInterface;
 use DateTimeImmutable;
 use DomainException;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
@@ -23,7 +23,7 @@ final readonly class Handler
     public function __construct(
         private TestRepository $tests,
         private AttemptRepository $attempts,
-        private QueryHandlerApi $queryHandler,
+        private CourseInterface $course,
         private Flusher $flusher,
     ) {}
 
@@ -45,7 +45,7 @@ final readonly class Handler
             throw new DomainException('Invalid ticket number.');
         }
 
-        $questionsSnapshot = $this->queryHandler->getQuestions($ticket->questionIds);
+        $questionsSnapshot = $this->course->getQuestions($ticket->questionIds);
 
         if (empty($questionsSnapshot)) {
             throw new DomainException('No questions found in course.');
