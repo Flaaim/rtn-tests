@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Subscription\MessageHandler\Subscription;
 
-use App\Profile\Api\GetDetail\QueryHandlerApi;
 use App\Subscription\Event\Subscription\SubscriptionExpired;
+use App\Subscription\Interfaces\ProfileInterface;
 use App\Subscription\Service\SubscriptionExpiredSender;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
@@ -14,7 +14,7 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 final readonly class SendEmailOnSubscriptionExpiredHandler
 {
     public function __construct(
-        private QueryHandlerApi $profileApi,
+        private ProfileInterface $profile,
         private SubscriptionExpiredSender $sender,
     ) {}
 
@@ -22,7 +22,7 @@ final readonly class SendEmailOnSubscriptionExpiredHandler
     {
         $userId = $event->userId;
 
-        $user = $this->profileApi->getDetail($userId);
+        $user = $this->profile->getDetail($userId);
 
         $email = $user->email;
 
