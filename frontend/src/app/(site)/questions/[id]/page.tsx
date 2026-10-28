@@ -3,12 +3,13 @@ import { Metadata } from "next";
 import { checkIsAuthenticated } from "@/actions/auth";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle2, ChevronRight, Circle, Sparkles } from "lucide-react";
+import { ChevronRight, Sparkles } from "lucide-react";
 import { fetchPublicQuestionAction } from "@/actions/question";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { PublicAnswerData } from "@/interfaces/question.interface";
+
 import PublicTicketButton from "@/components/Testing/Test/PublicTicketButton";
 import { Button } from "@/components/ui/button";
+import ShowCorrectAnswer from "@/components/Question/ShowCorrectAnswer";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -126,42 +127,7 @@ export default async function PublicQuestionPage({ params }: PageProps) {
             Варианты ответа:
           </p>
 
-          {question.answers.map((answer: PublicAnswerData, index) => {
-            const correct = answer.isCorrect;
-
-            return (
-              <div
-                key={answer.id ?? index}
-                className={`flex items-start gap-3 p-4 rounded-lg border transition-colors ${
-                  correct
-                    ? "bg-emerald-50/70 border-emerald-300 dark:bg-emerald-950/30 dark:border-emerald-800"
-                    : "bg-card border-border/60 text-muted-foreground"
-                }`}
-              >
-                {answer.isCorrect ? (
-                  <CheckCircle2 className="h-5 w-5 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                ) : (
-                  <Circle className="h-5 w-5 text-muted-foreground/40 shrink-0 mt-0.5" />
-                )}
-                <div className="space-y-1">
-                  <span
-                    className={
-                      correct
-                        ? "font-medium text-emerald-950 dark:text-emerald-100"
-                        : "text-foreground/80"
-                    }
-                  >
-                    {answer.text}
-                  </span>
-                  {correct && (
-                    <span className="block text-xs font-semibold text-emerald-600 dark:text-emerald-400">
-                      ✓ Правильный ответ
-                    </span>
-                  )}
-                </div>
-              </div>
-            );
-          })}
+          <ShowCorrectAnswer question={question} isAuthenticated={isAuthenticated} />
         </CardContent>
       </Card>
 
@@ -178,8 +144,8 @@ export default async function PublicQuestionPage({ params }: PageProps) {
             </h2>
 
             <p className="text-sm md:text-base text-muted-foreground max-w-2xl">
-              Не нужно учить вопросы вразнобой. Запустите режим реального экзамена прямо сейчас
-              (доступно 2 бесплатных билета) или откройте полный список билетов и вопросов курса.
+              Не нужно учить вопросы вразнобой. Запустите режим реального экзамена прямо сейчас или
+              откройте полный список билетов и вопросов курса.
             </p>
           </div>
 
