@@ -19,11 +19,11 @@ final readonly class AnswersToPDFRenderer implements FileRendererInterface
         private FileSaverInterface $fileSaver,
     ) {}
 
-    public function render(string $courseId): void
+    public function render(array $questions, string $courseId): void
     {
         $dir = $this->coursePath->getValue() . \DIRECTORY_SEPARATOR . $courseId;
 
-        $content = $this->twig->render(self::TEMPLATE);
+        $content = $this->twig->render(self::TEMPLATE, ['questions' => $questions]);
 
         $output = $this->wrapper->getPdf($content);
 
