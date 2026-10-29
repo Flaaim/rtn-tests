@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\CourseAnswers\Entity\Payment;
 
 use DateTimeImmutable;
+use DomainException;
 
 final class Payment
 {
@@ -60,5 +61,18 @@ final class Payment
     public function getAmount(): Amount
     {
         return $this->amount;
+    }
+
+    public function confirm(): void
+    {
+        if (PaymentStatus::SUCCEEDED === $this->status) {
+            return;
+        }
+
+        if (PaymentStatus::PENDING !== $this->status) {
+            throw new DomainException('Payment has already been confirmed.');
+        }
+        $this->status = PaymentStatus::SUCCEEDED;
+        $this->confirmedAt = new DateTimeImmutable();
     }
 }
