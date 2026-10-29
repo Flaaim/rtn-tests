@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Course\Test\Unit\Service\PDFRenderer;
+namespace App\Course\Test\Unit\Service\FIleRenderer;
 
-use App\Course\Service\PDFRenderer\FileSaver;
+use App\Course\Service\FileRenderer\FileSaver;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;

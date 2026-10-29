@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Course\Service\PDFRenderer;
+namespace App\Course\Service\FileRenderer;
 
 use DomainException;
 use Throwable;
