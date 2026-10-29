@@ -14,16 +14,16 @@ use App\SharedDomain\Filesystem\FileSystemPathInterface;
 final class CourseMediaDownloader
 {
     public function __construct(
-        private readonly FileDownloaderInterface $fileDownloader,
+        private readonly FileDownloaderInterface    $fileDownloader,
         private readonly FilenameGeneratorInterface $filenameGenerator,
-        private readonly FileSystemPathInterface $fileSystemPath,
-        private readonly DirectoryCreatorInterface $directoryCreator,
-        private readonly DirectoryCleanerInterface $directoryCleaner,
+        private readonly FileSystemPathInterface    $questionPath,
+        private readonly DirectoryCreatorInterface  $directoryCreator,
+        private readonly DirectoryCleanerInterface  $directoryCleaner,
     ) {}
 
     public function downloadMedia(array $questions, string $relativePathDir): void
     {
-        $questionsDir = $this->fileSystemPath->getValue() . \DIRECTORY_SEPARATOR . $relativePathDir;
+        $questionsDir = $this->questionPath->getValue() . \DIRECTORY_SEPARATOR . $relativePathDir;
 
         $this->directoryCleaner->cleanDirectory($questionsDir);
         $this->directoryCreator->createDirectory($questionsDir);
@@ -42,7 +42,7 @@ final class CourseMediaDownloader
             foreach ($question->getAnswers() as $answer) {
                 $answerImg = $answer->getAnswerImg();
                 if ('' !== $answerImg && str_starts_with($answerImg, 'http')) {
-                    $answersDir = $this->fileSystemPath->getValue() .
+                    $answersDir = $this->questionPath->getValue() .
                         \DIRECTORY_SEPARATOR . $relativePathDir .
                         \DIRECTORY_SEPARATOR . $answer->getId();
 

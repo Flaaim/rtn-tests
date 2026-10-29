@@ -106,10 +106,15 @@ services:
         arguments:
             $secretKey: '%env(ENCRYPT_SECRET_KEY)%'
 
-    App\SharedDomain\Filesystem\FileSystemPathInterface: '@App\SharedDomain\Filesystem\FileSystemPath'
-    App\SharedDomain\Filesystem\FileSystemPath:
+    App\SharedDomain\Filesystem\FileSystemPathInterface $questionPath: '@App\SharedDomain\Filesystem\QuestionImages\QuestionImagesFilePath'
+    App\SharedDomain\Filesystem\FileSystemPathInterface $coursePath: '@App\SharedDomain\Filesystem\Course\CourseAnswersFilePath'
+
+    App\SharedDomain\Filesystem\QuestionImages\QuestionImagesFilePath:
         arguments:
             $path: '%kernel.project_dir%/public/QuestionImages'
+    App\SharedDomain\Filesystem\Course\CourseAnswersFilePath:
+        arguments:
+            $path: '%kernel.project_dir%/public/course'
 
     YooKassa\Client:
         calls:
@@ -125,9 +130,12 @@ when@test:
 
         App\Infrastructure\Social\Registry\ClientRegistry: '@App\Infrastructure\Social\Registry\FakeRegistry'
 
-        App\SharedDomain\Filesystem\FileSystemPathInterface: '@App\SharedDomain\Filesystem\InMemoryFileSystemPath'
         App\SharedDomain\Filesystem\InMemoryFileSystemPath:
+            public: true
             factory: ['App\SharedDomain\Filesystem\InMemoryFileSystemPath', 'createReal']
+
+        App\SharedDomain\Filesystem\FileSystemPathInterface $questionPath: '@App\SharedDomain\Filesystem\InMemoryFileSystemPath'
+        App\SharedDomain\Filesystem\FileSystemPathInterface $coursePath: '@App\SharedDomain\Filesystem\InMemoryFileSystemPath'
 
         App\Subscription\Service\Payment\PaymentGatewayInterface: '@App\Infrastructure\Payment\Yookassa\FakePaymentGateway'
 
