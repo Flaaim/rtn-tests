@@ -42,6 +42,12 @@ export default function PublicTicketButton({
         return;
       }
 
+      if (errorMessage.includes("Ваш оплаченный период завершен")) {
+        toast.error("Ваш оплаченный период завершен", {
+          description: "Чтобы продолжить прохождение тестов необходимо приобрести подписку.",
+        });
+      }
+
       setLoading(false);
       return;
     }
