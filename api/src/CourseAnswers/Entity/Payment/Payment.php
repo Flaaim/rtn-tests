@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace App\CourseAnswers\Entity\Payment;
 
+use App\CourseAnswers\Event\Payment\PaymentConfirmed;
+use App\SharedDomain\AggregateRoot;
+use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
 use DomainException;
 
-final class Payment
+final class Payment implements AggregateRoot
 {
+    use EventTrait;
     private DateTimeImmutable $createdAt;
     private ?DateTimeImmutable $confirmedAt = null;
 
@@ -74,5 +78,10 @@ final class Payment
         }
         $this->status = PaymentStatus::SUCCEEDED;
         $this->confirmedAt = new DateTimeImmutable();
+
+        $this->recordEvent(new PaymentConfirmed(
+            $this->email,
+            $this->courseId,
+        ));
     }
 }

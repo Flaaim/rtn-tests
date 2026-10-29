@@ -8,6 +8,7 @@ use App\CourseAnswers\Entity\Payment\Amount;
 use App\CourseAnswers\Entity\Payment\Payment;
 use App\CourseAnswers\Entity\Payment\PaymentId;
 use App\CourseAnswers\Entity\Payment\PaymentStatus;
+use App\CourseAnswers\Event\Payment\PaymentConfirmed;
 use DomainException;
 use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\TestCase;
@@ -53,8 +54,8 @@ final class ConfirmPaymentTest extends TestCase
     {
         $payment = new Payment(
             PaymentId::generate(),
-            'test@email.ru',
-            '3b96a7d0-88a4-43cd-aee2-88b4fa81b7ef',
+            $email = 'test@email.ru',
+            $courseId = '3b96a7d0-88a4-43cd-aee2-88b4fa81b7ef',
             'e4c3b83f-4cee-4e1f-b5d8-38b11101b723',
             PaymentStatus::PENDING,
             new Amount('350.00')
@@ -63,5 +64,11 @@ final class ConfirmPaymentTest extends TestCase
         $payment->confirm();
 
         self::assertEquals(PaymentStatus::SUCCEEDED, $payment->getStatus());
+
+        $messages = $payment->releaseEvents();
+        $message = $messages[0];
+        self::assertInstanceOf(PaymentConfirmed::class, $message);
+        self::assertEquals($email, $message->email);
+        self::assertEquals($courseId, $message->courseId);
     }
 }
