@@ -14,11 +14,11 @@ use App\SharedDomain\Filesystem\FileSystemPathInterface;
 final class CourseMediaDownloader
 {
     public function __construct(
-        private readonly FileDownloaderInterface    $fileDownloader,
+        private readonly FileDownloaderInterface $fileDownloader,
         private readonly FilenameGeneratorInterface $filenameGenerator,
-        private readonly FileSystemPathInterface    $questionPath,
-        private readonly DirectoryCreatorInterface  $directoryCreator,
-        private readonly DirectoryCleanerInterface  $directoryCleaner,
+        private readonly FileSystemPathInterface $questionPath,
+        private readonly DirectoryCreatorInterface $directoryCreator,
+        private readonly DirectoryCleanerInterface $directoryCleaner,
     ) {}
 
     public function downloadMedia(array $questions, string $relativePathDir): void

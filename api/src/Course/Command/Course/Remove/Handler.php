@@ -14,10 +14,10 @@ final class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly CourseRepository          $courses,
+        private readonly CourseRepository $courses,
         private readonly DirectoryCleanerInterface $cleaner,
-        private readonly FileSystemPathInterface   $questionPath,
-        private readonly Flusher                   $flusher
+        private readonly FileSystemPathInterface $questionPath,
+        private readonly Flusher $flusher
     ) {}
 
     public function handle(Command $command): void
