@@ -7,14 +7,14 @@ namespace App\Course\MessageHandler;
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
 use App\Course\Event\CourseScheduledToRender;
-use App\Course\Service\FileRenderer\FileRendererInterface;
+use App\Course\Service\FileRenderer\FileRendererFacade;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 #[AsMessageHandler]
 final readonly class CourseScheduledToRenderHandler
 {
     public function __construct(
-        private FileRendererInterface $answersToPDFRenderer,
+        private FileRendererFacade $fileRendererFacade,
         private CourseRepository $courses,
     ) {}
 
@@ -24,6 +24,6 @@ final readonly class CourseScheduledToRenderHandler
 
         $course = $this->courses->get(new CourseId($courseId));
 
-        $this->answersToPDFRenderer->render($course->getQuestions(), $courseId);
+        $this->fileRendererFacade->renderAndSave($courseId, $course->getQuestions());
     }
 }

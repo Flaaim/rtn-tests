@@ -6,5 +6,5 @@ namespace App\Course\Service\FileRenderer;
 
 interface FileRendererInterface
 {
-    public function render(array $questions, string $courseId): void;
+    public function render(array $questions, string $courseId): string;
 }

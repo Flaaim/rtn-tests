@@ -21,9 +21,9 @@ final readonly class CourseCreatedHandler
 {
     public function __construct(
         private CourseMediaDownloader $courseMediaDownloader,
-        private CourseRepository      $courses,
-        private MessageBusInterface   $messageBus,
-        private Flusher               $flusher,
+        private CourseRepository $courses,
+        private MessageBusInterface $messageBus,
+        private Flusher $flusher,
     ) {}
 
     public function __invoke(CourseCreated $event): void
