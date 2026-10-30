@@ -4,12 +4,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <title>Документ</title>
     <style>
-        body {
-            font-family: 'DejaVu Sans', sans-serif;
+        body { font-family: 'DejaVu Sans'; font-size: 14px; line-height: 1.4; max-width: 900px; margin: 0 auto; padding: 20px; color: #111; }
+        .question { margin-bottom: 20px; page-break-inside: avoid; }
+        img { max-height: 200px; max-width: 100%; margin-top: 8px; border-radius: 4px; display: block; }
+        ul { margin: 8px 0 0; padding-left: 20px; }
+        li { margin-bottom: 6px; }
+        a { color: #2563eb; text-decoration: none; }
+        .answer-correct {
+            color: green;
         }
     </style>
 </head>
 <body>
+    <p>
+        Подготовка к аттестации в Ростехнадзоре: <a href="https://rtn-tests.ru" target="_blank">https://rtn-tests.ru</a>
+    </p>
+    <hr style="margin-bottom:20px; border:none; border-top:1px solid #e5e7eb;">
     <div class="questions">
         <h3 class="questions-title">Вопросы ({{ questions|length }})</h3>
 
