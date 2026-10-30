@@ -12,7 +12,7 @@ final readonly class FileRendererFacade
         private FileSaverInterface $fileSaver,
     ) {}
 
-    public function renderAndSave(string $courseId, array $questions): void
+    public function renderAndSave(string $courseId, array $questions): string
     {
         $directory = $this->directoryPreparer->prepare($courseId);
 
@@ -20,5 +20,7 @@ final readonly class FileRendererFacade
 
         $destinationFilePath = $directory . \DIRECTORY_SEPARATOR . $courseId . '.pdf';
         $this->fileSaver->save($destinationFilePath, $content);
+
+        return $destinationFilePath;
     }
 }

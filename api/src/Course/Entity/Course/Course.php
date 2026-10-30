@@ -22,6 +22,8 @@ final class Course implements AggregateRoot
     private Status $status;
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'course', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $questions;
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $renderFile = null;
 
     public function __construct(
         #[ORM\Id]
@@ -102,5 +104,15 @@ final class Course implements AggregateRoot
         if (null !== $newCipher) {
             $this->cipher = $newCipher;
         }
+    }
+
+    public function renderFile(string $filePath): void
+    {
+        $this->renderFile = $filePath;
+    }
+
+    public function getRenderFile(): ?string
+    {
+        return $this->renderFile;
     }
 }
