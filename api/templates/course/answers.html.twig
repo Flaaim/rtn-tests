@@ -1,1 +1,49 @@
-TEST
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>Документ</title>
+    <style>
+        body {
+            font-family: 'DejaVu Sans', sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <div class="questions">
+        <h3 class="questions-title">Вопросы ({{ questions|length }})</h3>
+    
+        {% for question in questions %}
+            <div class="question" id="question-{{ question.getId() }}">
+                <p class="question-text">
+                    <b>{{ loop.index }}. {{ question.getText()|nl2br }}</b>
+                </p>
+    
+                {% if question.getQuestionImg() is not empty %}
+                    <img src="{{ question.getQuestionImg() }}"
+                         class="question-img" width="500" height="300"
+                         alt="Иллюстрация к вопросу">
+                {% endif %}
+    
+                <div class="answers">
+                    {% for answer in question.getAnswers() %}
+                        <ul>
+                            <li class="answer {% if answer.isCorrect() %}answer-correct{% endif %}"
+                                id="answer-{{ answer.getId() }}">
+                                <span class="answer-text">{{ answer.getText()|nl2br }}</span>
+    
+                                {% if answer.getAnswerImg() is not empty %}
+                                    <img class="answer-img"
+                                         width="100px"
+                                         src="{{ answer.getAnswerImg() }}"
+                                         alt="Иллюстрация к ответу">
+                                {% endif %}
+                            </li>
+                        </ul>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</body>
+</html>

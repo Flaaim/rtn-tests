@@ -46,6 +46,7 @@ framework:
 
             'App\Course\Event\CourseCreated': async
             'App\Course\Event\CourseUpdated': async
+            'App\Course\Event\CourseScheduledToRender': async
 
             'App\Testing\Event\TestCreated': async
             'App\Testing\Event\TestActivated': async
@@ -71,3 +72,4 @@ when@test:
                 sync: 'sync://'
             routing:
                 'App\Subscription\Command\Activate\Command': sync
+                'App\Course\Event\CourseScheduledToRender': sync
