@@ -21,6 +21,6 @@ final readonly class FileRendererFacade
         $destinationFilePath = $directory . \DIRECTORY_SEPARATOR . $courseId . '.pdf';
         $this->fileSaver->save($destinationFilePath, $content);
 
-        return $destinationFilePath;
+        return basename($directory) . \DIRECTORY_SEPARATOR . $courseId . '.pdf';
     }
 }

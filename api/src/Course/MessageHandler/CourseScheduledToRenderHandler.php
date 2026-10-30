@@ -6,6 +6,7 @@ namespace App\Course\MessageHandler;
 
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
+use App\Course\Entity\Course\File;
 use App\Course\Event\CourseScheduledToRender;
 use App\Course\Service\FileRenderer\FileRendererFacade;
 use App\Infrastructure\Doctrine\Flusher;
@@ -28,7 +29,7 @@ final readonly class CourseScheduledToRenderHandler
 
         $file = $this->fileRendererFacade->renderAndSave($courseId, $course->getQuestions());
 
-        $course->renderFile($file);
+        $course->setFile(new File($file, $course->getCipher()));
 
         $this->flusher->flush();
     }

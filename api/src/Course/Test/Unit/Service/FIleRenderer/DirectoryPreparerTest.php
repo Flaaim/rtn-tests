@@ -11,6 +11,10 @@ use App\SharedDomain\Filesystem\FileSystemPathInterface;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class DirectoryPreparerTest extends TestCase
 {
     private DirectoryCreatorInterface $directoryCreator;
@@ -40,7 +44,6 @@ final class DirectoryPreparerTest extends TestCase
         $this->directoryCreator->expects(self::once())
             ->method('createDirectory')
             ->with(self::equalTo('/tmp/phpunit_real_storage/1d71cd68-e737-4eb4-8395-5e8650fa3657'));
-
 
         $dir = $preparer->prepare('1d71cd68-e737-4eb4-8395-5e8650fa3657');
 

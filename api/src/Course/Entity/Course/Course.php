@@ -22,8 +22,6 @@ final class Course implements AggregateRoot
     private Status $status;
     #[ORM\OneToMany(targetEntity: Question::class, mappedBy: 'course', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $questions;
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $renderFile = null;
 
     public function __construct(
         #[ORM\Id]
@@ -36,6 +34,8 @@ final class Course implements AggregateRoot
         private DateTimeImmutable $createdAt,
         #[ORM\Column(type: 'string', length: 255)]
         private string $cipher,
+        #[ORM\Embedded(class: File::class, columnPrefix: 'file_')]
+        private ?File $file = null,
     ) {
         $this->questions = new ArrayCollection($questions);
         foreach ($questions as $question) {
@@ -106,13 +106,13 @@ final class Course implements AggregateRoot
         }
     }
 
-    public function renderFile(string $filePath): void
+    public function setFile(File $file): void
     {
-        $this->renderFile = $filePath;
+        $this->file = $file;
     }
 
-    public function getRenderFile(): ?string
+    public function getFile(): ?File
     {
-        return $this->renderFile;
+        return $this->file;
     }
 }
