@@ -36,12 +36,13 @@ final class Payment implements AggregateRoot
     {
         return $this->email;
     }
-
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getConfirmedAt(): ?DateTimeImmutable
     {
         return $this->confirmedAt;

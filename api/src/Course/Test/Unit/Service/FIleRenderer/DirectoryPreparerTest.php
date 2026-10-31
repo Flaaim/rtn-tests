@@ -9,6 +9,7 @@ use App\Course\Service\Downloader\DirectoryCreatorInterface;
 use App\Course\Service\FileRenderer\DirectoryPreparer;
 use App\SharedDomain\Filesystem\FileSystemPathInterface;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,7 +18,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class DirectoryPreparerTest extends TestCase
 {
+    /** @var DirectoryCreatorInterface&MockObject  */
     private DirectoryCreatorInterface $directoryCreator;
+    /** @var DirectoryCleanerInterface&MockObject  */
     private DirectoryCleanerInterface $directoryCleaner;
     private FileSystemPathInterface $fileSystemPath;
 

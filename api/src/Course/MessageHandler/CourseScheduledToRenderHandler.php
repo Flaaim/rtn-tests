@@ -12,6 +12,7 @@ use App\Course\Service\FileRenderer\FileRendererFacade;
 use App\Infrastructure\Doctrine\Flusher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final readonly class CourseScheduledToRenderHandler
 {

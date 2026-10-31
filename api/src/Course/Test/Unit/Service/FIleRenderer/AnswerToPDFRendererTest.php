@@ -6,6 +6,7 @@ namespace App\Course\Test\Unit\Service\FIleRenderer;
 
 use App\Course\Service\FileRenderer\AnswersToPDFRenderer;
 use Nucleos\DompdfBundle\Wrapper\DompdfWrapperInterface;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Twig\Environment;
 use Twig\Loader\ArrayLoader;
@@ -16,6 +17,7 @@ use Twig\Loader\ArrayLoader;
  */
 final class AnswerToPDFRendererTest extends TestCase
 {
+    /** @var DompdfWrapperInterface&MockObject  */
     private DompdfWrapperInterface $wrapper;
 
     protected function setUp(): void

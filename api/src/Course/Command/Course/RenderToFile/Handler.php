@@ -9,6 +9,7 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final readonly class Handler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private MessageBusInterface $messageBus,
     ) {}

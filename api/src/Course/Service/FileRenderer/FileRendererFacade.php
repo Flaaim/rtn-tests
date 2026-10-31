@@ -6,6 +6,7 @@ namespace App\Course\Service\FileRenderer;
 
 final readonly class FileRendererFacade
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private DirectoryPreparerInterface $directoryPreparer,
         private FileRendererInterface $answersToPDFRenderer,
