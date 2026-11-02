@@ -17,12 +17,12 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 /** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
-final class CourseUpdatedHandler
+final readonly class CourseUpdatedHandler
 {
     public function __construct(
-        private readonly CourseMediaDownloader $courseMediaDownloader,
-        private readonly CourseRepository $courses,
-        private readonly Flusher $flusher,
+        private CourseMediaDownloader $courseMediaDownloader,
+        private CourseRepository $courses,
+        private Flusher $flusher,
         private MessageBusInterface $messageBus,
     ) {}
 

@@ -19,7 +19,7 @@ final class Payment implements AggregateRoot
     public function __construct(
         private PaymentId $id,
         private string $email,
-        private string $courseId,
+        private string $productId,
         private string $externalId,
         private PaymentStatus $status,
         private Amount $amount,
