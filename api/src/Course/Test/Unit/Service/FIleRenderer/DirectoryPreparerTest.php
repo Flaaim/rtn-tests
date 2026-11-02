@@ -18,9 +18,9 @@ use PHPUnit\Framework\TestCase;
  */
 final class DirectoryPreparerTest extends TestCase
 {
-    /** @var DirectoryCreatorInterface&MockObject  */
+    /** @var DirectoryCreatorInterface&MockObject */
     private DirectoryCreatorInterface $directoryCreator;
-    /** @var DirectoryCleanerInterface&MockObject  */
+    /** @var DirectoryCleanerInterface&MockObject */
     private DirectoryCleanerInterface $directoryCleaner;
     private FileSystemPathInterface $fileSystemPath;
 

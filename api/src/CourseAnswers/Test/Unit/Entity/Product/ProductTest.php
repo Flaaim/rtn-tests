@@ -7,8 +7,13 @@ namespace App\CourseAnswers\Test\Unit\Entity\Product;
 use App\CourseAnswers\Entity\Product\Product;
 use App\CourseAnswers\Entity\Product\ProductId;
 use App\CourseAnswers\Entity\Product\Status;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @internal
+ * @coversNothing
+ */
 final class ProductTest extends TestCase
 {
     public function testFile(): void
@@ -18,7 +23,7 @@ final class ProductTest extends TestCase
             $cipher = 'ОТ 201.1',
             $paymentId = '1d71cd68-e737-4eb4-8395-5e8650fa3657',
             $status = Status::SEND,
-            $sentAt = new \DateTimeImmutable(),
+            $sentAt = new DateTimeImmutable(),
         );
 
         self::assertEquals($id, $product->getId());

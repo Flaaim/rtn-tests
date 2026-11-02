@@ -17,7 +17,7 @@ use Twig\Loader\ArrayLoader;
  */
 final class AnswerToPDFRendererTest extends TestCase
 {
-    /** @var DompdfWrapperInterface&MockObject  */
+    /** @var DompdfWrapperInterface&MockObject */
     private DompdfWrapperInterface $wrapper;
 
     protected function setUp(): void

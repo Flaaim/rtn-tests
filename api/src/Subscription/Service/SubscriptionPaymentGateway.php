@@ -11,7 +11,6 @@ use App\Subscription\Entity\Subscription\Plan;
 
 final class SubscriptionPaymentGateway implements PaymentGatewayInterface
 {
-
     public function createPayment(
         string $userId,
         Plan $plan,
@@ -19,8 +18,5 @@ final class SubscriptionPaymentGateway implements PaymentGatewayInterface
         int $durationDays,
         string $returnUrl,
         array $metadata = []
-    ): PaymentGatewayResult
-    {
-
-    }
+    ): PaymentGatewayResult {}
 }
