@@ -33,9 +33,7 @@ final class Course implements AggregateRoot
         #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $createdAt,
         #[ORM\Column(type: 'string', length: 255)]
-        private string $cipher,
-        #[ORM\Embedded(class: File::class, columnPrefix: 'file_')]
-        private ?File $file = null,
+        private string $cipher
     ) {
         $this->questions = new ArrayCollection($questions);
         foreach ($questions as $question) {
@@ -104,15 +102,5 @@ final class Course implements AggregateRoot
         if (null !== $newCipher) {
             $this->cipher = $newCipher;
         }
-    }
-
-    public function setFile(File $file): void
-    {
-        $this->file = $file;
-    }
-
-    public function getFile(): ?File
-    {
-        return $this->file;
     }
 }

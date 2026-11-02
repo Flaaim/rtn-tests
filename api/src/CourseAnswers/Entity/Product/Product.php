@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\CourseAnswers\Entity\Product;
 
-use DateTimeImmutable;
+use App\CourseAnswers\Entity\Payment\Amount;
 
 final class Product
 {
     public function __construct(
         private ProductId $id,
         private string $cipher,
-        private string $paymentId,
-        private Status $status,
-        private DateTimeImmutable $sentAt,
+        private Amount $amount,
+        private string $filePath
     ) {}
 
     public function getId(): ProductId
@@ -24,20 +23,5 @@ final class Product
     public function getCipher(): string
     {
         return $this->cipher;
-    }
-
-    public function getPaymentId(): string
-    {
-        return $this->paymentId;
-    }
-
-    public function getStatus(): Status
-    {
-        return $this->status;
-    }
-
-    public function getSentAt(): DateTimeImmutable
-    {
-        return $this->sentAt;
     }
 }

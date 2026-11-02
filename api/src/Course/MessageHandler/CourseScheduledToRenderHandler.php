@@ -6,11 +6,11 @@ namespace App\Course\MessageHandler;
 
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
-use App\Course\Entity\Course\File;
+use App\Course\Event\CourseRendered;
 use App\Course\Event\CourseScheduledToRender;
 use App\Course\Service\FileRenderer\FileRendererFacade;
-use App\Infrastructure\Doctrine\Flusher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
@@ -19,7 +19,7 @@ final readonly class CourseScheduledToRenderHandler
     public function __construct(
         private FileRendererFacade $fileRendererFacade,
         private CourseRepository $courses,
-        private Flusher $flusher,
+        private MessageBusInterface $messageBus,
     ) {}
 
     public function __invoke(CourseScheduledToRender $event): void
@@ -30,8 +30,8 @@ final readonly class CourseScheduledToRenderHandler
 
         $file = $this->fileRendererFacade->renderAndSave($courseId, $course->getQuestions());
 
-        $course->setFile(new File($file, $course->getCipher()));
-
-        $this->flusher->flush();
+        $this->messageBus->dispatch(
+            new CourseRendered($course->getCipher(), $file)
+        );
     }
 }
