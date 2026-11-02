@@ -21,7 +21,7 @@ final class Product implements AggregateRoot
         private ProductId $productId,
         #[ORM\Column(type: 'string', length: 25)]
         private string $cipher,
-        #[ORM\Embedded(class: Amount::class)]
+        #[ORM\Embedded(class: Amount::class, columnPrefix: false)]
         private Amount $amount,
         #[ORM\Column(type: 'string', length: 255)]
         private string $filePath,
