@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Payment\Yookassa;
 
+use App\Infrastructure\Payment\PaymentGatewayInterface;
+use App\Infrastructure\Payment\PaymentGatewayResult;
 use App\Subscription\Entity\Payment\Amount;
 use App\Subscription\Entity\Subscription\Plan;
-use App\Subscription\Service\Payment\PaymentGatewayInterface;
-use App\Subscription\Service\Payment\PaymentGatewayResult;
 
 /** @psalm-suppress UnusedClass */
 final class FakePaymentGateway implements PaymentGatewayInterface
@@ -17,7 +17,8 @@ final class FakePaymentGateway implements PaymentGatewayInterface
         Plan $plan,
         Amount $amount,
         int $durationDays,
-        string $returnUrl
+        string $returnUrl,
+        array $metadata = []
     ): PaymentGatewayResult {
         $separator = str_contains($returnUrl, '?') ? '&' : '?';
 

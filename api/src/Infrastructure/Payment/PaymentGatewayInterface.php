@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Subscription\Service\Payment;
+namespace App\Infrastructure\Payment;
 
 use App\Subscription\Entity\Payment\Amount;
 use App\Subscription\Entity\Subscription\Plan;
@@ -18,5 +18,6 @@ interface PaymentGatewayInterface
         Amount $amount,
         int $durationDays,
         string $returnUrl,
+        array $metadata = [],
     ): PaymentGatewayResult;
 }

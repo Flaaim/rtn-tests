@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace App\Subscription\Command\CreatePayment;
 
 use App\Infrastructure\Doctrine\Flusher;
+use App\Infrastructure\Payment\PaymentGatewayInterface;
 use App\Subscription\Entity\Payment\Amount;
 use App\Subscription\Entity\Payment\Payment;
 use App\Subscription\Entity\Payment\PaymentId;
 use App\Subscription\Entity\Payment\PaymentRepository;
 use App\Subscription\Entity\Payment\PaymentStatus;
 use App\Subscription\Entity\Subscription\Plan;
-use App\Subscription\Service\Payment\PaymentGatewayInterface;
 
 final readonly class Handler
 {
@@ -43,6 +43,7 @@ final readonly class Handler
             $amount,
             $durationDays,
             $returnUrl,
+            ['payment_type' => 'subscription']
         );
 
         $payment = new Payment(

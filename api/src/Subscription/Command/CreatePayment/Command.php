@@ -21,5 +21,6 @@ final readonly class Command
         public string $userId,
         #[Assert\NotBlank]
         public string $returnUrl,
+        public array $metadata = [],
     ) {}
 }

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Payment\Yookassa;
 
+use App\Infrastructure\Payment\PaymentGatewayException;
+use App\Infrastructure\Payment\PaymentGatewayInterface;
+use App\Infrastructure\Payment\PaymentGatewayResult;
 use App\Subscription\Entity\Payment\Amount;
 use App\Subscription\Entity\Subscription\Plan;
-use App\Subscription\Service\Payment\PaymentGatewayException;
-use App\Subscription\Service\Payment\PaymentGatewayInterface;
-use App\Subscription\Service\Payment\PaymentGatewayResult;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use YooKassa\Client;
@@ -27,7 +27,8 @@ final class YookassaPaymentGateway implements PaymentGatewayInterface
         Plan $plan,
         Amount $amount,
         int $durationDays,
-        string $returnUrl
+        string $returnUrl,
+        array $metadata = [],
     ): PaymentGatewayResult {
         try {
             $payment = $this->client->createPayment(

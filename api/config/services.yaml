@@ -120,7 +120,7 @@ services:
         calls:
             -   setAuth: [ '%env(int:YOOKASSA_SHOP_ID)%', '%env(YOOKASSA_SECRET_KEY)%' ]
 
-    App\Subscription\Service\Payment\PaymentGatewayInterface: '@App\Infrastructure\Payment\Yookassa\YookassaPaymentGateway'
+    App\Infrastructure\Payment\PaymentGatewayInterface: '@App\Infrastructure\Payment\Yookassa\YookassaPaymentGateway'
 
 when@test:
     services:
