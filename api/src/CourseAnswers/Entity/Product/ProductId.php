@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\CourseAnswers\Entity\File;
+namespace App\CourseAnswers\Entity\Product;
 
 use Ramsey\Uuid\Uuid;
 use Webmozart\Assert\Assert;
 
-final class FileId
+final class ProductId
 {
     public function __construct(
         private string $value

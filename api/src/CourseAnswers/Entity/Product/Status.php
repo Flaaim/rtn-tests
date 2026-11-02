@@ -1,6 +1,6 @@
 <?php
 
-namespace App\CourseAnswers\Entity\File;
+namespace App\CourseAnswers\Entity\Product;
 
 enum Status: string
 {

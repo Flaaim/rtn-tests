@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace App\CourseAnswers\Test\Unit\Entity\File;
+namespace App\CourseAnswers\Test\Unit\Entity\Product;
 
-use App\CourseAnswers\Entity\File\FileId;
+use App\CourseAnswers\Entity\Product\ProductId;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 use Ramsey\Uuid\Uuid;
 
-final class FileIdTest extends TestCase
+final class ProductIdTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $id = new FileId($value = Uuid::uuid4()->toString());
+        $id = new ProductId($value = Uuid::uuid4()->toString());
 
         self::assertEquals($value, $id->getValue());
     }
@@ -22,14 +22,14 @@ final class FileIdTest extends TestCase
     {
         $value = Uuid::uuid4()->toString();
 
-        $id = new FileId(mb_strtoupper($value));
+        $id = new ProductId(mb_strtoupper($value));
 
         self::assertEquals($value, $id->getValue());
     }
 
     public function testGenerate(): void
     {
-        $id = FileId::generate();
+        $id = ProductId::generate();
 
         self::assertNotEmpty($id->getValue());
     }
@@ -37,12 +37,12 @@ final class FileIdTest extends TestCase
     public function testIncorrect(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new FileId('12345');
+        new ProductId('12345');
     }
 
     public function testEmpty(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        new FileId('');
+        new ProductId('');
     }
 }
