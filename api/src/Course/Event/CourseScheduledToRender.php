@@ -8,5 +8,6 @@ final readonly class CourseScheduledToRender
 {
     public function __construct(
         public string $courseId,
+        public ?string $amount = null,
     ) {}
 }

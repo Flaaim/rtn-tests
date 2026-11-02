@@ -83,7 +83,9 @@ final class RequestActionTest extends WebTestCase
         $this->client->jsonRequest(
             'POST',
             '/v1/admin/testing/courses/' . RequestFixture::COURSE_ID . '/render',
-            [],
+            [
+                'amount' => '450.00',
+            ],
             $this->authHeaders($this->adminToken)
         );
 
@@ -108,7 +110,9 @@ final class RequestActionTest extends WebTestCase
         $this->client->jsonRequest(
             'POST',
             '/v1/admin/testing/courses/invalid/render',
-            [],
+            [
+                'amount' => '450.00',
+            ],
             $this->authHeaders($this->adminToken)
         );
 
@@ -120,7 +124,9 @@ final class RequestActionTest extends WebTestCase
         $this->client->jsonRequest(
             'POST',
             '/v1/admin/testing/courses/' . RequestFixture::COURSE_NOT_FOUND_ID . '/render',
-            [],
+            [
+                'amount' => '450.00',
+            ],
             $this->authHeaders($this->adminToken)
         );
 

@@ -12,5 +12,7 @@ final readonly class Command
         #[Assert\NotBlank]
         #[Assert\Uuid]
         public string $courseId,
+        #[Assert\NotBlank]
+        public string $amount,
     ) {}
 }

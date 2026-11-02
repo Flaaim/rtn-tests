@@ -17,7 +17,10 @@ final readonly class Handler
     public function handle(Command $command): void
     {
         $this->messageBus->dispatch(
-            new CourseScheduledToRender($command->courseId)
+            new CourseScheduledToRender(
+                $command->courseId,
+                $command->amount
+            )
         );
     }
 }

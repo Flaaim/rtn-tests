@@ -16,6 +16,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 #[AsMessageHandler]
 final readonly class CourseScheduledToRenderHandler
 {
+    public const string DEFAULT_AMOUNT = '350.00';
+
     public function __construct(
         private FileRendererFacade $fileRendererFacade,
         private CourseRepository $courses,
@@ -25,13 +27,14 @@ final readonly class CourseScheduledToRenderHandler
     public function __invoke(CourseScheduledToRender $event): void
     {
         $courseId = $event->courseId;
+        $amount = $event->amount ?? self::DEFAULT_AMOUNT;
 
         $course = $this->courses->get(new CourseId($courseId));
 
         $file = $this->fileRendererFacade->renderAndSave($courseId, $course->getQuestions());
 
         $this->messageBus->dispatch(
-            new CourseRendered($course->getCipher(), $file)
+            new CourseRendered($course->getCipher(), $file, $amount)
         );
     }
 }
