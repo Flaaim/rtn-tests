@@ -47,6 +47,7 @@ framework:
             'App\Course\Event\CourseCreated': async
             'App\Course\Event\CourseUpdated': async
             'App\Course\Event\CourseScheduledToRender': async
+            'App\Course\Event\CourseRendered': async
 
             'App\Testing\Event\TestCreated': async
             'App\Testing\Event\TestActivated': async

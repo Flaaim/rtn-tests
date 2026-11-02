@@ -137,7 +137,7 @@ when@test:
         App\SharedDomain\Filesystem\FileSystemPathInterface $questionPath: '@App\SharedDomain\Filesystem\InMemoryFileSystemPath'
         App\SharedDomain\Filesystem\FileSystemPathInterface $coursePath: '@App\SharedDomain\Filesystem\InMemoryFileSystemPath'
 
-        App\Subscription\Service\Payment\PaymentGatewayInterface: '@App\Infrastructure\Payment\Yookassa\FakePaymentGateway'
+        App\Infrastructure\Payment\PaymentGatewayInterface: '@App\Infrastructure\Payment\Yookassa\FakePaymentGateway'
 
 
         Symfony\Contracts\HttpClient\HttpClientInterface:

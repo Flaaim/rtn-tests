@@ -8,10 +8,12 @@ use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
 use App\Course\Entity\Course\Question;
 use App\Course\Entity\Course\Status;
+use App\Course\Event\CourseScheduledToRender;
 use App\Course\Event\CourseUpdated;
 use App\Course\Service\CourseMediaDownloader;
 use App\Infrastructure\Doctrine\Flusher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Symfony\Component\Messenger\MessageBusInterface;
 
 /** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
@@ -21,6 +23,7 @@ final class CourseUpdatedHandler
         private readonly CourseMediaDownloader $courseMediaDownloader,
         private readonly CourseRepository $courses,
         private readonly Flusher $flusher,
+        private MessageBusInterface $messageBus,
     ) {}
 
     public function __invoke(CourseUpdated $event): void
@@ -35,6 +38,8 @@ final class CourseUpdatedHandler
         foreach ($course->getQuestions() as $question) {
             $question->markAnswersAsUpdated();
         }
+
+        $this->messageBus->dispatch(new CourseScheduledToRender($courseId));
 
         $course->updateStatus(Status::created());
 

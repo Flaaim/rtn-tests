@@ -15,6 +15,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpClient\Response\MockResponse;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use Tests\Functional\FixturesLoader;
 
@@ -50,6 +51,10 @@ final class CourseCreatedHandlerTest extends KernelTestCase
 
     public function testSuccess(): void
     {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->container->get('messenger.transport.async');
+        $transport->reset();
+
         $mockResponse = new MockResponse('', [
             'http_code' => 200,
         ]);

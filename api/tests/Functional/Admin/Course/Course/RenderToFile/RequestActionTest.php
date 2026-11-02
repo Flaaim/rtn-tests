@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Admin\Course\Course\RenderToFile;
 
+use App\Course\Event\CourseRendered;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
@@ -74,6 +76,10 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport->reset();
+
         $this->client->jsonRequest(
             'POST',
             '/v1/admin/testing/courses/' . RequestFixture::COURSE_ID . '/render',
@@ -88,6 +94,13 @@ final class RequestActionTest extends WebTestCase
                 \DIRECTORY_SEPARATOR . RequestFixture::COURSE_ID .
                 \DIRECTORY_SEPARATOR . RequestFixture::COURSE_ID . '.pdf'
         );
+
+        $message = $transport->getSent()[0]->getMessage();
+        self::assertInstanceOf(CourseRendered::class, $message);
+        $expectedFilePath = RequestFixture::COURSE_ID . \DIRECTORY_SEPARATOR . RequestFixture::COURSE_ID . '.pdf';
+
+        self::assertEquals($expectedFilePath, $message->filePath);
+        self::assertEquals(RequestFixture::COURSE_CIPHER, $message->cipher);
     }
 
     public function testInvalid(): void
