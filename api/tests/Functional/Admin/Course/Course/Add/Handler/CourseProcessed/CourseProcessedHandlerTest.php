@@ -7,8 +7,8 @@ namespace Tests\Functional\Admin\Course\Course\Add\Handler\CourseProcessed;
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
 use App\Course\Entity\Course\Status;
-use App\Course\Event\CourseCreated;
-use App\Course\MessageHandler\CourseCreatedHandler;
+use App\Course\Event\CourseProcessed;
+use App\Course\MessageHandler\CourseProcessedHandler;
 use App\Parser\Exception\RemoteException;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use Doctrine\ORM\EntityManagerInterface;
@@ -23,7 +23,7 @@ use Tests\Functional\FixturesLoader;
  * @internal
  * @coversNothing
  */
-final class CourseCreatedHandlerTest extends KernelTestCase
+final class CourseProcessedHandlerTest extends KernelTestCase
 {
     private readonly ContainerInterface $container;
     private readonly CourseRepository $courses;
@@ -61,8 +61,8 @@ final class CourseCreatedHandlerTest extends KernelTestCase
         $mockClient = $this->container->get(HttpClientInterface::class);
         $mockClient->setResponseFactory([$mockResponse]);
 
-        $handler = $this->container->get(CourseCreatedHandler::class);
-        $message = new CourseCreated(RequestFixture::COURSE_ID);
+        $handler = $this->container->get(CourseProcessedHandler::class);
+        $message = new CourseProcessed(RequestFixture::COURSE_ID);
 
         $handler($message);
 
@@ -81,8 +81,8 @@ final class CourseCreatedHandlerTest extends KernelTestCase
         $mockClient = $this->container->get(HttpClientInterface::class);
         $mockClient->setResponseFactory([$mockResponse]);
 
-        $handler = $this->container->get(CourseCreatedHandler::class);
-        $message = new CourseCreated(RequestFixture::COURSE_ID);
+        $handler = $this->container->get(CourseProcessedHandler::class);
+        $message = new CourseProcessed(RequestFixture::COURSE_ID);
 
         self::expectException(RemoteException::class);
         $handler($message);
