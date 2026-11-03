@@ -69,4 +69,9 @@ final class Product implements AggregateRoot
         $this->filePath = $filePath;
         $this->addedAt = $addedAt;
     }
+
+    public function changeAmount(Amount $amount): void
+    {
+        $this->amount = $amount;
+    }
 }

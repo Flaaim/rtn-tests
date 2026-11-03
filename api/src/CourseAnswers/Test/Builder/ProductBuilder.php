@@ -24,6 +24,7 @@ final class ProductBuilder
         $this->cipher = 'ОТ 201.18';
         $this->courseId = 'd4180097-ef4e-47d7-b4da-4e29c1d8ce7b';
         $this->amount = new Amount('450.00', 'RUB');
+        $this->filePath = 'file/test.pdf';
         $this->addedAt = new DateTimeImmutable('now');
     }
 
