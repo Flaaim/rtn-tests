@@ -69,6 +69,6 @@ final class ConfirmPaymentTest extends TestCase
         $message = $messages[0];
         self::assertInstanceOf(PaymentConfirmed::class, $message);
         self::assertEquals($email, $message->email);
-        self::assertEquals($courseId, $message->courseId);
+        self::assertEquals($courseId, $message->productId);
     }
 }

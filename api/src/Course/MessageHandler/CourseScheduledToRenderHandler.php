@@ -34,7 +34,12 @@ final readonly class CourseScheduledToRenderHandler
         $file = $this->fileRendererFacade->renderAndSave($courseId, $course->getQuestions());
 
         $this->messageBus->dispatch(
-            new CourseRendered($course->getCipher(), $file, $amount)
+            new CourseRendered(
+                $course->getCipher(),
+                $file,
+                $courseId,
+                $amount
+            )
         );
     }
 }

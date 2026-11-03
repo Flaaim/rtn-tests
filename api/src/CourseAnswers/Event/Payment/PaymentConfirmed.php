@@ -8,6 +8,6 @@ final class PaymentConfirmed
 {
     public function __construct(
         public string $email,
-        public string $courseId,
+        public string $productId,
     ) {}
 }

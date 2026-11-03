@@ -23,15 +23,26 @@ final readonly class CourseRenderedHandler
 
     public function __invoke(CourseRendered $event): void
     {
-        $product = new Product(
-            ProductId::generate(),
-            $event->cipher,
-            new Amount($event->amount, 'RUB'),
-            $event->filePath,
-            new DateTimeImmutable(),
-        );
+        $product = $this->products->findByCourseId($event->courseId);
 
-        $this->products->add($product);
+        if (null !== $product) {
+            $product->edit(
+                $event->cipher,
+                new Amount($event->amount, 'RUB'),
+                $event->filePath,
+                new DateTimeImmutable()
+            );
+        } else {
+            $product = new Product(
+                ProductId::generate(),
+                $event->cipher,
+                $event->courseId,
+                new Amount($event->amount, 'RUB'),
+                $event->filePath,
+                new DateTimeImmutable(),
+            );
+            $this->products->add($product);
+        }
 
         $this->flusher->flush();
     }

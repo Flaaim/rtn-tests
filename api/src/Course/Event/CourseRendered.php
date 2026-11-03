@@ -9,6 +9,7 @@ final readonly class CourseRendered
     public function __construct(
         public string $cipher,
         public string $filePath,
+        public string $courseId,
         public string $amount
     ) {}
 }

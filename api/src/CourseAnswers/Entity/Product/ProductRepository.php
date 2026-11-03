@@ -21,4 +21,9 @@ final class ProductRepository
     {
         $this->em->persist($product);
     }
+
+    public function findByCourseId(string $courseId): ?Product
+    {
+        return $this->repo->findOneBy(['courseId' => $courseId]);
+    }
 }

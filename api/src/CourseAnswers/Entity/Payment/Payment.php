@@ -49,9 +49,9 @@ final class Payment implements AggregateRoot
         return $this->confirmedAt;
     }
 
-    public function getCourseId(): string
+    public function getProductId(): string
     {
-        return $this->courseId;
+        return $this->productId;
     }
 
     public function getExternalId(): string
@@ -83,7 +83,7 @@ final class Payment implements AggregateRoot
 
         $this->recordEvent(new PaymentConfirmed(
             $this->email,
-            $this->courseId,
+            $this->productId,
         ));
     }
 }

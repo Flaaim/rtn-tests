@@ -15,12 +15,15 @@ use Doctrine\ORM\Mapping as ORM;
 final class Product implements AggregateRoot
 {
     use EventTrait;
+
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(name: 'product_id', type: 'product_id', unique: true)]
         private ProductId $productId,
         #[ORM\Column(type: 'string', length: 25)]
         private string $cipher,
+        #[ORM\Column(type: 'string', length: 255, unique: true)]
+        private string $courseId,
         #[ORM\Embedded(class: Amount::class, columnPrefix: false)]
         private Amount $amount,
         #[ORM\Column(type: 'string', length: 255)]
@@ -52,5 +55,18 @@ final class Product implements AggregateRoot
     public function getAddedAt(): DateTimeImmutable
     {
         return $this->addedAt;
+    }
+
+    public function getCourseId(): string
+    {
+        return $this->courseId;
+    }
+
+    public function edit(string $cipher, Amount $amount, $filePath, DateTimeImmutable $addedAt): void
+    {
+        $this->cipher = $cipher;
+        $this->amount = $amount;
+        $this->filePath = $filePath;
+        $this->addedAt = $addedAt;
     }
 }
