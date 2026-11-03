@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace App\Course\Entity\Course;
 
-use App\Course\Event\CourseCreated;
-use App\Course\Event\CourseUpdated;
+use App\Course\Event\CourseProcessed;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
@@ -40,7 +39,7 @@ final class Course implements AggregateRoot
             $question->appendCourse($this);
         }
         $this->status = Status::processing();
-        $this->recordEvent(new CourseCreated($this->courseId->getValue()));
+        $this->recordEvent(new CourseProcessed($this->courseId->getValue()));
     }
 
     public function getCourseId(): CourseId
@@ -90,7 +89,7 @@ final class Course implements AggregateRoot
             $question->appendCourse($this);
             $this->questions->add($question);
         }
-        $this->recordEvent(new CourseUpdated($this->courseId->getValue()));
+        $this->recordEvent(new CourseProcessed($this->courseId->getValue()));
     }
 
     public function rename(?string $newName = null, ?string $newCipher = null): void

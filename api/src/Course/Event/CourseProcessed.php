@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Course\Event;
 
-final class CourseCreated
+final class CourseProcessed
 {
     public function __construct(
-        public string $id,
+        public string $courseId,
     ) {}
 }

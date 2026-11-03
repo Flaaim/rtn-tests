@@ -8,16 +8,15 @@ use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
 use App\Course\Entity\Course\Question;
 use App\Course\Entity\Course\Status;
-use App\Course\Event\CourseCreated;
+use App\Course\Event\CourseProcessed;
 use App\Course\Event\CourseScheduledToRender;
 use App\Course\Service\CourseMediaDownloader;
 use App\Infrastructure\Doctrine\Flusher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
-/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
-final readonly class CourseCreatedHandler
+final class CourseProcessedHandler
 {
     public function __construct(
         private CourseMediaDownloader $courseMediaDownloader,
@@ -26,9 +25,9 @@ final readonly class CourseCreatedHandler
         private Flusher $flusher,
     ) {}
 
-    public function __invoke(CourseCreated $event): void
+    public function __invoke(CourseProcessed $event): void
     {
-        $courseId = $event->id;
+        $courseId = $event->courseId;
 
         $course = $this->courses->get(new CourseId($courseId));
 

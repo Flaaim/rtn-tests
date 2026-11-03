@@ -54,6 +54,7 @@ final class CourseScheduledToRenderTest extends KernelTestCase
         $handler($event);
 
         $message = $transport->getSent()[0]->getMessage();
+
         self::assertInstanceOf(CourseRendered::class, $message);
         self::assertEquals(RequestFixture::COURSE_CIPHER, $message->cipher);
         self::assertEquals('450.00', $message->amount);

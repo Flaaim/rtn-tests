@@ -44,8 +44,7 @@ framework:
             'App\Parser\Event\ParseFailed': async
             'App\Parser\Event\ParseEnded': async
 
-            'App\Course\Event\CourseCreated': async
-            'App\Course\Event\CourseUpdated': async
+            'App\Course\Event\CourseProcessed': async
             'App\Course\Event\CourseScheduledToRender': async
             'App\Course\Event\CourseRendered': async
 

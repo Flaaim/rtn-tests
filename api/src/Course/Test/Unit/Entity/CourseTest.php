@@ -9,6 +9,7 @@ use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\Question;
 use App\Course\Entity\Course\QuestionForm;
 use App\Course\Entity\Course\Status;
+use App\Course\Event\CourseProcessed;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -34,6 +35,11 @@ final class CourseTest extends TestCase
         self::assertEquals($createdAt, $course->getCreatedAt());
         self::assertEquals(Status::processing(), $course->getStatus());
         self::assertEquals($cipher, $course->getCipher());
+
+        $messages = $course->releaseEvents();
+        $message = end($messages);
+
+        self::assertInstanceOf(CourseProcessed::class, $message);
     }
 
     public function testRename(): void
@@ -122,5 +128,9 @@ final class CourseTest extends TestCase
         /** @var Question $question */
         $question = $course->getQuestions()[0];
         self::assertEquals($question->getCourse(), $course);
+
+        $messages = $course->releaseEvents();
+        $message = end($messages);
+        self::assertInstanceOf(CourseProcessed::class, $message);
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Course\Course\Add\Handler\CourseCreated;
+namespace Tests\Functional\Admin\Course\Course\Add\Handler\CourseProcessed;
 
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;

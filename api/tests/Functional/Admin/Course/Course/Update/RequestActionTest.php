@@ -7,7 +7,7 @@ namespace Tests\Functional\Admin\Course\Course\Update;
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
 use App\Course\Entity\Course\Question;
-use App\Course\Event\CourseUpdated;
+use App\Course\Event\CourseProcessed;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -102,9 +102,9 @@ final class RequestActionTest extends WebTestCase
         self::assertCount(1, $transport->getSent());
         $message = $transport->getSent()[0]->getMessage();
 
-        self::assertInstanceOf(CourseUpdated::class, $message);
+        self::assertInstanceOf(CourseProcessed::class, $message);
 
-        $course = $this->courses->get(new CourseId($message->id));
+        $course = $this->courses->get(new CourseId($message->courseId));
 
         /** @var Question[] $questions */
         $questions = $course->getQuestions();
