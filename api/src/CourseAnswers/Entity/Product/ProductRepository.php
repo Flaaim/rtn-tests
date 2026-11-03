@@ -6,6 +6,7 @@ namespace App\CourseAnswers\Entity\Product;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
+use DomainException;
 
 final class ProductRepository
 {
@@ -25,5 +26,14 @@ final class ProductRepository
     public function findByCourseId(string $courseId): ?Product
     {
         return $this->repo->findOneBy(['courseId' => $courseId]);
+    }
+
+    public function get(ProductId $id): Product
+    {
+        $product = $this->repo->find($id);
+        if (null === $product) {
+            throw new DomainException('Product not found.');
+        }
+        return $product;
     }
 }
