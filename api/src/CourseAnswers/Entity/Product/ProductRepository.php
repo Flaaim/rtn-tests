@@ -36,4 +36,9 @@ final class ProductRepository
         }
         return $product;
     }
+
+    public function remove(Product $product): void
+    {
+        $this->em->remove($product);
+    }
 }
