@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\CourseAnswers\GetOne;
+namespace Tests\Functional\Admin\CourseAnswers\Product\GetOne;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Role;
