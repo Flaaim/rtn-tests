@@ -8,17 +8,25 @@ use App\CourseAnswers\Event\RecipientCreated;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
+use Doctrine\ORM\Mapping as ORM;
 
+#[ORM\Entity]
+#[ORM\Table(name: 'product_recipients')]
 final class Recipient implements AggregateRoot
 {
     use EventTrait;
-
+    #[ORM\Column(type: 'string', enumType: Status::class)]
     private Status $status;
 
     public function __construct(
+        #[ORM\Id]
+        #[ORM\Column(type: 'recipient_id', unique: true)]
         private RecipientId $recipientId,
+        #[ORM\Column(type: 'string', length: 255)]
         private string $productId,
+        #[ORM\Column(type: 'recipient_email')]
         private Email $email,
+        #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $sendAt,
     ) {
         $this->status = Status::PENDING;

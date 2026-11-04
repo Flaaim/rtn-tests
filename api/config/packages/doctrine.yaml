@@ -41,6 +41,8 @@ doctrine:
             payment_id: App\Subscription\Entity\Payment\PaymentIdType
 
             product_id: App\CourseAnswers\Entity\Product\ProductIdType
+            recipient_id: App\CourseAnswers\Entity\Recipient\RecipientIdType
+            recipient_email: App\CourseAnswers\Entity\Recipient\EmailType
     orm:
         validate_xml_mapping: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
@@ -108,6 +110,12 @@ doctrine:
                 dir: '%kernel.project_dir%/src/CourseAnswers/Entity'
                 prefix: 'App\CourseAnswers\Entity'
                 alias: Product
+            Recipient:
+                type: attribute
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/CourseAnswers/Entity'
+                prefix: 'App\CourseAnswers\Entity'
+                alias: Recipient
 
 
 

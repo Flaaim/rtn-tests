@@ -5,17 +5,13 @@ declare(strict_types=1);
 namespace App\CourseAnswers\Entity\Product;
 
 use App\CourseAnswers\Entity\Payment\Amount;
-use App\SharedDomain\AggregateRoot;
-use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'products')]
-final class Product implements AggregateRoot
+final class Product
 {
-    use EventTrait;
-
     public function __construct(
         #[ORM\Id]
         #[ORM\Column(name: 'product_id', type: 'product_id', unique: true)]
