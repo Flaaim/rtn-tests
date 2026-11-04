@@ -37,6 +37,11 @@ final class ProductRepository
         return $product;
     }
 
+    public function hasById(ProductId $id): bool
+    {
+        return $this->repo->count(['productId' => $id->getValue()]) > 0;
+    }
+
     public function remove(Product $product): void
     {
         $this->em->remove($product);

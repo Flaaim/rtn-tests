@@ -1,0 +1,18 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\CourseAnswers\Command\Product\Send;
+
+use Symfony\Component\Validator\Constraints as Assert;
+
+final readonly class Command
+{
+    public function __construct(
+        #[Assert\NotBlank]
+        #[Assert\Uuid]
+        public string $productId,
+        #[Assert\Email]
+        public string $email
+    ) {}
+}

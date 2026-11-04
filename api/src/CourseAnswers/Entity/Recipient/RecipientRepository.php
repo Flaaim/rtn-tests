@@ -18,9 +18,9 @@ final class RecipientRepository
         $this->repo = $em->getRepository(Recipient::class);
     }
 
-    public function add(RecipientId $recipientId): void
+    public function add(Recipient $recipient): void
     {
-        $this->em->persist($recipientId);
+        $this->em->persist($recipient);
     }
 
     public function get(RecipientId $recipientId): Recipient
