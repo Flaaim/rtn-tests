@@ -62,6 +62,8 @@ framework:
             'App\Testing\Command\Attempt\Launch\Command': sync
             'App\Testing\Command\Attempt\DemoLaunch\Command': sync
 
+            'App\CourseAnswers\Event\RecipientCreated': async
+
 when@test:
     framework:
         messenger:

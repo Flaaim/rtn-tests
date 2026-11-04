@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\CourseAnswers\Entity\Recipient;
 
+use App\CourseAnswers\Event\RecipientCreated;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
@@ -18,7 +19,12 @@ final class Recipient implements AggregateRoot
         private Email $email,
         private Status $status,
         private DateTimeImmutable $sendAt,
-    ) {}
+    ) {
+        $this->recordEvent(new RecipientCreated(
+            $this->productId,
+            $this->email->getValue()
+        ));
+    }
 
     public function getRecipientId(): RecipientId
     {

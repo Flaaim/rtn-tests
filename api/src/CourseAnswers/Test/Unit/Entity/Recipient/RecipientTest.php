@@ -8,6 +8,7 @@ use App\CourseAnswers\Entity\Recipient\Email;
 use App\CourseAnswers\Entity\Recipient\Recipient;
 use App\CourseAnswers\Entity\Recipient\RecipientId;
 use App\CourseAnswers\Entity\Recipient\Status;
+use App\CourseAnswers\Event\RecipientCreated;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -32,5 +33,9 @@ final class RecipientTest extends TestCase
         self::assertEquals($email, $recipient->getEmail());
         self::assertEquals($status, $recipient->getStatus());
         self::assertEquals($sentAt, $recipient->getSendAt());
+
+        $messages = $recipient->releaseEvents();
+        $message = end($messages);
+        self::assertInstanceOf(RecipientCreated::class, $message);
     }
 }
