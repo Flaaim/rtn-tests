@@ -1,0 +1,29 @@
+{% extends 'mail.html.twig' %}
+
+{% block title %}Ответы | RTN-TESTS.RU{% endblock %}
+{% block preheader %}Ответы на вопросы тестирования. Спасибо за покупку!{% endblock %}
+
+{% block body %}
+    <h2 style="margin: 0 0 16px 0; font-size: 20px; font-weight: 600; color: #0f172a; letter-spacing: -0.02em;">
+        Здравствуйте!
+    </h2>
+
+    <p style="margin: 0 0 20px 0;">
+        Оплата прошла успешно. Образцы документов приложены к этому письму.
+    </p>
+
+
+    <div style="margin: 0 0 24px 0; padding: 16px 20px; background-color: #ffffff; border: 1px solid #e2e8f0; border-radius: 6px;">
+        <table width="100%" border="0" cellspacing="0" cellpadding="0">
+            <tr>
+                <td style="padding-bottom: 8px; font-size: 14px; color: #64748b; width: 40%;">Ответы на тестирование:</td>
+                <td style="padding-bottom: 8px; font-size: 14px; color: #0f172a; font-weight: 500;">{{ cipher }}</td>
+            </tr>
+        </table>
+    </div>
+
+    <p style="margin: 0; font-size: 14px; color: #475569;">
+        Спасибо, что выбрали наш сервис. Желаем успешной подготовки!
+    </p>
+
+{% endblock %}
