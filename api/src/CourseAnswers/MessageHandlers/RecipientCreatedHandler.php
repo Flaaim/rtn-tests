@@ -14,6 +14,7 @@ use App\Infrastructure\Doctrine\Flusher;
 use App\SharedDomain\Filesystem\FileSystemPathInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
+use Throwable;
 
 #[AsMessageHandler]
 final readonly class RecipientCreatedHandler
@@ -30,23 +31,31 @@ final readonly class RecipientCreatedHandler
     public function __invoke(RecipientCreated $event): void
     {
         $product = $this->products->get(new ProductId($event->productId));
+        $recipient = $this->recipients->get(new RecipientId($event->recipientId));
 
         $filePath = $this->coursePath->getValue() . \DIRECTORY_SEPARATOR . $product->getFilePath();
 
         if (!file_exists($filePath)) {
-            $this->logger->error("File {$filePath} does not exist");
+            $recipient->failed("File {$filePath} does not exist");
+            $this->flusher->flush();
             return;
         }
 
-        $this->sender->send(
-            $event->email,
-            $filePath,
-            $product->getCipher()
-        );
+        try {
+            $this->sender->send(
+                $event->email,
+                $filePath,
+                $product->getCipher()
+            );
+            $recipient->sent();
+        } catch (Throwable $throwable) {
+            $recipient->failed(mb_substr($throwable->getMessage(), 0, 255));
 
-        $recipient = $this->recipients->get(new RecipientId($event->recipientId));
-
-        $recipient->sent();
+            $this->logger->error('Failed to send product: ' . $throwable->getMessage(), [
+                'exception' => $throwable,
+                'recipientId' => $event->recipientId,
+            ]);
+        }
 
         $this->flusher->flush();
     }

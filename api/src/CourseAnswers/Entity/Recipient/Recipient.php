@@ -9,25 +9,30 @@ use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\Column;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'product_recipients')]
 final class Recipient implements AggregateRoot
 {
     use EventTrait;
-    #[ORM\Column(type: 'string', enumType: Status::class)]
+    #[Column(type: 'string', enumType: Status::class)]
     private Status $status;
 
     public function __construct(
         #[ORM\Id]
-        #[ORM\Column(type: 'recipient_id', unique: true)]
+        #[Column(type: 'recipient_id', unique: true)]
         private RecipientId $recipientId,
-        #[ORM\Column(type: 'string', length: 255)]
+        #[Column(type: 'string', length: 255)]
         private string $productId,
-        #[ORM\Column(type: 'recipient_email')]
+        #[Column(type: 'recipient_email')]
         private Email $email,
-        #[ORM\Column(type: 'datetime_immutable')]
-        private DateTimeImmutable $sendAt,
+        #[Column(type: 'datetime_immutable')]
+        private DateTimeImmutable $createdAt,
+        #[Column(type: 'datetime_immutable', nullable: true)]
+        private ?DateTimeImmutable $sendAt = null,
+        #[Column(type: 'string', nullable: true)]
+        private ?string $failedReason = null,
     ) {
         $this->status = Status::PENDING;
 
@@ -58,7 +63,12 @@ final class Recipient implements AggregateRoot
         return $this->status;
     }
 
-    public function getSendAt(): DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function getSendAt(): ?DateTimeImmutable
     {
         return $this->sendAt;
     }
@@ -71,5 +81,23 @@ final class Recipient implements AggregateRoot
     public function sent(): void
     {
         $this->status = Status::SENT;
+        $this->sendAt = new DateTimeImmutable();
+    }
+
+    public function isFailed(): bool
+    {
+        return Status::FAILED === $this->status;
+    }
+
+    public function failed(string $reason): void
+    {
+        $this->status = Status::FAILED;
+        $this->failedReason = $reason;
+        $this->sendAt = null;
+    }
+
+    public function getFailedReason(): ?string
+    {
+        return $this->failedReason;
     }
 }

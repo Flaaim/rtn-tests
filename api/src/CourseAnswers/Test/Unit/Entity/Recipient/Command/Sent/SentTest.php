@@ -21,5 +21,17 @@ final class SentTest extends TestCase
         $recipient->sent();
 
         self::assertTrue($recipient->isSent());
+        self::assertFalse($recipient->isFailed());
+    }
+
+    public function testFailed(): void
+    {
+        $recipient = new RecipientBuilder()
+            ->build();
+
+        $recipient->failed('something went wrong');
+        self::assertFalse($recipient->isSent());
+        self::assertTrue($recipient->isFailed());
+        self::assertNull($recipient->getSendAt());
     }
 }

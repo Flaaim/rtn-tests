@@ -87,6 +87,7 @@ final class RecipientCreatedHandlerTest extends KernelTestCase
 
         self::assertEmailCount(0);
         self::assertFalse($recipient->isSent());
+        self::assertNotNull($recipient->getFailedReason());
     }
 
     private function createFile(string $path): void
