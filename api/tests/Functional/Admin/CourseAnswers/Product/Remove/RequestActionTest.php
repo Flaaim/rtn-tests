@@ -61,6 +61,12 @@ final class RequestActionTest extends WebTestCase
         );
     }
 
+    protected function tearDown(): void
+    {
+        $this->fileSystemPath->clear();
+        parent::tearDown();
+    }
+
     public function testUnauthenticatedReturns401(): void
     {
         $this->client->jsonRequest('DELETE', '/v1/admin/products/' . RequestFixture::PRODUCT_ID);
