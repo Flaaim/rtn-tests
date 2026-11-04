@@ -24,14 +24,13 @@ final class RecipientTest extends TestCase
             $recipientId = RecipientId::generate(),
             $productId = 'd3392276-946a-4dcf-9f41-c4e90aa3c8de',
             $email = new Email('test@email.ru'),
-            $status = Status::PENDING,
             $sentAt = new DateTimeImmutable(),
         );
 
         self::assertEquals($recipientId, $recipient->getRecipientId());
         self::assertEquals($productId, $recipient->getProductId());
         self::assertEquals($email, $recipient->getEmail());
-        self::assertEquals($status, $recipient->getStatus());
+        self::assertEquals(Status::PENDING, $recipient->getStatus());
         self::assertEquals($sentAt, $recipient->getSendAt());
 
         $messages = $recipient->releaseEvents();

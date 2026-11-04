@@ -13,14 +13,18 @@ final class Recipient implements AggregateRoot
 {
     use EventTrait;
 
+    private Status $status;
+
     public function __construct(
         private RecipientId $recipientId,
         private string $productId,
         private Email $email,
-        private Status $status,
         private DateTimeImmutable $sendAt,
     ) {
+        $this->status = Status::PENDING;
+
         $this->recordEvent(new RecipientCreated(
+            $this->recipientId->getValue(),
             $this->productId,
             $this->email->getValue()
         ));
@@ -49,5 +53,15 @@ final class Recipient implements AggregateRoot
     public function getSendAt(): DateTimeImmutable
     {
         return $this->sendAt;
+    }
+
+    public function isSent(): bool
+    {
+        return Status::SENT === $this->status;
+    }
+
+    public function sent(): void
+    {
+        $this->status = Status::SENT;
     }
 }
