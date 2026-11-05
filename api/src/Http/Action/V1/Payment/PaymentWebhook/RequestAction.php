@@ -48,6 +48,12 @@ final readonly class RequestAction
         if ('' === $externalId) {
             return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
         }
+
+        $metadata = $payload['metadata'] ?? [];
+        if (!\is_array($metadata) || empty($metadata)) {
+            return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
+        }
+
         try {
             if ('payment.succeeded' === $event) {
                 $this->confirmPaymentHandler->handle(new ConfirmPaymentCommand($externalId));

@@ -20,8 +20,6 @@ final readonly class Command
         #[Assert\Uuid]
         public string $userId,
         #[Assert\NotBlank]
-        public string $returnUrl,
-        #[Assert\NotBlank]
-        public string $paymentType,
+        public string $returnUrl
     ) {}
 }

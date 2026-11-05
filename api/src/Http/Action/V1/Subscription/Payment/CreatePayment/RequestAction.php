@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Http\Action\V1\Subscription\Payment\CreatePayment;
 
 use App\Infrastructure\Http\Validator\Validator;
-use App\Infrastructure\Payment\PaymentType;
 use App\Subscription\Command\CreatePayment\Command;
 use App\Subscription\Command\CreatePayment\Handler;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -23,7 +22,7 @@ final readonly class RequestAction
         private Security $security,
     ) {}
 
-    #[Route('/v1/subscriptions/payments', name: 'payment.create', methods: ['POST'])]
+    #[Route('/v1/subscriptions/payments', name: 'payment.subscriptions.create', methods: ['POST'])]
     #[IsGranted('ROLE_USER')]
     public function __invoke(Request $request): Response
     {
@@ -43,8 +42,7 @@ final readonly class RequestAction
             amount: $amount,
             durationDays: $durationDays,
             userId: $userId,
-            returnUrl: $returnUrl,
-            paymentType: PaymentType::SUBSCRIPTION->value,
+            returnUrl: $returnUrl
         );
 
         $this->validator->validate($command);

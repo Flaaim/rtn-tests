@@ -6,6 +6,7 @@ namespace App\Subscription\Command\CreatePayment;
 
 use App\Infrastructure\Doctrine\Flusher;
 use App\Infrastructure\Payment\PaymentGatewayInterface;
+use App\Infrastructure\Payment\PaymentType;
 use App\Subscription\Entity\Payment\Amount;
 use App\Subscription\Entity\Payment\Payment;
 use App\Subscription\Entity\Payment\PaymentId;
@@ -41,7 +42,7 @@ final readonly class Handler
             $userId,
             $amount->getValue(),
             $returnUrl,
-            ['payment_type' => 'subscription']
+            ['payment_type' => PaymentType::SUBSCRIPTION->value],
         );
 
         $payment = new Payment(
