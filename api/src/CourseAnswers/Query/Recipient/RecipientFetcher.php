@@ -55,6 +55,38 @@ final readonly class RecipientFetcher implements RecipientFetcherInterface
 
     public function getPaginated(int $page = 1, int $limit = 15, ?string $search = null): array
     {
-        // TODO: Implement getPaginated() method.
+        $page = max(1, $page);
+        $limit = min(max(1, $limit), 100);
+        $offset = ($page - 1) * $limit;
+
+        $qb = $this->connection->createQueryBuilder();
+
+        $qb->select('r.recipient_id, r.status, r.email, r.created_at')
+            ->from('product_recipients', 'r');
+
+        $normalizedSearch = null !== $search ? trim($search) : '';
+
+        if (null !== $search && '' !== trim($search)) {
+            $qb->andWhere($qb->expr()->eq('r.email', ':search'))
+                ->setParameter('search', '%' . $normalizedSearch . '%');
+        }
+
+        $countQb = clone $qb;
+
+        $totalCount = (int)$countQb->select('COUNT(r.recipient_id)')
+            ->executeQuery()
+            ->fetchOne();
+
+        $rows = $qb->select('r.recipient_id, r.status, r.email, r.created_at')
+            ->orderBy('r.created_at', 'DESC')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        return [
+            'items' => $rows,
+            'totalCount' => $totalCount,
+        ];
     }
 }
