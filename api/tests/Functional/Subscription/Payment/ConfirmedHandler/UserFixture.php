@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Payment\Confirmed;
+namespace Tests\Functional\Subscription\Payment\ConfirmedHandler;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Id;

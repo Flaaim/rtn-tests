@@ -39,9 +39,7 @@ final readonly class Handler
 
         $gatewayResult = $this->paymentGateway->createPayment(
             $userId,
-            $plan,
-            $amount,
-            $durationDays,
+            $amount->getValue(),
             $returnUrl,
             ['payment_type' => 'subscription']
         );

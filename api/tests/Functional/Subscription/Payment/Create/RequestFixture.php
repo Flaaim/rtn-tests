@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Payment\Create;
+namespace Tests\Functional\Subscription\Payment\Create;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Test\Builder\UserBuilder;

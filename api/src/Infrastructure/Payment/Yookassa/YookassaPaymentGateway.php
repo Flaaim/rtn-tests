@@ -7,15 +7,13 @@ namespace App\Infrastructure\Payment\Yookassa;
 use App\Infrastructure\Payment\PaymentGatewayException;
 use App\Infrastructure\Payment\PaymentGatewayInterface;
 use App\Infrastructure\Payment\PaymentGatewayResult;
-use App\Subscription\Entity\Payment\Amount;
-use App\Subscription\Entity\Subscription\Plan;
 use Psr\Log\LoggerInterface;
 use Throwable;
 use YooKassa\Client;
 use YooKassa\Model\Payment\Confirmation\ConfirmationRedirect;
 use YooKassa\Model\Payment\PaymentInterface;
 
-final class YookassaPaymentGateway implements PaymentGatewayInterface
+final readonly class YookassaPaymentGateway implements PaymentGatewayInterface
 {
     public function __construct(
         private Client $client,
@@ -23,10 +21,8 @@ final class YookassaPaymentGateway implements PaymentGatewayInterface
     ) {}
 
     public function createPayment(
-        string $userId,
-        Plan $plan,
-        Amount $amount,
-        int $durationDays,
+        string $actor,
+        string $amount,
         string $returnUrl,
         array $metadata = [],
     ): PaymentGatewayResult {
@@ -34,8 +30,8 @@ final class YookassaPaymentGateway implements PaymentGatewayInterface
             $payment = $this->client->createPayment(
                 [
                     'amount' => [
-                        'value' => $amount->getValue(),
-                        'currency' => $amount->getCurrency(),
+                        'value' => $amount,
+                        'currency' => 'RUB',
                     ],
                     'confirmation' => [
                         'type' => 'redirect',
@@ -44,9 +40,8 @@ final class YookassaPaymentGateway implements PaymentGatewayInterface
                     'capture' => true,
                     'description' => 'Оплата подписки к тестам',
                     'metadata' => [
-                        'user_id' => $userId,
-                        'plan_id' => $plan->value,
-                        'duration_days' => (string)$durationDays,
+                        'actor' => $actor,
+                        'payment_type' => $metadata['payment_type'],
                     ],
                 ],
                 uniqid('', true),
@@ -72,9 +67,9 @@ final class YookassaPaymentGateway implements PaymentGatewayInterface
             throw $exception;
         } catch (Throwable $exception) {
             $this->logger->error('YooKassa payment creation failed.', [
-                'userId' => $userId,
-                'plan' => $plan->value,
-                'amount' => $amount->getValue(),
+                'actor' => $actor,
+                'amount' => $amount,
+                'type' => $metadata['payment_type'],
                 'exception' => $exception,
             ]);
 
