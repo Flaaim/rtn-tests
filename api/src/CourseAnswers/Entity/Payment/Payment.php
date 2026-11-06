@@ -98,4 +98,16 @@ final class Payment implements AggregateRoot
             $this->productId,
         ));
     }
+
+    public function fail(): void
+    {
+        if (PaymentStatus::SUCCEEDED === $this->status) {
+            throw new DomainException('Only pending payment can be failed.');
+        }
+        if (PaymentStatus::FAILED === $this->status) {
+            return;
+        }
+
+        $this->status = PaymentStatus::FAILED;
+    }
 }
