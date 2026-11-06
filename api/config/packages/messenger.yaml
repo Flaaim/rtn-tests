@@ -58,12 +58,16 @@ framework:
             'App\Profile\Event\ProfileRemoved': async
 
             'App\Subscription\Event\Subscription\SubscriptionPurchased': async
+            'App\Subscription\Command\ConfirmPayment\Command': sync
+            'App\Subscription\Command\FailPayment\Command': sync
 
             'App\Testing\Command\Attempt\Launch\Command': sync
             'App\Testing\Command\Attempt\DemoLaunch\Command': sync
 
             'App\CourseAnswers\Command\Product\Send\Command': sync
             'App\CourseAnswers\Event\RecipientCreated': async
+            'App\CourseAnswers\Command\Payment\Confirm\Command': sync
+            'App\CourseAnswers\Command\Payment\Fail\Command': sync
 
 when@test:
     framework:

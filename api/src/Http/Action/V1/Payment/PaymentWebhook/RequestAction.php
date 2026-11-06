@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Http\Action\V1\Payment\PaymentWebhook;
 
+use App\Infrastructure\Payment\Webhook\WebhookCommandFactory;
 use App\Infrastructure\Payment\Yookassa\YookassaWebhookGuard;
-use App\Subscription\Command\ConfirmPayment\Command as ConfirmPaymentCommand;
-use App\Subscription\Command\ConfirmPayment\Handler as ConfirmPaymentHandler;
-use App\Subscription\Command\FailPayment\Command as FailPaymentCommand;
-use App\Subscription\Command\FailPayment\Handler as FailPaymentHandler;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Routing\Attribute\Route;
 use Throwable;
 
@@ -20,8 +18,8 @@ final readonly class RequestAction
     public function __construct(
         private YookassaWebhookGuard $webhookGuard,
         private LoggerInterface $logger,
-        private ConfirmPaymentHandler $confirmPaymentHandler,
-        private FailPaymentHandler $failPaymentHandler,
+        private WebhookCommandFactory $commandFactory,
+        private MessageBusInterface $messageBus,
     ) {}
 
     #[Route('/v1/payment-events', name: 'payment.webhook', methods: ['POST'])]
@@ -50,15 +48,16 @@ final readonly class RequestAction
         }
 
         $metadata = $payload['metadata'] ?? [];
-        if (!\is_array($metadata) || empty($metadata)) {
+        if (!\is_array($metadata) || empty($metadata) || !isset($metadata['payment_type'])) {
             return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
         }
 
         try {
-            if ('payment.succeeded' === $event) {
-                $this->confirmPaymentHandler->handle(new ConfirmPaymentCommand($externalId));
-            } elseif ('payment.canceled' === $event) {
-                $this->failPaymentHandler->handle(new FailPaymentCommand($externalId));
+            $command = $this->commandFactory->create($metadata['payment_type'], $event, $externalId);
+            if (null !== $command) {
+                $this->messageBus->dispatch($command);
+            } else {
+                $this->logger->info('Unhandled webhook type or event.');
             }
         } catch (Throwable $throwable) {
             $this->logger->error('YooKassa webhook processing failed.', [
@@ -68,6 +67,7 @@ final readonly class RequestAction
             ]);
             return new Response('Internal Server Error', Response::HTTP_INTERNAL_SERVER_ERROR);
         }
+
         return new Response('OK', Response::HTTP_OK);
     }
 }

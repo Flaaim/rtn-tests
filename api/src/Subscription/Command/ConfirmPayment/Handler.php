@@ -6,14 +6,17 @@ namespace App\Subscription\Command\ConfirmPayment;
 
 use App\Infrastructure\Doctrine\Flusher;
 use App\Subscription\Entity\Payment\PaymentRepository;
-use DomainException;
+use Psr\Log\LoggerInterface;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /** @psalm-suppress UnusedClass*/
+#[AsMessageHandler(method: 'handle')]
 final readonly class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private PaymentRepository $payments,
+        private LoggerInterface $logger,
         private Flusher $flusher,
     ) {}
 
@@ -23,7 +26,8 @@ final readonly class Handler
         $payment = $this->payments->findByExternalId($command->externalId);
 
         if (null === $payment) {
-            throw new DomainException('Payment not found.');
+            $this->logger->warning(\sprintf('Payment with id: %s not found.', $command->externalId));
+            return;
         }
 
         $payment->confirm();

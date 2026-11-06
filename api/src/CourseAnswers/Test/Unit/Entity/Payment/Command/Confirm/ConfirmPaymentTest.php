@@ -20,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 final class ConfirmPaymentTest extends TestCase
 {
     #[CoversNothing]
-    public function testConfirmSucceeded(): void
+    public function testConfirmSucceededAlready(): void
     {
         $payment = new Payment(
             PaymentId::generate(),

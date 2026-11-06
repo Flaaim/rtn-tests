@@ -31,4 +31,9 @@ final class PaymentRepository
         }
         return $payment;
     }
+
+    public function findByExternalId(string $externalId): ?Payment
+    {
+        return $this->repo->findOneBy(['externalId' => $externalId]);
+    }
 }
