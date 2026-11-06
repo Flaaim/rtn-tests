@@ -7,7 +7,6 @@ namespace App\CourseAnswers\Test\Builder;
 use App\CourseAnswers\Entity\Recipient\Email;
 use App\CourseAnswers\Entity\Recipient\Recipient;
 use App\CourseAnswers\Entity\Recipient\RecipientId;
-use App\CourseAnswers\Entity\Recipient\Status;
 use DateTimeImmutable;
 
 final class RecipientBuilder
@@ -15,7 +14,6 @@ final class RecipientBuilder
     private RecipientId $recipientId;
     private string $productId;
     private Email $email;
-    private Status $status;
     private bool $isSent = false;
     private DateTimeImmutable $sentAt;
 
@@ -24,7 +22,6 @@ final class RecipientBuilder
         $this->recipientId = new RecipientId('9a28a972-3ce3-4b43-9ed6-964df29c134c');
         $this->productId = '5dc715b0-f5f1-43e0-9492-71a6adbb09a4';
         $this->email = new Email('test@mail.ru');
-        $this->status = Status::PENDING;
         $this->sentAt = new DateTimeImmutable();
     }
 

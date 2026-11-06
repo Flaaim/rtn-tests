@@ -9,6 +9,7 @@ use DomainException;
 
 final readonly class QueryHandler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private RecipientFetcherInterface $recipients
     ) {}

@@ -8,12 +8,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
 
-final class PaymentRepository
+final readonly class PaymentRepository
 {
-    private readonly EntityRepository $repo;
+    private EntityRepository $repo;
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly EntityManagerInterface $em
+        private EntityManagerInterface $em
     ) {
         $this->repo = $em->getRepository(Payment::class);
     }
@@ -23,6 +24,7 @@ final class PaymentRepository
         $this->em->persist($payment);
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function get(PaymentId $paymentId): Payment
     {
         $payment = $this->repo->find($paymentId);

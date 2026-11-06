@@ -7,6 +7,7 @@ namespace App\CourseAnswers\Entity\Recipient;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\StringType;
 
+/** @psalm-suppress UnusedClass */
 final class RecipientIdType extends StringType
 {
     public const string NAME = 'recipient_id';

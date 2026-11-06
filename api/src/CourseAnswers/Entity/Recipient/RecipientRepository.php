@@ -8,12 +8,13 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use DomainException;
 
-final class RecipientRepository
+final readonly class RecipientRepository
 {
-    private readonly EntityRepository $repo;
+    private EntityRepository $repo;
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly EntityManagerInterface $em
+        private EntityManagerInterface $em
     ) {
         $this->repo = $em->getRepository(Recipient::class);
     }

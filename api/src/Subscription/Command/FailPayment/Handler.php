@@ -9,6 +9,7 @@ use App\Subscription\Entity\Payment\PaymentRepository;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler(method: 'handle')]
 final readonly class Handler
 {

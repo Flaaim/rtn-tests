@@ -13,6 +13,7 @@ use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final readonly class CourseRenderedHandler
 {

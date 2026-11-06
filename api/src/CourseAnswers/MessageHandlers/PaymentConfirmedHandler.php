@@ -9,6 +9,7 @@ use App\CourseAnswers\Event\Payment\PaymentConfirmed;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final readonly class PaymentConfirmedHandler
 {

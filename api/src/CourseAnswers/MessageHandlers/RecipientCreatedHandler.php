@@ -16,6 +16,7 @@ use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Throwable;
 
+/** @psalm-suppress UnusedClass */
 #[AsMessageHandler]
 final readonly class RecipientCreatedHandler
 {

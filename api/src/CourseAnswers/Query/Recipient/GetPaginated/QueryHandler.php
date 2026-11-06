@@ -8,6 +8,7 @@ use App\CourseAnswers\Query\Recipient\RecipientFetcherInterface;
 
 final readonly class QueryHandler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private RecipientFetcherInterface $recipients
     ) {}

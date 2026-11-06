@@ -24,13 +24,16 @@
                 <directory name="src/Auth/Entity" />
                 <directory name="src/OAuth/MessageHandler" />
                 <directory name="src/Parser/MessageHandler" />
+                <directory name="src/Course/MessageHandler" />
                 <directory name="src/Parser/Entity" />
                 <directory name="src/Parser/Query" />
+                <directory name="src/CourseAnswers/Query" />
                 <directory name="src/Admin/Stats/Query" />
                 <directory name="src/Parser/Service" />
                 <directory name="src/Infrastructure" />
                 <directory name="src/Course/Command" />
                 <directory name="src/Testing/Command" />
+                <directory name="src/CourseAnswers/Command" />
                 <directory name="src/OAuth/Api" />
                 <directory name="src/Profile/Api" />
                 <directory name="src/Course/Api" />
@@ -46,6 +49,7 @@
                 <directory name="src/Auth/Entity" />
                 <directory name="src/Auth/Test/Builder" />
                 <directory name="src/Parser/Command" />
+                <directory name="src/CourseAnswers/Command" />
                 <directory name="src/Parser/Query" />
                 <directory name="src/Course/Query" />
                 <directory name="src/Testing/Query" />
@@ -66,6 +70,7 @@
                 <directory name="src/Parser/Query" />
                 <directory name="src/Course/Query" />
                 <directory name="src/Testing/Query" />
+                <directory name="src/CourseAnswers/Query" />
                 <directory name="src/Subscription/Query" />
                 <directory name="src/Testing/Entity/Attempt/DTO" />
                 <directory name="src/Auth/Interfaces/DTO" />

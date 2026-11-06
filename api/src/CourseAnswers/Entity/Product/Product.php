@@ -58,7 +58,7 @@ final class Product
         return $this->courseId;
     }
 
-    public function edit(string $cipher, Amount $amount, $filePath, DateTimeImmutable $addedAt): void
+    public function edit(string $cipher, Amount $amount, string $filePath, DateTimeImmutable $addedAt): void
     {
         $this->cipher = $cipher;
         $this->amount = $amount;
