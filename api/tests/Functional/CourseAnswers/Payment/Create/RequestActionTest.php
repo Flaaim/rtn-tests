@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\CourseAnswers\Payment\Create;
 
-use App\CourseAnswers\Entity\Payment\PaymentRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Tests\Functional\FixturesLoader;
@@ -18,6 +16,7 @@ use Tests\Functional\Json;
 final class RequestActionTest extends WebTestCase
 {
     private readonly KernelBrowser $client;
+
     protected function setUp(): void
     {
         parent::setUp();

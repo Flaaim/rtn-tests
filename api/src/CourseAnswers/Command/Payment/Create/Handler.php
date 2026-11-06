@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\CourseAnswers\Command\Payment\Create;
 
-use App\CourseAnswers\Entity\Payment\Amount;
 use App\CourseAnswers\Entity\Payment\Payment;
 use App\CourseAnswers\Entity\Payment\PaymentId;
 use App\CourseAnswers\Entity\Payment\PaymentRepository;

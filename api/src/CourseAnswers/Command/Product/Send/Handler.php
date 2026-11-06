@@ -13,7 +13,9 @@ use App\CourseAnswers\Entity\Recipient\RecipientRepository;
 use App\Infrastructure\Doctrine\Flusher;
 use DateTimeImmutable;
 use DomainException;
+use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
+#[AsMessageHandler(method: 'handle')]
 final readonly class Handler
 {
     public function __construct(
