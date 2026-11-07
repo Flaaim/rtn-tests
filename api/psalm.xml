@@ -25,6 +25,7 @@
                 <directory name="src/OAuth/MessageHandler" />
                 <directory name="src/Parser/MessageHandler" />
                 <directory name="src/Course/MessageHandler" />
+                <directory name="src/Course/Infrastructure" />
                 <directory name="src/Parser/Entity" />
                 <directory name="src/Parser/Query" />
                 <directory name="src/CourseAnswers/Query" />

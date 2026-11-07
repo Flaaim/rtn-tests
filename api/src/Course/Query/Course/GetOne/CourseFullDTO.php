@@ -6,16 +6,17 @@ namespace App\Course\Query\Course\GetOne;
 
 use DateTimeImmutable;
 
-final class CourseFullDTO
+final readonly class CourseFullDTO
 {
     /** @param QuestionDTO[] $questions */
     public function __construct(
-        public readonly string $courseId,
-        public readonly string $name,
-        public readonly string $status,
-        public readonly string $createdAt,
-        public readonly string $cipher,
-        public readonly array $questions,
+        public string $courseId,
+        public string $name,
+        public string $status,
+        public string $createdAt,
+        public string $cipher,
+        public array $questions,
+        public ?ProductDTO $product = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -25,6 +26,12 @@ final class CourseFullDTO
             $data['questions'] ?? []
         );
 
+        $product = null;
+
+        if (isset($data['product'])) {
+            $product = ProductDTO::fromArray($data['product']);
+        }
+
         return new self(
             courseId: $data['course_id'],
             name: $data['name'],
@@ -32,6 +39,7 @@ final class CourseFullDTO
             createdAt: new DateTimeImmutable($data['created_at'])->format('Y-m-d'),
             cipher: $data['cipher'],
             questions: $questions,
+            product: $product,
         );
     }
 }

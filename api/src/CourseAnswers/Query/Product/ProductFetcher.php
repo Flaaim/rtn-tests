@@ -75,4 +75,28 @@ final readonly class ProductFetcher implements ProductFetcherInterface
             'totalCount' => $totalCount,
         ];
     }
+
+    public function getOneByCourseId(string $courseId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+        $result = $qb->select(
+            '
+            p.amount,
+            p.currency,
+            p.file_path,
+            p.added_at'
+        )
+            ->from('products', 'p')
+            ->where('p.course_id = :id')
+            ->setParameter('id', $courseId)
+            ->executeQuery();
+
+        $row = $result->fetchAssociative();
+
+        if (false === $row) {
+            return [];
+        }
+
+        return $row;
+    }
 }

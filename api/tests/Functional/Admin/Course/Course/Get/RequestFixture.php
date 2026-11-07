@@ -14,9 +14,10 @@ use App\Course\Entity\Course\Question;
 use App\Course\Entity\Course\QuestionForm;
 use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
+use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class RequestFixture extends AbstractFixture
+final class RequestFixture extends AbstractFixture implements DependentFixtureInterface
 {
     public const string COURSE_ID = '63879491-6883-4e88-8be2-295d3d260346';
     public const string COURSE_ANOTHER_ID = '4afd49ef-889d-4668-b5c4-a837bcd716b9';
@@ -79,6 +80,13 @@ final class RequestFixture extends AbstractFixture
         $manager->persist($anotherCourse);
 
         $manager->flush();
+    }
+
+    public function getDependencies(): array
+    {
+        return [
+            ProductFixture::class,
+        ];
     }
 
     private function getQuestions(): array

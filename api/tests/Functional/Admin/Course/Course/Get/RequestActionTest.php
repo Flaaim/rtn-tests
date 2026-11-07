@@ -81,8 +81,25 @@ final class RequestActionTest extends WebTestCase
         self::assertJson($body = $this->client->getResponse()->getContent());
 
         $data = Json::decode($body);
+
+        self::assertArrayHasKey('courseId', $data);
+        self::assertArrayHasKey('name', $data);
+        self::assertArrayHasKey('status', $data);
+        self::assertArrayHasKey('createdAt', $data);
+        self::assertArrayHasKey('cipher', $data);
+        self::assertArrayHasKey('questions', $data);
+        self::assertArrayHasKey('product', $data);
+
         self::assertEquals(RequestFixture::COURSE_ID, $data['courseId']);
         self::assertEquals(RequestFixture::COURSE_NAME, $data['name']);
+        self::assertEquals(RequestFixture::COURSE_CIPHER, $data['cipher']);
+        self::assertNotNull($data['product']);
+
+        $product = $data['product'];
+        self::assertArrayHasKey('amount', $product);
+        self::assertArrayHasKey('currency', $product);
+        self::assertArrayHasKey('filePath', $product);
+        self::assertArrayHasKey('addedAt', $product);
 
         /** @var Question[] $questions */
         $questions = $data['questions'];

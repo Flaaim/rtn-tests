@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\CourseAnswers\Query\Product\GetOne;
 
+use DateTimeImmutable;
+
 final readonly class ProductDTO
 {
     public function __construct(
@@ -25,7 +27,7 @@ final readonly class ProductDTO
             amount: $data['amount'],
             currency: $data['currency'],
             filePath: $data['file_path'],
-            addedAt: $data['added_at']
+            addedAt: new DateTimeImmutable($data['added_at'])->format('Y-m-d')
         );
     }
 }
