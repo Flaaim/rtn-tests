@@ -34,6 +34,14 @@ export interface CourseFull {
   cipher: string;
   createdAt: string;
   questions: Question[];
+  product: ProductDTO | null;
+}
+
+export interface ProductDTO {
+  amount: string;
+  currency: string;
+  filePath: string;
+  addedAt: string;
 }
 
 export interface Question {

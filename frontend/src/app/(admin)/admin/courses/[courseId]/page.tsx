@@ -1,5 +1,5 @@
 import { fetchCourseAction } from "@/actions/course";
-import { CourseFull, Question } from "@/interfaces/course.interface";
+import { CourseFull, ProductDTO, Question } from "@/interfaces/course.interface";
 import AdminBreadcrumbs from "@/components/Admin/AdminBreadcrumbs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import CourseStatusBadge from "@/components/Admin/Domain/Course/CourseStatusBadge";
@@ -11,6 +11,7 @@ import UpdateQuestionsCourseDialog from "@/components/Admin/Course/UpdateQuestio
 import QuestionSearchForm from "@/components/Admin/Course/QuestionSearchForm";
 import QuestionFormTypeBadge from "@/components/Admin/Domain/QuestionFormTypeBadge";
 import RenderCourseDialog from "@/components/Admin/Course/RenderCourseDialog";
+import { Button } from "@/components/ui/button";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
@@ -31,12 +32,18 @@ export default async function CourseOverviewPage({
 
   const course: CourseFull = result.data;
   const items = [{ title: "Курсы", href: "/admin/courses" }, { title: course.name }];
+  const product: ProductDTO | null = course.product;
+  const pdfUrl = product
+    ? `${PUBLIC_ASSETS_URL}${process.env.NEXT_PUBLIC_COURSE_ANSWERS}${product.filePath}`
+    : "#";
 
-  const formattedDate = new Date(course.createdAt).toLocaleString("ru-RU", {
-    day: "2-digit",
-    month: "2-digit",
-    year: "numeric",
-  });
+  const formattedDate = (date: Date | string) => {
+    return new Date(date).toLocaleString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
 
   const filteredQuestions = q
     ? course.questions.filter((question) => question.text.toLowerCase().includes(q.toLowerCase()))
@@ -74,7 +81,7 @@ export default async function CourseOverviewPage({
               </div>
               <div>
                 <p className="text-muted-foreground font-medium">Дата создания</p>
-                <p className="font-mono">{formattedDate}</p>
+                <p className="font-mono">{formattedDate(course.createdAt)}</p>
               </div>
               <div>
                 <p className="text-muted-foreground font-medium">Статус</p>
@@ -90,6 +97,41 @@ export default async function CourseOverviewPage({
         <UpdateQuestionsCourseDialog id={course.courseId} />
         <RenderCourseDialog id={course.courseId} />
         <QuestionSearchForm />
+        {product && (
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <div className="grid grid-cols-1 gap-4 items-center">
+                  <CardTitle>Файл</CardTitle>
+                  <p>Изменить данные файла можно непосредственно на странице продукта.</p>
+                  <Button size="sm" className="w-fit">
+                    <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+                      Посмотреть PDF
+                    </a>
+                  </Button>
+                </div>
+              </CardHeader>
+              <CardContent className="space-y-4 text-sm">
+                <div className="grid grid-cols-3 gap-4 sm:grid-cols-3">
+                  <div>
+                    <p className="text-muted-foreground font-medium">Путь</p>
+                    <p className="font-mono">{product.filePath}</p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground font-medium">Стоимость</p>
+                    <p className="font-mono">
+                      {product.amount} {product.currency}
+                    </p>
+                  </div>
+                  <div>
+                    <p className="text-muted-foreground font-medium">Дата создания</p>
+                    <p className="font-mono">{formattedDate(product.addedAt)}</p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        )}
 
         <div className="flex items-center gap-3">
           <h2 className="text-2xl font-bold tracking-tight">Вопросы курса</h2>
