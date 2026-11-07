@@ -10,6 +10,7 @@ import RenameCourseDialog from "@/components/Admin/Course/RenameCourseDialog";
 import UpdateQuestionsCourseDialog from "@/components/Admin/Course/UpdateQuestionsCourseDialog";
 import QuestionSearchForm from "@/components/Admin/Course/QuestionSearchForm";
 import QuestionFormTypeBadge from "@/components/Admin/Domain/QuestionFormTypeBadge";
+import RenderCourseDialog from "@/components/Admin/Course/RenderCourseDialog";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
@@ -87,7 +88,7 @@ export default async function CourseOverviewPage({
       </div>
       <div className="space-y-4">
         <UpdateQuestionsCourseDialog id={course.courseId} />
-
+        <RenderCourseDialog id={course.courseId} />
         <QuestionSearchForm />
 
         <div className="flex items-center gap-3">

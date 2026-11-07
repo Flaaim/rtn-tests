@@ -86,6 +86,7 @@ export const API = {
       ids.forEach((id) => url.searchParams.append("ids[]", id));
       return url.toString();
     },
+    render: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/render`,
   },
   question: {
     getQuestion: (id: string) => BASE_URL + `/v1/questions/${id}`,

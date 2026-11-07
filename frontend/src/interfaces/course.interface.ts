@@ -55,3 +55,8 @@ export interface CourseSelectOption {
   id: string;
   name: string;
 }
+
+export interface CourseRenderPayload {
+  id: string;
+  amount: string;
+}

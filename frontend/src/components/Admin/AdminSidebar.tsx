@@ -10,6 +10,7 @@ import {
   LayoutDashboard,
   LogOut,
   NotepadText,
+  Package,
   Shield,
   Target,
   Users,
@@ -51,6 +52,7 @@ const items = [
   { title: "Тесты", url: "/admin/tests", icon: NotepadText },
   { title: "Категории", url: "/admin/categories", icon: ChartBarStacked },
   { title: "Подписки", url: "/admin/subscriptions", icon: CreditCard },
+  { title: "Ответы", url: "/user/products", icon: Package },
 ];
 
 interface AdminSidebarProps {
