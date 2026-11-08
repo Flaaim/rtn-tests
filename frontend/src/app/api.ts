@@ -156,4 +156,14 @@ export const API = {
     assign: () => BASE_URL + `/v1/admin/subscriptions`,
     remove: (id: string) => BASE_URL + `/v1/admin/subscriptions/${id}`,
   },
+  product: {
+    getPaginated: (page: number, perPage: number, search?: string) => {
+      const params = new URLSearchParams({
+        page: String(page),
+        limit: String(perPage),
+      });
+      if (search) params.set("search", search);
+      return BASE_URL + `/v1/admin/products?${params.toString()}`;
+    },
+  },
 };
