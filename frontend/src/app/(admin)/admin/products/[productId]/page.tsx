@@ -4,6 +4,7 @@ import AdminBreadcrumbs from "@/components/Admin/AdminBreadcrumbs";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
+import ChangeAmountProductDialog from "@/components/Admin/Product/ChangeAmountProductDialog";
 
 interface ProductOverviewPageProps {
   params: Promise<{ productId: string }>;
@@ -60,6 +61,7 @@ export default async function ProductOverviewPage({ params }: ProductOverviewPag
                 <p className="text-muted-foreground font-medium">Стоимость</p>
                 <p className="font-mono">
                   {product.amount} {product.currency}
+                  <ChangeAmountProductDialog id={product.productId} amount={product.amount} />
                 </p>
               </div>
               <div>

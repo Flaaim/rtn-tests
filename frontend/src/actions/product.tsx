@@ -1,7 +1,7 @@
 "use server";
 
 import { ApiResponse } from "@/interfaces/response.interface";
-import { ListProductsDTO, ProductFull } from "@/interfaces/product.interface";
+import { ChangeAmountPayload, ListProductsDTO, ProductFull } from "@/interfaces/product.interface";
 import { apiFetch } from "@/lib/apiClient";
 import { API } from "@/app/api";
 import { handleApiResponse } from "@/lib/handleApiResponse";
@@ -53,6 +53,27 @@ export async function fetchProductAction(id: string): Promise<ApiResponse<Produc
     return handleApiResponse<ProductFull>(response);
   } catch (error) {
     console.error("fetchProductAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function changeAmountProductAction(
+  payload: ChangeAmountPayload
+): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.product.changeAmount(payload.id), {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        amount: payload.amount,
+      }),
+    });
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("changeAmountProductAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

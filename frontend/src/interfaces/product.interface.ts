@@ -21,3 +21,8 @@ export interface ProductFull {
   addedAt: string;
   filePath: string;
 }
+
+export interface ChangeAmountPayload {
+  id: string;
+  amount: string;
+}
