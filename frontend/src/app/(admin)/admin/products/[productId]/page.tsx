@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PUBLIC_ASSETS_URL } from "@/app/api";
 import ChangeAmountProductDialog from "@/components/Admin/Product/ChangeAmountProductDialog";
+import SendProductDialog from "@/components/Admin/Product/SendProductDialog";
 
 interface ProductOverviewPageProps {
   params: Promise<{ productId: string }>;
@@ -36,6 +37,16 @@ export default async function ProductOverviewPage({ params }: ProductOverviewPag
       <AdminBreadcrumbs items={items} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Продукт {product.cipher}</h1>
+        <div>
+          <Button size="sm" className="w-fit">
+            <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
+              Посмотреть PDF
+            </a>
+          </Button>
+        </div>
+        <div>
+          <SendProductDialog id={product.productId} />
+        </div>
       </div>
       <div className="space-y-6">
         <Card>
@@ -75,13 +86,6 @@ export default async function ProductOverviewPage({ params }: ProductOverviewPag
             </div>
           </CardContent>
         </Card>
-      </div>
-      <div className="space-y-6">
-        <Button size="sm" className="w-fit">
-          <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
-            Посмотреть PDF
-          </a>
-        </Button>
       </div>
     </div>
   );

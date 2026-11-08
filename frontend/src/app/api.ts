@@ -168,5 +168,6 @@ export const API = {
     remove: (id: string) => BASE_URL + `/v1/admin/products/${id}`,
     get: (id: string) => BASE_URL + `/v1/admin/products/${id}`,
     changeAmount: (id: string) => BASE_URL + `/v1/admin/products/${id}/change-amount`,
+    send: (id: string) => BASE_URL + `/v1/admin/products/${id}/send`,
   },
 };

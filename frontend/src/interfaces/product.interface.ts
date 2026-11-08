@@ -26,3 +26,8 @@ export interface ChangeAmountPayload {
   id: string;
   amount: string;
 }
+
+export interface SendProductPayload {
+  id: string;
+  email: string;
+}
