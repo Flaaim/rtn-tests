@@ -8,6 +8,7 @@ use DomainException;
 use Symfony\Component\Filesystem\Filesystem;
 use Throwable;
 
+/** @psalm-suppress UnusedClass */
 final class DirectoryCleaner implements DirectoryCleanerInterface
 {
     public function __construct(
