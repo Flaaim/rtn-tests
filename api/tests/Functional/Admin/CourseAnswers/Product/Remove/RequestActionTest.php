@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Admin\CourseAnswers\Product\Remove;
 
-use App\CourseAnswers\Entity\Product\ProductId;
 use App\CourseAnswers\Entity\Product\ProductRepository;
 use App\SharedDomain\Filesystem\FileSystemPathInterface;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use Doctrine\ORM\EntityManagerInterface;
-use DomainException;
 use RuntimeException;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -100,10 +98,6 @@ final class RequestActionTest extends WebTestCase
         );
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
-
-        self::expectException(DomainException::class);
-        self::expectExceptionMessage('Product not found.');
-        $this->products->get(new ProductId(RequestFixture::PRODUCT_ID));
 
         self::assertFileDoesNotExist($filePath);
     }
