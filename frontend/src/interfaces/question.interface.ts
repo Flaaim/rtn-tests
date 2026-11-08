@@ -1,3 +1,5 @@
+import { ProductDTO } from "@/interfaces/course.interface";
+
 export interface PublicQuestionData {
   id: string;
   text: string;
@@ -5,6 +7,7 @@ export interface PublicQuestionData {
   form: string;
   test: PublicTestData;
   category: PublicCategoryData;
+  product: ProductDTO | null;
 }
 interface PublicTestData {
   id: string;
