@@ -13,6 +13,7 @@ import {
 import Link from "next/link";
 import Pagination from "@/components/Pagination/Pagination";
 import { ProductDTO } from "@/interfaces/product.interface";
+import RemoveProductDialog from "@/components/Admin/Product/RemoveProductDialog";
 
 interface AdminProductsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string }>;
@@ -81,7 +82,9 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                 <TableCell className="font-medium">
                   {new Date(product.addedAt).toLocaleDateString("ru-RU")}
                 </TableCell>
-                <TableCell></TableCell>
+                <TableCell>
+                  <RemoveProductDialog id={product.productId} />
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -38,43 +38,41 @@ export default async function ProfileOverviewPage({ params }: ProfileOverviewPag
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <CardHeader>
-              <h2 className="text-1xl font-bold">Информация о профиле</h2>
-              <hr />
-            </CardHeader>
-            <CardContent className="space-y-4 text-sm">
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                <div>
-                  <p className="text-muted-foreground font-medium">Email</p>
-                  <p className="font-mono">{profile.email}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground font-medium">ID</p>
-                  <p className="font-mono">{profile.id}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground font-medium">Роль</p>
-                  <p className="font-mono">
-                    <UserRoleBadge type={profile.role} />
-                  </p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground font-medium">Статус</p>
-                  <p className="font-mono">
-                    <ProfileStatusBadge type={profile.profileStatus} />
-                  </p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground font-medium">Имя</p>
-                  <p className="font-mono">{profile.name || "Не заполнено"}</p>
-                </div>
-                <div>
-                  <p className="text-muted-foreground font-medium">Фамилия</p>
-                  <p className="font-mono">{profile.name || "Не заполнено"}</p>
-                </div>
-              </div>
-            </CardContent>
+            <h2 className="text-1xl font-bold">Информация о профиле</h2>
+            <hr />
           </CardHeader>
+          <CardContent className="space-y-4 text-sm">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <p className="text-muted-foreground font-medium">Email</p>
+                <p className="font-mono">{profile.email}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground font-medium">ID</p>
+                <p className="font-mono">{profile.id}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground font-medium">Роль</p>
+                <p className="font-mono">
+                  <UserRoleBadge type={profile.role} />
+                </p>
+              </div>
+              <div>
+                <p className="text-muted-foreground font-medium">Статус</p>
+                <p className="font-mono">
+                  <ProfileStatusBadge type={profile.profileStatus} />
+                </p>
+              </div>
+              <div>
+                <p className="text-muted-foreground font-medium">Имя</p>
+                <p className="font-mono">{profile.name || "Не заполнено"}</p>
+              </div>
+              <div>
+                <p className="text-muted-foreground font-medium">Фамилия</p>
+                <p className="font-mono">{profile.name || "Не заполнено"}</p>
+              </div>
+            </div>
+          </CardContent>
         </Card>
       </div>
       <div className="space-y-6">

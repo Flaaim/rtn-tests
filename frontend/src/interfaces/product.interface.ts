@@ -11,3 +11,13 @@ export interface ProductDTO {
   currency: string;
   addedAt: string;
 }
+
+export interface ProductFull {
+  productId: string;
+  cipher: string;
+  courseId: string;
+  amount: string;
+  currency: string;
+  addedAt: string;
+  filePath: string;
+}

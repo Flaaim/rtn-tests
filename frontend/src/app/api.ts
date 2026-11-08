@@ -165,5 +165,7 @@ export const API = {
       if (search) params.set("search", search);
       return BASE_URL + `/v1/admin/products?${params.toString()}`;
     },
+    remove: (id: string) => BASE_URL + `/v1/admin/products/${id}`,
+    get: (id: string) => BASE_URL + `/v1/admin/products/${id}`,
   },
 };
