@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Course\Query\Course\GetQuestion;
 
+use App\Course\Query\Course\GetOne\ProductDTO;
+
 final readonly class QuestionDTO
 {
     public function __construct(
@@ -13,6 +15,7 @@ final readonly class QuestionDTO
         public string $form,
         public TestDTO $test,
         public CategoryDTO $category,
+        public ?ProductDTO $product = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -21,13 +24,20 @@ final readonly class QuestionDTO
 
         $category = CategoryDTO::fromArray($data['category']);
 
+        $product = null;
+
+        if (isset($data['product'])) {
+            $product = ProductDTO::fromArray($data['product']);
+        }
+
         return new self(
             id: $data['id'],
             text: $data['text'],
             answers: $data['answers'],
             form: $data['form'],
             test: $test,
-            category: $category
+            category: $category,
+            product: $product,
         );
     }
 }

@@ -235,6 +235,7 @@ final readonly class CourseFetcher implements CourseFetcherInterface
         q.text,
         q.answers,
         q.form,
+        q.course_id,
         t.id as test_id,
         t.name as test_name,
         t.description as test_description,
@@ -266,6 +267,7 @@ final readonly class CourseFetcher implements CourseFetcherInterface
             'text' => $result['text'],
             'answers' => $answers,
             'form' => $result['form'],
+            'course_id' => $result['course_id'],
             'test' => [
                 'id' => $result['test_id'],
                 'name' => $result['test_name'],

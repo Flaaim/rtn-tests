@@ -45,6 +45,7 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
         return [
             TestFixture::class,
             CategoryFixture::class,
+            ProductFixture::class,
         ];
     }
 }
