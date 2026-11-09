@@ -1,5 +1,3 @@
-import { ProductDTO } from "@/interfaces/course.interface";
-
 export interface PublicQuestionData {
   id: string;
   text: string;
@@ -24,4 +22,10 @@ export interface PublicAnswerData {
   id: string;
   text: string;
   isCorrect: boolean;
+}
+
+export interface ProductDTO {
+  productId: string;
+  amount: string;
+  addedAt: string;
 }

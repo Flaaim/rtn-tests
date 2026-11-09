@@ -3,14 +3,14 @@ import { Metadata } from "next";
 import { checkIsAuthenticated } from "@/actions/auth";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { CheckCircle2, ChevronRight, Download, FileText, Sparkles } from "lucide-react";
+import { CheckCircle2, ChevronRight, FileText, Sparkles } from "lucide-react";
 import { fetchPublicQuestionAction } from "@/actions/question";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
-
 import PublicTicketButton from "@/components/Testing/Test/PublicTicketButton";
 import { Button } from "@/components/ui/button";
 import ShowCorrectAnswer from "@/components/Question/ShowCorrectAnswer";
-import { ProductDTO } from "@/interfaces/course.interface";
+import PurchaseProductDialog from "@/components/Question/PurchaseProductDialog";
+import { ProductDTO } from "@/interfaces/question.interface";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -177,10 +177,12 @@ export default async function PublicQuestionPage({ params }: PageProps) {
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 mt-auto">
                   {/* Замените этот Button на ваш компонент оплаты/корзины */}
-                  <Button className="w-full sm:w-auto gap-2">
-                    <Download className="w-4 h-4" />
-                    Купить за {formattedPrice} ₽
-                  </Button>
+
+                  <PurchaseProductDialog
+                    id={product.productId}
+                    amount={formattedPrice}
+                    name={question.test.name}
+                  />
 
                   {/* Кнопка превью, если у вас есть демо-версия файла */}
                   {/*<Button variant="outline" className="w-full sm:w-auto" asChild>*/}

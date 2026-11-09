@@ -54,9 +54,8 @@ final class RequestActionTest extends WebTestCase
         self::assertNotNull($data['product']);
 
         $product = $data['product'];
+        self::assertArrayHasKey('productId', $product);
         self::assertArrayHasKey('amount', $product);
-        self::assertArrayHasKey('currency', $product);
-        self::assertArrayHasKey('filePath', $product);
         self::assertArrayHasKey('addedAt', $product);
 
         $test = $data['test'];

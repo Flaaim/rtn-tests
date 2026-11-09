@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Course\Query\Course\GetQuestion;
 
-use App\Course\Query\Course\GetOne\ProductDTO;
-
 final readonly class QuestionDTO
 {
     public function __construct(

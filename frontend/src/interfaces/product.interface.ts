@@ -31,3 +31,13 @@ export interface SendProductPayload {
   id: string;
   email: string;
 }
+
+export interface CreatePaymentProductPayload {
+  id: string;
+  email: string;
+}
+
+export interface CreatePaymentResponse {
+  paymentId: string;
+  confirmationUrl: string;
+}

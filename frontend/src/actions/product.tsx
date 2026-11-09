@@ -3,6 +3,8 @@
 import { ApiResponse } from "@/interfaces/response.interface";
 import {
   ChangeAmountPayload,
+  CreatePaymentProductPayload,
+  CreatePaymentResponse,
   ListProductsDTO,
   ProductFull,
   SendProductPayload,
@@ -98,6 +100,29 @@ export async function sendProductAction(payload: SendProductPayload): Promise<Ap
     return handleApiResponse<void>(response);
   } catch (error) {
     console.error("sendProductAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function createPaymentProductAction(
+  payload: CreatePaymentProductPayload
+): Promise<ApiResponse<CreatePaymentResponse>> {
+  try {
+    const response = await apiFetch(API.product.createPayment(), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+      body: JSON.stringify({
+        email: payload.email,
+        productId: payload.id,
+        returnUrl: String(process.env.YOOKASSA_RETURN_PRODUCT_URL),
+      }),
+    });
+    return handleApiResponse<CreatePaymentResponse>(response);
+  } catch (error) {
+    console.error("createPaymentProductAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

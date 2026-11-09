@@ -81,6 +81,7 @@ final readonly class ProductFetcher implements ProductFetcherInterface
         $qb = $this->connection->createQueryBuilder();
         $result = $qb->select(
             '
+            p.product_id,
             p.amount,
             p.currency,
             p.file_path,

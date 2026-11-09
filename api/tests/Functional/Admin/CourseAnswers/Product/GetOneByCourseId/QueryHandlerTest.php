@@ -44,6 +44,7 @@ final class QueryHandlerTest extends KernelTestCase
             new Query(RequestFixture::COURSE_ID),
         );
 
+        self::assertEquals(RequestFixture::PRODUCT_ID, $product->productId);
         self::assertEquals(RequestFixture::PRODUCT_AMOUNT, $product->amount);
         self::assertEquals(RequestFixture::PRODUCT_FILEPATH, $product->filePath);
         self::assertEquals('RUB', $product->currency);
