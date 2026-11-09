@@ -170,5 +170,7 @@ export const API = {
     changeAmount: (id: string) => BASE_URL + `/v1/admin/products/${id}/change-amount`,
     send: (id: string) => BASE_URL + `/v1/admin/products/${id}/send`,
     createPayment: () => BASE_URL + `/v1/products/payments`,
+    getPaymentResult: (externalId: string) =>
+      BASE_URL + `/v1/products/payments/${externalId}/result`,
   },
 };

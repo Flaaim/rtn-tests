@@ -44,8 +44,12 @@ final class RequestActionTest extends WebTestCase
 
         $data = Json::decode($body);
 
+        self::assertArrayHasKey('paymentId', $data);
+        self::assertArrayHasKey('amount', $data);
+        self::assertArrayHasKey('currency', $data);
         self::assertArrayHasKey('email', $data);
         self::assertArrayHasKey('status', $data);
+        self::assertArrayHasKey('createdAt', $data);
     }
 
     public function testInvalid(): void

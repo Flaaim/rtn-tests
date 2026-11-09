@@ -7,6 +7,7 @@ import {
   CreatePaymentResponse,
   ListProductsDTO,
   ProductFull,
+  ProductPaymentResult,
   SendProductPayload,
 } from "@/interfaces/product.interface";
 import { apiFetch } from "@/lib/apiClient";
@@ -123,6 +124,24 @@ export async function createPaymentProductAction(
     return handleApiResponse<CreatePaymentResponse>(response);
   } catch (error) {
     console.error("createPaymentProductAction Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
+
+export async function fetchProductPaymentResult(
+  paymentId: string
+): Promise<ApiResponse<ProductPaymentResult>> {
+  try {
+    const response = await apiFetch(API.product.getPaymentResult(paymentId), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<ProductPaymentResult>(response);
+  } catch (error) {
+    console.error("fetchProductPaymentResult Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

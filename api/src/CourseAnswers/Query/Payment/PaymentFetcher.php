@@ -17,6 +17,10 @@ final readonly class PaymentFetcher implements PaymentFetcherInterface
         $qb = $this->connection->createQueryBuilder();
 
         $result = $qb->select('
+        p.payment_id,
+        p.amount,
+        p.currency,
+        p.created_at,
         p.status,
         p.email
         ')

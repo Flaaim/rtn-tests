@@ -41,3 +41,12 @@ export interface CreatePaymentResponse {
   paymentId: string;
   confirmationUrl: string;
 }
+
+export interface ProductPaymentResult {
+  paymentId: string;
+  status: string;
+  email: string;
+  amount: string;
+  currency: string;
+  createdAt: string;
+}
