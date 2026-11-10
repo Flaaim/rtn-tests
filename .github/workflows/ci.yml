@@ -125,6 +125,8 @@ jobs:
             CLIENT_SECRET=${{secrets.CLIENT_SECRET}}
             NEXT_PUBLIC_YANDEX_CLIENT_ID=${{ secrets.YANDEX_CLIENT_ID }}
             NEXT_PUBLIC_YANDEX_REDIRECT_URI=${{ secrets.YANDEX_REDIRECT_URI }}
+            NEXT_PUBLIC_YOOKASSA_RETURN_URL=https://rtn-tests.ru/user/subscription
+            NEXT_PUBLIC_YOOKASSA_RETURN_PRODUCT_URL=https://rtn-tests.ru/products/purchase
             
 
       - name: Build and Push GATEWAY Image
