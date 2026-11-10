@@ -47,7 +47,7 @@ final readonly class RequestAction
             return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
         }
 
-        $metadata = $payload['metadata'] ?? [];
+        $metadata = $object['metadata'] ?? [];
         if (!\is_array($metadata) || empty($metadata) || !isset($metadata['payment_type'])) {
             return new Response('Bad Request', Response::HTTP_BAD_REQUEST);
         }

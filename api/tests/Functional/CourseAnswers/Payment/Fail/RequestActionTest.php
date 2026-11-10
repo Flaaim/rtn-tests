@@ -49,8 +49,9 @@ final class RequestActionTest extends WebTestCase
                 'object' => [
                     'id' => RequestFixture::EXTERNAL_ID,
                     'status' => 'canceled',
+                    'metadata' => ['payment_type' => PaymentType::PRODUCT->value],
                 ],
-                'metadata' => ['payment_type' => PaymentType::PRODUCT->value],
+
             ],
         );
 
@@ -71,8 +72,8 @@ final class RequestActionTest extends WebTestCase
                 'object' => [
                     'id' => RequestFixture::EXTERNAL_ID_NOT_FOUND,
                     'status' => 'canceled',
+                    'metadata' => ['payment_type' => PaymentType::PRODUCT->value],
                 ],
-                'metadata' => ['payment_type' => PaymentType::PRODUCT->value],
             ],
         );
 
