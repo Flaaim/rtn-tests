@@ -67,7 +67,6 @@ final class RequestActionTest extends WebTestCase
                     'status' => 'canceled',
                     'metadata' => ['payment_type' => PaymentType::SUBSCRIPTION->value],
                 ],
-
             ],
         );
 
@@ -90,7 +89,6 @@ final class RequestActionTest extends WebTestCase
                     'status' => 'canceled',
                     'metadata' => ['payment_type' => PaymentType::SUBSCRIPTION->value],
                 ],
-
             ],
         );
 

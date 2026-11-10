@@ -50,7 +50,6 @@ final class RequestActionTest extends WebTestCase
                     'status' => 'succeeded',
                     'metadata' => ['payment_type' => PaymentType::SUBSCRIPTION->value],
                 ],
-
             ],
         );
 
@@ -73,7 +72,6 @@ final class RequestActionTest extends WebTestCase
                     'status' => 'succeeded',
                     'metadata' => ['payment_type' => PaymentType::SUBSCRIPTION->value],
                 ],
-
             ],
         );
 

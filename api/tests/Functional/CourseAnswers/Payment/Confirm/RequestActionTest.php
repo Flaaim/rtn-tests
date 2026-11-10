@@ -51,7 +51,6 @@ final class RequestActionTest extends WebTestCase
                     'status' => 'succeeded',
                     'metadata' => ['payment_type' => PaymentType::PRODUCT->value],
                 ],
-
             ],
         );
 
@@ -74,7 +73,6 @@ final class RequestActionTest extends WebTestCase
                     'status' => 'succeeded',
                     'metadata' => ['payment_type' => PaymentType::PRODUCT->value],
                 ],
-
             ],
         );
 
