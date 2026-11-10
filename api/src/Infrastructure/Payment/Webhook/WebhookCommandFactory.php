@@ -14,9 +14,13 @@ final class WebhookCommandFactory
     public function create(string $paymentType, string $event, string $externalId): ?object
     {
         return match ([$paymentType, $event]) {
-            ['subscription', 'payment.succeeded'] => new ConfirmSubscriptionCommand($externalId),
+            ['subscription', 'payment.succeeded'],
+            ['subscription', 'payment.waiting_for_capture'] => new ConfirmSubscriptionCommand($externalId),
+
             ['subscription', 'payment.canceled']  => new FailSubscriptionCommand($externalId),
-            ['product', 'payment.succeeded']      => new ConfirmProductCommand($externalId),
+
+            ['product', 'payment.succeeded'],
+            ['product', 'payment.waiting_for_capture'] => new ConfirmProductCommand($externalId),
             ['product', 'payment.canceled']       => new FailProductCommand($externalId),
             default => null,
         };
