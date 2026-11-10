@@ -158,6 +158,8 @@ jobs:
       - name: Deploy to Server
         run: make deploy
         env:
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
           HOST: ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}
           PORT: ${{ secrets.SERVER_PORT }}
           BUILD_NUMBER: ${{ github.run_id }}

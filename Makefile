@@ -145,6 +145,9 @@ deploy:
 
 	rm -f temp_jwt_public.key temp_jwt_private.key
 
+	ssh $(HOST) -p $(PORT) "echo $(REGISTRY_PASSWORD) | docker login $(REGISTRY) -u $(REGISTRY_USER) --password-stdin"
+	ssh $(HOST) -p $(PORT) "echo $(DOCKERHUB_TOKEN) | docker login -u $(DOCKERHUB_USERNAME) --password-stdin"
+
 	ssh ${HOST} -p ${PORT} 'cd $(SITE_DIR) && docker compose pull'
 	ssh ${HOST} -p ${PORT} 'cd $(SITE_DIR) && docker compose up --build --remove-orphans -d'
 
