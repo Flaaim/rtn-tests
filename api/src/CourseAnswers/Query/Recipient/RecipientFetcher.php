@@ -61,7 +61,7 @@ final readonly class RecipientFetcher implements RecipientFetcherInterface
 
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('r.recipient_id, r.status, r.email, r.created_at')
+        $qb->select('r.recipient_id, r.status, r.email, r.created_at, r.failed_reason')
             ->from('product_recipients', 'r');
 
         $normalizedSearch = null !== $search ? trim($search) : '';
@@ -77,7 +77,7 @@ final readonly class RecipientFetcher implements RecipientFetcherInterface
             ->executeQuery()
             ->fetchOne();
 
-        $rows = $qb->select('r.recipient_id, r.status, r.email, r.created_at')
+        $rows = $qb->select('r.recipient_id, r.status, r.email, r.created_at, r.failed_reason')
             ->orderBy('r.created_at', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit)

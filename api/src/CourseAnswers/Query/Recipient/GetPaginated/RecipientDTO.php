@@ -11,6 +11,7 @@ final readonly class RecipientDTO
         public string $status,
         public string $email,
         public string $createdAt,
+        public ?string $failedReason = null,
     ) {}
 
     public static function fromArray(array $data): self
@@ -20,6 +21,7 @@ final readonly class RecipientDTO
             status: $data['status'],
             email: $data['email'],
             createdAt: $data['created_at'],
+            failedReason: $data['failed_reason'],
         );
     }
 }

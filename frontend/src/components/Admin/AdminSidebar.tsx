@@ -9,6 +9,7 @@ import {
   GraduationCap,
   LayoutDashboard,
   LogOut,
+  Mails,
   NotepadText,
   Package,
   Shield,
@@ -53,6 +54,7 @@ const items = [
   { title: "Категории", url: "/admin/categories", icon: ChartBarStacked },
   { title: "Подписки", url: "/admin/subscriptions", icon: CreditCard },
   { title: "Ответы", url: "/admin/products", icon: Package },
+  { title: "Получатели", url: "/admin/recipients", icon: Mails },
 ];
 
 interface AdminSidebarProps {

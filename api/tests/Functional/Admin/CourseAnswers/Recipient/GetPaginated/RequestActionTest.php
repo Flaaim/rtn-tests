@@ -87,5 +87,6 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('status', $recipient);
         self::assertArrayHasKey('email', $recipient);
         self::assertArrayHasKey('createdAt', $recipient);
+        self::assertArrayHasKey('failedReason', $recipient);
     }
 }
