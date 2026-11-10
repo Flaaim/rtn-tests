@@ -34,10 +34,14 @@ services:
     restart: always
     depends_on:
       - api-php-fpm
+    volumes:
+      - /home/deploy/storage/course:/app/public/course
 
   api-php-fpm:
     image: ${REGISTRY}/rtn-tests-api-php-fpm:${IMAGE_TAG}
     restart: always
+    volumes:
+      - /home/deploy/storage/course:/app/public/course
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
@@ -77,6 +81,8 @@ services:
 
   api-php-cli:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
+    volumes:
+      - /home/deploy/storage/course:/app/public/course
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
@@ -145,6 +151,8 @@ services:
 
   api-php-worker:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
+    volumes:
+      - /home/deploy/storage/course:/app/public/course
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
