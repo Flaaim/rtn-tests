@@ -20,7 +20,7 @@ export async function createPaymentAction(
         plan: payload.plan,
         amount: payload.amount,
         durationDays: payload.durationDays,
-        returnUrl: String(process.env.YOOKASSA_RETURN_URL),
+        returnUrl: String(process.env.NEXT_PUBLIC_YOOKASSA_RETURN_PRODUCT_URL),
       }),
     });
     return handleApiResponse<CreatePaymentResponse>(response);

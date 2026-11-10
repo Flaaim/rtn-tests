@@ -118,7 +118,7 @@ export async function createPaymentProductAction(
       body: JSON.stringify({
         email: payload.email,
         productId: payload.id,
-        returnUrl: String(process.env.YOOKASSA_RETURN_PRODUCT_URL),
+        returnUrl: String(process.env.NEXT_PUBLIC_YOOKASSA_RETURN_URL),
       }),
     });
     return handleApiResponse<CreatePaymentResponse>(response);

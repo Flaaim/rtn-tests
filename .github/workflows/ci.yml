@@ -119,6 +119,7 @@ jobs:
           cache-to: type=gha,mode=max
           build-args: |
             NEXT_PUBLIC_BACKEND_URL=https://api.rtn-tests.ru
+            NEXT_PUBLIC_COURSE_ANSWERS=/course/
             GRANT_TYPE=${{secrets.GRANT_TYPE}}
             CLIENT_ID=${{secrets.CLIENT_ID}}
             CLIENT_SECRET=${{secrets.CLIENT_SECRET}}
