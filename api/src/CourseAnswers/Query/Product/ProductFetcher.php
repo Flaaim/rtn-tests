@@ -100,4 +100,21 @@ final readonly class ProductFetcher implements ProductFetcherInterface
 
         return $row;
     }
+
+    public function getProducts(): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        return $qb->select(
+            '
+            p.product_id,
+            p.cipher,
+            p.amount,
+            p.currency,
+            p.course_id,
+            p.added_at'
+        )->from('products', 'p')
+            ->executeQuery()
+            ->fetchAllAssociative();
+    }
 }

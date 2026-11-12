@@ -6,6 +6,7 @@ namespace App\Course\Infrastructure\Integration;
 
 use App\Course\Interfaces\ProductInterface;
 use App\CourseAnswers\Api\ProductApi;
+use App\CourseAnswers\Query\Product\GetPaginated\ProductDTO;
 
 final readonly class ProductModuleAdapter implements ProductInterface
 {
@@ -29,5 +30,11 @@ final readonly class ProductModuleAdapter implements ProductInterface
                 'addedAt' => $productDTO->addedAt,
             ],
         ];
+    }
+
+    public function getProducts(): array
+    {
+        /** @var ProductDTO[] $products */
+        $products = $this->productApi->getProducts();
     }
 }

@@ -7,4 +7,6 @@ namespace App\Course\Interfaces;
 interface ProductInterface
 {
     public function getProductCourse(string $courseId): array;
+
+    public function getProducts(): array;
 }
