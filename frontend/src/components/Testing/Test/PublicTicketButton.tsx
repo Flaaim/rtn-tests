@@ -6,6 +6,7 @@ import { launchAttemptAction } from "@/actions/attempt";
 import { Loader2, PlayCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
+import AddSubscriptionDialog from "@/components/Subscription/AddSubscriptionDialog";
 
 interface PublicTicketButtonProps {
   testId: string;
@@ -21,6 +22,7 @@ export default function PublicTicketButton({
   label,
 }: PublicTicketButtonProps) {
   const [loading, setLoading] = useState<boolean>(false);
+  const [showPayModal, setShowPayModal] = useState<boolean>(false); // Состояние для модалки оплаты
   const router = useRouter();
   const pathname = usePathname();
 
@@ -43,49 +45,58 @@ export default function PublicTicketButton({
       }
 
       if (errorMessage.includes("Ваш оплаченный период завершен")) {
-        toast.error("Ваш оплаченный период завершен", {
-          description: "Чтобы продолжить прохождение тестов необходимо приобрести подписку.",
-        });
+        // Вместо тоста программно открываем модалку
+        setShowPayModal(true);
       }
 
-      setLoading(false);
       return;
     }
 
     router.push(`/attempts/${result.data.attemptId}`);
   };
 
-  if (label) {
-    return (
-      <Button
-        onClick={handleLaunch}
-        disabled={loading}
-        size="lg"
-        className="w-full sm:w-auto font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer gap-2"
-      >
-        {loading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : (
-          <PlayCircle className="h-5 w-5" />
-        )}
-        <span>{label}</span>
-      </Button>
-    );
-  }
-
   return (
-    <Button
-      onClick={handleLaunch}
-      disabled={loading}
-      variant={isAuthenticated ? "default" : "secondary"}
-      className="group relative flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors cursor-pointer"
-    >
-      {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : <PlayCircle className="h-4 w-4" />}
+    <>
+      {label ? (
+        <Button
+          onClick={handleLaunch}
+          disabled={loading}
+          size="lg"
+          className="w-full sm:w-auto font-semibold shadow-md hover:shadow-lg transition-all cursor-pointer gap-2"
+        >
+          {loading ? (
+            <Loader2 className="h-5 w-5 animate-spin" />
+          ) : (
+            <PlayCircle className="h-5 w-5" />
+          )}
+          <span>{label}</span>
+        </Button>
+      ) : (
+        <Button
+          onClick={handleLaunch}
+          disabled={loading}
+          variant={isAuthenticated ? "default" : "secondary"}
+          className="group relative flex h-9 w-9 items-center justify-center rounded-full p-0 transition-colors cursor-pointer"
+        >
+          {loading ? (
+            <Loader2 className="h-4 w-4 animate-spin" />
+          ) : (
+            <PlayCircle className="h-4 w-4" />
+          )}
 
-      {/* Кастомная всплывающая подсказка */}
-      <span className="absolute -top-10 right-0 z-50 w-max scale-0 rounded-md bg-foreground px-3 py-1.5 text-xs font-medium text-background opacity-0 shadow-md transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
-        {isAuthenticated ? "Начать тестирование" : "Демо-режим"}
-      </span>
-    </Button>
+          {/* Кастомная всплывающая подсказка */}
+          <span className="absolute -top-10 right-0 z-50 w-max scale-0 rounded-md bg-foreground px-3 py-1.5 text-xs font-medium text-background opacity-0 shadow-md transition-all duration-200 group-hover:scale-100 group-hover:opacity-100">
+            {isAuthenticated ? "Начать тестирование" : "Демо-режим"}
+          </span>
+        </Button>
+      )}
+
+      {/* Интегрируем модалку (кнопка вызова скрыта) */}
+      <AddSubscriptionDialog
+        open={showPayModal}
+        onOpenChange={setShowPayModal}
+        showTrigger={false}
+      />
+    </>
   );
 }

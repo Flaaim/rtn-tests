@@ -13,9 +13,9 @@ import {
 } from "@/components/ui/dialog";
 import { Check, CreditCard, Zap } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { createPaymentAction } from "@/actions/payment";
 import { CreatePaymentPayload } from "@/interfaces/payment.interface";
 import { toast } from "sonner";
+import { createPaymentAction } from "@/actions/subscriptions";
 
 const SUBSCRIPTION_PLANS: Record<
   string,
@@ -49,14 +49,24 @@ const FEATURES = [
 ];
 
 interface AddSubscriptionDialogProps {
-  name: string;
+  name?: string;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  showTrigger?: boolean;
 }
 
-export default function AddSubscriptionDialog({ name }: AddSubscriptionDialogProps) {
-  const [open, setOpen] = useState<boolean>(false);
+export default function AddSubscriptionDialog({
+  name = "Подписка",
+  open: controlledOpen,
+  onOpenChange: setControlledOpen,
+  showTrigger = true,
+}: AddSubscriptionDialogProps) {
+  const [internalOpen, setInternalOpen] = useState<boolean>(false);
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+  const setOpen = isControlled ? setControlledOpen! : setInternalOpen;
 
   const [selectedPlanId, setSelectedPlanId] = useState<string>("basic_10");
-
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const handleSubscribe = async () => {
@@ -76,9 +86,11 @@ export default function AddSubscriptionDialog({ name }: AddSubscriptionDialogPro
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      <DialogTrigger render={<Button className="bg-blue-600 hover:bg-blue-700" />}>
-        <CreditCard className="mr-2 h-4 w-4" /> {name}
-      </DialogTrigger>
+      {showTrigger && (
+        <DialogTrigger render={<Button className="bg-blue-600 hover:bg-blue-700" />}>
+          <CreditCard className="mr-2 h-4 w-4" /> {name}
+        </DialogTrigger>
+      )}
 
       <DialogContent className="sm:max-w-[700px]">
         <DialogHeader>
@@ -129,7 +141,6 @@ export default function AddSubscriptionDialog({ name }: AddSubscriptionDialogPro
             })}
           </div>
 
-          {/* Блок с описанием преимуществ */}
           <div className="bg-muted/40 p-4 rounded-lg">
             <h4 className="font-medium mb-3 text-sm">Что входит в базовую подписку:</h4>
             <ul className="grid sm:grid-cols-2 gap-2">

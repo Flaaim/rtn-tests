@@ -133,9 +133,6 @@ export const API = {
     changeDescription: (id: string) =>
       BASE_URL + `/v1/admin/testing/categories/${id}/change-description`,
   },
-  payment: {
-    create: () => BASE_URL + `/v1/payments`,
-  },
   subscription: {
     getPaginatedByUser: (page: number, perPage: number) => {
       const params = new URLSearchParams({
@@ -155,6 +152,7 @@ export const API = {
     get: (id: string) => BASE_URL + `/v1/admin/subscriptions/${id}`,
     assign: () => BASE_URL + `/v1/admin/subscriptions`,
     remove: (id: string) => BASE_URL + `/v1/admin/subscriptions/${id}`,
+    createPayment: () => BASE_URL + `/v1/subscriptions/payments`,
   },
   product: {
     getPaginated: (page: number, perPage: number, search?: string) => {
