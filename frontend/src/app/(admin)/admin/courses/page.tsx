@@ -28,6 +28,14 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
 
   const result = await fetchCoursesPaginatedAction(currentPage, perPage, search);
 
+  const formattedDate = (date: Date | string) => {
+    return new Date(date).toLocaleString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "numeric",
+    });
+  };
+
   if (!result.ok || !result.data) {
     return (
       <div className="space-y-6">
@@ -66,6 +74,7 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
               <TableHead>Шифр</TableHead>
               <TableHead>Создан</TableHead>
               <TableHead>Статус</TableHead>
+              <TableHead>Продукт</TableHead>
               <TableHead>Удалить</TableHead>
             </TableRow>
           </TableHeader>
@@ -85,11 +94,18 @@ export default async function AdminCoursesPage({ searchParams }: AdminCoursesPag
                     </Link>
                   </TableCell>
                   <TableCell className="font-medium">{course.cipher}</TableCell>
-                  <TableCell className="font-medium">
-                    {new Date(course.createdAt).toLocaleDateString("ru-RU")}
-                  </TableCell>
+                  <TableCell className="font-medium">{formattedDate(course.createdAt)}</TableCell>
                   <TableCell className="font-medium">
                     <CourseStatusBadge status={course.status} />
+                  </TableCell>
+                  <TableCell>
+                    {course.product ? (
+                      <div>
+                        {course.product.amount} | {formattedDate(course.product.addedAt)}
+                      </div>
+                    ) : (
+                      "Не добавлен"
+                    )}
                   </TableCell>
                   <TableCell>
                     <RemoveCourseDialog id={course.courseId} />

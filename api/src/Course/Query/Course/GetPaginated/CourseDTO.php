@@ -6,24 +6,31 @@ namespace App\Course\Query\Course\GetPaginated;
 
 use DateTimeImmutable;
 
-final class CourseDTO
+final readonly class CourseDTO
 {
     public function __construct(
-        public readonly string $courseId,
-        public readonly string $name,
-        public readonly string $status,
-        public readonly string $createdAt,
-        public readonly string $cipher
+        public string $courseId,
+        public string $name,
+        public string $status,
+        public string $createdAt,
+        public string $cipher,
+        public ?ProductDTO $product = null,
     ) {}
 
     public static function fromArray(array $data): self
     {
+        $product = null;
+        if (!empty($data['product'])) {
+            $product = ProductDTO::fromArray($data['product']);
+        }
+
         return new self(
             courseId: $data['course_id'],
             name: $data['name'],
             status: $data['status'],
             createdAt: new DateTimeImmutable($data['created_at'])->format('Y-m-d'),
-            cipher: $data['cipher']
+            cipher: $data['cipher'],
+            product: $product,
         );
     }
 }

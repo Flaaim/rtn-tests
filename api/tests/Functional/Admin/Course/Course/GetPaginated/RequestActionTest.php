@@ -62,6 +62,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        $this->client->catchExceptions(false);
         $this->client->jsonRequest(
             'GET',
             '/v1/admin/testing/courses?page=1&limit=15',
@@ -84,6 +85,11 @@ final class RequestActionTest extends WebTestCase
                     'status' => 'processing',
                     'createdAt' => new DateTimeImmutable()->format('Y-m-d'),
                     'cipher' => RequestFixture::COURSE_CIPHER,
+                    'product' => [
+                        'productId' => ProductFixture::PRODUCT_ID,
+                        'amount' => ProductFixture::PRODUCT_AMOUNT,
+                        'addedAt' => new DateTimeImmutable()->format('Y-m-d'),
+                    ],
                 ],
             ],
             'totalCount' => 1,

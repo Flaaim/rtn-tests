@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Course\Query\Course\GetPaginated;
 
+use App\Course\Interfaces\ProductInterface;
 use App\Course\Query\Course\CourseFetcherInterface;
 
-final class QueryHandler
+final readonly class QueryHandler
 {
     public function __construct(
-        private readonly CourseFetcherInterface $courses,
+        private CourseFetcherInterface $courses,
+        private ProductInterface $product,
     ) {}
 
     public function handle(Query $query): ListCourseDTO
@@ -21,6 +23,11 @@ final class QueryHandler
             $query->limit,
             $query->search
         );
+
+        foreach ($result['items'] as &$course) {
+            $product = $this->product->getProductCourse($course['course_id']);
+            $course['product'] = $product['product'] ?? null;
+        }
 
         $items = array_map(
             static fn (array $row) => CourseDTO::fromArray($row),

@@ -25,6 +25,13 @@ export interface CourseItem {
   name: string;
   cipher: string;
   createdAt: string;
+  product?: ProductShortDTO | null;
+}
+
+interface ProductShortDTO {
+  productId: string;
+  amount: string;
+  addedAt: string;
 }
 
 export interface CourseFull {
