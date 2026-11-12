@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Event;
+namespace App\Event\Entity;
 
 use DateTimeImmutable;
-use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Webmozart\Assert\Assert;
 
@@ -22,7 +21,7 @@ final class Event
     #[ORM\Column(type: 'json')]
     private array $payload;
     #[ORM\Column(type: 'datetime_immutable')]
-    private DateTimeInterface $createdAt;
+    private DateTimeImmutable $createdAt;
 
     public function __construct(string $type, array $payload)
     {

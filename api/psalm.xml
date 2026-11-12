@@ -39,6 +39,7 @@
                 <directory name="src/Profile/Api" />
                 <directory name="src/Course/Api" />
                 <directory name="src/SharedDomain/Filesystem" />
+                <directory name="src/Event/Entity" />
             </errorLevel>
         </UnusedClass>
 

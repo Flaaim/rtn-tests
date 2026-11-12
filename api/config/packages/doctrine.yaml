@@ -126,8 +126,8 @@ doctrine:
             Event:
                 type: attribute
                 is_bundle: false
-                dir: '%kernel.project_dir%/src/Event'
-                prefix: 'App\Event'
+                dir: '%kernel.project_dir%/src/Event/Entity'
+                prefix: 'App\Event\Entity'
                 alias: Event
 
 
