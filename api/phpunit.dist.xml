@@ -49,6 +49,10 @@
         <env name="OAUTH_PASSPHRASE" value="fad8a7ce0ec0f66290ed9afa314331f4"/>
         <env name="OAUTH_ENCRYPTION_KEY" value="481a8377e7e02430785053b54ae50101"/>
         <!-- ###- league/oauth2-server-bundle ### -->
+
+        <!-- ###+ sensiolabs/gotenberg-bundle ### -->
+        <env name="GOTENBERG_DSN" value="http://gotenberg:3000"/>
+        <!-- ###- sensiolabs/gotenberg-bundle ### -->
     </php>
 
     <testsuites>

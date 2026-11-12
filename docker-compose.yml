@@ -200,6 +200,16 @@ services:
       - api-postgres
       - rabbitmq
 
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    restart: unless-stopped
+    ports:
+      - "3080:3000"
+    command:
+      - "gotenberg"
+      - "--api-timeout=60s"
+
+
 secrets:
   jwt_public_key:
     file: ./docker/development/secrets/jwt_public.key

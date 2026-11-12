@@ -17,6 +17,7 @@
         "league/oauth2-server-bundle": "^1.1",
         "nucleos/dompdf-bundle": "^4.5",
         "ramsey/uuid": "^4.9.2",
+        "sensiolabs/gotenberg-bundle": "^1.4",
         "sentry/sentry-symfony": "^5.10",
         "symfony/amqp-messenger": "8.0.*",
         "symfony/console": "8.0.*",
