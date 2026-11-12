@@ -70,6 +70,7 @@ services:
       ENCRYPT_SECRET_KEY: flaaim-secret
       YOOKASSA_SHOP_ID: ${YOOKASSA_SHOP_ID}
       YOOKASSA_SECRET_KEY: ${YOOKASSA_SECRET_KEY}
+      GOTENBERG_DSN: http://gotenberg:3000
     depends_on:
       api-postgres:
         condition: service_started
@@ -111,6 +112,7 @@ services:
       ENCRYPT_SECRET_KEY: flaaim-secret
       YOOKASSA_SHOP_ID: ${YOOKASSA_SHOP_ID}
       YOOKASSA_SECRET_KEY: ${YOOKASSA_SECRET_KEY}
+      GOTENBERG_DSN: http://gotenberg:3000
     depends_on:
       api-postgres:
         condition: service_started
@@ -181,6 +183,7 @@ services:
       ENCRYPT_SECRET_KEY: flaaim-secret
       YOOKASSA_SHOP_ID: ${YOOKASSA_SHOP_ID}
       YOOKASSA_SECRET_KEY: ${YOOKASSA_SECRET_KEY}
+      GOTENBERG_DSN: http://gotenberg:3000
     secrets:
       - jwt_public_key
       - jwt_private_key
@@ -192,6 +195,20 @@ services:
         condition: service_started
       rabbitmq:
         condition: service_healthy
+
+  gotenberg:
+    image: gotenberg/gotenberg:8
+    restart: unless-stopped
+    command:
+      - "gotenberg"
+      - "--api-timeout=60s"
+      - "--chromium-max-queue-size=10"
+    deploy:
+      resources:
+        limits:
+          cpus: '1.0'
+          memory: 1G
+
 
 volumes:
   api-postgres:
