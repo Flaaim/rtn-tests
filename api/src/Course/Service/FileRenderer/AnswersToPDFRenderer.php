@@ -7,6 +7,7 @@ namespace App\Course\Service\FileRenderer;
 use RuntimeException;
 use Sensiolabs\GotenbergBundle\GotenbergPdfInterface;
 
+/** @psalm-suppress UnusedClass */
 final readonly class AnswersToPDFRenderer implements FileRendererInterface
 {
     public const string TEMPLATE = 'course/answers.html.twig';
