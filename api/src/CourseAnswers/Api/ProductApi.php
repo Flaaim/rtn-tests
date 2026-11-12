@@ -7,14 +7,14 @@ namespace App\CourseAnswers\Api;
 use App\CourseAnswers\Query\Product\GetByCourseId;
 use App\CourseAnswers\Query\Product\GetByCourseId\ProductDTO;
 use App\CourseAnswers\Query\Product\GetByCourseId\Query;
-use App\CourseAnswers\Query\Product\GetPaginated;
+use App\CourseAnswers\Query\Product\GetProducts;
 
 final readonly class ProductApi
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private GetByCourseId\QueryHandler $queryHandler,
-        private GetPaginated\QueryHandler $queryHandlerPaginated,
+        private GetProducts\QueryHandler $getProducts,
     ) {}
 
     public function getProductByCourseId(string $courseId): ?ProductDTO
@@ -24,8 +24,6 @@ final readonly class ProductApi
 
     public function getProducts(): array
     {
-        $listProductDTO = $this->queryHandlerPaginated->handle(new GetPaginated\Query());
-
-        return $listProductDTO['items'] ?? [];
+        return $this->getProducts->handle();
     }
 }

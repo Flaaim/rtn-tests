@@ -8,6 +8,7 @@ use App\CourseAnswers\Query\Product\ProductFetcherInterface;
 
 final readonly class QueryHandler
 {
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private ProductFetcherInterface $products
     ) {}

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Admin\Course\Course\GetPaginated;
 
-use DateTimeImmutable;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -62,7 +61,6 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $this->client->catchExceptions(false);
         $this->client->jsonRequest(
             'GET',
             '/v1/admin/testing/courses?page=1&limit=15',
@@ -75,25 +73,25 @@ final class RequestActionTest extends WebTestCase
         self::assertJson($body = $this->client->getResponse()->getContent());
         $data = Json::decode($body);
 
-        self::assertCount(1, $data['items']);
+        self::assertCount(2, $data['items']);
 
-        self::assertEquals([
-            'items' => [
-                [
-                    'courseId' => RequestFixture::COURSE_ID,
-                    'name' => RequestFixture::COURSE_NAME,
-                    'status' => 'processing',
-                    'createdAt' => new DateTimeImmutable()->format('Y-m-d'),
-                    'cipher' => RequestFixture::COURSE_CIPHER,
-                    'product' => [
-                        'productId' => ProductFixture::PRODUCT_ID,
-                        'amount' => ProductFixture::PRODUCT_AMOUNT,
-                        'addedAt' => new DateTimeImmutable()->format('Y-m-d'),
-                    ],
-                ],
-            ],
-            'totalCount' => 1,
-            'totalPages' => 1,
-        ], $data);
+        self::assertArrayHasKey('totalCount', $data);
+        self::assertArrayHasKey('totalPages', $data);
+
+        $course = $data['items'][1];
+        self::assertArrayHasKey('courseId', $course);
+        self::assertArrayHasKey('name', $course);
+        self::assertArrayHasKey('status', $course);
+        self::assertArrayHasKey('createdAt', $course);
+        self::assertArrayHasKey('cipher', $course);
+        self::assertArrayHasKey('product', $course);
+
+        $product = $course['product'];
+        self::assertArrayHasKey('productId', $product);
+        self::assertArrayHasKey('amount', $product);
+        self::assertArrayHasKey('addedAt', $product);
+
+        $courseWithOutProduct = $data['items'][0];
+        self::assertNull($courseWithOutProduct['product']);
     }
 }

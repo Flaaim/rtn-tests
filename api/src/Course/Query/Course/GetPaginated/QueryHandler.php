@@ -11,7 +11,7 @@ final readonly class QueryHandler
 {
     public function __construct(
         private CourseFetcherInterface $courses,
-        private ProductInterface $product,
+        private ProductInterface $products,
     ) {}
 
     public function handle(Query $query): ListCourseDTO
@@ -24,9 +24,14 @@ final readonly class QueryHandler
             $query->search
         );
 
+        $products = $this->products->getProducts();
+
         foreach ($result['items'] as &$course) {
-            $product = $this->product->getProductCourse($course['course_id']);
-            $course['product'] = $product['product'] ?? null;
+            foreach ($products as $product) {
+                if ($product['courseId'] === $course['course_id']) {
+                    $course['product'] = $product;
+                }
+            }
         }
 
         $items = array_map(

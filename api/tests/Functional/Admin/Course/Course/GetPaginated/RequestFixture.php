@@ -28,6 +28,10 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
     public const string USER_EMAIL = 'user@mail.ru';
     public const string USER_PASSWORD = 'user';
 
+    public const string COURSE_ID_WITHOUT_PRODUCT = '77892601-5230-410b-89ee-f28691e70c9c';
+    public const string COURSE_CIPHER_WITHOUT_PRODUCT = 'ПБ 115.27';
+    public const string COURSE_NAME_WITHOUT_PRODUCT = 'Основый промышленной безопасности';
+
     public function load(ObjectManager $manager): void
     {
         $course = new Course(
@@ -37,10 +41,18 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
             new DateTimeImmutable(),
             self::COURSE_CIPHER,
         );
-
         $course->releaseEvents();
-
         $manager->persist($course);
+
+        $courseWithOutProduct = new Course(
+            new CourseId(self::COURSE_ID_WITHOUT_PRODUCT),
+            self::COURSE_NAME_WITHOUT_PRODUCT,
+            [],
+            new DateTimeImmutable(),
+            self::COURSE_CIPHER_WITHOUT_PRODUCT,
+        );
+        $courseWithOutProduct->releaseEvents();
+        $manager->persist($courseWithOutProduct);
 
         $admin = new UserBuilder()
             ->withEmail(new Email(self::ADMIN_EMAIL))

@@ -6,7 +6,7 @@ namespace App\Course\Infrastructure\Integration;
 
 use App\Course\Interfaces\ProductInterface;
 use App\CourseAnswers\Api\ProductApi;
-use App\CourseAnswers\Query\Product\GetPaginated\ProductDTO;
+use App\CourseAnswers\Query\Product\GetProducts\ProductDTO;
 
 final readonly class ProductModuleAdapter implements ProductInterface
 {
@@ -34,7 +34,20 @@ final readonly class ProductModuleAdapter implements ProductInterface
 
     public function getProducts(): array
     {
-        /** @var ProductDTO[] $products */
-        $products = $this->productApi->getProducts();
+        /** @var ProductDTO[] $result */
+        $result = $this->productApi->getProducts();
+
+        $products = [];
+        foreach ($result as $product) {
+            $products[] = [
+                'productId' => $product->productId,
+                'cipher' => $product->cipher,
+                'amount' => $product->amount,
+                'currency' => $product->currency,
+                'courseId' => $product->courseId,
+                'addedAt' => $product->addedAt,
+            ];
+        }
+        return $products;
     }
 }
