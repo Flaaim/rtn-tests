@@ -39,7 +39,7 @@ final class ConfirmActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
         $this->client->jsonRequest('POST', '/v1/auth/join/confirm', [
             'token' => ConfirmFixture::VALID,
@@ -61,7 +61,7 @@ final class ConfirmActionTest extends WebTestCase
     {
         $guestId = 'e92fa0c3-beb1-4fa6-bd85-fcc6a8dba182';
 
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest(

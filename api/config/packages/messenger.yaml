@@ -5,6 +5,8 @@ framework:
 
         transports:
             # https://symfony.com/doc/current/messenger.html#transport-configuration
+            async_outbox:
+                dsn: 'doctrine://default?auto_setup=false'
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
                 options:
@@ -19,45 +21,45 @@ framework:
                     max_retries: 3
                     delay: 1000
             sync: 'sync://'
-            failed: 'doctrine://default?queue_name=failed'
+            failed: 'doctrine://default?queue_name=failed&auto_setup=false'
 
 
         routing:
             # Route your messages to the transports
             # 'App\Message\YourMessage': async
-            'App\Auth\Event\PasswordResetRequested': async
-            'App\Auth\Event\UserRemoved': async
-            'App\Auth\Event\PasswordReset': async
-            'App\Auth\Event\UserCreated': async
-            'App\Auth\Event\JoinByEmailRequested': async
-            'App\Auth\Event\UserRoleChanged': async
-            'App\Auth\Event\UserJoinConfirmed': async
-            'App\Auth\Event\NetworkAttached': async
-            'App\Auth\Event\ChangeEmailRequested': async
-            'App\Auth\Event\PasswordChanged': async
-            'App\Auth\Event\GuestJoined': async
-            'App\Auth\Event\MagicLinkRequested': async
-            'Symfony\Component\Mailer\Messenger\SendEmailMessage': async
+            'App\Auth\Event\PasswordResetRequested': async_outbox
+            'App\Auth\Event\UserRemoved': async_outbox
+            'App\Auth\Event\PasswordReset': async_outbox
+            'App\Auth\Event\UserCreated': async_outbox
+            'App\Auth\Event\JoinByEmailRequested': async_outbox
+            'App\Auth\Event\UserRoleChanged': async_outbox
+            'App\Auth\Event\UserJoinConfirmed': async_outbox
+            'App\Auth\Event\NetworkAttached': async_outbox
+            'App\Auth\Event\ChangeEmailRequested': async_outbox
+            'App\Auth\Event\PasswordChanged': async_outbox
+            'App\Auth\Event\GuestJoined': async_outbox
+            'App\Auth\Event\MagicLinkRequested': async_outbox
+            'Symfony\Component\Mailer\Messenger\SendEmailMessage': async_outbox
 
-            'App\Parser\Event\ParserCreated': async
-            'App\Parser\Event\ParseLaunched': async
-            'App\Parser\Event\ParseFailed': async
-            'App\Parser\Event\ParseEnded': async
+            'App\Parser\Event\ParserCreated': async_outbox
+            'App\Parser\Event\ParseLaunched': async_outbox
+            'App\Parser\Event\ParseFailed': async_outbox
+            'App\Parser\Event\ParseEnded': async_outbox
 
-            'App\Course\Event\CourseProcessed': async
-            'App\Course\Event\CourseScheduledToRender': async
-            'App\Course\Event\CourseRendered': async
+            'App\Course\Event\CourseProcessed': async_outbox
+            'App\Course\Event\CourseScheduledToRender': async_outbox
+            'App\Course\Event\CourseRendered': async_outbox
 
-            'App\Testing\Event\TestCreated': async
-            'App\Testing\Event\TestActivated': async
-            'App\Testing\Event\TestDeactivated': async
-            'App\Testing\Event\TestRemoved': async
-            'App\Testing\Event\TestChanged': async
+            'App\Testing\Event\TestCreated': async_outbox
+            'App\Testing\Event\TestActivated': async_outbox
+            'App\Testing\Event\TestDeactivated': async_outbox
+            'App\Testing\Event\TestRemoved': async_outbox
+            'App\Testing\Event\TestChanged': async_outbox
 
-            'App\Testing\Event\Attempt\TimeoutAttemptCommand': async
-            'App\Profile\Event\ProfileRemoved': async
+            'App\Testing\Event\Attempt\TimeoutAttemptCommand': async_outbox
+            'App\Profile\Event\ProfileRemoved': async_outbox
 
-            'App\Subscription\Event\Subscription\SubscriptionPurchased': async
+            'App\Subscription\Event\Subscription\SubscriptionPurchased': async_outbox
             'App\Subscription\Command\ConfirmPayment\Command': sync
             'App\Subscription\Command\FailPayment\Command': sync
 
@@ -65,7 +67,7 @@ framework:
             'App\Testing\Command\Attempt\DemoLaunch\Command': sync
 
             'App\CourseAnswers\Command\Product\Send\Command': sync
-            'App\CourseAnswers\Event\RecipientCreated': async
+            'App\CourseAnswers\Event\RecipientCreated': async_outbox
             'App\CourseAnswers\Command\Payment\Confirm\Command': sync
             'App\CourseAnswers\Command\Payment\Fail\Command': sync
 
@@ -75,6 +77,7 @@ when@test:
             transports:
             # replace with your transport name here (e.g., my_transport: 'in-memory://')
             # For more Messenger testing tools, see https://github.com/zenstruck/messenger-test
+                async_outbox: 'in-memory://'
                 async: 'in-memory://'
                 sync: 'sync://'
             routing:

@@ -40,7 +40,7 @@ final class RequestActionTest extends WebTestCase
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest('POST', '/v1/auth/password/reset/request', [

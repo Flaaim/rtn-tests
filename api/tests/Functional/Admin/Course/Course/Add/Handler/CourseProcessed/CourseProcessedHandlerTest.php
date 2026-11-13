@@ -52,7 +52,7 @@ final class CourseProcessedHandlerTest extends KernelTestCase
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->container->get('messenger.transport.async');
+        $transport = $this->container->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $mockResponse = new MockResponse('', [

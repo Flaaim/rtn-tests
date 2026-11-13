@@ -43,7 +43,7 @@ final class ConfirmActionTest extends WebTestCase
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest('POST', '/v1/auth/join/magic/confirm', [
@@ -74,7 +74,7 @@ final class ConfirmActionTest extends WebTestCase
     public function testSuccessGuest(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest(

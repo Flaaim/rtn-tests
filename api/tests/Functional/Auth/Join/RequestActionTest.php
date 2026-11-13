@@ -57,7 +57,7 @@ final class RequestActionTest extends WebTestCase
     {
         $email = 'new@email.com';
         $password = 'password';
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest('POST', '/v1/auth/join/request', [

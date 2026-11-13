@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Admin\Course\Course\Add\Handler\CourseScheduledToRender;
 
-use App\Course\Entity\Course\CourseRepository;
 use App\Course\Event\CourseRendered;
 use App\Course\Event\CourseScheduledToRender;
 use App\Course\MessageHandler\CourseScheduledToRenderHandler;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
@@ -22,16 +20,12 @@ use Tests\Functional\FixturesLoader;
 final class CourseScheduledToRenderTest extends KernelTestCase
 {
     private readonly ContainerInterface $container;
-    private readonly CourseRepository $courses;
     private readonly InMemoryFileSystemPath $fileSystemPath;
 
     protected function setUp(): void
     {
         self::bootKernel();
         $this->container = self::getContainer();
-        /** @var EntityManagerInterface $em */
-        $em = $this->container->get(EntityManagerInterface::class);
-        $this->courses = new CourseRepository($em);
 
         $this->fileSystemPath = $this->container->get(InMemoryFileSystemPath::class);
 
@@ -42,7 +36,7 @@ final class CourseScheduledToRenderTest extends KernelTestCase
     public function testSuccess(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->container->get('messenger.transport.async');
+        $transport = $this->container->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $handler = $this->container->get(CourseScheduledToRenderHandler::class);
@@ -68,7 +62,7 @@ final class CourseScheduledToRenderTest extends KernelTestCase
     public function testDefaultPrice(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->container->get('messenger.transport.async');
+        $transport = $this->container->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $handler = $this->container->get(CourseScheduledToRenderHandler::class);

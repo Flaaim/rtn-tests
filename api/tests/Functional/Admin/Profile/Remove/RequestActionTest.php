@@ -79,7 +79,7 @@ final class RequestActionTest extends WebTestCase
     public function testRemove(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest(

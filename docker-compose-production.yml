@@ -196,6 +196,51 @@ services:
       rabbitmq:
         condition: service_healthy
 
+  api-outbox-worker:
+    image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
+    volumes:
+      - /home/deploy/storage/course:/app/public/course
+    environment:
+      APP_ENV: prod
+      APP_DEBUG: 0
+      API_SITE_URL: ${API_SITE_URL}
+      API_SITE_NAME: ${API_SITE_NAME}
+      DB_HOST: api-postgres
+      DB_USER: app
+      DB_PASSWORD: ${API_DB_PASSWORD}
+      DB_NAME: app
+      MAILER_DSN: ${MAILER_DSN}
+      MAILER_USER: ${MAILER_USER}
+      MAILER_PASSWORD: ${MAILER_PASSWORD}
+      MAILER_ENCRYPTION: tls
+      MAILER_FROM_EMAIL: ${MAILER_FROM_EMAIL}
+      MAILER_FROM_NAME: ${MAILER_FROM_NAME}
+      FRONTEND_URL: ${FRONTEND_URL}
+      MESSENGER_TRANSPORT_DSN: amqp://${RABBITMQ_USER}:${RABBITMQ_PASSWORD}@rabbitmq:5672/%2f
+      SENTRY_DSN: ${SENTRY_DSN}
+      JWT_ENCRYPTION_KEY: ${JWT_ENCRYPTION_KEY}
+      JWT_PUBLIC_KEY_PATH: /run/secrets/jwt_public_key
+      JWT_PRIVATE_KEY_PATH: /run/secrets/jwt_private_key
+      CLIENT_SECRET: ${CLIENT_SECRET}
+      YANDEX_CLIENT_ID: ${YANDEX_CLIENT_ID}
+      YANDEX_CLIENT_SECRET: ${YANDEX_CLIENT_SECRET}
+      YANDEX_REDIRECT_URI: ${YANDEX_REDIRECT_URI}
+      ENCRYPT_SECRET_KEY: flaaim-secret
+      YOOKASSA_SHOP_ID: ${YOOKASSA_SHOP_ID}
+      YOOKASSA_SECRET_KEY: ${YOOKASSA_SECRET_KEY}
+      GOTENBERG_DSN: http://gotenberg:3000
+    secrets:
+      - jwt_public_key
+      - jwt_private_key
+    command: php bin/console messenger:consume async_outbox --limit=1000 --memory-limit=128M --no-debug -vv
+    stop_grace_period: 30s
+    restart: always
+    depends_on:
+      api-postgres:
+        condition: service_started
+      rabbitmq:
+        condition: service_healthy
+
   gotenberg:
     image: gotenberg/gotenberg:8
     restart: unless-stopped

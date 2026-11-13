@@ -4,27 +4,26 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Doctrine;
 
+use App\Event\Entity\Event;
 use App\SharedDomain\AggregateRoot;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
 use Doctrine\ORM\Event\OnFlushEventArgs;
 use Doctrine\ORM\Events;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 #[AsDoctrineListener(event: Events::onFlush)]
-#[AsDoctrineListener(event: Events::postFlush)]
-final class DomainEventDispatcher
+final readonly class DomainEventDispatcher
 {
-    private array $events = [];
-
     public function __construct(
-        private readonly MessageBusInterface $messageBus
+        private MessageBusInterface $messageBus,
+        private SerializerInterface $serializer
     ) {}
 
     public function onFlush(OnFlushEventArgs $args): void
     {
         $em = $args->getObjectManager();
         $uow = $em->getUnitOfWork();
-
         $entities = [];
 
         foreach ($uow->getIdentityMap() as $classEntities) {
@@ -36,21 +35,22 @@ final class DomainEventDispatcher
             $entities[] = $entity;
         }
 
+        $classMetadata = $em->getClassMetadata(Event::class);
+
         foreach ($entities as $entity) {
             if ($entity instanceof AggregateRoot) {
-                foreach ($entity->releaseEvents() as $event) {
-                    $this->events[] = $event;
+                foreach ($entity->releaseEvents() as $domainEvent) {
+                    $eventEntity = new Event(
+                        type: \get_class($domainEvent),
+                        payload: $this->serializer->serialize($domainEvent, 'json')
+                    );
+
+                    $em->persist($eventEntity);
+                    $uow->computeChangeSet($classMetadata, $eventEntity);
+
+                    $this->messageBus->dispatch($domainEvent);
                 }
             }
-        }
-    }
-
-    public function postFlush(): void
-    {
-        $events = $this->events;
-        $this->events = [];
-        foreach ($events as $event) {
-            $this->messageBus->dispatch($event);
         }
     }
 }

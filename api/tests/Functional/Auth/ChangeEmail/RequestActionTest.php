@@ -110,7 +110,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->loginUser(new UserAdapter($this->authenticatedUserValid->getId()->getValue()));
         /** @var InMemoryTransport $transport */
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest('PUT', '/v1/auth/email/change/request', [

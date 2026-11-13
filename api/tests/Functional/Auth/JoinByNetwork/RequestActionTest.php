@@ -58,7 +58,7 @@ final class RequestActionTest extends WebTestCase
     public function testAlreadyJoinedByEmail(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest('POST', '/v1/auth/join/network/request', [
@@ -84,7 +84,7 @@ final class RequestActionTest extends WebTestCase
     public function testSuccessJoinByNetwork(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest('POST', '/v1/auth/join/network/request', [
@@ -115,7 +115,7 @@ final class RequestActionTest extends WebTestCase
     public function testSuccessJoinByNetworkWithGuestId(): void
     {
         /** @var InMemoryTransport $transport */
-        $transport = $this->client->getContainer()->get('messenger.transport.async');
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest(

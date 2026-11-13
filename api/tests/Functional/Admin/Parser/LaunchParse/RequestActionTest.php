@@ -82,7 +82,7 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
-        $transport = $this->getContainer()->get('messenger.transport.async');
+        $transport = $this->getContainer()->get('messenger.transport.async_outbox');
         $transport->reset();
 
         $this->client->jsonRequest(

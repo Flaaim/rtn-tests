@@ -18,12 +18,12 @@ final class Event
     private ?int $id = null;
     #[ORM\Column(type: 'string', length: 255)]
     private string $type;
-    #[ORM\Column(type: 'json')]
-    private array $payload;
+    #[ORM\Column(type: 'text')]
+    private string $payload;
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
-    public function __construct(string $type, array $payload)
+    public function __construct(string $type, string $payload)
     {
         Assert::notEmpty($type);
         $this->type = $type;
@@ -31,21 +31,25 @@ final class Event
         $this->createdAt = new DateTimeImmutable();
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getId(): int
     {
         return $this->id ?? 0;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getType(): string
     {
         return $this->type;
     }
 
-    public function getPayload(): array
+    /** @psalm-suppress PossiblyUnusedMethod */
+    public function getPayload(): string
     {
         return $this->payload;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
