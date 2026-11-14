@@ -83,7 +83,9 @@ export default async function AdminRecipientsPage({ searchParams }: AdminRecipie
                 <TableCell className="font-medium">
                   {new Date(recipient.createdAt).toLocaleDateString("ru-RU")}
                 </TableCell>
-                <TableCell className="font-medium min-w-0 max-w-[250px] truncate">{recipient.failedReason}</TableCell>
+                <TableCell className="font-medium min-w-0 max-w-[250px] truncate">
+                  {recipient.failedReason}
+                </TableCell>
                 <TableCell className="font-medium"></TableCell>
               </TableRow>
             ))}

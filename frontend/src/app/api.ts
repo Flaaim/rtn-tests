@@ -181,4 +181,14 @@ export const API = {
       return BASE_URL + `/v1/admin/recipients?${params.toString()}`;
     },
   },
+  event: {
+    getPaginated: (page: number, perPage: number, search?: string) => {
+      const params = new URLSearchParams({
+        page: String(page),
+        limit: String(perPage),
+      });
+      if (search) params.set("search", search);
+      return BASE_URL + `/v1/admin/events?${params.toString()}`;
+    },
+  },
 };

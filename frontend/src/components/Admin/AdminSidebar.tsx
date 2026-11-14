@@ -13,6 +13,7 @@ import {
   NotepadText,
   Package,
   Shield,
+  SquareChartGantt,
   Target,
   Users,
 } from "lucide-react";
@@ -55,6 +56,7 @@ const items = [
   { title: "Подписки", url: "/admin/subscriptions", icon: CreditCard },
   { title: "Ответы", url: "/admin/products", icon: Package },
   { title: "Получатели", url: "/admin/recipients", icon: Mails },
+  { title: "События", url: "/admin/events", icon: SquareChartGantt },
 ];
 
 interface AdminSidebarProps {
