@@ -59,6 +59,7 @@ final class Event
     {
         return $this->createdAt;
     }
+
     /** @psalm-suppress PossiblyUnusedMethod */
     public function getAggregateId(): string
     {
