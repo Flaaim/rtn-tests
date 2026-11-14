@@ -17,15 +17,20 @@ final class Event
     #[ORM\Column(type: 'bigint')]
     private ?int $id = null;
     #[ORM\Column(type: 'string', length: 255)]
+    private string $aggregateId;
+    #[ORM\Column(type: 'string', length: 255)]
     private string $type;
     #[ORM\Column(type: 'text')]
     private string $payload;
     #[ORM\Column(type: 'datetime_immutable')]
     private DateTimeImmutable $createdAt;
 
-    public function __construct(string $type, string $payload)
+    public function __construct(string $aggregateId, string $type, string $payload)
     {
+        Assert::notEmpty($aggregateId);
         Assert::notEmpty($type);
+
+        $this->aggregateId = $aggregateId;
         $this->type = $type;
         $this->payload = $payload;
         $this->createdAt = new DateTimeImmutable();
@@ -53,5 +58,10 @@ final class Event
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
+    }
+    /** @psalm-suppress PossiblyUnusedMethod */
+    public function getAggregateId(): string
+    {
+        return $this->aggregateId;
     }
 }

@@ -53,4 +53,9 @@ final class Parser implements AggregateRoot
     {
         return $this->credentials;
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->id->getValue();
+    }
 }

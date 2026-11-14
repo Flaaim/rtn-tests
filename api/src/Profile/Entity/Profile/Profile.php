@@ -67,4 +67,9 @@ final class Profile implements AggregateRoot
             throw new DomainException('Cannot remove admin profile.');
         }
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->id->getValue();
+    }
 }

@@ -252,6 +252,11 @@ final class Test implements AggregateRoot
         $this->categoryId = $categoryId;
     }
 
+    public function getAggregateId(): string
+    {
+        return $this->id->getValue();
+    }
+
     private function regenerateTickets(array $allQuestionIds): void
     {
         if (empty($allQuestionIds)) {

@@ -7,4 +7,6 @@ namespace App\SharedDomain;
 interface AggregateRoot
 {
     public function releaseEvents(): array;
+
+    public function getAggregateId(): string;
 }

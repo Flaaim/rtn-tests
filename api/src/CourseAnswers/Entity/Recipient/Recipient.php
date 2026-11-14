@@ -100,4 +100,9 @@ final class Recipient implements AggregateRoot
     {
         return $this->failedReason;
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->recipientId->getValue();
+    }
 }

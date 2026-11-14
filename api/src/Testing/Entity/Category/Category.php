@@ -72,4 +72,9 @@ final class Category implements AggregateRoot
     {
         $this->description = $description;
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->id->getValue();
+    }
 }

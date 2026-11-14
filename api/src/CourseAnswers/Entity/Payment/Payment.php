@@ -110,4 +110,9 @@ final class Payment implements AggregateRoot
 
         $this->status = PaymentStatus::FAILED;
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->id->getValue();
+    }
 }

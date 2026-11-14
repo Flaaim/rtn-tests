@@ -120,4 +120,9 @@ final class Task implements AggregateRoot
             $this->failedReason
         ));
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->taskId->getValue();
+    }
 }

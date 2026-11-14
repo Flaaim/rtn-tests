@@ -179,4 +179,9 @@ final class Subscription implements AggregateRoot
 
         $this->recordEvent(new SubscriptionExpired($this->userId));
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->id->getValue();
+    }
 }

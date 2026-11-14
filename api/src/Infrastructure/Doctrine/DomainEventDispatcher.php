@@ -40,7 +40,10 @@ final readonly class DomainEventDispatcher
         foreach ($entities as $entity) {
             if ($entity instanceof AggregateRoot) {
                 foreach ($entity->releaseEvents() as $domainEvent) {
+                    $aggregateId = $entity->getAggregateId();
+
                     $eventEntity = new Event(
+                        aggregateId: $aggregateId,
                         type: \get_class($domainEvent),
                         payload: $this->serializer->serialize($domainEvent, 'json')
                     );

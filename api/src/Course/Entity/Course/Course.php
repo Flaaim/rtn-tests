@@ -102,4 +102,9 @@ final class Course implements AggregateRoot
             $this->cipher = $newCipher;
         }
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->courseId->getValue();
+    }
 }

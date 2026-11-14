@@ -376,4 +376,9 @@ final class User implements AggregateRoot
     {
         return $this->magicLinkToken;
     }
+
+    public function getAggregateId(): string
+    {
+        return $this->id->getValue();
+    }
 }

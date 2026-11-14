@@ -173,6 +173,11 @@ final class Attempt implements AggregateRoot
         $this->userId = $userId;
     }
 
+    public function getAggregateId(): string
+    {
+        return $this->id->getValue();
+    }
+
     private function findQuestionInSnapshot(string $questionId): ?QuestionDTO
     {
         return array_find($this->getQuestionSnapshot(), static fn ($snapshot) => $snapshot->id === $questionId);
