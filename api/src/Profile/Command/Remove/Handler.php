@@ -7,16 +7,13 @@ namespace App\Profile\Command\Remove;
 use App\Infrastructure\Doctrine\Flusher;
 use App\Profile\Entity\Profile\ProfileId;
 use App\Profile\Entity\Profile\ProfileRepository;
-use App\Profile\Event\ProfileRemoved;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 final class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
         private readonly ProfileRepository $profiles,
-        private readonly Flusher $flusher,
-        private readonly MessageBusInterface $messageBus,
+        private readonly Flusher $flusher
     ) {}
 
     public function handle(Command $command): void
@@ -28,9 +25,5 @@ final class Handler
         $this->profiles->remove($profile);
 
         $this->flusher->flush();
-
-        $this->messageBus->dispatch(
-            new ProfileRemoved($profile->getId()->getValue())
-        );
     }
 }

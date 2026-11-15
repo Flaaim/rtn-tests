@@ -38,6 +38,7 @@ export default function RemoveCourseDialog({ id }: RemoveCourseDialogProps) {
         return;
       }
       toast.success("Данные успешно удалены!");
+      setOpen(false);
       router.refresh();
     } catch (error) {
       console.error("Error:", error);

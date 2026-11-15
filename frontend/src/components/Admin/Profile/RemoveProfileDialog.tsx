@@ -35,10 +35,10 @@ export default function RemoveProfileDialog({ id }: RemoveProfileDialogProps) {
       const result = await removeProfileAction(id);
       if (!result.ok) {
         toast.error(result.error ?? "Не удалось удалить данные.");
-        setOpen(false);
         return;
       }
       toast.success("Профиль успешно удален!");
+      setOpen(false);
       router.refresh();
     } catch (error) {
       console.error("Error:", error);

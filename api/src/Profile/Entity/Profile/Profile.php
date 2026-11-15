@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Profile\Entity\Profile;
 
+use App\Profile\Event\ProfileRemoved;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use Doctrine\ORM\Mapping as ORM;
@@ -66,6 +67,7 @@ final class Profile implements AggregateRoot
         if ($this->role->isAdmin()) {
             throw new DomainException('Cannot remove admin profile.');
         }
+        $this->recordEvent(new ProfileRemoved($this->id->getValue()));
     }
 
     public function getAggregateId(): string
