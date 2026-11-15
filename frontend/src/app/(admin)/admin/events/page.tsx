@@ -12,15 +12,18 @@ import {
 import { EventDTO, ListEventsDTO } from "@/interfaces/event.interface";
 import Link from "next/link";
 import Pagination from "@/components/Pagination/Pagination";
+import EventSearch from "@/components/Admin/Event/EventSearch";
 
 interface AdminEventsPageProps {
-  searchParams: Promise<{ page?: string; perPage?: string }>;
+  searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
 }
 
 export default async function AdminRecipientsPage({ searchParams }: AdminEventsPageProps) {
   const currentPage = Number((await searchParams).page) || 1;
   const perPage = Number((await searchParams).perPage) || 15;
-  const result = await fetchEventsPagination(currentPage, perPage);
+  const search = String((await searchParams).q || "");
+
+  const result = await fetchEventsPagination(currentPage, perPage, search);
 
   const formattedDate = (date: Date | string) => {
     return new Date(date).toLocaleString("ru-RU", {
@@ -61,6 +64,7 @@ export default async function AdminRecipientsPage({ searchParams }: AdminEventsP
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">События</h1>
       </div>
+      <EventSearch />
       <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>

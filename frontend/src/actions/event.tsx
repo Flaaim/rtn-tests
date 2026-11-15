@@ -8,10 +8,11 @@ import { handleApiResponse } from "@/lib/handleApiResponse";
 
 export async function fetchEventsPagination(
   page: number,
-  perPage: number
+  perPage: number,
+  search?: string
 ): Promise<ApiResponse<ListEventsDTO>> {
   try {
-    const response = await apiFetch(API.event.getPaginated(page, perPage), {
+    const response = await apiFetch(API.event.getPaginated(page, perPage, search), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
