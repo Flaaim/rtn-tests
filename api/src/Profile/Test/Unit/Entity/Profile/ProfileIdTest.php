@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Profile\Test\Unit\Entity;
+namespace App\Profile\Test\Unit\Entity\Profile;
 
 use App\Profile\Entity\Profile\ProfileId;
 use InvalidArgumentException;
