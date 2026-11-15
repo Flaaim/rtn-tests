@@ -25,9 +25,21 @@ final readonly class EventFetcher implements EventFetcherInterface
 
         $normalizedSearch = null !== $search ? trim($search) : '';
 
-        if (null !== $search && '' !== trim($search)) {
-            $qb->andWhere($qb->expr()->eq('e.payload', ':search'))
-                ->setParameter('search', '%' . $normalizedSearch . '%');
+        if ('' !== $normalizedSearch) {
+            $isUuid = preg_match('/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i', $normalizedSearch);
+            $isNumeric = ctype_digit($normalizedSearch);
+
+            if ($isUuid || $isNumeric) {
+                $qb->andWhere(
+                    $qb->expr()->or(
+                        'e.aggregate_id = :exact_search',
+                        'e.payload ILIKE :like_search'
+                    )
+                )->setParameter('exact_search', $normalizedSearch);
+            } else {
+                $qb->andWhere('e.payload ILIKE :like_search');
+            }
+            $qb->setParameter('like_search', '%' . $normalizedSearch . '%');
         }
 
         $countQb = clone $qb;
