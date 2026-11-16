@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Admin\Profile\Add;
 
+use App\Profile\Event\ProfileAdded;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
@@ -68,6 +70,10 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
+        $transport->reset();
+
         $this->client->jsonRequest(
             'POST',
             '/v1/admin/profiles',
@@ -81,6 +87,15 @@ final class RequestActionTest extends WebTestCase
         );
 
         self::assertEquals(201, $this->client->getResponse()->getStatusCode());
+
+        self::assertCount(1, $transport->getSent());
+
+        $message = $transport->getSent()[0]->getMessage();
+
+        self::assertInstanceOf(ProfileAdded::class, $message);
+
+        self::assertNotNull($message->id);
+        self::assertEquals('new@email.ru', $message->email);
     }
 
     public function testEmpty(): void

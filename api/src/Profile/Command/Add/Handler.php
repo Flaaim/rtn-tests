@@ -10,19 +10,15 @@ use App\Profile\Entity\Profile\Profile;
 use App\Profile\Entity\Profile\ProfileId;
 use App\Profile\Entity\Profile\ProfileRepository;
 use App\Profile\Entity\Profile\Role;
-use App\Profile\Entity\Profile\Status;
-use App\Profile\Event\ProfileAdded;
 use DomainException;
-use Symfony\Component\Messenger\MessageBusInterface;
 
 /** @psalm-suppress UnusedClass */
-final class Handler
+final readonly class Handler
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(
-        private readonly ProfileRepository $profiles,
-        private readonly Flusher $flusher,
-        private readonly MessageBusInterface $messageBus,
+        private ProfileRepository $profiles,
+        private Flusher $flusher,
     ) {}
 
     public function handle(Command $command): void
@@ -33,11 +29,10 @@ final class Handler
             throw new DomainException('This email already exists.');
         }
 
-        $profile = new Profile(
-            $profileId = ProfileId::generate(),
+        $profile = Profile::createManually(
+            ProfileId::generate(),
             $email,
             $role,
-            Status::ok(),
             $command->name,
             $command->surname
         );
@@ -45,11 +40,5 @@ final class Handler
         $this->profiles->add($profile);
 
         $this->flusher->flush();
-
-        $this->messageBus->dispatch(new ProfileAdded(
-            id: $profileId->getValue(),
-            email: $email->getValue(),
-            role: $role->getName()
-        ));
     }
 }

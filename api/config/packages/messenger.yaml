@@ -58,6 +58,7 @@ framework:
 
             'App\Testing\Event\Attempt\TimeoutAttemptCommand': async_outbox
             'App\Profile\Event\ProfileRemoved': async_outbox
+            'App\Profile\Event\ProfileAdded': async_outbox
 
             'App\Subscription\Event\Subscription\SubscriptionPurchased': async_outbox
             'App\Subscription\Command\ConfirmPayment\Command': sync

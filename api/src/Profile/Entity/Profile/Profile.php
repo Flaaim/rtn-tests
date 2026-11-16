@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Profile\Entity\Profile;
 
+use App\Profile\Event\ProfileAdded;
 use App\Profile\Event\ProfileRemoved;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
@@ -31,6 +32,30 @@ final class Profile implements AggregateRoot
         #[ORM\Column(type: 'string', length: 75, nullable: true)]
         private ?string $surname = null
     ) {}
+
+    public static function createManually(
+        ProfileId $profileId,
+        Email $email,
+        Role $role,
+        ?string $name = null,
+        ?string $surname = null,
+    ): self {
+        $profile = new self(
+            $profileId,
+            $email,
+            $role,
+            Status::ok(),
+            $name,
+            $surname
+        );
+
+        $profile->recordEvent(new ProfileAdded(
+            $profile->getId()->getValue(),
+            $profile->getEmail()->getValue(),
+            $profile->getRole()->getName()
+        ));
+        return $profile;
+    }
 
     public function getId(): ProfileId
     {
