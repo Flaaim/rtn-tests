@@ -108,6 +108,19 @@ final class Profile implements AggregateRoot
         $this->recordEvent(new ProfileRemoved($this->id->getValue()));
     }
 
+    public function banned(): void
+    {
+        if ($this->role->isAdmin()) {
+            throw new DomainException('Cannot banned admin profile.');
+        }
+        $this->status = Status::banned();
+    }
+
+    public function isBlocked(): bool
+    {
+        return $this->status->isBanned();
+    }
+
     public function getAggregateId(): string
     {
         return $this->id->getValue();

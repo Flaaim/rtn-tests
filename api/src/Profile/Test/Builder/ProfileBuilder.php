@@ -8,7 +8,6 @@ use App\Profile\Entity\Profile\Email;
 use App\Profile\Entity\Profile\Profile;
 use App\Profile\Entity\Profile\ProfileId;
 use App\Profile\Entity\Profile\Role;
-use App\Profile\Entity\Profile\Status;
 
 final class ProfileBuilder
 {
@@ -50,13 +49,26 @@ final class ProfileBuilder
     }
 
     /** @psalm-suppress PossiblyUnusedMethod */
+    public function banned(): self
+    {
+        $clone = clone $this;
+        $this->banned = true;
+        return $clone;
+    }
+
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function build(): Profile
     {
         $profile = Profile::createManually(
             $this->id,
             $this->email,
             $this->role,
-            $this->status
         );
+
+        if ($this->banned) {
+            $profile->banned();
+        }
+
+        return $profile;
     }
 }
