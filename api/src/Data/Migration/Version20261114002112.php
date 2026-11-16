@@ -20,6 +20,7 @@ final class Version20261114002112 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
+        $this->addSql('CREATE EXTENSION IF NOT EXISTS pgcrypto;');
         $this->addSql('ALTER TABLE event_store_events ADD aggregate_id UUID DEFAULT NULL');
         $this->addSql('UPDATE event_store_events SET aggregate_id = gen_random_uuid() WHERE aggregate_id IS NULL');
         $this->addSql('ALTER TABLE event_store_events ALTER COLUMN aggregate_id SET NOT NULL');
