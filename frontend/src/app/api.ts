@@ -190,5 +190,7 @@ export const API = {
       if (search) params.set("search", search);
       return BASE_URL + `/v1/admin/events?${params.toString()}`;
     },
+    getHistory: (aggregateId: string) =>
+      BASE_URL + `/v1/admin/events?aggregateId=${aggregateId}&limit=100}`,
   },
 };

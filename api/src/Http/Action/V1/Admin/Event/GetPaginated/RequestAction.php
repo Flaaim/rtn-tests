@@ -26,10 +26,13 @@ final class RequestAction
     {
         $queryParams = $request->query->all();
         $page = isset($queryParams['page']) && is_numeric($queryParams['page']) ? (int)$queryParams['page'] : 1;
-        $limit = isset($queryParams['limit']) && is_numeric($queryParams['limit']) ? (int)$queryParams['limit'] : 15;
+        $limit = isset($queryParams['limit']) && is_numeric($queryParams['limit']) ? (int)$queryParams['limit'] : 50;
         $search = isset($queryParams['search']) && \is_string($queryParams['search']) ? $queryParams['search'] : null;
 
-        $query = new Query($page, $limit, $search);
+        $aggregateId = $request->query->get('aggregateId');
+        $searchTerm = $aggregateId ?? $search;
+
+        $query = new Query($page, $limit, $searchTerm);
 
         $this->validator->validate($query);
 

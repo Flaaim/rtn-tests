@@ -25,3 +25,19 @@ export async function fetchEventsPagination(
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function fetchEventHistory(aggregateId: string): Promise<ApiResponse<ListEventsDTO>> {
+  try {
+    const response = await apiFetch(API.event.getHistory(aggregateId), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<ListEventsDTO>(response);
+  } catch (error) {
+    console.error("fetchEventHistory Fetch error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}

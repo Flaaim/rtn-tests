@@ -7,6 +7,7 @@ import ProfileStatusBadge from "@/components/Admin/Domain/User/ProfileStatusBadg
 import UserStatusBadge from "@/components/Admin/Domain/User/UserStatusBadge";
 import { NetworkItem } from "@/interfaces/auth.interface";
 import ForceChangeUserPassword from "@/components/Admin/Profile/ForceChangeUserPassword";
+import { EventHistoryTimeline } from "@/components/Admin/Event/EventHistoryTimeline";
 
 interface ProfileOverviewPageProps {
   params: Promise<{ profileId: string }>;
@@ -109,6 +110,13 @@ export default async function ProfileOverviewPage({ params }: ProfileOverviewPag
             </div>
           </CardContent>
         </Card>
+      </div>
+      <div className="space-y-6">
+        <h2 className="text-xl font-semibold mb-4">Журнал событий (Audit Log)</h2>
+        <div className="bg-white dark:bg-slate-900 shadow-sm rounded-lg p-6">
+          {/* Просто передаем ID теста в компонент */}
+          <EventHistoryTimeline aggregateId={profile.id} />
+        </div>
       </div>
     </div>
   );
