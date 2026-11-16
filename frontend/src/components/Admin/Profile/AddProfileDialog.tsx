@@ -83,7 +83,7 @@ export default function AddProfileDialog() {
       disabled={form.formState.isSubmitting}
       className="w-full cursor-pointer py-2"
     >
-      {form.formState.isSubmitting ? "Загрузка..." : "Добавить курс"}
+      {form.formState.isSubmitting ? "Загрузка..." : "Добавить профиль"}
     </Button>
   );
   return (
