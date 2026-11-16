@@ -9,10 +9,9 @@ use App\Auth\Entity\User\Id;
 use App\Auth\Entity\User\Role as UserRole;
 use App\Auth\Test\Builder\UserBuilder;
 use App\Profile\Entity\Profile\Email as ProfileEmail;
-use App\Profile\Entity\Profile\Profile;
 use App\Profile\Entity\Profile\ProfileId;
 use App\Profile\Entity\Profile\Role;
-use App\Profile\Entity\Profile\Status;
+use App\Profile\Test\Builder\ProfileBuilder;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -37,12 +36,12 @@ final class RequestFixture extends AbstractFixture
             ->build();
         $manager->persist($user);
 
-        $userProfile = new Profile(
-            new ProfileId(self::USER_ID),
-            new ProfileEmail(self::USER_EMAIL),
-            Role::user(),
-            Status::ok()
-        );
+        $userProfile = new ProfileBuilder()
+            ->withProfileId(new ProfileId(self::USER_ID))
+            ->withEmail(new ProfileEmail(self::USER_EMAIL))
+            ->withRole(Role::user())
+            ->build();
+
         $manager->persist($userProfile);
 
         $admin = new UserBuilder()
@@ -53,12 +52,11 @@ final class RequestFixture extends AbstractFixture
             ->build();
         $manager->persist($admin);
 
-        $adminProfile = new Profile(
-            new ProfileId(self::ADMIN_ID),
-            new ProfileEmail(self::ADMIN_EMAIL),
-            Role::admin(),
-            Status::ok()
-        );
+        $adminProfile = new ProfileBuilder()
+            ->withProfileId(new ProfileId(self::ADMIN_ID))
+            ->withEmail(new ProfileEmail(self::ADMIN_EMAIL))
+            ->withRole(Role::admin())
+            ->build();
         $manager->persist($adminProfile);
 
         $manager->flush();

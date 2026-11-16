@@ -11,7 +11,6 @@ use App\Profile\Entity\Profile\Profile;
 use App\Profile\Entity\Profile\ProfileId;
 use App\Profile\Entity\Profile\ProfileRepository;
 use App\Profile\Entity\Profile\Role;
-use App\Profile\Entity\Profile\Status;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /** @psalm-suppress UnusedClass */
@@ -30,11 +29,10 @@ final class UserCreatedHandler
             return;
         }
 
-        $profile = new Profile(
+        $profile = Profile::createFromSignUp(
             new ProfileId($event->id),
             $email,
             new Role($event->role),
-            Status::ok(),
         );
 
         $this->profiles->add($profile);

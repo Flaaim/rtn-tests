@@ -8,7 +8,6 @@ use App\Profile\Entity\Profile\Email;
 use App\Profile\Entity\Profile\Profile;
 use App\Profile\Entity\Profile\ProfileId;
 use App\Profile\Entity\Profile\Role;
-use App\Profile\Entity\Profile\Status;
 use App\Profile\Event\ProfileRemoved;
 use DomainException;
 use PHPUnit\Framework\TestCase;
@@ -21,11 +20,10 @@ final class RemoveProfileTest extends TestCase
 {
     public function testRemove(): void
     {
-        $profile = new Profile(
+        $profile = Profile::createManually(
             $id = ProfileId::generate(),
             new Email('email@test.ru'),
             Role::user(),
-            Status::ok(),
         );
         $profile->remove();
 
@@ -38,11 +36,10 @@ final class RemoveProfileTest extends TestCase
 
     public function testRemoveAdmin(): void
     {
-        $profile = new Profile(
+        $profile = Profile::createManually(
             ProfileId::generate(),
             new Email('email@test.ru'),
-            Role::admin(),
-            Status::ok(),
+            Role::admin()
         );
 
         self::expectException(DomainException::class);

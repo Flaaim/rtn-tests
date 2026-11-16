@@ -17,7 +17,7 @@ final class Profile implements AggregateRoot
 {
     use EventTrait;
 
-    public function __construct(
+    private function __construct(
         #[ORM\Id]
         #[ORM\Column(type: 'profile_id', unique: true)]
         private ProfileId $id,
@@ -55,6 +55,19 @@ final class Profile implements AggregateRoot
             $profile->getRole()->getName()
         ));
         return $profile;
+    }
+
+    public static function createFromSignUp(
+        ProfileId $profileId,
+        Email $email,
+        Role $role,
+    ): self {
+        return new self(
+            $profileId,
+            $email,
+            $role,
+            Status::ok(),
+        );
     }
 
     public function getId(): ProfileId

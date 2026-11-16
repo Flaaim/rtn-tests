@@ -15,7 +15,7 @@ final class ProfileBuilder
     private ProfileId $id;
     private Email $email;
     private Role $role;
-    private Status $status;
+    private bool $banned = false;
 
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct()
@@ -23,7 +23,6 @@ final class ProfileBuilder
         $this->id = ProfileId::generate();
         $this->email = new Email('mail@example.com');
         $this->role = Role::user();
-        $this->status = Status::ok();
     }
 
     /** @psalm-suppress PossiblyUnusedMethod */
@@ -53,7 +52,7 @@ final class ProfileBuilder
     /** @psalm-suppress PossiblyUnusedMethod */
     public function build(): Profile
     {
-        return new Profile(
+        $profile = Profile::createManually(
             $this->id,
             $this->email,
             $this->role,
