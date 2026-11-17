@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,36 +13,35 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { Loader2, Trash } from "lucide-react";
+import { Trash } from "lucide-react";
 import { toast } from "sonner";
 import { removeProfileAction } from "@/actions/profile";
 
 interface RemoveProfileDialogProps {
   id: string;
+  onHide: () => void;
+  onRevert: () => void;
 }
 
-export default function RemoveProfileDialog({ id }: RemoveProfileDialogProps) {
-  const [loading, setLoading] = useState<boolean>(false);
+export default function RemoveProfileDialog({ id, onHide, onRevert }: RemoveProfileDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
-
-  const router = useRouter();
 
   const onSubmit = async (e: React.MouseEvent) => {
     e.preventDefault();
-    setLoading(true);
+    setOpen(false);
+    onHide();
     try {
       const result = await removeProfileAction(id);
       if (!result.ok) {
         toast.error(result.error ?? "Не удалось удалить данные.");
+        onRevert();
         return;
       }
       toast.success("Профиль успешно удален!");
-      setOpen(false);
-      router.refresh();
     } catch (error) {
       console.error("Error:", error);
-    } finally {
-      setLoading(false);
+      toast.error("Произошла системная ошибка.");
+      onRevert();
     }
   };
 
@@ -59,21 +57,12 @@ export default function RemoveProfileDialog({ id }: RemoveProfileDialogProps) {
             Данное действие полностью удалит пользователя. Это действие нельзя отменить.
           </AlertDialogDescription>
         </AlertDialogHeader>
-        {loading ? (
-          <div>Загрузка...</div>
-        ) : (
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction
-              onClick={onSubmit}
-              disabled={loading}
-              className="bg-red-600 hover:bg-red-700 text-white"
-            >
-              {loading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-              Удалить
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        )}
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction onClick={onSubmit} className="bg-red-600 hover:bg-red-700 text-white">
+            Удалить
+          </AlertDialogAction>
+        </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );

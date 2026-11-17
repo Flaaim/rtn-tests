@@ -13,6 +13,7 @@ import {
   UserAttemptStatsDTO,
   UserSubscription,
 } from "@/interfaces/user.interface";
+import { revalidatePath } from "next/cache";
 
 export async function fetchUserAttemptsPaginationAction(
   page: number,
@@ -95,6 +96,7 @@ export async function removeProfileAction(id: string): Promise<ApiResponse<void>
         Accept: "application/json",
       },
     });
+    revalidatePath("/admin/profiles");
     return handleApiResponse<void>(response);
   } catch (error) {
     console.error("removeProfileAction Fetch error:", error);
@@ -117,10 +119,10 @@ export async function addProfileAction(values: AddProfilePayload): Promise<ApiRe
         surname: values.surname,
       }),
     });
-
+    revalidatePath("/admin/profiles");
     return handleApiResponse<void>(response);
   } catch (error) {
-    console.error("removeProfileAction Fetch error:", error);
+    console.error("addProfileAction Fetch error:", error);
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }

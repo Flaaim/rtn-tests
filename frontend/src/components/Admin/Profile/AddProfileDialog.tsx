@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState } from "react";
-import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -28,6 +27,7 @@ import {
 } from "@/components/ui/select";
 import { toast } from "sonner";
 import { addProfileAction } from "@/actions/profile";
+import { ProfileDTO } from "@/interfaces/user.interface";
 
 const roles = [
   { label: "Пользователь", value: "user" },
@@ -44,11 +44,29 @@ const schema = z.object({
 });
 
 type AddProfileFormData = z.infer<typeof schema>;
-export default function AddProfileDialog() {
+
+interface AddProfileDialogProps {
+  onOptimisticAdd: (profile: ProfileDTO) => void;
+  onRevertAdd: (fakeId: string) => void;
+}
+
+export default function AddProfileDialog({ onOptimisticAdd, onRevertAdd }: AddProfileDialogProps) {
   const [open, setOpen] = useState<boolean>(false);
 
-  const router = useRouter();
   async function onSubmit(values: AddProfileFormData) {
+    const fakeId = `temp-${crypto.randomUUID()}`;
+
+    const fakeProfile: ProfileDTO = {
+      id: fakeId,
+      email: values.email,
+      role: values.role,
+      status: "active",
+      date: new Date().toISOString(),
+      networks: [],
+    };
+
+    onOptimisticAdd(fakeProfile);
+
     const result = await addProfileAction({
       email: values.email,
       role: values.role,
@@ -58,13 +76,13 @@ export default function AddProfileDialog() {
 
     if (!result.ok) {
       form.setError("root", { type: "server", message: result.error });
+      onRevertAdd(fakeId);
       return;
     }
 
     toast.success("Пользователь успешно добавлен!");
-    form.reset();
     setOpen(false);
-    router.refresh();
+    form.reset();
   }
   const form = useForm<AddProfileFormData>({
     mode: "onSubmit",
