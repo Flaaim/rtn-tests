@@ -304,4 +304,53 @@ final readonly class TestFetcher implements TestFetcherInterface
 
         return $matrix;
     }
+
+    public function getOneByCourseId(string $courseId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select(
+            '
+        t.id,
+        t.name,
+        t.description,
+        t.slug,
+        c.id as category_id,
+        c.name as category_name,
+        c.slug as category_slug,
+        p.id as parent_id,
+        p.name as parent_name,
+        p.slug as parent_slug
+        '
+        )
+            ->from('tests', 't')
+            ->leftJoin('t', 'test_categories', 'c', 't.category_id = c.id')
+            ->leftJoin('c', 'test_categories', 'p', 'c.parent_id = p.id')
+            ->where('t.course_ids @> :courseIdJson')
+            ->setParameter('courseIdJson', json_encode([$courseId]))
+            ->setMaxResults(1)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (false === $result) {
+            return [];
+        }
+
+        return [
+            'test_id' => $result['id'],
+            'name' => $result['name'],
+            'description' => $result['description'],
+            'slug' => $result['slug'],
+            'category' => [
+                'id' => $result['category_id'],
+                'name' => $result['category_name'],
+                'slug' => $result['category_slug'],
+                'parent' => $result['parent_id'] ? [
+                    'id' => $result['parent_id'],
+                    'name' => $result['parent_name'],
+                    'slug' => $result['parent_slug'],
+                ] : null,
+            ],
+        ];
+    }
 }

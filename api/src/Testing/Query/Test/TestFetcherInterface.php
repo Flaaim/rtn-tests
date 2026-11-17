@@ -15,4 +15,6 @@ interface TestFetcherInterface
     public function getBySlug(string $slug): array;
 
     public function getCompetencyMatrix(string $actorId): array;
+
+    public function getOneByCourseId(string $courseId): array;
 }
