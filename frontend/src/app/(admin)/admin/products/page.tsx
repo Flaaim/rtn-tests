@@ -1,7 +1,6 @@
 import { fetchProductsPaginationAction } from "@/actions/product";
 import AdminBreadcrumbs from "@/components/Admin/AdminBreadcrumbs";
 import { AlertCircle } from "lucide-react";
-import AddProfileDialog from "@/components/Admin/Profile/AddProfileDialog";
 import {
   Table,
   TableBody,
@@ -54,7 +53,6 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
       <AdminBreadcrumbs items={[{ title: "Продукты" }]} />
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-bold">Продукты</h1>
-        <AddProfileDialog />
       </div>
       <div className="rounded-md border bg-white">
         <Table>
