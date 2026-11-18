@@ -7,6 +7,7 @@ namespace App\Subscription\MessageHandler\Subscription;
 use App\Subscription\Event\Subscription\SubscriptionPurchased;
 use App\Subscription\Interfaces\ProfileInterface;
 use App\Subscription\Service\PaymentConfirmedSender;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /** @psalm-suppress UnusedClass */
@@ -15,16 +16,20 @@ final readonly class SendEmailOnSubscriptionPurchasedHandler
 {
     public function __construct(
         private PaymentConfirmedSender $sender,
-        private ProfileInterface $profile
+        private ProfileInterface $profile,
+        private LoggerInterface $logger,
     ) {}
 
     public function __invoke(SubscriptionPurchased $event): void
     {
         $userId = $event->userId;
 
-        $user = $this->profile->getDetail($userId);
+        $email = $this->profile->getProfileEmail($userId);
 
-        $email = $user->email;
+        if (null === $email) {
+            $this->logger->error('Profile email does not exist: ' . $userId);
+            return;
+        }
         $ended = $event->ended;
 
         $this->sender->send($email, $ended);

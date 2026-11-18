@@ -116,4 +116,21 @@ final class ProfileFetcher implements ProfileFetcherInterface
             ->executeQuery()
             ->fetchAllAssociative();
     }
+
+    public function getEmail(string $id): ?string
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select('p.email')
+            ->from('profiles', 'p')
+            ->where('p.id = :id')
+            ->setParameter('id', $id)
+            ->executeQuery()
+            ->fetchAssociative();
+
+        if (false === $result) {
+            return null;
+        }
+        return $result['email'];
+    }
 }

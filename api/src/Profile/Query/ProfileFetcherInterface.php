@@ -13,4 +13,6 @@ interface ProfileFetcherInterface
     public function getFullProfile(string $id): array;
 
     public function getLookupList(): array;
+
+    public function getEmail(string $id): ?string;
 }

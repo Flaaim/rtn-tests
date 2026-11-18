@@ -27,6 +27,7 @@
                 <directory name="src/Course/MessageHandler" />
                 <directory name="src/Course/Infrastructure" />
                 <directory name="src/Testing/Infrastructure" />
+                <directory name="src/Subscription/Infrastructure" />
                 <directory name="src/Parser/Entity" />
                 <directory name="src/Parser/Query" />
                 <directory name="src/Event/Query" />
@@ -80,7 +81,6 @@
                 <directory name="src/Subscription/Query" />
                 <directory name="src/Testing/Entity/Attempt/DTO" />
                 <directory name="src/Auth/Interfaces/DTO" />
-                <directory name="src/Subscription/Interfaces/DTO" />
             </errorLevel>
         </PossiblyUnusedProperty>
 
