@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Course\Api;
 
 use App\Course\Query\Course;
-use App\Testing\Interfaces\CourseInterface;
 
-final readonly class CourseApi implements CourseInterface
+final readonly class CourseApi
 {
     /** @psalm-suppress PossiblyUnusedMethod */
     public function __construct(

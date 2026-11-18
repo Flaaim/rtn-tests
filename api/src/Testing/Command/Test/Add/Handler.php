@@ -45,6 +45,10 @@ final readonly class Handler
             $allQuestionIds = array_merge($allQuestionIds, $courseQuestions);
         }
 
+        if (empty($allQuestionIds)) {
+            throw new DomainException('Data integrity error: questions do not exists.');
+        }
+
         $allQuestionIds = array_unique($allQuestionIds);
         shuffle($allQuestionIds);
 

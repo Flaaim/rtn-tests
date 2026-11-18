@@ -8,6 +8,7 @@ use App\Infrastructure\Doctrine\Flusher;
 use App\Testing\Entity\Test\TestId;
 use App\Testing\Entity\Test\TestRepository;
 use App\Testing\Interfaces\CourseInterface;
+use DomainException;
 
 final readonly class Handler
 {
@@ -29,7 +30,9 @@ final readonly class Handler
             $courseQuestions = $this->course->getQuestionIds($courseId);
             $allQuestionIds = array_merge($allQuestionIds, $courseQuestions);
         }
-
+        if (empty($allQuestionIds)) {
+            throw new DomainException('Data integrity error: questions do not exists.');
+        }
         $allQuestionIds = array_unique($allQuestionIds);
 
         shuffle($allQuestionIds);

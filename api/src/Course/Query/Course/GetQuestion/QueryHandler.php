@@ -28,8 +28,8 @@ final readonly class QueryHandler
         $product = $this->product->getProductCourse($question['course_id']);
         $test = $this->test->getTestByCourseId($question['course_id']);
 
-        if($test === null){
-            throw new DomainException(sprintf('Data integrity error: Test not found for course_id "%s"', $question['course_id']));
+        if (null === $test) {
+            throw new DomainException(\sprintf('Data integrity error: Test not found for course_id "%s"', $question['course_id']));
         }
 
         return QuestionDTO::create($question, $product, $test);

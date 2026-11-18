@@ -7,10 +7,10 @@ namespace App\Course\Query\Course\GetQuestions;
 use App\Course\Query\Course\CourseFetcherInterface;
 use DomainException;
 
-final class QueryHandler
+final readonly class QueryHandler
 {
     public function __construct(
-        private readonly CourseFetcherInterface $fetcher,
+        private CourseFetcherInterface $fetcher,
     ) {}
 
     public function handle(Query $query): array

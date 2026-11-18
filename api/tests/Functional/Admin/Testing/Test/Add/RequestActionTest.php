@@ -161,7 +161,7 @@ final class RequestActionTest extends WebTestCase
 
         $data = Json::decode($body);
 
-        self::assertEquals(['message' => 'QuestionIds not found.'], $data);
+        self::assertEquals(['message' => 'Data integrity error: questions do not exists.'], $data);
     }
 
     public function testEmpty(): void
