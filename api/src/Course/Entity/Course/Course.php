@@ -106,9 +106,11 @@ final class Course implements AggregateRoot
 
     public function protectQuestions(): void
     {
+        /** @var Question $question */
         foreach ($this->questions as $question) {
             $question->protect();
         }
+
         $this->recordEvent(new QuestionsProtected(
             $this->courseId->getValue(),
             $this->cipher

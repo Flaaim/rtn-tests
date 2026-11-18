@@ -49,6 +49,7 @@ framework:
             'App\Course\Event\CourseProcessed': async_outbox
             'App\Course\Event\CourseScheduledToRender': async_outbox
             'App\Course\Event\CourseRendered': async_outbox
+            'App\Course\Event\QuestionsProtected': async_outbox
 
             'App\Testing\Event\TestCreated': async_outbox
             'App\Testing\Event\TestActivated': async_outbox

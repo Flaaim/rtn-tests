@@ -32,6 +32,7 @@ final class Question
         private array $answers,
         #[ORM\Column(type: 'question_form')]
         private QuestionForm $form,
+        #[ORM\Column(type: 'boolean', options: ['default' => false])]
         private bool $protected = false
     ) {}
 
