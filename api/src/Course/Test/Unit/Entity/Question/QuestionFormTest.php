@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Course\Test\Unit\Entity;
+namespace App\Course\Test\Unit\Entity\Question;
 
 use App\Course\Entity\Course\QuestionForm;
 use InvalidArgumentException;
