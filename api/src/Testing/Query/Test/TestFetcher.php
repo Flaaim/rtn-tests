@@ -305,7 +305,7 @@ final readonly class TestFetcher implements TestFetcherInterface
         return $matrix;
     }
 
-    public function getOneByCourseId(string $courseId): array
+    public function getOneByCourseId(string $courseId): ?array
     {
         $qb = $this->connection->createQueryBuilder();
 
@@ -333,7 +333,7 @@ final readonly class TestFetcher implements TestFetcherInterface
             ->fetchAssociative();
 
         if (false === $result) {
-            return [];
+            return null;
         }
 
         return [

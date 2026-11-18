@@ -14,21 +14,19 @@ final readonly class ProductModuleAdapter implements ProductInterface
         private ProductApi $productApi
     ) {}
 
-    public function getProductCourse(string $courseId): array
+    public function getProductCourse(string $courseId): ?array
     {
         $productDTO = $this->productApi->getProductByCourseId($courseId);
 
         if (null === $productDTO) {
-            return [];
+            return null;
         }
         return [
-            'product' => [
-                'productId' => $productDTO->productId,
-                'amount' => $productDTO->amount,
-                'currency' => $productDTO->currency,
-                'filePath' => $productDTO->filePath,
-                'addedAt' => $productDTO->addedAt,
-            ],
+            'productId' => $productDTO->productId,
+            'amount' => $productDTO->amount,
+            'currency' => $productDTO->currency,
+            'filePath' => $productDTO->filePath,
+            'addedAt' => $productDTO->addedAt,
         ];
     }
 

@@ -18,16 +18,14 @@ final readonly class QueryHandler
 
     public function handle(Query $query): CourseFullDTO
     {
-        $row = $this->fetcher->getOneById($query->id);
+        $course = $this->fetcher->getOneById($query->id);
 
-        if (empty($row)) {
+        if (empty($course)) {
             throw new DomainException('Course not found.');
         }
 
-        $product = $this->product->getProductCourse($row['course_id'] ?? '');
+        $product = $this->product->getProductCourse($course['course_id']);
 
-        $row = array_merge($row, $product);
-
-        return CourseFullDTO::fromArray($row);
+        return CourseFullDTO::create($course, $product);
     }
 }

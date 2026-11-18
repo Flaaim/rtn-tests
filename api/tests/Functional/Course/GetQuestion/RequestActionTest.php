@@ -48,7 +48,6 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('answers', $data);
         self::assertArrayHasKey('form', $data);
         self::assertArrayHasKey('test', $data);
-        self::assertArrayHasKey('category', $data);
         self::assertArrayHasKey('product', $data);
 
         self::assertNotNull($data['product']);
@@ -63,8 +62,9 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('name', $test);
         self::assertArrayHasKey('description', $test);
         self::assertArrayHasKey('slug', $test);
+        self::assertArrayHasKey('category', $test);
 
-        $category = $data['category'];
+        $category = $data['test']['category'];
         self::assertArrayHasKey('name', $category);
         self::assertArrayHasKey('slug', $category);
         self::assertArrayHasKey('parent', $category);

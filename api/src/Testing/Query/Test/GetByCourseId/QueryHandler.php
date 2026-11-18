@@ -13,11 +13,11 @@ final readonly class QueryHandler
         private TestFetcherInterface $fetcher
     ) {}
 
-    public function handle(Query $query): TestDTO
+    public function handle(Query $query): ?TestDTO
     {
         $test = $this->fetcher->getOneByCourseId($query->courseId);
 
-        if (empty($test)) {
+        if (null === $test) {
             throw new DomainException('Test not found.');
         }
 

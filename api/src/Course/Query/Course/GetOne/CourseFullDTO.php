@@ -19,27 +19,21 @@ final readonly class CourseFullDTO
         public ?ProductDTO $product = null,
     ) {}
 
-    public static function fromArray(array $data): self
+    public static function create(array $course, ?array $product): self
     {
         $questions  = array_map(
             static fn (array $question) => QuestionDTO::fromArray($question),
-            $data['questions'] ?? []
+            $course['questions'] ?? []
         );
 
-        $product = null;
-
-        if (isset($data['product'])) {
-            $product = ProductDTO::fromArray($data['product']);
-        }
-
         return new self(
-            courseId: $data['course_id'],
-            name: $data['name'],
-            status: $data['status'],
-            createdAt: new DateTimeImmutable($data['created_at'])->format('Y-m-d'),
-            cipher: $data['cipher'],
+            courseId: $course['course_id'],
+            name: $course['name'],
+            status: $course['status'],
+            createdAt: new DateTimeImmutable($course['created_at'])->format('Y-m-d'),
+            cipher: $course['cipher'],
             questions: $questions,
-            product: $product,
+            product: null !== $product ? ProductDTO::fromArray($product) : null,
         );
     }
 }

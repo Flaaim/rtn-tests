@@ -11,31 +11,19 @@ final readonly class QuestionDTO
         public string $text,
         public array $answers,
         public string $form,
-        public TestDTO $test,
-        public CategoryDTO $category,
+        public ?TestDTO $test = null,
         public ?ProductDTO $product = null,
     ) {}
 
-    public static function fromArray(array $data): self
+    public static function create(array $question, ?array $product, ?array $test): self
     {
-        $test = TestDTO::fromArray($data['test']);
-
-        $category = CategoryDTO::fromArray($data['category']);
-
-        $product = null;
-
-        if (isset($data['product'])) {
-            $product = ProductDTO::fromArray($data['product']);
-        }
-
         return new self(
-            id: $data['id'],
-            text: $data['text'],
-            answers: $data['answers'],
-            form: $data['form'],
-            test: $test,
-            category: $category,
-            product: $product,
+            id: $question['id'],
+            text: $question['text'],
+            answers: $question['answers'],
+            form: $question['form'],
+            test: null !== $test ? TestDTO::fromArray($test) : null,
+            product: null !== $product ? ProductDTO::fromArray($product) : null,
         );
     }
 }

@@ -67,6 +67,6 @@ final class RequestActionTest extends KernelTestCase
 
         self::expectException(DomainException::class);
         self::expectExceptionMessage('Test not found.');
-        $test = $handler->handle($query);
+        $handler->handle($query);
     }
 }

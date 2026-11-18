@@ -16,5 +16,5 @@ interface TestFetcherInterface
 
     public function getCompetencyMatrix(string $actorId): array;
 
-    public function getOneByCourseId(string $courseId): array;
+    public function getOneByCourseId(string $courseId): ?array;
 }
