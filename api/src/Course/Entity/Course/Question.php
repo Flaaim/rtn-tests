@@ -31,7 +31,8 @@ final class Question
         #[ORM\Column(type: Types::JSON, options: ['jsonb' => true])]
         private array $answers,
         #[ORM\Column(type: 'question_form')]
-        private QuestionForm $form
+        private QuestionForm $form,
+        private bool $protected = false
     ) {}
 
     public static function fromDraft(array $data): self
@@ -81,6 +82,16 @@ final class Question
     public function getForm(): QuestionForm
     {
         return $this->form;
+    }
+
+    public function isProtected(): bool
+    {
+        return $this->protected;
+    }
+
+    public function protect(): void
+    {
+        $this->protected = true;
     }
 
     public function resolveForm(QuestionForm $form): void
