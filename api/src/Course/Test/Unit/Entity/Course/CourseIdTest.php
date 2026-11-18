@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Course\Test\Unit\Entity;
+namespace App\Course\Test\Unit\Entity\Course;
 
 use App\Course\Entity\Course\CourseId;
 use InvalidArgumentException;
