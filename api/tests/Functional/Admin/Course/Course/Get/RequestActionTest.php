@@ -89,12 +89,14 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('cipher', $data);
         self::assertArrayHasKey('questions', $data);
         self::assertArrayHasKey('product', $data);
+        self::assertArrayHasKey('isProtected', $data);
 
         self::assertEquals(RequestFixture::COURSE_ID, $data['courseId']);
         self::assertEquals(RequestFixture::COURSE_NAME, $data['name']);
         self::assertEquals(RequestFixture::COURSE_CIPHER, $data['cipher']);
-        self::assertNotNull($data['product']);
+        self::assertFalse($data['isProtected']);
 
+        self::assertNotNull($data['product']);
         $product = $data['product'];
         self::assertArrayHasKey('amount', $product);
         self::assertArrayHasKey('currency', $product);
@@ -103,9 +105,7 @@ final class RequestActionTest extends WebTestCase
 
         /** @var Question[] $questions */
         $questions = $data['questions'];
-
         self::assertEquals('90be077454a14f3d965c4b07645e3769', $questions[0]['id']);
-
         self::assertEquals('Что необходимо сделать после восстановления самостоятельного дыхания у пострадавшего с отсутствующим сознанием?', $questions[0]['text']);
     }
 

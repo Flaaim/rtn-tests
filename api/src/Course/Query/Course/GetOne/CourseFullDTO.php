@@ -15,6 +15,7 @@ final readonly class CourseFullDTO
         public string $status,
         public string $createdAt,
         public string $cipher,
+        public bool $isProtected,
         public array $questions,
         public ?ProductDTO $product = null,
     ) {}
@@ -32,6 +33,7 @@ final readonly class CourseFullDTO
             status: $course['status'],
             createdAt: new DateTimeImmutable($course['created_at'])->format('Y-m-d'),
             cipher: $course['cipher'],
+            isProtected: $course['is_protected'],
             questions: $questions,
             product: null !== $product ? ProductDTO::fromArray($product) : null,
         );
