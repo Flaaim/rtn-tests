@@ -6,6 +6,7 @@ namespace App\Course\Entity\Course;
 
 use App\Course\Event\CourseProcessed;
 use App\Course\Event\CourseProtected;
+use App\Course\Event\CourseUnprotected;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
@@ -121,6 +122,20 @@ final class Course implements AggregateRoot
             $this->courseId->getValue(),
             $this->cipher
         ));
+    }
+
+    public function unprotect(): void
+    {
+        if (!$this->isProtected()) {
+            return;
+        }
+        $this->isProtected = false;
+        $this->recordEvent(
+            new CourseUnprotected(
+                $this->courseId->getValue(),
+                $this->cipher
+            )
+        );
     }
 
     public function getAggregateId(): string
