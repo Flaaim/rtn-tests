@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Testing\Query\Test\GetByCourseId;
 
 use App\Testing\Query\Test\TestFetcherInterface;
-use DomainException;
 
 final readonly class QueryHandler
 {
@@ -18,7 +17,7 @@ final readonly class QueryHandler
         $test = $this->fetcher->getOneByCourseId($query->courseId);
 
         if (null === $test) {
-            throw new DomainException('Test not found.');
+            return null;
         }
 
         return TestDTO::fromArray($test);

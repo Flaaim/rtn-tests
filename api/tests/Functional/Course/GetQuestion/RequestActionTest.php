@@ -116,4 +116,21 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('answerImg', $answer);
         self::assertArrayNotHasKey('isCorrect', $answer);
     }
+
+    public function testNotFound(): void
+    {
+        $this->client->jsonRequest(
+            'GET',
+            '/v1/questions/' . RequestFixture::QUESTION_NOT_FOUND_ID,
+        );
+
+        self::assertEquals(409, $this->client->getResponse()->getStatusCode());
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertEquals([
+            'message' => 'Data integrity error: Test not found for courseId ' . RequestFixture::COURSE_NOT_FOUND_ID,
+        ], $data);
+    }
 }

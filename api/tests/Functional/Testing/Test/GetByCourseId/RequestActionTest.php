@@ -10,7 +10,6 @@ use App\Testing\Query\Test\GetByCourseId\QueryHandler;
 use App\Testing\Query\Test\TestFetcher;
 use App\Testing\Query\Test\TestFetcherInterface;
 use Doctrine\DBAL\Connection;
-use DomainException;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Tests\Functional\FixturesLoader;
@@ -65,8 +64,7 @@ final class RequestActionTest extends KernelTestCase
         $handler = new QueryHandler($this->fetcher);
         $query = new Query(RequestFixture::COURSE_NOT_FOUND_ID);
 
-        self::expectException(DomainException::class);
-        self::expectExceptionMessage('Test not found.');
-        $handler->handle($query);
+        $test = $handler->handle($query);
+        self::assertNull($test);
     }
 }
