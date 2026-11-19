@@ -236,9 +236,11 @@ final readonly class CourseFetcher implements CourseFetcherInterface
         q.text,
         q.answers,
         q.form,
-        q.course_id
+        q.course_id,
+        c.is_protected
         ')
             ->from('questions', 'q')
+            ->leftJoin('q', 'courses', 'c', 'q.course_id = c.course_id')
             ->where($qb->expr()->eq('q.id', ':questionId'))
             ->setParameter('questionId', $questionId)
             ->executeQuery()
@@ -255,7 +257,10 @@ final readonly class CourseFetcher implements CourseFetcherInterface
             'text' => $result['text'],
             'answers' => $answers,
             'form' => $result['form'],
-            'course_id' => $result['course_id'],
+            'course' => [
+                'courseId' => $result['course_id'],
+                'isProtected' => $result['is_protected'],
+            ]
         ];
     }
 

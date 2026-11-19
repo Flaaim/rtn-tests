@@ -8,6 +8,7 @@ use App\Course\Entity\Course\Course;
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\Question;
 use App\Course\Entity\Course\QuestionForm;
+use App\Course\Test\Builder\CourseBuilder;
 use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
@@ -28,13 +29,12 @@ final class RequestFixture extends AbstractFixture implements DependentFixtureIn
             QuestionForm::singleChoice()
         );
 
-        $course = new Course(
-            new CourseId(self::COURSE_ID),
-            'Охрана труда',
-            [$question],
-            new DateTimeImmutable(),
-            'ПББ 115.26'
-        );
+        $course = new CourseBuilder()
+            ->withCourseId(new CourseId(self::COURSE_ID))
+            ->withName('Охрана труда')
+            ->withQuestions([$question])
+            ->withCipher('ПББ 115.26')
+            ->build();
         $manager->persist($course);
 
         $manager->flush();
