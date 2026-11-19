@@ -12,6 +12,8 @@ import QuestionSearchForm from "@/components/Admin/Course/QuestionSearchForm";
 import QuestionFormTypeBadge from "@/components/Admin/Domain/QuestionFormTypeBadge";
 import RenderCourseDialog from "@/components/Admin/Course/RenderCourseDialog";
 import { Button } from "@/components/ui/button";
+import CourseProtectedControl from "@/components/Admin/Course/CourseProtectedControl";
+import { Separator } from "@base-ui/react";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
@@ -90,6 +92,10 @@ export default async function CourseOverviewPage({
                 </p>
               </div>
             </div>
+
+            <Separator />
+
+            <CourseProtectedControl id={course.courseId} initialProtected={course.isProtected} />
           </CardContent>
         </Card>
       </div>

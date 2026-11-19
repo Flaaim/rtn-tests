@@ -39,6 +39,7 @@ export interface CourseFull {
   status: string;
   name: string;
   cipher: string;
+  isProtected: boolean;
   createdAt: string;
   questions: Question[];
   product: ProductDTO | null;
