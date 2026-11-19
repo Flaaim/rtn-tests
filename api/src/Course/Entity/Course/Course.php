@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Course\Entity\Course;
 
 use App\Course\Event\CourseProcessed;
-use App\Course\Event\QuestionsProtected;
+use App\Course\Event\CourseProtected;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
@@ -33,7 +33,9 @@ final class Course implements AggregateRoot
         #[ORM\Column(type: 'datetime_immutable')]
         private DateTimeImmutable $createdAt,
         #[ORM\Column(type: 'string', length: 255)]
-        private string $cipher
+        private string $cipher,
+        #[ORM\Column(type: 'boolean', options: ['default' => false])]
+        private bool $isProtected = false,
     ) {
         $this->questions = new ArrayCollection($questions);
         foreach ($questions as $question) {
@@ -104,14 +106,18 @@ final class Course implements AggregateRoot
         }
     }
 
-    public function protectQuestions(): void
+    public function isProtected(): bool
     {
-        /** @var Question $question */
-        foreach ($this->questions as $question) {
-            $question->protect();
-        }
+        return $this->isProtected;
+    }
 
-        $this->recordEvent(new QuestionsProtected(
+    public function protect(): void
+    {
+        if ($this->isProtected()) {
+            return;
+        }
+        $this->isProtected = true;
+        $this->recordEvent(new CourseProtected(
             $this->courseId->getValue(),
             $this->cipher
         ));

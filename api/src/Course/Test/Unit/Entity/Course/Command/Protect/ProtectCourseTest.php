@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace App\Course\Test\Unit\Entity\Course\Command\ProtectQuestions;
+namespace App\Course\Test\Unit\Entity\Course\Command\Protect;
 
 use App\Course\Entity\Course\Answer;
 use App\Course\Entity\Course\Course;
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\Question;
 use App\Course\Entity\Course\QuestionForm;
-use App\Course\Event\QuestionsProtected;
+use App\Course\Event\CourseProtected;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
@@ -17,9 +17,9 @@ use PHPUnit\Framework\TestCase;
  * @internal
  * @coversNothing
  */
-final class ProtectQuestionsTest extends TestCase
+final class ProtectCourseTest extends TestCase
 {
-    public function testProtectQuestion(): void
+    public function testProtect(): void
     {
         $course = new Course(
             $id = CourseId::generate(),
@@ -30,18 +30,31 @@ final class ProtectQuestionsTest extends TestCase
         );
         $course->releaseEvents();
 
-        $course->protectQuestions();
-        $questions = $course->getQuestions();
-
-        self::assertTrue($questions[0]->isProtected());
-        self::assertTrue($questions[1]->isProtected());
+        $course->protect();
+        self::assertTrue($course->isProtected());
 
         $messages = $course->releaseEvents();
         $message = $messages[0];
 
-        self::assertInstanceOf(QuestionsProtected::class, $message);
+        self::assertInstanceOf(CourseProtected::class, $message);
         self::assertEquals($id, $message->courseId);
         self::assertEquals($cipher, $message->cipher);
+    }
+
+    public function testProtectedAlready(): void
+    {
+        $course = new Course(
+            CourseId::generate(),
+            'Course name',
+            $this->getQuestions(),
+            new DateTimeImmutable(),
+            'ОТ 201.18'
+        );
+        $course->protect();
+        $course->releaseEvents();
+
+        $messages = $course->releaseEvents();
+        self::assertEmpty($messages);
     }
 
     private function getQuestions(): array

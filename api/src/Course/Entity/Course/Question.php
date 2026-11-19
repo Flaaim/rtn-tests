@@ -32,8 +32,6 @@ final class Question
         private array $answers,
         #[ORM\Column(type: 'question_form')]
         private QuestionForm $form,
-        #[ORM\Column(type: 'boolean', options: ['default' => false])]
-        private bool $protected = false
     ) {}
 
     public static function fromDraft(array $data): self
@@ -83,16 +81,6 @@ final class Question
     public function getForm(): QuestionForm
     {
         return $this->form;
-    }
-
-    public function isProtected(): bool
-    {
-        return $this->protected;
-    }
-
-    public function protect(): void
-    {
-        $this->protected = true;
     }
 
     public function resolveForm(QuestionForm $form): void

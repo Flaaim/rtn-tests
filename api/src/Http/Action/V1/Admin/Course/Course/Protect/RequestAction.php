@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Action\V1\Admin\Course\Course\ProtectQuestions;
+namespace App\Http\Action\V1\Admin\Course\Course\Protect;
 
-use App\Course\Command\Course\ProtectQuestions\Command;
-use App\Course\Command\Course\ProtectQuestions\Handler;
+use App\Course\Command\Course\Protect\Command;
+use App\Course\Command\Course\Protect\Handler;
 use App\Infrastructure\Http\Validator\Validator;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -18,7 +18,7 @@ final readonly class RequestAction
         private Validator $validator
     ) {}
 
-    #[Route('/v1/admin/testing/courses/{id}/protect-questions', name: 'admin.testing.courses.protect-questions', methods: ['PUT'])]
+    #[Route('/v1/admin/testing/courses/{id}/protect', name: 'admin.testing.courses.protect', methods: ['PUT'])]
     #[IsGranted('ROLE_ADMIN')]
     public function __invoke(string $id): Response
     {

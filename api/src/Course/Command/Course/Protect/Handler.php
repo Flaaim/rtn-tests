@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Course\Command\Course\ProtectQuestions;
+namespace App\Course\Command\Course\Protect;
 
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
@@ -20,7 +20,7 @@ final readonly class Handler
     {
         $course = $this->courses->get(new CourseId($command->courseId));
 
-        $course->protectQuestions();
+        $course->protect();
 
         $this->flusher->flush();
     }

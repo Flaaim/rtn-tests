@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Course\Course\ProtectQuestions;
+namespace Tests\Functional\Admin\Course\Course\Protect;
 
 use App\Auth\Entity\User\Email;
 use App\Auth\Entity\User\Role;

@@ -27,6 +27,5 @@ final class QuestionTest extends TestCase
         self::assertEquals($id, $question->getId());
         self::assertEquals($text, $question->getText());
         self::assertEquals($questionImg, $question->getQuestionImg());
-        self::assertFalse($question->isProtected());
     }
 }

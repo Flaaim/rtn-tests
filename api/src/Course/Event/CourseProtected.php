@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Course\Event;
 
-final readonly class QuestionsProtected
+final readonly class CourseProtected
 {
     public function __construct(
         public string $courseId,

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Course\Course\ProtectQuestions;
+namespace Tests\Functional\Admin\Course\Course\Protect;
 
 use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
-use App\Course\Event\QuestionsProtected;
+use App\Course\Event\CourseProtected;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -60,7 +60,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'PUT',
-            '/v1/admin/testing/courses/' . RequestFixture::COURSE_ID . '/protect-questions',
+            '/v1/admin/testing/courses/' . RequestFixture::COURSE_ID . '/protect',
         );
 
         self::assertEquals(401, $this->client->getResponse()->getStatusCode());
@@ -70,7 +70,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'PUT',
-            '/v1/admin/testing/courses/' . RequestFixture::COURSE_ID . '/protect-questions',
+            '/v1/admin/testing/courses/' . RequestFixture::COURSE_ID . '/protect',
             [],
             $this->authHeaders($this->userToken)
         );
@@ -86,7 +86,7 @@ final class RequestActionTest extends WebTestCase
 
         $this->client->jsonRequest(
             'PUT',
-            '/v1/admin/testing/courses/' . RequestFixture::COURSE_ID . '/protect-questions',
+            '/v1/admin/testing/courses/' . RequestFixture::COURSE_ID . '/protect',
             [],
             $this->authHeaders($this->adminToken)
         );
@@ -95,13 +95,10 @@ final class RequestActionTest extends WebTestCase
 
         $course = $this->courses->get(new CourseId(RequestFixture::COURSE_ID));
 
-        $questions = $course->getQuestions();
-
-        self::assertTrue($questions[0]->isProtected());
-        self::assertTrue($questions[1]->isProtected());
+        self::assertTrue($course->isProtected());
 
         $message = $transport->getSent()[0]->getMessage();
-        self::assertInstanceOf(QuestionsProtected::class, $message);
+        self::assertInstanceOf(CourseProtected::class, $message);
 
         self::assertEquals(RequestFixture::COURSE_ID, $message->courseId);
         self::assertEquals(RequestFixture::COURSE_CIPHER, $message->cipher);
@@ -111,7 +108,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'PUT',
-            '/v1/admin/testing/courses/' . RequestFixture::COURSE_NOT_FOUND_ID . '/protect-questions',
+            '/v1/admin/testing/courses/' . RequestFixture::COURSE_NOT_FOUND_ID . '/protect',
             [],
             $this->authHeaders($this->adminToken)
         );
@@ -128,7 +125,7 @@ final class RequestActionTest extends WebTestCase
     {
         $this->client->jsonRequest(
             'PUT',
-            '/v1/admin/testing/courses/ivalid/protect-questions',
+            '/v1/admin/testing/courses/ivalid/protect',
             [],
             $this->authHeaders($this->adminToken)
         );
