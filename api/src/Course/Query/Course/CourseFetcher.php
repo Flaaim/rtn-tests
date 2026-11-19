@@ -260,7 +260,7 @@ final readonly class CourseFetcher implements CourseFetcherInterface
             'course' => [
                 'courseId' => $result['course_id'],
                 'isProtected' => $result['is_protected'],
-            ]
+            ],
         ];
     }
 

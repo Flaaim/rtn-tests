@@ -22,8 +22,8 @@ final readonly class QuestionDTO
 
         $answers = $question['answers'];
 
-        if ($course->isProtected === true) {
-            $answers = array_map(static function (array $answer) {
+        if (true === $course->isProtected) {
+            $answers = array_map(static function (array $answer): array {
                 unset($answer['isCorrect']);
                 return $answer;
             }, $question['answers']);

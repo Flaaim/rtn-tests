@@ -74,5 +74,46 @@ final class RequestActionTest extends WebTestCase
         self::assertArrayHasKey('name', $category);
         self::assertArrayHasKey('slug', $category);
         self::assertArrayHasKey('parent', $category);
+
+        $answer = $data['answers'][0];
+
+        self::assertArrayHasKey('id', $answer);
+        self::assertArrayHasKey('text', $answer);
+        self::assertArrayHasKey('answerImg', $answer);
+        self::assertArrayHasKey('isCorrect', $answer);
+    }
+
+    public function testSuccessProtected(): void
+    {
+        $this->client->jsonRequest(
+            'GET',
+            '/v1/questions/' . RequestFixture::QUESTION_PROTECTED_ID,
+        );
+
+        self::assertEquals(200, $this->client->getResponse()->getStatusCode());
+
+        self::assertJson($body = $this->client->getResponse()->getContent());
+
+        $data = Json::decode($body);
+
+        self::assertArrayHasKey('id', $data);
+        self::assertArrayHasKey('text', $data);
+        self::assertArrayHasKey('answers', $data);
+        self::assertArrayHasKey('form', $data);
+        self::assertArrayHasKey('test', $data);
+        self::assertArrayHasKey('product', $data);
+        self::assertArrayHasKey('course', $data);
+
+        $course = $data['course'];
+        self::assertArrayHasKey('courseId', $course);
+        self::assertArrayHasKey('isProtected', $course);
+        self::assertTrue($course['isProtected']);
+
+        $answer = $data['answers'][0];
+
+        self::assertArrayHasKey('id', $answer);
+        self::assertArrayHasKey('text', $answer);
+        self::assertArrayHasKey('answerImg', $answer);
+        self::assertArrayNotHasKey('isCorrect', $answer);
     }
 }
