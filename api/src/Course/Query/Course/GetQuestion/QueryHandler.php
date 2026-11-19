@@ -31,6 +31,6 @@ final readonly class QueryHandler
             throw new DomainException(\sprintf('Data integrity error: Test not found for courseId %s', $question['course']['courseId']));
         }
 
-        return QuestionDTO::create($question, $product, $test);
+        return QuestionDTO::create($question, $test, $product);
     }
 }

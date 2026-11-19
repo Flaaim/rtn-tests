@@ -12,11 +12,11 @@ final readonly class QuestionDTO
         public array $answers,
         public string $form,
         public CourseDTO $course,
-        public ?TestDTO $test = null,
+        public TestDTO $test,
         public ?ProductDTO $product = null,
     ) {}
 
-    public static function create(array $question, ?array $product, ?array $test): self
+    public static function create(array $question, array $test, ?array $product): self
     {
         $course = CourseDTO::fromArray($question['course']);
 
@@ -35,7 +35,7 @@ final readonly class QuestionDTO
             answers: $answers,
             form: $question['form'],
             course: $course,
-            test: null !== $test ? TestDTO::fromArray($test) : null,
+            test: TestDTO::fromArray($test),
             product: null !== $product ? ProductDTO::fromArray($product) : null,
         );
     }
