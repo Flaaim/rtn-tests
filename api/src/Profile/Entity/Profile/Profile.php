@@ -116,6 +116,7 @@ final class Profile implements AggregateRoot
         $this->status = Status::banned();
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function isBlocked(): bool
     {
         return $this->status->isBanned();
