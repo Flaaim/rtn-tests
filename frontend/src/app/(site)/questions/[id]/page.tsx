@@ -10,7 +10,7 @@ import PublicTicketButton from "@/components/Testing/Test/PublicTicketButton";
 import { Button } from "@/components/ui/button";
 import ShowCorrectAnswer from "@/components/Question/ShowCorrectAnswer";
 import PurchaseProductDialog from "@/components/Question/PurchaseProductDialog";
-import { ProductDTO } from "@/interfaces/question.interface";
+import { isOpenQuestion, ProductDTO, PublicTestData } from "@/interfaces/question.interface";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -51,15 +51,20 @@ export default async function PublicQuestionPage({ params }: PageProps) {
   const product: ProductDTO | null = result.data.product;
 
   const formattedPrice = product ? Math.round(Number(product.amount)) : 0;
+  const isOpen = isOpenQuestion(question);
 
-  const correctAnswersText = question.answers
-    .filter((answer) => answer.isCorrect)
-    .map((a) => a.text)
-    .join("; ");
+  const correctAnswersText = isOpen
+    ? question.answers
+        .filter((answer) => answer.isCorrect)
+        .map((a) => a.text)
+        .join("; ")
+    : null;
 
-  const testUrl = question.category.parent
-    ? `/catalog/${question.category.parent.slug}/${question.category.slug}/${question.test.slug}`
-    : `/catalog/${question.category.slug}/${question.test.slug}`;
+  const test: PublicTestData = question.test;
+
+  const testUrl = test.category.parent
+    ? `/catalog/${test.category.parent.slug}/${test.category.slug}/${test.slug}`
+    : `/catalog/${test.category.slug}/${test.slug}`;
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -68,11 +73,13 @@ export default async function PublicQuestionPage({ params }: PageProps) {
       "@type": "Question",
       name: question.text,
       text: question.text,
-      answerCount: 1,
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: correctAnswersText || "Правильный ответ выделен в списке.",
-      },
+      answerCount: correctAnswersText ? 1 : 0,
+      ...(correctAnswersText && {
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: correctAnswersText,
+        },
+      }),
     },
   };
 
@@ -87,14 +94,14 @@ export default async function PublicQuestionPage({ params }: PageProps) {
           Главная
         </Link>
 
-        {question.category.parent && (
+        {test.category.parent && (
           <>
             <ChevronRight className="h-4 w-4 shrink-0" />
             <Link
-              href={`/catalog/${question.category.parent.slug}`}
+              href={`/catalog/${test.category.parent.slug}`}
               className="hover:text-foreground transition-colors"
             >
-              {question.category.parent.name}
+              {test.category.parent.name}
             </Link>
           </>
         )}
@@ -102,13 +109,13 @@ export default async function PublicQuestionPage({ params }: PageProps) {
         <ChevronRight className="h-4 w-4 shrink-0" />
         <Link
           href={
-            question.category.parent
-              ? `/catalog/${question.category.parent.slug}/${question.category.slug}`
-              : `/catalog/${question.category.slug}`
+            test.category.parent
+              ? `/catalog/${test.category.parent.slug}/${test.category.slug}`
+              : `/catalog/${test.category.slug}`
           }
           className="hover:text-foreground transition-colors"
         >
-          {question.category.name}
+          {test.category.name}
         </Link>
 
         <ChevronRight className="h-4 w-4 shrink-0" />
@@ -116,13 +123,20 @@ export default async function PublicQuestionPage({ params }: PageProps) {
           href={testUrl}
           className="hover:text-foreground transition-colors font-medium text-foreground"
         >
-          {question.test.name}
+          {test.name}
         </Link>
       </nav>
 
       <Card className="mb-8 border-border/80 shadow-sm">
         <CardHeader className="space-y-3 pb-4">
-          <div className="flex items-center justify-between gap-2">Актуальная база вопросов</div>
+          <div className="flex items-center justify-between gap-2">
+            <span>Актуальная база вопросов</span>
+            {!isOpen && (
+              <span className="text-xs font-medium text-amber-600 bg-amber-500/10 px-2.5 py-1 rounded-full">
+                Ответ в закрытом доступе. Правильные ответы доступны в файле с ответами.
+              </span>
+            )}
+          </div>
           <h1 className="text-xl md:text-2xl font-bold leading-snug">{question.text}</h1>
         </CardHeader>
 
@@ -139,7 +153,6 @@ export default async function PublicQuestionPage({ params }: PageProps) {
         {product && (
           <Card className="overflow-hidden border-primary/20 bg-primary/5">
             <div className="flex flex-col md:flex-row">
-              {/* Визуальное превью документа */}
               <div className="bg-primary/10 p-6 md:w-1/3 flex flex-col items-center justify-center border-b md:border-b-0 md:border-r border-primary/10">
                 <div className="w-24 h-32 bg-background rounded shadow-md border flex flex-col p-3 relative">
                   <div className="w-full h-2 bg-primary/20 rounded mb-2" />
@@ -176,14 +189,11 @@ export default async function PublicQuestionPage({ params }: PageProps) {
                 </ul>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 mt-auto">
-                  {/* Замените этот Button на ваш компонент оплаты/корзины */}
-
                   <PurchaseProductDialog
                     id={product.productId}
                     amount={formattedPrice}
                     name={question.test.name}
                   />
-
                   {/* Кнопка превью, если у вас есть демо-версия файла */}
                   {/*<Button variant="outline" className="w-full sm:w-auto" asChild>*/}
                   {/*  <a href={pdfUrl} target="_blank" rel="noopener noreferrer">*/}

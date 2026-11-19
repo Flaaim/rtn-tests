@@ -1,6 +1,6 @@
 "use client";
 
-import { PublicAnswerData } from "@/interfaces/question.interface";
+import { isOpenQuestion, PublicQuestionData } from "@/interfaces/question.interface";
 import { CheckCircle2, Circle } from "lucide-react";
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -15,9 +15,7 @@ import {
 import MagicLinkForm from "@/components/Auth/MagicLink/Request/MagicLinkForm";
 
 interface ShowCorrectAnswerProps {
-  question: {
-    answers: PublicAnswerData[];
-  };
+  question: PublicQuestionData;
   isAuthenticated: boolean;
 }
 
@@ -25,10 +23,12 @@ export default function ShowCorrectAnswer({ question, isAuthenticated }: ShowCor
   const [showCorrect, setShowCorrect] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
 
+  const isOpen = isOpenQuestion(question);
+
   return (
     <>
-      {question.answers.map((answer: PublicAnswerData, index) => {
-        const isHighlighted = showCorrect && answer.isCorrect;
+      {question.answers.map((answer, index) => {
+        const isHighlighted = isOpen && showCorrect && "isCorrect" in answer && answer.isCorrect;
 
         return (
           <div
@@ -63,7 +63,9 @@ export default function ShowCorrectAnswer({ question, isAuthenticated }: ShowCor
           </div>
         );
       })}
-      {!showCorrect &&
+
+      {isOpen &&
+        !showCorrect &&
         (isAuthenticated ? (
           <Button onClick={() => setShowCorrect(true)}>Показать правильный ответ</Button>
         ) : (
