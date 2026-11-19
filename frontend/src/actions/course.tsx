@@ -188,3 +188,23 @@ export async function renderCourseAction(payload: CourseRenderPayload): Promise<
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+
+export async function updateProtectedAction(
+  id: string,
+  nextChecked: boolean
+): Promise<ApiResponse<void>> {
+  try {
+    const url = nextChecked ? API.course.protect(id) : API.course.unprotect(id);
+    const response = await apiFetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("updateProtectedAction error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}

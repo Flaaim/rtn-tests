@@ -87,6 +87,8 @@ export const API = {
       return url.toString();
     },
     render: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/render`,
+    protect: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/protect`,
+    unprotect: (courseId: string) => BASE_URL + `/v1/admin/testing/courses/${courseId}/unprotect`,
   },
   question: {
     getQuestion: (id: string) => BASE_URL + `/v1/questions/${id}`,

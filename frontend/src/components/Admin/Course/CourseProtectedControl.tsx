@@ -3,6 +3,7 @@
 import { useState, useTransition } from "react";
 import { toast } from "sonner";
 import { Switch } from "@/components/ui/switch";
+import { updateProtectedAction } from "@/actions/course";
 
 interface SwitchProtected {
   id: string;
