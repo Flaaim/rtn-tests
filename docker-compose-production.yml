@@ -46,7 +46,7 @@ services:
       APP_ENV: prod
       APP_DEBUG: 0
       API_SITE_URL: ${API_SITE_URL}
-      INTERNAL_SITE_URL: http://api
+      INTERNAL_SITE_URL: ${API_SITE_URL}
       API_SITE_NAME: ${API_SITE_NAME}
       DB_HOST: api-postgres
       DB_USER: app
@@ -89,7 +89,7 @@ services:
       APP_ENV: prod
       APP_DEBUG: 0
       API_SITE_URL: ${API_SITE_URL}
-      INTERNAL_SITE_URL: http://api
+      INTERNAL_SITE_URL: ${API_SITE_URL}
       API_SITE_NAME: ${API_SITE_NAME}
       DB_HOST: api-postgres
       DB_USER: app
@@ -161,7 +161,7 @@ services:
       APP_ENV: prod
       APP_DEBUG: 0
       API_SITE_URL: ${API_SITE_URL}
-      INTERNAL_SITE_URL: http://api
+      INTERNAL_SITE_URL: ${API_SITE_URL}
       API_SITE_NAME: ${API_SITE_NAME}
       DB_HOST: api-postgres
       DB_USER: app
@@ -207,7 +207,7 @@ services:
       APP_ENV: prod
       APP_DEBUG: 0
       API_SITE_URL: ${API_SITE_URL}
-      INTERNAL_SITE_URL: http://api
+      INTERNAL_SITE_URL: ${API_SITE_URL}
       API_SITE_NAME: ${API_SITE_NAME}
       DB_HOST: api-postgres
       DB_USER: app
