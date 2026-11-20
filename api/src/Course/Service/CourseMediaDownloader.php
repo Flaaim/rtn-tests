@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Course\Service;
 
 use App\Course\Entity\Course\Question;
-use App\Course\Service\Downloader\DirectoryCleanerInterface;
 use App\Course\Service\Downloader\DirectoryCreatorInterface;
 use App\Course\Service\Downloader\FileDownloaderInterface;
 use App\Course\Service\Downloader\FilenameGeneratorInterface;
@@ -17,15 +16,13 @@ final class CourseMediaDownloader
         private readonly FileDownloaderInterface $fileDownloader,
         private readonly FilenameGeneratorInterface $filenameGenerator,
         private readonly FileSystemPathInterface $questionPath,
-        private readonly DirectoryCreatorInterface $directoryCreator,
-        private readonly DirectoryCleanerInterface $directoryCleaner,
+        private readonly DirectoryCreatorInterface $directoryCreator
     ) {}
 
     public function downloadMedia(array $questions, string $relativePathDir): void
     {
         $questionsDir = $this->questionPath->getValue() . \DIRECTORY_SEPARATOR . $relativePathDir;
 
-        $this->directoryCleaner->cleanDirectory($questionsDir);
         $this->directoryCreator->createDirectory($questionsDir);
 
         /** @var Question[] $questions */

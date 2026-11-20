@@ -8,7 +8,6 @@ use App\Course\Entity\Course\Answer;
 use App\Course\Entity\Course\Question;
 use App\Course\Entity\Course\QuestionForm;
 use App\Course\Service\CourseMediaDownloader;
-use App\Course\Service\Downloader\DirectoryCleanerInterface;
 use App\Course\Service\Downloader\DirectoryCreatorInterface;
 use App\Course\Service\Downloader\FileDownloaderInterface;
 use App\Course\Service\Downloader\FilenameGeneratorInterface;
@@ -31,8 +30,6 @@ final class CourseMediaDownloaderTest extends TestCase
     private FileSystemPathInterface $fileSystemPath;
     /** @var DirectoryCreatorInterface&MockObject */
     private DirectoryCreatorInterface $directoryCreator;
-    /** @var DirectoryCleanerInterface&MockObject */
-    private DirectoryCleanerInterface $directoryCleaner;
 
     protected function setUp(): void
     {
@@ -41,7 +38,6 @@ final class CourseMediaDownloaderTest extends TestCase
         $this->fileSystemPath = InMemoryFileSystemPath::createReal();
         $this->fileDownloader = $this->createMock(FileDownloaderInterface::class);
         $this->directoryCreator = $this->createMock(DirectoryCreatorInterface::class);
-        $this->directoryCleaner = $this->createMock(DirectoryCleanerInterface::class);
     }
 
     public function testAddNew(): void
@@ -50,13 +46,11 @@ final class CourseMediaDownloaderTest extends TestCase
             $this->fileDownloader,
             $this->filenameGenerator,
             $this->fileSystemPath,
-            $this->directoryCreator,
-            $this->directoryCleaner
+            $this->directoryCreator
         );
 
         $relativePath = '12345';
         $callCount = 1;
-        $this->directoryCleaner->expects(self::once())->method('cleanDirectory');
 
         $this->directoryCreator->expects(self::atLeast(2))
             ->method('createDirectory')
