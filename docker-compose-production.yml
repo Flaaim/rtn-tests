@@ -42,6 +42,7 @@ services:
     restart: always
     volumes:
       - /home/deploy/storage/course:/app/public/course
+      - /home/deploy/storage/QuestionImages:/app/public/QuestionImages
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
@@ -85,6 +86,7 @@ services:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
     volumes:
       - /home/deploy/storage/course:/app/public/course
+      - /home/deploy/storage/QuestionImages:/app/public/QuestionImages
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
@@ -157,6 +159,7 @@ services:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
     volumes:
       - /home/deploy/storage/course:/app/public/course
+      - /home/deploy/storage/QuestionImages:/app/public/QuestionImages
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
@@ -203,6 +206,7 @@ services:
     image: ${REGISTRY}/rtn-tests-api-php-cli:${IMAGE_TAG}
     volumes:
       - /home/deploy/storage/course:/app/public/course
+      - /home/deploy/storage/QuestionImages:/app/public/QuestionImages
     environment:
       APP_ENV: prod
       APP_DEBUG: 0
