@@ -14,6 +14,7 @@ use App\Course\Service\CourseMediaDownloader;
 use App\Infrastructure\Doctrine\Flusher;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 use Symfony\Component\Messenger\MessageBusInterface;
+use Symfony\Component\Messenger\Stamp\DispatchAfterCurrentBusStamp;
 
 #[AsMessageHandler]
 final class CourseProcessedHandler
@@ -42,6 +43,6 @@ final class CourseProcessedHandler
 
         $this->flusher->flush();
 
-        $this->messageBus->dispatch(new CourseScheduledToRender($courseId));
+        $this->messageBus->dispatch(new CourseScheduledToRender($courseId), [new DispatchAfterCurrentBusStamp()]);
     }
 }
