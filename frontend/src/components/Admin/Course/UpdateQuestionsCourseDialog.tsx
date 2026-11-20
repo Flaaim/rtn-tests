@@ -30,8 +30,9 @@ const AnswerSchema = z.object({
 
 const QuestionSchema = z.object({
   id: z.string(),
-  number: z.number().int().positive(), // целое положительное число
+  number: z.string(),
   text: z.string(),
+  form: z.string(),
   questionImg: z.string().url().or(z.literal("")), // валидный URL или пустая строка
   answers: z.array(AnswerSchema), // массив ответов
 });
