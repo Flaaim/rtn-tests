@@ -30,7 +30,7 @@
                 </p>
 
                 {% if question.getQuestionImg() is not empty %}
-                    <img src="{{ question.getQuestionImg() }}"
+                    <img src="{{ internal_site_url }}/QuestionImages/{{ question.getQuestionImg() }}"
                          class="question-img" width="500" height="300"
                          alt="Иллюстрация к вопросу">
                 {% endif %}
@@ -45,7 +45,7 @@
                                 {% if answer.getAnswerImg() is not empty %}
                                     <img class="answer-img"
                                          width="100px"
-                                         src="{{ answer.getAnswerImg() }}"
+                                         src="{{ internal_site_url }}/QuestionImages/{{ answer.getAnswerImg() }}"
                                          alt="Иллюстрация к ответу">
                                 {% endif %}
                             </li>
