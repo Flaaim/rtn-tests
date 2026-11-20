@@ -253,6 +253,8 @@ services:
   gotenberg:
     image: gotenberg/gotenberg:8
     restart: unless-stopped
+    volumes:
+      - /home/deploy/storage/QuestionImages:/app/public/QuestionImages
     command:
       - "gotenberg"
       - "--api-timeout=60s"
