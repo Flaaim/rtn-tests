@@ -38,10 +38,10 @@ final class CourseProcessedHandler
             $question->markAnswersAsUpdated();
         }
 
-        $this->messageBus->dispatch(new CourseScheduledToRender($courseId));
-
         $course->updateStatus(Status::created());
 
         $this->flusher->flush();
+
+        $this->messageBus->dispatch(new CourseScheduledToRender($courseId));
     }
 }
