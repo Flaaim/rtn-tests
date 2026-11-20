@@ -120,6 +120,7 @@ jobs:
           build-args: |
             NEXT_PUBLIC_BACKEND_URL=https://api.rtn-tests.ru
             NEXT_PUBLIC_COURSE_ANSWERS=/course/
+            NEXT_PUBLIC_QUESTION_IMAGES=/QuestionImages/
             GRANT_TYPE=${{secrets.GRANT_TYPE}}
             CLIENT_ID=${{secrets.CLIENT_ID}}
             CLIENT_SECRET=${{secrets.CLIENT_SECRET}}

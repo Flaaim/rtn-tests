@@ -86,12 +86,12 @@ export default async function AdminRecipientsPage({ searchParams }: AdminEventsP
             ) : (
               events.map((event: EventDTO) => (
                 <TableRow key={event.eventId}>
+                  <TableCell className="font-medium">{event.eventId}</TableCell>
                   <TableCell className="font-medium">
                     <Link href={`/admin/events/${event.eventId}`} className="hover:underline">
-                      {event.eventId}
+                      {event.aggregateId}
                     </Link>
                   </TableCell>
-                  <TableCell className="font-medium">{event.aggregateId}</TableCell>
                   <TableCell className="font-medium min-w-0 max-w-[300px] truncate">
                     {event.type}
                   </TableCell>
