@@ -14,6 +14,7 @@ import RenderCourseDialog from "@/components/Admin/Course/RenderCourseDialog";
 import { Button } from "@/components/ui/button";
 import CourseProtectedControl from "@/components/Admin/Course/CourseProtectedControl";
 import { Separator } from "@base-ui/react";
+import Link from "next/link";
 
 interface CourseOverviewPageProps {
   params: Promise<{ courseId: string }>;
@@ -158,10 +159,17 @@ export default async function CourseOverviewPage({
               </CardHeader>
 
               <CardContent className="pt-4 space-y-6">
-                <div className="space-y-4">
+                <div className="space-y-4 ">
+                  <p className="text-muted-foreground font-medium">
+                    Id:{" "}
+                    <Link href={`/questions/${question.id}`} target="_blank">
+                      {question.id}{" "}
+                    </Link>
+                  </p>
                   <p className="text-muted-foreground font-medium">
                     Тип: <QuestionFormTypeBadge type={question.form} />
                   </p>
+
                   <p className="text-base font-medium leading-relaxed">{question.text}</p>
                   {question.questionImg && (
                     <div className="relative rounded-md overflow-hidden border inline-block">
