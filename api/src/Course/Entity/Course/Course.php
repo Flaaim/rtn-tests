@@ -6,6 +6,7 @@ namespace App\Course\Entity\Course;
 
 use App\Course\Event\CourseProcessed;
 use App\Course\Event\CourseProtected;
+use App\Course\Event\CourseScheduledToRender;
 use App\Course\Event\CourseUnprotected;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
@@ -79,6 +80,14 @@ final class Course implements AggregateRoot
     public function updateStatus(Status $status): void
     {
         $this->status = $status;
+    }
+
+    public function markAsCreated(): void
+    {
+        $this->status = Status::created();
+        $this->recordEvent(
+            new CourseScheduledToRender($this->courseId->getValue())
+        );
     }
 
     public function addQuestions(array $newQuestions): void
