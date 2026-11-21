@@ -1,6 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 
-const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
+export const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   created: {
     label: "Создан",
     className: "bg-emerald-50 text-emerald-700 border-emerald-200 hover:bg-emerald-50",
@@ -8,6 +8,10 @@ const STATUS_CONFIG: Record<string, { label: string; className: string }> = {
   processing: {
     label: "В обработке",
     className: "bg-amber-50 text-amber-700 border-amber-200 hover:bg-amber-50",
+  },
+  completed: {
+    label: "Готов",
+    className: "bg-sky-50 text-sky-700 border-sky-200 hover:bg-sky-50",
   },
 };
 

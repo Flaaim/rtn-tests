@@ -124,8 +124,8 @@ final readonly class CourseFetcher implements CourseFetcherInterface
 
         $result = $qb->select('c.course_id, c.name')
             ->from('courses', 'c')
-            ->where($qb->expr()->eq('c.status', ':status'))
-            ->setParameter('status', 'created')
+            ->where($qb->expr()->in('c.status', ':statuses'))
+            ->setParameter('statuses', ['created', 'completed'], ArrayParameterType::STRING)
             ->executeQuery();
 
         return $result->fetchAllAssociative();
