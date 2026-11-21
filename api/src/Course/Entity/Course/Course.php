@@ -6,6 +6,7 @@ namespace App\Course\Entity\Course;
 
 use App\Course\Event\CourseProcessed;
 use App\Course\Event\CourseProtected;
+use App\Course\Event\CourseRendered;
 use App\Course\Event\CourseScheduledToRender;
 use App\Course\Event\CourseUnprotected;
 use App\SharedDomain\AggregateRoot;
@@ -87,6 +88,19 @@ final class Course implements AggregateRoot
         $this->status = Status::created();
         $this->recordEvent(
             new CourseScheduledToRender($this->courseId->getValue())
+        );
+    }
+
+    public function markAsRendered(string $file, string $amount): void
+    {
+        $this->status = Status::completed();
+        $this->recordEvent(
+            new CourseRendered(
+                $this->cipher,
+                $file,
+                $this->courseId->getValue(),
+                $amount
+            )
         );
     }
 

@@ -32,7 +32,7 @@ final readonly class CourseScheduledToRenderHandler
 
         $file = $this->fileRendererFacade->renderAndSave($courseId, $course->getQuestions());
 
-        $course->completeRender($file, $amount);
+        $course->markAsRendered($file, $amount);
 
         $this->flusher->flush();
     }

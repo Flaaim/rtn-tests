@@ -68,7 +68,7 @@ final class CourseProcessedHandlerTest extends KernelTestCase
 
         $course = $this->courses->get(new CourseId(RequestFixture::COURSE_ID));
 
-        self::assertEquals(Status::created(), $course->getStatus());
+        self::assertEquals(Status::completed(), $course->getStatus());
 
         self::assertCount(1, glob('/tmp/phpunit_real_storage/' . RequestFixture::COURSE_ID . '/*.*'));
     }
