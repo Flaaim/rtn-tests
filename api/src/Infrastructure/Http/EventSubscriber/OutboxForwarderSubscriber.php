@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\EventSubscriber;
 
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
 use Symfony\Component\Messenger\MessageBusInterface;
 use Symfony\Component\Messenger\Stamp\TransportNamesStamp;
+use Symfony\Component\Messenger\Transport\Receiver\ReceiverInterface;
 
 final class OutboxForwarderSubscriber implements EventSubscriberInterface
 {
     public function __construct(
-        private readonly MessageBusInterface $messageBus
+        private readonly MessageBusInterface $messageBus,
+        #[Autowire(service: 'messenger.transport.async_outbox')]
+        private readonly ReceiverInterface $outboxReceiver,
     ) {}
 
     public static function getSubscribedEvents(): array
@@ -25,12 +29,13 @@ final class OutboxForwarderSubscriber implements EventSubscriberInterface
     public function onMessageReceived(WorkerMessageReceivedEvent $event): void
     {
         if ('async_outbox' === $event->getReceiverName()) {
-            $message = $event->getEnvelope()->getMessage();
+            $envelope = $event->getEnvelope();
 
-            $this->messageBus->dispatch($message, [
+            $this->messageBus->dispatch($envelope->getMessage(), [
                 new TransportNamesStamp(['async']),
             ]);
 
+            $this->outboxReceiver->ack($envelope);
             $event->shouldHandle(false);
         }
     }
