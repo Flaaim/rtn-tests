@@ -38,4 +38,13 @@ final class StatusTest extends TestCase
         self::assertTrue($status->isCreated());
         self::assertFalse($status->isProcessing());
     }
+
+    public function testCompleted(): void
+    {
+        $status = new Status(Status::COMPLETED);
+        self::assertEquals(Status::COMPLETED, $status->getValue());
+
+        self::assertTrue($status->isCompleted());
+        self::assertFalse($status->isCreated());
+    }
 }

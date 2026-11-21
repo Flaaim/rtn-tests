@@ -10,12 +10,13 @@ final class Status
 {
     public const string PROCESSING = 'processing';
     public const string CREATED = 'created';
+    public const string COMPLETED = 'completed';
 
     private string $value;
 
     public function __construct(string $value)
     {
-        Assert::oneOf($value, [self::PROCESSING, self::CREATED]);
+        Assert::oneOf($value, [self::PROCESSING, self::CREATED, self::COMPLETED]);
         $this->value = $value;
     }
 
@@ -34,6 +35,11 @@ final class Status
         return new self(self::CREATED);
     }
 
+    public static function completed(): self
+    {
+        return new self(self::COMPLETED);
+    }
+
     public function isProcessing(): bool
     {
         return self::PROCESSING === $this->value;
@@ -42,5 +48,10 @@ final class Status
     public function isCreated(): bool
     {
         return self::CREATED === $this->value;
+    }
+
+    public function isCompleted(): bool
+    {
+        return self::COMPLETED === $this->value;
     }
 }
