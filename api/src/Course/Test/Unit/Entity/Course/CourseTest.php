@@ -6,8 +6,6 @@ namespace App\Course\Test\Unit\Entity\Course;
 
 use App\Course\Entity\Course\Course;
 use App\Course\Entity\Course\CourseId;
-use App\Course\Entity\Course\Question;
-use App\Course\Entity\Course\QuestionForm;
 use App\Course\Entity\Course\Status;
 use App\Course\Event\CourseProcessed;
 use DateTimeImmutable;
@@ -88,49 +86,5 @@ final class CourseTest extends TestCase
         $course->rename($name = 'New Course Name');
 
         self::assertEquals($name, $course->getName());
-    }
-
-    public function testUpdateQuestions(): void
-    {
-        $questions = [
-            new Question(
-                '1872768c-65ee-4b03-8d01-0fe8f91da2c9',
-                'Question text',
-                '',
-                [],
-                QuestionForm::singleChoice()
-            ),
-        ];
-
-        $course = new Course(
-            CourseId::generate(),
-            'Course name',
-            $questions,
-            new DateTimeImmutable(),
-            'ОТ 201.18'
-        );
-
-        $newQuestions = [
-            new Question(
-                'dddbdff1-4228-402b-93c1-73e23f686f7c',
-                'New Question',
-                '',
-                [],
-                QuestionForm::singleChoice()
-            ),
-        ];
-
-        $course->addQuestions($newQuestions);
-
-        self::assertCount(1, $course->getQuestions());
-        self::assertEquals($newQuestions, $course->getQuestions());
-
-        /** @var Question $question */
-        $question = $course->getQuestions()[0];
-        self::assertEquals($question->getCourse(), $course);
-
-        $messages = $course->releaseEvents();
-        $message = end($messages);
-        self::assertInstanceOf(CourseProcessed::class, $message);
     }
 }

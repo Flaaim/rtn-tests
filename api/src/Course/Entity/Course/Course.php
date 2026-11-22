@@ -6,6 +6,7 @@ namespace App\Course\Entity\Course;
 
 use App\Course\Event\CourseProcessed;
 use App\Course\Event\CourseProtected;
+use App\Course\Event\CourseQuestionsUpdated;
 use App\Course\Event\CourseRendered;
 use App\Course\Event\CourseScheduledToRender;
 use App\Course\Event\CourseUnprotected;
@@ -117,6 +118,7 @@ final class Course implements AggregateRoot
             $this->questions->add($question);
         }
         $this->recordEvent(new CourseProcessed($this->courseId->getValue()));
+        $this->recordEvent(new CourseQuestionsUpdated($this->courseId->getValue()));
     }
 
     public function rename(?string $newName = null, ?string $newCipher = null): void
