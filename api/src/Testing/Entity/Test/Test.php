@@ -241,6 +241,15 @@ final class Test implements AggregateRoot
         ));
     }
 
+    public function syncQuestions(array $allQuestionIds): void
+    {
+        $this->regenerateTickets($allQuestionIds);
+        $this->recordEvent(new TestChanged(
+            $this->id->getValue(),
+            'Вопросы теста синхронизированы с курсами'
+        ));
+    }
+
     public function changeCategory(string $categoryId): void
     {
         if ($this->isActive()) {
