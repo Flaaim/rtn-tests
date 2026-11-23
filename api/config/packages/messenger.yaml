@@ -56,12 +56,14 @@ framework:
             'App\Course\Event\CourseRendered': async_outbox
             'App\Course\Event\CourseProtected': async_outbox
             'App\Course\Event\CourseUnprotected': async_outbox
+            'App\Course\Event\CourseQuestionsUpdated': async_outbox
 
             'App\Testing\Event\TestCreated': async_outbox
             'App\Testing\Event\TestActivated': async_outbox
             'App\Testing\Event\TestDeactivated': async_outbox
             'App\Testing\Event\TestRemoved': async_outbox
             'App\Testing\Event\TestChanged': async_outbox
+            'App\Testing\Command\Test\SyncQuestions\Command': async_outbox
 
             'App\Testing\Event\Attempt\TimeoutAttemptCommand': async_outbox
             'App\Profile\Event\ProfileRemoved': async_outbox

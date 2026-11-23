@@ -43,11 +43,13 @@ final class UpdateQuestionsCourseTest extends TestCase
         $courseProcessedMessages = array_filter($messages, static fn ($message) => $message instanceof CourseProcessed);
         $courseProcessedMessage = end($courseProcessedMessages);
 
+        self::assertInstanceOf(CourseProcessed::class, $courseProcessedMessage);
         self::assertEquals($courseId, $courseProcessedMessage->courseId);
 
         $courseQuestionsUpdatedMessages = array_filter($messages, static fn ($message) => $message instanceof CourseQuestionsUpdated);
         $courseQuestionsUpdatedMessage = end($courseQuestionsUpdatedMessages);
 
+        self::assertInstanceOf(CourseQuestionsUpdated::class, $courseQuestionsUpdatedMessage);
         self::assertEquals($courseId, $courseQuestionsUpdatedMessage->courseId);
     }
 

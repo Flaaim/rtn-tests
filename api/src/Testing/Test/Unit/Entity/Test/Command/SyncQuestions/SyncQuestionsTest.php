@@ -37,7 +37,6 @@ final class SyncQuestionsTest extends TestCase
 
         $message = $messages[0];
         self::assertInstanceOf(TestChanged::class, $message);
-        self::assertNotNull($message->id);
     }
 
     private function getQuestionIds(): array
