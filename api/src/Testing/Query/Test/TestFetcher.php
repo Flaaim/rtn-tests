@@ -353,4 +353,27 @@ final readonly class TestFetcher implements TestFetcherInterface
             ],
         ];
     }
+
+    public function getAllWithCourseId(string $courseId): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select(
+            't.id',
+            't.course_ids'
+        )->from('tests', 't')
+            ->where('t.course_ids @> :courseIdJson')
+            ->setParameter('courseIdJson', json_encode([$courseId]))
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $tests = [];
+        foreach ($result as $row) {
+            $tests[] = [
+                'id' => $row['id'],
+                'course_ids' => json_decode($row['course_ids'], true, 512, JSON_THROW_ON_ERROR),
+            ];
+        }
+        return $tests;
+    }
 }
