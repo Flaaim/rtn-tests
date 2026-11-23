@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Testing\Query\Test\GetAllWithCourseId;
+namespace App\Testing\Query\Test\GetAllTestIdByCourseId;
 
 final readonly class Query
 {

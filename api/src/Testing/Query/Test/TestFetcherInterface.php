@@ -18,5 +18,5 @@ interface TestFetcherInterface
 
     public function getOneByCourseId(string $courseId): ?array;
 
-    public function getAllWithCourseId(string $courseId): array;
+    public function getAllTestIdByCourseId(string $courseId): array;
 }

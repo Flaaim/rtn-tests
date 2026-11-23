@@ -8,6 +8,7 @@ use App\Course\Entity\Course\CourseId;
 use App\Course\Entity\Course\CourseRepository;
 use App\Course\Entity\Course\Question;
 use App\Course\Event\CourseProcessed;
+use App\Course\Event\CourseQuestionsUpdated;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Container\ContainerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -26,7 +27,6 @@ final class RequestActionTest extends WebTestCase
     use OAuthTokenTrait;
     private readonly KernelBrowser $client;
     private readonly ContainerInterface $container;
-
     private readonly CourseRepository $courses;
     private readonly string $adminToken;
     private readonly string $userToken;
@@ -99,13 +99,19 @@ final class RequestActionTest extends WebTestCase
 
         self::assertEquals(204, $this->client->getResponse()->getStatusCode());
 
-        self::assertCount(1, $transport->getSent());
-        $message = $transport->getSent()[0]->getMessage();
+        self::assertCount(2, $transport->getSent());
 
-        self::assertInstanceOf(CourseProcessed::class, $message);
+        $courseProcessedMessages = array_filter($transport->getSent(), static fn ($envelop) => $envelop->getMessage() instanceof CourseProcessed);
+        $courseProcessedMessage = end($courseProcessedMessages)->getMessage();
 
-        $course = $this->courses->get(new CourseId($message->courseId));
+        self::assertInstanceOf(CourseProcessed::class, $courseProcessedMessage);
 
+        $courseQuestionsUpdatedMessage = array_filter($transport->getSent(), static fn ($envelop) => $envelop->getMessage() instanceof CourseQuestionsUpdated);
+        $courseQuestionsUpdatedMessage = end($courseQuestionsUpdatedMessage)->getMessage();
+
+        self::assertInstanceOf(CourseQuestionsUpdated::class, $courseQuestionsUpdatedMessage);
+
+        $course = $this->courses->get(new CourseId($courseProcessedMessage->courseId));
         /** @var Question[] $questions */
         $questions = $course->getQuestions();
 

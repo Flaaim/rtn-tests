@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Testing\Test\GetAllWithCourseId;
+namespace Tests\Functional\Admin\Testing\Test\GetAllTestIdByCourseId;
 
-use App\Testing\Query\Test\GetAllWithCourseId\Query;
-use App\Testing\Query\Test\GetAllWithCourseId\QueryHandler;
+use App\Testing\Query\Test\GetAllTestIdByCourseId\Query;
+use App\Testing\Query\Test\GetAllTestIdByCourseId\QueryHandler;
 use App\Testing\Query\Test\TestFetcher;
 use App\Testing\Query\Test\TestFetcherInterface;
 use Doctrine\DBAL\Connection;
@@ -47,6 +47,5 @@ final class RequestActionTest extends KernelTestCase
         $test = $tests[0];
 
         self::assertNotNull($test->testId);
-        self::assertNotEmpty($test->courseIds);
     }
 }

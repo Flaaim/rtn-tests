@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Functional\Admin\Testing\Test\GetAllWithCourseId;
+namespace Tests\Functional\Admin\Testing\Test\GetAllTestIdByCourseId;
 
 use App\Course\Entity\Course\CourseId;
 use App\Course\Test\Builder\CourseBuilder;
