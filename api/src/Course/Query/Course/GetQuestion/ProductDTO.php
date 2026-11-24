@@ -8,6 +8,7 @@ final readonly class ProductDTO
 {
     public function __construct(
         public string $productId,
+        public string $name,
         public string $amount,
         public string $addedAt
     ) {}
@@ -16,6 +17,7 @@ final readonly class ProductDTO
     {
         return new self(
             productId: $data['productId'],
+            name: $data['name'],
             amount: $data['amount'],
             addedAt: $data['addedAt']
         );

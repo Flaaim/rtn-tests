@@ -23,6 +23,7 @@ final readonly class ProductModuleAdapter implements ProductInterface
         }
         return [
             'productId' => $productDTO->productId,
+            'name' => $productDTO->name,
             'amount' => $productDTO->amount,
             'currency' => $productDTO->currency,
             'filePath' => $productDTO->filePath,
