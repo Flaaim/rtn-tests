@@ -90,6 +90,14 @@ export interface TestPublicDTO {
   tickets: TicketPublic[];
   settings: Settings;
   category: CategoryPublic;
+  products: ProductDTO[];
+}
+export interface ProductDTO {
+  productId: string;
+  name: string;
+  cipher: string;
+  amount: string;
+  addedAt: string;
 }
 
 interface TicketPublic {

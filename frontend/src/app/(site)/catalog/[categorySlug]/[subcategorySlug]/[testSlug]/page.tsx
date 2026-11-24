@@ -11,9 +11,10 @@ import Link from "next/link";
 import { fetchPublicCategoryTreeAction } from "@/actions/category";
 import { notFound } from "next/navigation";
 import { fetchPublicTestBySlugAction } from "@/actions/test";
-import { TestPublicDTO } from "@/interfaces/test.interface";
+import { ProductDTO, TestPublicDTO } from "@/interfaces/test.interface";
 import PublicTicketButton from "@/components/Testing/Test/PublicTicketButton";
 import { checkIsAuthenticated } from "@/actions/auth";
+import PurchaseProduct from "@/components/Testing/Test/PurchaseProduct";
 
 interface TestSlugPageProps {
   params: Promise<{ categorySlug: string; subcategorySlug: string; testSlug: string }>;
@@ -66,6 +67,7 @@ export default async function TestSlugPage({ params }: TestSlugPageProps) {
     notFound();
   }
   const test: TestPublicDTO = testResult.data;
+  const products: ProductDTO[] = test.products;
 
   const isAuthenticated = await checkIsAuthenticated();
 
@@ -180,6 +182,28 @@ export default async function TestSlugPage({ params }: TestSlugPageProps) {
           ))}
         </div>
       </section>
+      {products.length > 0 && (
+        <section className="space-y-6 border-t pt-8">
+          <div className="space-y-2">
+            <h2 className="text-2xl font-bold tracking-tight">Ответы на вопросы теста</h2>
+            <p className="max-w-2xl text-muted-foreground">
+              Для успешной сдачи экзамена нужно не только проходить билеты, но и иметь под рукой
+              актуальные ответы на все вопросы теста в удобном PDF-формате.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => (
+              <PurchaseProduct
+                key={product.productId}
+                id={product.productId}
+                name={product.name}
+                amount={product.amount}
+              />
+            ))}
+          </div>
+        </section>
+      )}
     </div>
   );
 }
