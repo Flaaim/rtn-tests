@@ -5,6 +5,8 @@ framework:
 
         buses:
             messenger.bus.default:
+                middleware:
+                    - App\Infrastructure\Messenger\Middleware\IdempotencyMiddleware
                 default_middleware:
                     allow_no_handlers: true
 

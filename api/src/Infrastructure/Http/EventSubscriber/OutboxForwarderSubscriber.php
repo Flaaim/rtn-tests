@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Http\EventSubscriber;
 
+use App\Infrastructure\Messenger\Stamp\MessageIdStamp;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
@@ -30,10 +31,13 @@ final class OutboxForwarderSubscriber implements EventSubscriberInterface
     {
         if ('async_outbox' === $event->getReceiverName()) {
             $envelope = $event->getEnvelope();
+            $stamps = [new TransportNamesStamp(['async'])];
 
-            $this->messageBus->dispatch($envelope->getMessage(), [
-                new TransportNamesStamp(['async']),
-            ]);
+            if ($idStamp = $envelope->last(MessageIdStamp::class)) {
+                $stamps[] = $idStamp;
+            }
+
+            $this->messageBus->dispatch($envelope->getMessage(), $stamps);
 
             $this->outboxReceiver->ack($envelope);
             $event->shouldHandle(false);
