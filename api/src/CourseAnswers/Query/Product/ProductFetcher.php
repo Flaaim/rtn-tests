@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\CourseAnswers\Query\Product;
 
+use Doctrine\DBAL\ArrayParameterType;
 use Doctrine\DBAL\Connection;
 
 final readonly class ProductFetcher implements ProductFetcherInterface
@@ -116,5 +117,34 @@ final readonly class ProductFetcher implements ProductFetcherInterface
         )->from('products', 'p')
             ->executeQuery()
             ->fetchAllAssociative();
+    }
+
+    public function getAllByCourseIds(array $courseIds): array
+    {
+        $qb = $this->connection->createQueryBuilder();
+
+        $result = $qb->select(
+            'p.product_id,
+            p.amount,
+            p.currency,
+            p.file_path,
+            p.added_at'
+        )->from('products', 'p')
+            ->where('p.course_id IN (:courseIds)')
+            ->setParameter('courseIds', $courseIds, ArrayParameterType::STRING)
+            ->executeQuery()
+            ->fetchAllAssociative();
+
+        $products = [];
+        foreach ($result as $row) {
+            $products[] = [
+                'productId' => $row['product_id'],
+                'amount' => $row['amount'],
+                'currency' => $row['currency'],
+                'filePath' => $row['file_path'],
+                'addedAt' => $row['added_at'],
+            ];
+        }
+        return $products;
     }
 }

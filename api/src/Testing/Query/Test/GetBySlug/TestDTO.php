@@ -8,6 +8,7 @@ use DateTimeImmutable;
 
 final class TestDTO
 {
+    /** @param ProductDTO[] $products */
     public function __construct(
         public string $id,
         public string $name,
@@ -17,21 +18,25 @@ final class TestDTO
         public string $slug,
         public string $createdAt,
         public string $status,
-        public array $settings
+        public array $settings,
+        public array $products
     ) {}
 
-    public static function fromArray(array $data): self
+    public static function create(array $test, array $products = []): self
     {
+        $products = array_map(static fn (array $product): ProductDTO => ProductDTO::fromArray($product), $products);
+
         return new self(
-            id: $data['id'],
-            name: $data['name'],
-            cipher: $data['cipher'],
-            description: $data['description'],
-            tickets: $data['tickets'],
-            slug: $data['slug'],
-            createdAt: new DateTimeImmutable($data['createdAt'])->format('Y-m-d'),
-            status: $data['status'],
-            settings: $data['settings'] ?? [],
+            id: $test['id'],
+            name: $test['name'],
+            cipher: $test['cipher'],
+            description: $test['description'],
+            tickets: $test['tickets'],
+            slug: $test['slug'],
+            createdAt: new DateTimeImmutable($test['createdAt'])->format('Y-m-d'),
+            status: $test['status'],
+            settings: $test['settings'] ?? [],
+            products: $products,
         );
     }
 }

@@ -13,4 +13,6 @@ interface ProductFetcherInterface
     public function getOneByCourseId(string $courseId): array;
 
     public function getProducts(): array;
+
+    public function getAllByCourseIds(array $courseIds): array;
 }
