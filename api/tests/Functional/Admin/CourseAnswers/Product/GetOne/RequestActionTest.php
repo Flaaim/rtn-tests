@@ -81,6 +81,7 @@ final class RequestActionTest extends WebTestCase
         $data = Json::decode($body);
 
         self::assertArrayHasKey('productId', $data);
+        self::assertArrayHasKey('name', $data);
         self::assertArrayHasKey('cipher', $data);
         self::assertArrayHasKey('courseId', $data);
         self::assertArrayHasKey('amount', $data);

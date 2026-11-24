@@ -19,6 +19,7 @@ final readonly class ProductFetcher implements ProductFetcherInterface
         $result = $qb->select(
             '
             p.product_id,
+            p.name,
             p.cipher,
             p.course_id,
             p.amount,
