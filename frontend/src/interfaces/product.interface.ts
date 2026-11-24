@@ -6,6 +6,7 @@ export interface ListProductsDTO {
 
 export interface ProductDTO {
   productId: string;
+  name: string;
   cipher: string;
   amount: string;
   currency: string;

@@ -59,6 +59,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
           <TableHeader>
             <TableRow>
               <TableHead>Id</TableHead>
+              <TableHead>Название</TableHead>
               <TableHead>Шифр</TableHead>
               <TableHead>Стоимость</TableHead>
               <TableHead>Дата добавления</TableHead>
@@ -73,6 +74,7 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                     {product.productId}
                   </Link>
                 </TableCell>
+                <TableCell className="font-medium">{product.name}</TableCell>
                 <TableCell className="font-medium">{product.cipher}</TableCell>
                 <TableCell className="font-medium">
                   {product.amount} {product.currency}
