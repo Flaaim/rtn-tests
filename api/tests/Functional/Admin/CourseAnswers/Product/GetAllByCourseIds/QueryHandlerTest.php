@@ -44,5 +44,12 @@ final class QueryHandlerTest extends KernelTestCase
         );
 
         self::assertCount(2, $products);
+
+        $product = $products[0];
+
+        self::assertArrayHasKey('productId', $product);
+        self::assertArrayHasKey('name', $product);
+        self::assertArrayHasKey('amount', $product);
+        self::assertArrayHasKey('addedAt', $product);
     }
 }

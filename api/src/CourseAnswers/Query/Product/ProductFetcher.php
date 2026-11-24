@@ -126,6 +126,7 @@ final readonly class ProductFetcher implements ProductFetcherInterface
 
         $result = $qb->select(
             'p.product_id,
+            p.name,
             p.amount,
             p.currency,
             p.file_path,
@@ -140,6 +141,7 @@ final readonly class ProductFetcher implements ProductFetcherInterface
         foreach ($result as $row) {
             $products[] = [
                 'productId' => $row['product_id'],
+                'name' => $row['name'],
                 'amount' => $row['amount'],
                 'currency' => $row['currency'],
                 'filePath' => $row['file_path'],
