@@ -85,6 +85,7 @@ final class RequestActionTest extends WebTestCase
 
         $product = $data['items'][0];
         self::assertArrayHasKey('productId', $product);
+        self::assertArrayHasKey('name', $product);
         self::assertArrayHasKey('cipher', $product);
         self::assertArrayHasKey('amount', $product);
         self::assertArrayHasKey('currency', $product);

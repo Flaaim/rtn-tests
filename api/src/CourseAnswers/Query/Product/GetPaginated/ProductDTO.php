@@ -10,6 +10,7 @@ final readonly class ProductDTO
 {
     public function __construct(
         public string $productId,
+        public string $name,
         public string $cipher,
         public string $amount,
         public string $currency,
@@ -20,6 +21,7 @@ final readonly class ProductDTO
     {
         return new self(
             productId: $data['product_id'],
+            name: $data['name'],
             cipher: $data['cipher'],
             amount: $data['amount'],
             currency: $data['currency'],

@@ -22,6 +22,7 @@ final class RequestFixture extends AbstractFixture
     public const string USER_PASSWORD = 'user';
     public const string PRODUCT_ID = 'b0cf090c-8f57-443b-ba21-0d88b94eaa1c';
     public const string COURSE_ID = 'd81b39f0-321c-40fa-9bbc-88b444839d93';
+    public const string PRODUCT_NAME = 'Оказание первой помощи пострадавшим';
     public const string PRODUCT_CIPHER = 'ОТ 201.1';
     public const string PRODUCT_FILEPATH = 'file/test.pdf';
     public const string PRODUCT_AMOUNT = '450.00';
@@ -45,6 +46,7 @@ final class RequestFixture extends AbstractFixture
 
         $product = new ProductBuilder()
             ->withProductId(new ProductId(self::PRODUCT_ID))
+            ->withName(self::PRODUCT_NAME)
             ->withCourseId(self::COURSE_ID)
             ->withFilePath(self::PRODUCT_FILEPATH)
             ->withAmount(new Amount(self::PRODUCT_AMOUNT))

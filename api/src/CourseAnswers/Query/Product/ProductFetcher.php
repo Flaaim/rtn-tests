@@ -48,7 +48,7 @@ final readonly class ProductFetcher implements ProductFetcherInterface
 
         $qb = $this->connection->createQueryBuilder();
 
-        $qb->select('p.product_id, p.cipher, p.amount, p.currency, p.added_at')
+        $qb->select('p.product_id, p.name, p.cipher, p.amount, p.currency, p.added_at')
             ->from('products', 'p');
 
         $normalizedSearch = null !== $search ? trim($search) : '';
@@ -64,7 +64,7 @@ final readonly class ProductFetcher implements ProductFetcherInterface
             ->executeQuery()
             ->fetchOne();
 
-        $rows = $qb->select('p.product_id, p.cipher, p.amount, p.currency, p.added_at')
+        $rows = $qb->select('p.product_id, p.name, p.cipher, p.amount, p.currency, p.added_at')
             ->orderBy('p.added_at', 'DESC')
             ->setFirstResult($offset)
             ->setMaxResults($limit)
