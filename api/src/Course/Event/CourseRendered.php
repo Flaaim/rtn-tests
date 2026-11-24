@@ -7,6 +7,7 @@ namespace App\Course\Event;
 final readonly class CourseRendered
 {
     public function __construct(
+        public string $name,
         public string $cipher,
         public string $filePath,
         public string $courseId,

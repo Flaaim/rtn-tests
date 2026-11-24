@@ -31,6 +31,7 @@ final class MarkAsRenderedTest extends TestCase
 
         self::assertInstanceOf(CourseRendered::class, $message);
 
+        self::assertEquals($course->getName(), $message->name);
         self::assertEquals($course->getCourseId()->getValue(), $message->courseId);
         self::assertEquals($course->getCipher(), $message->cipher);
         self::assertEquals('350.00', $message->amount);

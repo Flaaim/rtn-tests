@@ -20,6 +20,7 @@ final class ProductTest extends TestCase
     {
         $product = new Product(
             $id = ProductId::generate(),
+            $name = 'Оказание первой помощи пострадавщим',
             $cipher = 'ОТ 201.1',
             $courseId = '16ededf8-9cc1-42a2-a978-8d64024796f4',
             $amount = new Amount('100.00', 'RUB'),
@@ -28,6 +29,7 @@ final class ProductTest extends TestCase
         );
 
         self::assertEquals($id, $product->getId());
+        self::assertEquals($name, $product->getName());
         self::assertEquals($cipher, $product->getCipher());
         self::assertEquals($courseId, $product->getCourseId());
         self::assertEquals($amount, $product->getAmount());
@@ -39,6 +41,7 @@ final class ProductTest extends TestCase
     {
         $product = new Product(
             ProductId::generate(),
+            'Оказание первой помощи',
             'ОТ 201.1',
             '16ededf8-9cc1-42a2-a978-8d64024796f4',
             new Amount('100.00', 'RUB'),
@@ -47,12 +50,14 @@ final class ProductTest extends TestCase
         );
 
         $product->edit(
+            $name = 'Основы промышленной безопасности',
             $cipher = 'ОТ 201.2',
             $amount = new Amount('105.00', 'RUB'),
             $filePath = 'test/file1',
             new DateTimeImmutable('now'),
         );
 
+        self::assertEquals($name, $product->getName());
         self::assertEquals($cipher, $product->getCipher());
         self::assertEquals($amount, $product->getAmount());
         self::assertEquals($filePath, $product->getFilePath());

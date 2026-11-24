@@ -101,6 +101,7 @@ final class RequestActionTest extends WebTestCase
         self::assertInstanceOf(CourseRendered::class, $message);
         $expectedFilePath = RequestFixture::COURSE_ID . \DIRECTORY_SEPARATOR . RequestFixture::COURSE_ID . '.pdf';
 
+        self::assertEquals(RequestFixture::COURSE_NAME, $message->name);
         self::assertEquals('450.00', $message->amount);
         self::assertEquals(RequestFixture::COURSE_ID, $message->courseId);
         self::assertEquals($expectedFilePath, $message->filePath);

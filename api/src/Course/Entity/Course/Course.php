@@ -97,6 +97,7 @@ final class Course implements AggregateRoot
         $this->status = Status::completed();
         $this->recordEvent(
             new CourseRendered(
+                $this->name,
                 $this->cipher,
                 $file,
                 $this->courseId->getValue(),

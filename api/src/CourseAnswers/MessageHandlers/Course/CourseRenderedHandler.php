@@ -28,6 +28,7 @@ final readonly class CourseRenderedHandler
 
         if (null !== $product) {
             $product->edit(
+                $event->name,
                 $event->cipher,
                 new Amount($event->amount, 'RUB'),
                 $event->filePath,
@@ -36,6 +37,7 @@ final readonly class CourseRenderedHandler
         } else {
             $product = new Product(
                 ProductId::generate(),
+                $event->name,
                 $event->cipher,
                 $event->courseId,
                 new Amount($event->amount, 'RUB'),

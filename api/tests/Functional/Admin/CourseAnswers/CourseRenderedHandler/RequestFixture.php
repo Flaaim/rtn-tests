@@ -13,6 +13,7 @@ final class RequestFixture extends AbstractFixture
 {
     public const string NEW_COURSE_ID = 'dbf22e66-f164-4d71-8f41-d1dffc2762dd';
     public const string NEW_CIPHER = 'ОТ 001.1';
+    public const string NEW_NAME = 'Оказание первой помощи';
     public const string NEW_FILE_PATH = 'file/test.pdf';
 
     public const string PRODUCT_ID = '88ba1327-1ef0-44e1-a885-2b0ac35093c7';

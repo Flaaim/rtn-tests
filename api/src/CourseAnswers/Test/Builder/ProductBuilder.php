@@ -12,6 +12,7 @@ use DateTimeImmutable;
 final class ProductBuilder
 {
     private ProductId $productId;
+    private string $name;
     private string $cipher;
     private string $courseId;
     private Amount $amount;
@@ -21,6 +22,7 @@ final class ProductBuilder
     public function __construct(
     ) {
         $this->productId = new ProductId('61b137e9-12d8-4260-b1ae-5f643e6fcc60');
+        $this->name = 'Оказание первой помощи';
         $this->cipher = 'ОТ 201.18';
         $this->courseId = 'd4180097-ef4e-47d7-b4da-4e29c1d8ce7b';
         $this->amount = new Amount('450.00', 'RUB');
@@ -33,6 +35,14 @@ final class ProductBuilder
     {
         $clone = clone $this;
         $clone->productId = $productId;
+        return $clone;
+    }
+
+    /** @psalm-suppress PossiblyUnusedMethod */
+    public function withName(string $name): self
+    {
+        $clone = clone $this;
+        $clone->name = $name;
         return $clone;
     }
 
@@ -72,6 +82,7 @@ final class ProductBuilder
     {
         return new Product(
             $this->productId,
+            $this->name,
             $this->cipher,
             $this->courseId,
             $this->amount,

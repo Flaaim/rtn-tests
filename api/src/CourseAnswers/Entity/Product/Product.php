@@ -16,6 +16,8 @@ final class Product
         #[ORM\Id]
         #[ORM\Column(name: 'product_id', type: 'product_id', unique: true)]
         private ProductId $productId,
+        #[ORM\Column(type: 'string', length: 255)]
+        private string $name,
         #[ORM\Column(type: 'string', length: 25)]
         private string $cipher,
         #[ORM\Column(type: 'string', length: 255, unique: true)]
@@ -31,6 +33,11 @@ final class Product
     public function getId(): ProductId
     {
         return $this->productId;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
     }
 
     public function getCipher(): string
@@ -58,8 +65,14 @@ final class Product
         return $this->courseId;
     }
 
-    public function edit(string $cipher, Amount $amount, string $filePath, DateTimeImmutable $addedAt): void
-    {
+    public function edit(
+        string $name,
+        string $cipher,
+        Amount $amount,
+        string $filePath,
+        DateTimeImmutable $addedAt
+    ): void {
+        $this->name = $name;
         $this->cipher = $cipher;
         $this->amount = $amount;
         $this->filePath = $filePath;

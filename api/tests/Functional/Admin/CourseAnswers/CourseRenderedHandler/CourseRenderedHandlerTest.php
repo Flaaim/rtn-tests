@@ -34,6 +34,7 @@ final class CourseRenderedHandlerTest extends KernelTestCase
     {
         $handler = $this->container->get(CourseRenderedHandler::class);
         $event = new CourseRendered(
+            RequestFixture::NEW_NAME,
             RequestFixture::NEW_CIPHER,
             RequestFixture::NEW_FILE_PATH,
             RequestFixture::NEW_COURSE_ID,
@@ -52,6 +53,7 @@ final class CourseRenderedHandlerTest extends KernelTestCase
     {
         $handler = $this->container->get(CourseRenderedHandler::class);
         $event = new CourseRendered(
+            'Основы промбезопасности',
             'ОТ 555.1',
             'newFilePath',
             RequestFixture::EXISTS_COURSE_ID,
