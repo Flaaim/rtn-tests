@@ -15,6 +15,7 @@ export interface ProductDTO {
 
 export interface ProductFull {
   productId: string;
+  name: string;
   cipher: string;
   courseId: string;
   amount: string;

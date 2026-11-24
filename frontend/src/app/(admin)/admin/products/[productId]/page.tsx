@@ -36,7 +36,7 @@ export default async function ProductOverviewPage({ params }: ProductOverviewPag
     <div className="space-y-6">
       <AdminBreadcrumbs items={items} />
       <div className="flex items-center justify-between">
-        <h1 className="text-3xl font-bold">Продукт {product.cipher}</h1>
+        <h1 className="text-3xl font-bold">Продукт: {product.name}</h1>
         <div>
           <Button size="sm" className="w-fit">
             <a href={pdfUrl} target="_blank" rel="noopener noreferrer">
@@ -51,14 +51,14 @@ export default async function ProductOverviewPage({ params }: ProductOverviewPag
       <div className="space-y-6">
         <Card>
           <CardHeader>
-            <h2 className="text-1xl font-bold">Информация о продукте</h2>
+            <h2 className="text-1xl font-bold">Информация о продукте {product.productId}</h2>
             <hr />
           </CardHeader>
           <CardContent className="space-y-4 text-sm">
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
               <div>
                 <p className="text-muted-foreground font-medium">Id</p>
-                <p className="font-mono">{product.productId}</p>
+                <p className="font-mono">{product.name}</p>
               </div>
               <div>
                 <p className="text-muted-foreground font-medium">Шифр</p>
