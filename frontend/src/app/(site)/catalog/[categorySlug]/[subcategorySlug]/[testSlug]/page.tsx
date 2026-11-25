@@ -197,6 +197,7 @@ export default async function TestSlugPage({ params }: TestSlugPageProps) {
               <PurchaseProduct
                 key={product.productId}
                 id={product.productId}
+                addedAt={product.addedAt}
                 name={product.name}
                 amount={product.amount}
               />

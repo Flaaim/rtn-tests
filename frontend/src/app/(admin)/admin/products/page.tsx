@@ -74,7 +74,9 @@ export default async function AdminProductsPage({ searchParams }: AdminProductsP
                     {product.productId}
                   </Link>
                 </TableCell>
-                <TableCell className="font-medium min-w-0 max-w-[250px] truncate">{product.name}</TableCell>
+                <TableCell className="font-medium min-w-0 max-w-[250px] truncate">
+                  {product.name}
+                </TableCell>
                 <TableCell className="font-medium">{product.cipher}</TableCell>
                 <TableCell className="font-medium">
                   {product.amount} {product.currency}

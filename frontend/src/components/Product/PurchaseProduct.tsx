@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import React, { useId, useState } from "react";
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Download, FileText, Loader2, Receipt } from "lucide-react";
+import { CalendarDays, Download, FileText, Loader2, Receipt } from "lucide-react";
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
 import {
@@ -31,6 +31,7 @@ interface PurchaseProductProps {
   id: string;
   name: string;
   amount: string | number;
+  addedAt: string;
   variant?: "card" | "dialog";
 }
 
@@ -38,6 +39,7 @@ export default function PurchaseProduct({
   id,
   name,
   amount,
+  addedAt,
   variant = "card",
 }: PurchaseProductProps) {
   const [open, setOpen] = useState(false);
@@ -51,6 +53,12 @@ export default function PurchaseProduct({
     defaultValues: {
       email: "",
     },
+  });
+
+  const formattedDate = new Date(addedAt).toLocaleDateString("ru-RU", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   });
 
   const { isSubmitting } = form.formState;
@@ -88,6 +96,13 @@ export default function PurchaseProduct({
           <span>Формат</span>
         </div>
         <span className="rounded border bg-background px-2 py-0.5 text-xs font-medium">PDF</span>
+      </div>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2 text-muted-foreground">
+          <CalendarDays className="h-4 w-4" />
+          <span>Дата</span>
+        </div>
+        <span className="text-base text-xs font-medium">{formattedDate}</span>
       </div>
     </div>
   );
