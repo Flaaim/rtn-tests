@@ -27,7 +27,7 @@ final class Version20261124090048 extends AbstractMigration
             FROM courses c
             WHERE p.course_id = c.course_id
         ');
-
+        $this->addSql("UPDATE products SET name = '' WHERE name IS NULL");
         $this->addSql('ALTER TABLE products ALTER COLUMN name SET NOT NULL');
     }
 
