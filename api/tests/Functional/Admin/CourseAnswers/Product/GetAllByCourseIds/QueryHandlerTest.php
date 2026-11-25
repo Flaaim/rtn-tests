@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Admin\CourseAnswers\Product\GetAllByCourseIds;
 
+use App\CourseAnswers\Query\Product\GetAllByCourseIds\ProductDTO;
 use App\CourseAnswers\Query\Product\GetAllByCourseIds\Query;
 use App\CourseAnswers\Query\Product\GetAllByCourseIds\QueryHandler;
 use App\CourseAnswers\Query\Product\ProductFetcher;
@@ -47,9 +48,11 @@ final class QueryHandlerTest extends KernelTestCase
 
         $product = $products[0];
 
-        self::assertArrayHasKey('productId', $product);
-        self::assertArrayHasKey('name', $product);
-        self::assertArrayHasKey('amount', $product);
-        self::assertArrayHasKey('addedAt', $product);
+        self::assertInstanceOf(ProductDTO::class, $product);
+
+        self::assertObjectHasProperty('productId', $product);
+        self::assertObjectHasProperty('name', $product);
+        self::assertObjectHasProperty('amount', $product);
+        self::assertObjectHasProperty('addedAt', $product);
     }
 }

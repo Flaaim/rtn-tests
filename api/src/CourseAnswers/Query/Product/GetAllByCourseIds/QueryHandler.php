@@ -15,6 +15,8 @@ final readonly class QueryHandler
 
     public function handle(Query $query): array
     {
-        return $this->fetcher->getAllByCourseIds($query->courseIds);
+        $products = $this->fetcher->getAllByCourseIds($query->courseIds);
+
+        return array_map(static fn (array $data): ProductDTO => ProductDTO::fromArray($data), $products);
     }
 }

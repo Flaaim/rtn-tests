@@ -129,8 +129,6 @@ final readonly class ProductFetcher implements ProductFetcherInterface
             'p.product_id,
             p.name,
             p.amount,
-            p.currency,
-            p.file_path,
             p.added_at'
         )->from('products', 'p')
             ->where('p.course_id IN (:courseIds)')
@@ -144,8 +142,6 @@ final readonly class ProductFetcher implements ProductFetcherInterface
                 'productId' => $row['product_id'],
                 'name' => $row['name'],
                 'amount' => $row['amount'],
-                'currency' => $row['currency'],
-                'filePath' => $row['file_path'],
                 'addedAt' => $row['added_at'],
             ];
         }
