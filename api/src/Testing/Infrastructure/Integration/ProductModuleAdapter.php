@@ -18,11 +18,10 @@ final readonly class ProductModuleAdapter implements ProductInterface
     {
         $products = $this->productApi->getAllByCourseIds($courseIds);
 
-        return array_map(fn (ProductDTO $product) => [
+        return array_map(static fn (ProductDTO $product) => [
             'productId' => $product->productId,
             'name' => $product->name,
             'amount' => $product->amount,
-            'addedAt' => $product->addedAt,]
-        , $products);
+            'addedAt' => $product->addedAt, ], $products);
     }
 }
