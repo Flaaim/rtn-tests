@@ -14,7 +14,7 @@ import { fetchPublicTestBySlugAction } from "@/actions/test";
 import { ProductDTO, TestPublicDTO } from "@/interfaces/test.interface";
 import PublicTicketButton from "@/components/Testing/Test/PublicTicketButton";
 import { checkIsAuthenticated } from "@/actions/auth";
-import PurchaseProduct from "@/components/Testing/Test/PurchaseProduct";
+import PurchaseProduct from "@/components/Product/PurchaseProduct";
 
 interface TestSlugPageProps {
   params: Promise<{ categorySlug: string; subcategorySlug: string; testSlug: string }>;

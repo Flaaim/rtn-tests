@@ -9,8 +9,8 @@ import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import PublicTicketButton from "@/components/Testing/Test/PublicTicketButton";
 import { Button } from "@/components/ui/button";
 import ShowCorrectAnswer from "@/components/Question/ShowCorrectAnswer";
-import PurchaseProductDialog from "@/components/Question/PurchaseProductDialog";
 import { isOpenQuestion, ProductDTO, PublicTestData } from "@/interfaces/question.interface";
+import PurchaseProduct from "@/components/Product/PurchaseProduct";
 
 interface PageProps {
   params: Promise<{ id: string }>;
@@ -170,9 +170,7 @@ export default async function PublicQuestionPage({ params }: PageProps) {
 
               {/* Описание и покупка */}
               <div className="p-6 md:w-2/3 flex flex-col justify-center">
-                <h3 className="text-lg font-bold mb-2">
-                  Полный сборник ответов: {question.test.name}
-                </h3>
+                <h3 className="text-lg font-bold mb-2">Полный сборник ответов: {product.name}</h3>
                 <ul className="space-y-2 mb-6 text-sm text-muted-foreground">
                   <li className="flex items-start gap-2">
                     <CheckCircle2 className="w-4 h-4 text-green-500 mt-0.5 shrink-0" />
@@ -189,10 +187,11 @@ export default async function PublicQuestionPage({ params }: PageProps) {
                 </ul>
 
                 <div className="flex flex-col sm:flex-row items-center gap-4 mt-auto">
-                  <PurchaseProductDialog
+                  <PurchaseProduct
                     id={product.productId}
-                    amount={formattedPrice}
-                    name={question.test.name}
+                    name={product.name}
+                    amount={product.amount}
+                    variant="dialog"
                   />
                   {/* Кнопка превью, если у вас есть демо-версия файла */}
                   {/*<Button variant="outline" className="w-full sm:w-auto" asChild>*/}

@@ -58,6 +58,7 @@ export interface PublicAnswerData {
 
 export interface ProductDTO {
   productId: string;
+  name: string;
   amount: string;
   addedAt: string;
 }
