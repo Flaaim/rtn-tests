@@ -24,11 +24,13 @@ final class ProcessedEvent
         $this->processedAt = new DateTimeImmutable();
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getMessageId(): string
     {
         return $this->messageId;
     }
 
+    /** @psalm-suppress PossiblyUnusedMethod */
     public function getProcessedAt(): DateTimeImmutable
     {
         return $this->processedAt;
