@@ -190,7 +190,7 @@ export default async function PublicQuestionPage({ params }: PageProps) {
                   <PurchaseProduct
                     id={product.productId}
                     name={product.name}
-                    amount={product.amount}
+                    amount={formattedPrice}
                     variant="dialog"
                   />
                   {/* Кнопка превью, если у вас есть демо-версия файла */}
