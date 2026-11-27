@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Functional\Admin\CourseAnswers\Recipient\Remove;
 
+use App\CourseAnswers\Event\Recipient\RecipientRemoved;
 use App\CourseAnswers\Query\Recipient\RecipientFetcher;
 use App\CourseAnswers\Query\Recipient\RecipientFetcherInterface;
 use Doctrine\DBAL\Connection;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
 use Tests\Functional\FixturesLoader;
 use Tests\Functional\Json;
 use Tests\Functional\OAuthTokenTrait;
@@ -32,6 +34,7 @@ final class RequestActionTest extends WebTestCase
     {
         parent::setUp();
         $this->client = self::createClient();
+        $this->client->disableReboot();
 
         $this->container = $this->client->getContainer();
 
@@ -76,6 +79,8 @@ final class RequestActionTest extends WebTestCase
 
     public function testSuccess(): void
     {
+        /** @var InMemoryTransport $transport */
+        $transport = $this->client->getContainer()->get('messenger.transport.async_outbox');
         $this->client->jsonRequest(
             'DELETE',
             '/v1/admin/recipients/' . RequestFixture::RECIPIENT_ID . '/remove',
@@ -87,6 +92,11 @@ final class RequestActionTest extends WebTestCase
 
         $result = $this->recipients->getOneById(RequestFixture::RECIPIENT_ID);
         self::assertEmpty($result);
+
+        self::assertCount(1, $transport->getSent());
+        $message = $transport->getSent()[0]->getMessage();
+
+        self::assertInstanceOf(RecipientRemoved::class, $message);
     }
 
     public function testInvalid(): void

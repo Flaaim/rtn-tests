@@ -19,6 +19,8 @@ final readonly class Handler
     {
         $recipient = $this->recipients->get(new RecipientId($command->id));
 
+        $recipient->remove();
+
         $this->recipients->remove($recipient);
 
         $this->flusher->flush();
