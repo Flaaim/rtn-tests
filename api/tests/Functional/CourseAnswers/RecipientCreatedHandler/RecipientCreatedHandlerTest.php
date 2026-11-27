@@ -6,7 +6,7 @@ namespace Tests\Functional\CourseAnswers\RecipientCreatedHandler;
 
 use App\CourseAnswers\Entity\Recipient\RecipientId;
 use App\CourseAnswers\Entity\Recipient\RecipientRepository;
-use App\CourseAnswers\Event\RecipientCreated;
+use App\CourseAnswers\Event\Recipient\RecipientCreated;
 use App\CourseAnswers\MessageHandlers\RecipientCreatedHandler;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use Doctrine\ORM\EntityManagerInterface;

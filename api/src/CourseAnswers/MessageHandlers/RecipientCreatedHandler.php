@@ -8,7 +8,7 @@ use App\CourseAnswers\Entity\Product\ProductId;
 use App\CourseAnswers\Entity\Product\ProductRepository;
 use App\CourseAnswers\Entity\Recipient\RecipientId;
 use App\CourseAnswers\Entity\Recipient\RecipientRepository;
-use App\CourseAnswers\Event\RecipientCreated;
+use App\CourseAnswers\Event\Recipient\RecipientCreated;
 use App\CourseAnswers\Service\ProductSender;
 use App\Infrastructure\Doctrine\Flusher;
 use App\SharedDomain\Filesystem\FileSystemPathInterface;

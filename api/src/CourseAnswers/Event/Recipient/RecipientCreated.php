@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\CourseAnswers\Event;
+namespace App\CourseAnswers\Event\Recipient;
 
 final readonly class RecipientCreated
 {

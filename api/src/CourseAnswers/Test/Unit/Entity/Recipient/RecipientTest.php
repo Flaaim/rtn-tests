@@ -8,7 +8,7 @@ use App\CourseAnswers\Entity\Recipient\Email;
 use App\CourseAnswers\Entity\Recipient\Recipient;
 use App\CourseAnswers\Entity\Recipient\RecipientId;
 use App\CourseAnswers\Entity\Recipient\Status;
-use App\CourseAnswers\Event\RecipientCreated;
+use App\CourseAnswers\Event\Recipient\RecipientCreated;
 use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 

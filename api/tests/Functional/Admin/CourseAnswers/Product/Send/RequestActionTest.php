@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Functional\Admin\CourseAnswers\Product\Send;
 
 use App\CourseAnswers\Entity\Recipient\RecipientRepository;
-use App\CourseAnswers\Event\RecipientCreated;
+use App\CourseAnswers\Event\Recipient\RecipientCreated;
 use App\SharedDomain\Filesystem\FileSystemPathInterface;
 use App\SharedDomain\Filesystem\InMemoryFileSystemPath;
 use Doctrine\ORM\EntityManagerInterface;
