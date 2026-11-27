@@ -79,8 +79,8 @@ framework:
             'App\Testing\Command\Attempt\DemoLaunch\Command': sync
 
             'App\CourseAnswers\Command\Product\Send\Command': sync
-            'App\CourseAnswers\Event\RecipientCreated': async_outbox
-            'App\CourseAnswers\Event\RecipientRemoved': async_outbox
+            'App\CourseAnswers\Event\Recipient\RecipientCreated': async_outbox
+            'App\CourseAnswers\Event\Recipient\RecipientRemoved': async_outbox
             'App\CourseAnswers\Command\Payment\Confirm\Command': sync
             'App\CourseAnswers\Command\Payment\Fail\Command': sync
 
