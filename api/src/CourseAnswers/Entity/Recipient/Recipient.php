@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace App\CourseAnswers\Entity\Recipient;
 
-use App\CourseAnswers\Event\RecipientCreated;
+use App\CourseAnswers\Event\Recipient\RecipientCreated;
+use App\CourseAnswers\Event\Recipient\RecipientRemoved;
 use App\SharedDomain\AggregateRoot;
 use App\SharedDomain\Event\EventTrait;
 use DateTimeImmutable;
@@ -99,6 +100,13 @@ final class Recipient implements AggregateRoot
     public function getFailedReason(): ?string
     {
         return $this->failedReason;
+    }
+
+    public function remove(): void
+    {
+        $this->recordEvent(new RecipientRemoved(
+            $this->recipientId->getValue(),
+        ));
     }
 
     public function getAggregateId(): string

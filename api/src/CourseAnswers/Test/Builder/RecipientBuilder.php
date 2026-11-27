@@ -69,7 +69,7 @@ final class RecipientBuilder
         if ($this->isSent) {
             $recipient->sent();
         }
-
+        $recipient->releaseEvents();
         return $recipient;
     }
 }
