@@ -25,7 +25,8 @@ final readonly class RecipientFetcher implements RecipientFetcherInterface
             r.created_at,
             r.failed_reason,
             p.cipher,
-            p.product_id'
+            p.product_id,
+            p.name'
         )
             ->from('product_recipients', 'r')
             ->join('r', 'products', 'p', 'p.product_id = r.product_id')
@@ -48,6 +49,7 @@ final readonly class RecipientFetcher implements RecipientFetcherInterface
             'failedReason' => $row['failed_reason'],
             'product' => [
                 'productId' => $row['product_id'],
+                'name' => $row['name'],
                 'cipher' => $row['cipher'],
             ],
         ];

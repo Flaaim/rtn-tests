@@ -128,6 +128,7 @@ final class RequestActionTest extends WebTestCase
 
         $product = $data['product'];
         self::assertArrayHasKey('productId', $product);
+        self::assertArrayHasKey('name', $product);
         self::assertArrayHasKey('cipher', $product);
     }
 }
