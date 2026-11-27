@@ -44,7 +44,7 @@ final readonly class Handler
             $email,
             $amount->getValue(),
             $returnUrl,
-            ['payment_type' => PaymentType::PRODUCT->value],
+            ['payment_type' => PaymentType::PRODUCT->value, 'payment_description' => 'Оплата ' . $product->getCipher()],
         );
 
         $payment = new Payment(

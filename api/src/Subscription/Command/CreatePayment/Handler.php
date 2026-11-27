@@ -42,7 +42,10 @@ final readonly class Handler
             $userId,
             $amount->getValue(),
             $returnUrl,
-            ['payment_type' => PaymentType::SUBSCRIPTION->value],
+            [
+                'payment_type' => PaymentType::SUBSCRIPTION->value,
+                'payment_description' => 'Оплата ' . $plan->value,
+            ],
         );
 
         $payment = new Payment(

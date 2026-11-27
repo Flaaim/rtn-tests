@@ -38,7 +38,7 @@ final readonly class YookassaPaymentGateway implements PaymentGatewayInterface
                         'return_url' => $returnUrl,
                     ],
                     'capture' => true,
-                    'description' => 'Оплата подписки к тестам',
+                    'description' => $metadata['payment_description'] ?? '',
                     'metadata' => [
                         'actor' => $actor,
                         'payment_type' => $metadata['payment_type'],
