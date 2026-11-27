@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  BookOpenCheck,
   Brackets,
   ChartBarStacked,
   ChevronRight,
@@ -50,9 +51,17 @@ const items = [
       { title: "Результаты", url: "/admin/parsers/tasks", icon: FileText },
     ],
   },
-  { title: "Курсы", url: "/admin/courses", icon: GraduationCap },
-  { title: "Тесты", url: "/admin/tests", icon: NotepadText },
-  { title: "Категории", url: "/admin/categories", icon: ChartBarStacked },
+  {
+    title: "Тестирование",
+    url: "/admin/tests",
+    icon: BookOpenCheck,
+    isActive: true,
+    subItems: [
+      { title: "Курсы", url: "/admin/courses", icon: GraduationCap },
+      { title: "Тесты", url: "/admin/tests", icon: NotepadText },
+      { title: "Категории", url: "/admin/categories", icon: ChartBarStacked },
+    ],
+  },
   { title: "Подписки", url: "/admin/subscriptions", icon: CreditCard },
   { title: "Ответы", url: "/admin/products", icon: Package },
   { title: "Получатели", url: "/admin/recipients", icon: Mails },
