@@ -182,6 +182,7 @@ export const API = {
       if (search) params.set("search", search);
       return BASE_URL + `/v1/admin/recipients?${params.toString()}`;
     },
+    remove: (id: string) => BASE_URL + `/v1/admin/recipients/${id}/remove`,
   },
   event: {
     getPaginated: (page: number, perPage: number, search?: string) => {

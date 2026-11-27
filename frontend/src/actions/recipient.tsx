@@ -24,3 +24,18 @@ export async function fetchRecipientsPagination(
     return { ok: false, error: "Не удалось подключиться к серверу API." };
   }
 }
+export async function removeRecipientAction(id: string): Promise<ApiResponse<void>> {
+  try {
+    const response = await apiFetch(API.recipient.remove(id), {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+      },
+    });
+    return handleApiResponse<void>(response);
+  } catch (error) {
+    console.error("removeRecipientAction error:", error);
+    return { ok: false, error: "Не удалось подключиться к серверу API." };
+  }
+}
