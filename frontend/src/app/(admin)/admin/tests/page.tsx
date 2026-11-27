@@ -16,6 +16,7 @@ import AddTestDialog from "@/components/Admin/Test/AddTestDialog";
 import TestStatusControl from "@/components/Admin/Domain/Test/TestStatusControl";
 import RemoveTestDialog from "@/components/Admin/Test/RemoveTestDialog";
 import { fetchCategoryTreeAction } from "@/actions/category";
+import TestSearch from "@/components/Admin/Test/TestSearch";
 
 interface AdminTestsPageProps {
   searchParams: Promise<{ page?: string; perPage?: string; q?: string }>;
@@ -60,6 +61,7 @@ export default async function AdminTestsPage({ searchParams }: AdminTestsPagePro
         <h1 className="text-3xl font-bold">Тесты</h1>
         <AddTestDialog categories={categoriesTree} />
       </div>
+      <TestSearch />
       <div className="rounded-md border bg-white">
         <Table>
           <TableHeader>
