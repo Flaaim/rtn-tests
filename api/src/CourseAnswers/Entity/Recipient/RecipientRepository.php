@@ -32,4 +32,9 @@ final readonly class RecipientRepository
         }
         return $recipient;
     }
+
+    public function remove(Recipient $recipient): void
+    {
+        $this->em->remove($recipient);
+    }
 }
